@@ -78,4 +78,9 @@ if(APPLE)
 endif(APPLE)
 
 find_package(xapian REQUIRED)
-target_link_libraries(main_program xapian archive)
+target_include_directories(main_program PRIVATE ${xapian_INCLUDE_DIRS})
+target_link_libraries(main_program xapian)
+
+find_package(archive REQUIRED)
+target_include_directories(main_program PRIVATE ${archive_INCLUDE_DIRS})
+target_link_libraries(main_program archive)
