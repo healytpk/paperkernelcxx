@@ -5,7 +5,7 @@ if [ -e "../../all_cxx_papers.tar.xz" ]; then
     echo Compressed tar archive of all C++ papers already exists
 else
     echo Downloading compressed tar archive of all C++ papers from virjacode.com
-    curl http://virjacode.com/downloads/all_cxx_papers.tar.xz -o ../../all_cxx_papers.tar.xz
+    curl -o ../../all_cxx_papers.tar.xz http://www.virjacode.com/downloads/all_cxx_papers.tar.xz
 fi
 
 #-DCMAKE_CXX_COMPILER=clang++
