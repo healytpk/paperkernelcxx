@@ -13,7 +13,7 @@
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     INCBIN(_archive, "../all_cxx_papers.tar.xz");
 #elif __APPLE__
-    INCBIN(_archive, "../all_cxx_papers.tar.xz");
+    INCBIN(_archive, "../../all_cxx_papers.tar.xz");
 #else
     INCBIN(_archive, "../../../../all_cxx_papers.tar.xz");
 #endif
