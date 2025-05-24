@@ -84,3 +84,8 @@ target_link_libraries(main_program xapian)
 find_package(archive REQUIRED)
 target_include_directories(main_program PRIVATE ${archive_INCLUDE_DIRS})
 target_link_libraries(main_program archive)
+
+if(APPLE)
+target_include_directories(main_program PRIVATE $(brew --prefix libarchive)/include)
+target_include_directories(main_program PRIVATE $(brew --prefix libarchive)/include)
+endif(APPLE)
