@@ -24,7 +24,7 @@ if(UNIX AND NOT APPLE)
 	set(LIB_SUFFIX /${CMAKE_BUILD_TYPE}) 
 endif(UNIX AND NOT APPLE)
 
-set(PROJECT_NAME wxModularHost)
+set(PROJECT_NAME paperkernelcxx)
 project(${PROJECT_NAME})
 
 # If there are any additional CMake modules (e.g. module which searches 
@@ -126,12 +126,4 @@ endif(APPLE OR LINUX)
 
 # Now we can include all our subprojects. 
 # CMake will generate project files for them
-add_subdirectory (../wxModularHost 
-	../../wxModularHost/${OS_BASE_NAME}${LIB_SUFFIX})
-add_subdirectory (../wxModularCore 
-	../../wxModularCore/${OS_BASE_NAME}${LIB_SUFFIX})	
-
-add_subdirectory (../Plugin_Browse
-	../../Plugin_Browse/${OS_BASE_NAME}${LIB_SUFFIX})
-add_subdirectory (../Plugin_Search
-	../../Plugin_Search/${OS_BASE_NAME}${LIB_SUFFIX})
+add_subdirectory (../main_program ../../main_program/${OS_BASE_NAME}${LIB_SUFFIX})

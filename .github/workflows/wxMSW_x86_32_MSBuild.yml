@@ -28,6 +28,9 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
 
+    - name: Install dependencies using vcpkg
+      run: vcpkg install libarchive xapian
+
     - name: Install boost
       uses: MarkusJx/install-boost@v2.4.5
       id: install-boost

@@ -1,6 +1,14 @@
 #!/bin/bash
 echo OS Type: $OSTYPE
 
+if [ -e "../../all_cxx_papers.tar.xz" ]; then
+    echo Compressed tar archive of all C++ papers already exists
+else
+    echo ${PWD}
+    echo Downloading compressed tar archive of all C++ papers from virjacode.com
+    curl http://virjacode.com/downloads/all_cxx_papers.tar.xz -o ../../all_cxx_papers.tar.xz
+fi
+
 #-DCMAKE_CXX_COMPILER=clang++
 
 # ----------------------------------
