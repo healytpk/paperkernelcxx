@@ -1,5 +1,0 @@
-LIBRARY	"Plugin_Search"
-
-EXPORTS
-	CreatePlugin=CreatePlugin
-	DeletePlugin=DeletePlugin
