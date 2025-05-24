@@ -10,7 +10,13 @@
 
 #include <iostream>          // ----------- remove THIS -----------------------------------------------------------
 
-INCBIN(_archive, "../../../../all_cxx_papers.tar.xz");
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    INCBIN(_archive, "../../all_cxx_papers.tar.xz");
+#elif __APPLE__
+    INCBIN(_archive, "../../all_cxx_papers.tar.xz");
+#else
+    INCBIN(_archive, "../../../../all_cxx_papers.tar.xz");
+#endif
 
 using std::runtime_error, std::string;
 
