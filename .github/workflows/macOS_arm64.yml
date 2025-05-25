@@ -1,4 +1,4 @@
-name: wxOSX_arm64
+name: macOS_arm64
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
       # A list of supported versions can be found here:
       # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
           boost_version: 1.86.0
-          boost_install_dir: /tmp/wxModularAppOCX/boost/
+          boost_install_dir: /tmp/paperkernelcxx/boost/
 
     - uses: actions/checkout@v4
     - name: Install wxWidgets
@@ -69,9 +69,9 @@ jobs:
         cd Mac
         make VERBOSE=1 -j$(getconf _NPROCESSORS_ONLN)
         cd ../..
-        cp wxWidgets-3.2.5/buildOSX/lib/*.dylib build/bin/wxModularHost.app/Contents
+        cp wxWidgets-3.2.5/buildOSX/lib/*.dylib build/bin/main_program.app/Contents
 
     - uses: actions/upload-artifact@v4
       with:
-        name: artifacts_wxOSX_arm64
-        path: build/bin/wxModularHost.app/Contents
+        name: artifacts_macOS_arm64
+        path: build/bin/main_program.app/Contents

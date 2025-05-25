@@ -1,4 +1,4 @@
-name: wxGTK_x86_64
+name: Linux_x86_64
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
       # A list of supported versions can be found here:
       # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
           boost_version: 1.86.0
-          boost_install_dir: /tmp/wxModularAppOCX/boost/
+          boost_install_dir: /tmp/paperkernelcxx/boost/
 
     - uses: actions/checkout@v4
     - name: Install GNU 13 compiler suite, GTK3, wxWidgets 3.2, libxapian, libarchive
@@ -49,5 +49,5 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: artifacts_wxGTK_Linux_x86_64
+        name: artifacts_Linux_x86_64
         path: build/bin/Release
