@@ -15,7 +15,7 @@
 #elif __APPLE__
     INCBIN(_archive, "../../all_cxx_papers.tar.xz");
 #else
-    INCBIN(_archive, "../../../all_cxx_papers.tar.xz");
+    INCBIN(_archive, "../../../../all_cxx_papers.tar.xz");
 #endif
 
 using std::runtime_error, std::string;
