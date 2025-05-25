@@ -34,6 +34,7 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 
 if(APPLE)
 	set(OS_BASE_NAME Mac)
+	add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fexperimental-library>)
 endif(APPLE)
 if(LINUX)
 	set(OS_BASE_NAME Linux)
