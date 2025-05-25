@@ -94,3 +94,7 @@ execute_process(COMMAND brew --prefix xapian OUTPUT_STRIP_TRAILING_WHITESPACE OU
 target_include_directories(main_program PRIVATE ${XAPIAN_PREFIX}/include)
 target_link_directories(main_program PRIVATE ${XAPIAN_PREFIX}/lib)
 endif(APPLE)
+
+if(LINUX)
+target_link_libraries(main_program wx_gtk3u_webview-3.2)
+endif(LINUX)

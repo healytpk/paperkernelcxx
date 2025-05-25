@@ -64,12 +64,12 @@ foreach(BOOST_FILE ${BOOST_FILE_LIST})
 endforeach()
 
 # Here we specify the list of wxWidgets libs which we will use in our project
-set(wxWidgets_USE_LIBS base core adv aui net gl xml propgrid html)
+set(wxWidgets_USE_LIBS base core adv aui net gl xml propgrid html webview)
 
 # Here we specify that we need DLL version of wxWidgets libs and dynamic CRT
 # This is a MUST for applications with plugins. Both app and DLL plugin MUST
 # use the same instance of wxWidgets and the same event loop.
-set(BUILD_SHARED_LIBS ON)
+set(BUILD_SHARED_LIBS OFF)
 
 # Find wxWidgets library on current PC
 # You should have %WXWIN%  environment variable which should point to the

@@ -89,7 +89,7 @@ inline char const *PaperString(unsigned const num)
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
-    //this->webView = wxWebView::New(this->panelBrowse, wxID_ANY, "https://www.wxwidgets.org");
+    this->webView = wxWebView::New(this->panelBrowse, wxID_ANY, "https://www.wxwidgets.org");
     wxButton *monkey = new wxButton(this->panelBrowse, wxID_ANY);
     monkey->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
         {
@@ -285,5 +285,5 @@ void Dialog_Main::PaperTree_OnSelChanged(wxTreeEvent &event)
                "<p>This is an example of loading HTML using SetPage().</p></body></html>";
     }
 
-    //this->webView->SetPage(html, "");
+    this->webView->SetPage(html, "");
 }

@@ -15,7 +15,7 @@
 #elif __APPLE__
     INCBIN(_archive, "../../all_cxx_papers.tar.xz");
 #else
-    INCBIN(_archive, "../../../../all_cxx_papers.tar.xz");
+    INCBIN(_archive, "../../../all_cxx_papers.tar.lz4");
 #endif
 
 using std::runtime_error, std::string;
@@ -24,20 +24,23 @@ string ArchiveGetFile(char const *const arg_filename) noexcept
 {
     assert( nullptr != arg_filename );
 
+    std::cout << "----------    g_archiveSize = " << g_archiveSize << std::endl;
     struct archive *const a = archive_read_new();
     if ( nullptr == a ) return {};
     Auto( archive_read_free(a) );
 
   //archive_read_support_filter_xz (a);  // Enable XZ  decompression
+    archive_read_support_filter_lz4(a);  // Enable LZ4 decompression
     archive_read_support_format_tar(a);  // Enable TAR format
     if ( ARCHIVE_OK != archive_read_open_memory(a, g_archiveData, g_archiveSize) ) return {};
 
     try
     {
-        string filename("./");
+      //string filename("./");
+        string filename;
         filename += arg_filename;
         struct archive_entry *entry = nullptr;
-        while ( ARCHIVE_OK == archive_read_next_header(a, &entry) )
+        for ( ; ARCHIVE_OK == archive_read_next_header(a, &entry); archive_read_data_skip(a) )
         {
             char const *const archive_filename = archive_entry_pathname(entry);
           //std::cout << " ---------- " << archive_filename << std::endl;
