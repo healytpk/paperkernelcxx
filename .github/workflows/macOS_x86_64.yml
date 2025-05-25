@@ -14,6 +14,14 @@ jobs:
     runs-on: macos-13
 
     steps:
+    - name: Install newer version of compiler because stop_source is missing
+      run: |
+        brew update
+        brew install llvm
+        echo "PATH=$(brew --prefix llvm)/bin:$PATH" >> $GITHUB_ENV
+        echo "LDFLAGS=-L$(brew --prefix llvm)/lib" >> $GITHUB_ENV
+        echo "CPPFLAGS=-I$(brew --prefix llvm)/include" >> $GITHUB_ENV
+
     - name: Install dependencies
       run: |
         brew update
