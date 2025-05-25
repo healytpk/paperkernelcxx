@@ -1,6 +1,7 @@
 #include "semantic.hpp"
 #include <fstream>
 #include <filesystem>
+#include <sstream>                       // ostringstream
 #include <iostream>         //////// ======== REMOVE THIS - cout, endl
 
 namespace fs = std::filesystem;
