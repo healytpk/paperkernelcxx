@@ -95,6 +95,10 @@ target_include_directories(main_program PRIVATE ${XAPIAN_PREFIX}/include)
 target_link_directories(main_program PRIVATE ${XAPIAN_PREFIX}/lib)
 endif(APPLE)
 
+
 if(LINUX)
 target_link_libraries(main_program wx_gtk3u_webview-3.2)
 endif(LINUX)
+if(APPLE)
+target_link_libraries(main_program wx_osx_cocoau_webview-3.2)
+endif(APPLE)

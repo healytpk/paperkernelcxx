@@ -15,7 +15,7 @@
 #elif __APPLE__
     INCBIN(_archive, "../../all_cxx_papers.tar.xz");
 #else
-    INCBIN(_archive, "../../../all_cxx_papers.tar.lz4");
+    INCBIN(_archive, "../../../all_cxx_papers.tar.xz");
 #endif
 
 using std::runtime_error, std::string;
@@ -29,8 +29,8 @@ string ArchiveGetFile(char const *const arg_filename) noexcept
     if ( nullptr == a ) return {};
     Auto( archive_read_free(a) );
 
-  //archive_read_support_filter_xz (a);  // Enable XZ  decompression
-    archive_read_support_filter_lz4(a);  // Enable LZ4 decompression
+    archive_read_support_filter_xz (a);  // Enable XZ  decompression
+  //archive_read_support_filter_lz4(a);  // Enable LZ4 decompression
     archive_read_support_format_tar(a);  // Enable TAR format
     if ( ARCHIVE_OK != archive_read_open_memory(a, g_archiveData, g_archiveSize) ) return {};
 
