@@ -87,7 +87,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 	find_package(uuid REQUIRED)
 	target_link_libraries(main_program uuid)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+else()
 	find_package(xapian REQUIRED)
 	target_include_directories(main_program PRIVATE ${xapian_INCLUDE_DIRS})
 	target_link_libraries(main_program xapian)
