@@ -30,6 +30,7 @@ if [ ! -d "./xapian" ]; then
     cd build_debug
     ../configure --enable-static=yes --enable-shared=no --enable-assertions --enable-log CPPFLAGS="-D_GLIBCXX_DEBUG" CXXFLAGS="-ggdb3"
     make -j `nproc`
+    cd ../..
 fi
 
 echo building Debug configuration makefile
