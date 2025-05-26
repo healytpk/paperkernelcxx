@@ -24,10 +24,10 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	treeAllPapers = new wxTreeCtrl( panelBrowse, wxID_ANY, wxDefaultPosition, wxSize( 200,-1 ), wxTR_DEFAULT_STYLE );
 	bSizer8->Add( treeAllPapers, 0, wxALL|wxEXPAND, 5 );
 
-	bSizerForWebView = new wxBoxSizer( wxVERTICAL );
+	bSizerForViewPortal = new wxBoxSizer( wxVERTICAL );
 
 
-	bSizer8->Add( bSizerForWebView, 1, wxEXPAND, 5 );
+	bSizer8->Add( bSizerForViewPortal, 1, wxEXPAND, 5 );
 
 
 	panelBrowse->SetSizer( bSizer8 );

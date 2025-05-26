@@ -43,7 +43,7 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		wxNotebook* m_notebook1;
 		wxPanel* panelBrowse;
 		wxTreeCtrl* treeAllPapers;
-		wxBoxSizer* bSizerForWebView;
+		wxBoxSizer* bSizerForViewPortal;
 		wxPanel* panelXapian;
 		wxButton* btnXapianLoadPapers;
 		wxButton* btnUnloadPapers1;
