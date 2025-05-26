@@ -89,15 +89,7 @@ inline char const *PaperString(unsigned const num)
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
-    this->webView = wxWebView::New(this->panelBrowse, wxID_ANY, "https://www.wxwidgets.org");
-    wxButton *monkey = new wxButton(this->panelBrowse, wxID_ANY);
-    monkey->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
-        {
-            this->webView->Show();
-            //wxMessageBox("Button clicked!", "Event Triggered", wxOK | wxICON_INFORMATION);
-        });
-
-    this->bSizerForWebView->Add(        monkey, 1, wxALL|wxEXPAND, 5 );
+    this->webView = wxWebView::New(this->panelBrowse, wxID_ANY);
     this->bSizerForWebView->Add( this->webView, 1, wxALL|wxEXPAND, 5 );
     this->Layout();
     this->panelBrowse->Layout();
