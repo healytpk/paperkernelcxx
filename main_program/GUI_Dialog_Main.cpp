@@ -5,8 +5,6 @@
 #include <string>                                    // string
 #include <vector>                                    // vector
 #include <thread>                                    // jthread
-//#include <gtk/gtk.h>                               // GtkWidget
-//#include <wx/wx.h>
 #include <wx/app.h>                                  // wxApp
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include "GUI_Dialog_Waiting.hpp"
@@ -15,6 +13,7 @@
 #include "paperman.hpp"
 #include "papertree.hpp"
 #include "semantic.hpp"
+#include "view_portal.hpp"
 
 using std::string;
 
@@ -89,8 +88,9 @@ inline char const *PaperString(unsigned const num)
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
-    this->webView = wxWebView::New(this->panelBrowse, wxID_ANY);
-    this->bSizerForWebView->Add( this->webView, 1, wxALL|wxEXPAND, 5 );
+    this->view_portal = CreateViewPortal(this->panelBrowse);
+    assert( nullptr != this->view_portal );
+    this->bSizerForViewPortal->Add( this->view_portal, 1, wxALL|wxEXPAND, 5 );
     this->Layout();
     this->panelBrowse->Layout();
 
@@ -277,5 +277,6 @@ void Dialog_Main::PaperTree_OnSelChanged(wxTreeEvent &event)
                "<p>This is an example of loading HTML using SetPage().</p></body></html>";
     }
 
-    this->webView->SetPage(html, "");
+    assert( nullptr != this->view_portal );
+    SetViewPortal( this->view_portal, html );
 }

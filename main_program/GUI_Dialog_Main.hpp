@@ -2,11 +2,10 @@
 #define H__dynamoMain
 
 #include "AUTO_GENERATED_wxformbuilder.h"
-#include <wx/webview.h>
 
 class Dialog_Main : public Dialog_Main__Auto_Base_Class {
 protected:
-    wxWebView *webView = nullptr;
+    wxWindow *view_portal = nullptr;
     void OnClose( wxCloseEvent &event ) override;
 public:
 	Dialog_Main( wxWindow *parent );
