@@ -1,4 +1,4 @@
-name: Linux_x86_64
+name: Linux_x86_64_Debug
 
 on:
   push:
@@ -38,16 +38,16 @@ jobs:
 
     - name: Run CMake
       run: |
-        cd build && ./cmLinux.sh && cd ..
+        cd build && ./cmLinuxDebug.sh && cd ..
       env:
           BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Run GNU Make with GNU compiler
       run: |
-        cd build/LinuxRelease && make && cd ../..
-        cp --preserve=links /usr/lib/x86_64-linux-gnu/libwx*.so* build/bin/Release/
+        cd build/LinuxDebug && make && cd ../..
+        cp --preserve=links /usr/lib/x86_64-linux-gnu/libwx*.so* build/bin/Debug/
 
     - uses: actions/upload-artifact@v4
       with:
-        name: artifacts_Linux_x86_64
-        path: build/bin/Release
+        name: artifacts_Linux_x86_64_Debug
+        path: build/bin/Debug
