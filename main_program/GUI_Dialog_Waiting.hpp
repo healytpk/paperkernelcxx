@@ -100,11 +100,13 @@ public:
     unsigned displayed_seconds_on_screen;
 
     Dialog_Waiting(wxWindow *const parent, wxString const &arg_txt_msg, wxString const &arg_txt_under = "please wait", bool const arg_can_cancel = true, bool const arg_is_cancel_fatal = false)
-        : Dialog_Waiting_BASE(parent), timestamp_from_beginning(), timestamp_since_screen_update(), displayed_seconds_on_screen(0u), is_cancel_fatal(arg_is_cancel_fatal)
+        : Dialog_Waiting_BASE(parent), is_cancel_fatal(arg_is_cancel_fatal), timestamp_from_beginning(), timestamp_since_screen_update(), displayed_seconds_on_screen(0u)
     {
+        (void)arg_txt_msg;
         if ( false == arg_can_cancel ) this->m_buttonCancel->Hide();
 
-        this->m_txt_message->SetLabel(arg_txt_msg);
+        this->m_txt_message->SetLabel(arg_txt_msg  );
+        this->m_txt_under  ->SetLabel(arg_txt_under);
     }
 
 	void OnClick_Cancel(wxCommandEvent&) override
