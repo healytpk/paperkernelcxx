@@ -10,14 +10,13 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-#include <wx/treectrl.h>
+#include <wx/sizer.h>
 #include <wx/gdicmn.h>
+#include <wx/panel.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
-#include <wx/sizer.h>
-#include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
@@ -42,7 +41,7 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 	protected:
 		wxNotebook* m_notebook1;
 		wxPanel* panelBrowse;
-		wxTreeCtrl* treeAllPapers;
+		wxBoxSizer* bSizerForPaperTree;
 		wxBoxSizer* bSizerForViewPortal;
 		wxPanel* panelXapian;
 		wxButton* btnXapianLoadPapers;
@@ -67,7 +66,6 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
-		virtual void PaperTree_OnSelChanged( wxTreeEvent& event ) { event.Skip(); }
 		virtual void btnXapianLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnLoadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnUnloadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }

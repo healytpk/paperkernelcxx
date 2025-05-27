@@ -7,6 +7,7 @@
 #include <thread>                                    // jthread
 #include <wx/app.h>                                  // wxApp
 #include <wx/msgdlg.h>                               // wxMessageBox
+#include <wx/dataview.h>                             // wxDataViewCtrl
 #include "GUI_Dialog_Waiting.hpp"
 #include "ai.hpp"
 #include "embedded_archive.hpp"
@@ -86,34 +87,164 @@ inline char const *PaperString(unsigned const num)
     return s;
 }
 
+#include <cstddef>
+#include <array>
+#include <map>
+
+template<unsigned column_count>
+class wxDataViewTreeStoreWithColumns : public wxDataViewModel {
+private:
+    using ArrCols_t = std::array<wxString, column_count>;
+
+    struct Node {
+        bool has_children;
+        wxDataViewItem parent;
+        ArrCols_t column_values;
+    };
+
+    std::map< wxDataViewItem, Node > m_data;
+
+public:
+    unsigned GetColumnCount(void) const { return column_count; }
+    wxString GetColumnType(unsigned const column) const { return "string"; }
+    wxDataViewItem GetParent(wxDataViewItem const &item) const override
+    {
+        auto const it = m_data.find(item);
+        if ( m_data.end() == it ) return {};
+        return it->second.parent;
+    }
+    bool IsContainer(wxDataViewItem const &item) const override
+    {
+        auto const it = m_data.find(item);
+        if ( m_data.end() == it ) return {};
+        return it->second.has_children;
+    }
+    unsigned GetChildren(wxDataViewItem const &item, wxDataViewItemArray &children) const override
+    {
+        unsigned counter = 0u;
+        for ( auto const &e : m_data )
+        {
+            if ( e.second.parent != item ) continue;
+            children.Add(e.first);
+            ++counter;
+        }
+        return counter;
+    }
+
+    void GetValue(wxVariant &value, wxDataViewItem const &item, unsigned const arg) const override
+    {
+        value.Clear();
+        if ( arg >= column_count ) return;
+        auto const it = m_data.find(item);
+        if ( m_data.end() == it ) return;
+        value = it->second.column_values[arg];
+    }
+    bool SetValue(wxVariant const &value, wxDataViewItem const &item, unsigned const arg) override
+    {
+        if ( arg >= column_count ) return false;
+        auto const it = m_data.find(item);
+        if ( m_data.end() == it ) return false;
+        it->second.column_values[arg] = value.GetString();
+        return true;
+    }
+
+    wxDataViewItem AppendItemWithColumns(wxDataViewItem const &parent, ArrCols_t &&columns)
+    {
+        assert( columns.size() == column_count );
+
+        if ( parent.IsOk() ) m_data[parent].has_children = true;
+    
+        static long long unsigned current_id = 1u;
+
+        ++current_id;
+        wxDataViewItem const dvi = (wxDataViewItem)(void*)current_id;
+        m_data[dvi] = Node{ false, parent, std::move(columns) };
+        std::cout << " +++++++++++++++  about to add item to map\n";
+        return dvi;
+    }
+};
+
+void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
+{
+    std::cout << "Entered OnSelChanged --------------------\n";
+    wxDataViewItem const selectedItem = event.GetItem();
+
+    wxString const itemText = this->GetPaperTreeItemText(selectedItem);
+    wxString htmlPath;
+    if ( itemText.StartsWith('p') )
+    {
+        wxString const lastChildText = this->GetPaperTreeItemLastChildText(selectedItem);
+        htmlPath = itemText + lastChildText + ".html";
+    }
+    else
+    {
+        wxDataViewItem const parent = this->treeStore->GetParent(selectedItem);
+        wxString const parentText = this->GetPaperTreeItemText(parent);
+        htmlPath = parentText + itemText + ".html";
+    }
+    std::cout << "htmlPath = " << htmlPath.ToStdString() << " --------------------\n";
+    std::cout << "About to call 'GetFile'\n";
+    string html = ArchiveGetFile( htmlPath.ToStdString().c_str() );
+    std::cout << "Returned from 'GetFile'\n";
+
+    std::cout << "Length of string returned from GetFile: " << html.size() << std::endl;
+
+    std::cout << "(when searching for '" << htmlPath << "')\n";
+
+    if ( html.empty() )
+    {
+        html = "<html><body><h1>Hello, wxHtmlWindow!</h1>"
+               "<p>This is an example of loading HTML using SetPage().</p></body></html>";
+    }
+
+    assert( nullptr != this->view_portal );
+    SetViewPortal( this->view_portal, html );
+}
+
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
+    // ====================== View Portal ==============================
     this->view_portal = CreateViewPortal(this->panelBrowse);
     assert( nullptr != this->view_portal );
     this->bSizerForViewPortal->Add( this->view_portal, 1, wxALL|wxEXPAND, 5 );
     this->Layout();
-    this->panelBrowse->Layout();
+    // =================================================================
 
-    wxTreeItemId const tii_root = this->treeAllPapers->AddRoot("Root Node");
+    // ================ Data Storage for wxDataViewCtrl ================
+    this->treeStore = new std::remove_reference_t<decltype(*treeStore)>;
 
     for ( auto &e : g_map_papers )
     {
-        //auto [ &paper, &set_revs ] = root;
         auto &papernum = e.first;
         auto &set_revs = e.second;
 
-        wxTreeItemId const tii_papernum = this->treeAllPapers->AppendItem( tii_root, PaperString(papernum) );
+        wxDataViewItem const item_papernum = treeStore->AppendItemWithColumns( {}, { PaperString(papernum), "Title", "Author" } );
 
-        for ( unsigned rev : set_revs )
+#if 1
+        for ( unsigned const rev : set_revs )
         {
-            wxTreeItemId const tii_rev = this->treeAllPapers->AppendItem( tii_papernum, "r" + wxString(std::to_string(rev)) );
-            this->treeAllPapers->Collapse(tii_rev);
+            wxDataViewItem const item_rev = treeStore->AppendItemWithColumns( item_papernum   , { "r" + wxString(std::to_string(rev)), "Title", "Author" } );
+          //wxDataViewItem const item_rev = treeStore->AppendItemWithColumns( wxDataViewItem{}, { "r" + wxString(std::to_string(rev)), "Title", "Author" } );
+          //this->treeAllPapers->Collapse(tii_rev);
         }
+#endif
 
-        this->treeAllPapers->Collapse(tii_papernum);
+        //this->treeAllPapers->Expand(item_papernum);
     }
 
-    this->treeAllPapers->Expand(tii_root);
+    // ================ Create the wxDataViewCtrl widget ===============
+    this->treeAllPapers = new std::remove_reference_t<decltype(*this->treeAllPapers)>(this->panelBrowse, wxID_ANY);
+    assert( nullptr != this->treeAllPapers );
+    this->bSizerForPaperTree->Add( this->treeAllPapers, 1, wxALL|wxEXPAND, 5 );
+    wxDataViewColumn *const pcol = this->treeAllPapers->AppendTextColumn("Paper" , 0);
+    this->treeAllPapers->AppendTextColumn("Title" , 1);
+    this->treeAllPapers->AppendTextColumn("Author", 2);
+    this->treeAllPapers->SetExpanderColumn(pcol);
+    this->treeAllPapers->AssociateModel(treeStore);
+    this->Layout();
+    this->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &Dialog_Main::PaperTree_OnSelChanged, this);
+    // =================================================================
+
 }
 
 void Dialog_Main::OnClose(wxCloseEvent& event)
@@ -246,37 +377,21 @@ void Dialog_Main::btnXapianLoadPapers_OnButtonClick(wxCommandEvent&)
     //this->btnUnloadPapers->Enable(   is_loaded );
 }
 
-void Dialog_Main::PaperTree_OnSelChanged(wxTreeEvent &event)
+wxString Dialog_Main::GetPaperTreeItemText(wxDataViewItem const selected_item) const
 {
-    std::cout << "Entered OnSelChanged --------------------\n";
-    wxTreeItemId const selectedItem = event.GetItem();
-    wxString const itemText = this->treeAllPapers->GetItemText(selectedItem);
-    wxString htmlPath;
-    if ( itemText.StartsWith('p') )
-    {
-        wxTreeItemId const lastChild = this->treeAllPapers->GetLastChild(selectedItem);
-        wxString const lastChildText = this->treeAllPapers->GetItemText(lastChild);
-        htmlPath = itemText + lastChildText + ".html";
-    }
-    else
-    {
-        wxTreeItemId const parent = this->treeAllPapers->GetItemParent(selectedItem);
-        wxString parentText = this->treeAllPapers->GetItemText(parent);
-        htmlPath = parentText + itemText + ".html";
-    }
-    std::cout << "htmlPath = " << htmlPath.ToStdString() << " --------------------\n";
-    std::cout << "About to call 'GetFile'\n";
-    string html = ArchiveGetFile( htmlPath.ToStdString().c_str() );
-    std::cout << "Returned from 'GetFile'\n";
+    wxVariant myvar;
+    this->treeStore->GetValue(myvar, selected_item, 0u);
+    return myvar.GetString();
+}
 
-    std::cout << "Length of string returned from GetFile: " << html.size() << std::endl;
-
-    if ( html.empty() )
-    {
-        html = "<html><body><h1>Hello, wxHtmlWindow!</h1>"
-               "<p>This is an example of loading HTML using SetPage().</p></body></html>";
-    }
-
-    assert( nullptr != this->view_portal );
-    SetViewPortal( this->view_portal, html );
+wxString Dialog_Main::GetPaperTreeItemLastChildText(wxDataViewItem const selected_item) const
+{
+#if 1
+    return "r0";
+#else
+    int const count = 0;//this->treeStore->GetChildCount(selected_item);
+    if ( count <= 0 ) return {};
+    wxDataViewItem const lastChild = this->treeStore->GetNthChild(selected_item, static_cast<unsigned>(count) - 1u);
+    return this->GetPaperTreeItemText(lastChild);
+#endif
 }

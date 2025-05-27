@@ -21,8 +21,10 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	wxBoxSizer* bSizer8;
 	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
 
-	treeAllPapers = new wxTreeCtrl( panelBrowse, wxID_ANY, wxDefaultPosition, wxSize( 200,-1 ), wxTR_DEFAULT_STYLE );
-	bSizer8->Add( treeAllPapers, 0, wxALL|wxEXPAND, 5 );
+	bSizerForPaperTree = new wxBoxSizer( wxVERTICAL );
+
+
+	bSizer8->Add( bSizerForPaperTree, 1, wxEXPAND, 5 );
 
 	bSizerForViewPortal = new wxBoxSizer( wxVERTICAL );
 
@@ -150,7 +152,6 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 
 	// Connect Events
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( Dialog_Main__Auto_Base_Class::OnClose ) );
-	treeAllPapers->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( Dialog_Main__Auto_Base_Class::PaperTree_OnSelChanged ), NULL, this );
 	btnXapianLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianLoadPapers_OnButtonClick ), NULL, this );
 	btnLoadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnLoadModel_OnButtonClick ), NULL, this );
 	btnUnloadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnUnloadModel_OnButtonClick ), NULL, this );
