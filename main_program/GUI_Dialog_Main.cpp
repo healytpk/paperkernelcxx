@@ -97,16 +97,15 @@ private:
     using ArrCols_t = std::array<wxString, column_count>;
 
     struct Node {
-        bool has_children;
-        wxDataViewItem parent;
+        wxDataViewItem parent, last_child;
         ArrCols_t column_values;
     };
 
     std::map< wxDataViewItem, Node > m_data;
 
 public:
-    unsigned GetColumnCount(void) const { return column_count; }
-    wxString GetColumnType(unsigned const column) const { return "string"; }
+    //unsigned GetColumnCount(void) const override { return column_count; }
+    //wxString GetColumnType(unsigned const column) const override { return "string"; }
     wxDataViewItem GetParent(wxDataViewItem const &item) const override
     {
         auto const it = m_data.find(item);
@@ -117,7 +116,7 @@ public:
     {
         auto const it = m_data.find(item);
         if ( m_data.end() == it ) return {};
-        return it->second.has_children;
+        return it->second.last_child.IsOk();
     }
     unsigned GetChildren(wxDataViewItem const &item, wxDataViewItemArray &children) const override
     {
@@ -130,7 +129,12 @@ public:
         }
         return counter;
     }
-
+    wxDataViewItem GetLastChild(wxDataViewItem const item) const
+    {
+        auto const it = m_data.find(item);
+        if ( m_data.end() == it ) return {};
+        return it->second.last_child;
+    }
     void GetValue(wxVariant &value, wxDataViewItem const &item, unsigned const arg) const override
     {
         value.Clear();
@@ -147,19 +151,14 @@ public:
         it->second.column_values[arg] = value.GetString();
         return true;
     }
-
     wxDataViewItem AppendItemWithColumns(wxDataViewItem const &parent, ArrCols_t &&columns)
     {
-        assert( columns.size() == column_count );
-
-        if ( parent.IsOk() ) m_data[parent].has_children = true;
-    
         static long long unsigned current_id = 1u;
+        wxDataViewItem const dvi = (wxDataViewItem)(void*)++current_id;
 
-        ++current_id;
-        wxDataViewItem const dvi = (wxDataViewItem)(void*)current_id;
-        m_data[dvi] = Node{ false, parent, std::move(columns) };
-        std::cout << " +++++++++++++++  about to add item to map\n";
+        if ( parent.IsOk() ) m_data[parent].last_child = dvi;
+        m_data[dvi] = Node{ parent, wxDataViewItem{}, std::move(columns) };
+        //std::cout << " +++++++++++++++  about to add item to map\n";
         return dvi;
     }
 };
@@ -379,6 +378,7 @@ void Dialog_Main::btnXapianLoadPapers_OnButtonClick(wxCommandEvent&)
 
 wxString Dialog_Main::GetPaperTreeItemText(wxDataViewItem const selected_item) const
 {
+    if ( false == selected_item.IsOk() ) return {};
     wxVariant myvar;
     this->treeStore->GetValue(myvar, selected_item, 0u);
     return myvar.GetString();
@@ -386,12 +386,6 @@ wxString Dialog_Main::GetPaperTreeItemText(wxDataViewItem const selected_item) c
 
 wxString Dialog_Main::GetPaperTreeItemLastChildText(wxDataViewItem const selected_item) const
 {
-#if 1
-    return "r0";
-#else
-    int const count = 0;//this->treeStore->GetChildCount(selected_item);
-    if ( count <= 0 ) return {};
-    wxDataViewItem const lastChild = this->treeStore->GetNthChild(selected_item, static_cast<unsigned>(count) - 1u);
+    wxDataViewItem const lastChild = this->treeStore->GetLastChild(selected_item);
     return this->GetPaperTreeItemText(lastChild);
-#endif
 }
