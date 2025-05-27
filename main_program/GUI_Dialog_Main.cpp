@@ -219,14 +219,12 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 
         wxDataViewItem const item_papernum = treeStore->AppendItemWithColumns( {}, { PaperString(papernum), "Title", "Author" } );
 
-#if 1
         for ( unsigned const rev : set_revs )
         {
             wxDataViewItem const item_rev = treeStore->AppendItemWithColumns( item_papernum   , { "r" + wxString(std::to_string(rev)), "Title", "Author" } );
-          //wxDataViewItem const item_rev = treeStore->AppendItemWithColumns( wxDataViewItem{}, { "r" + wxString(std::to_string(rev)), "Title", "Author" } );
+            (void)item_rev;
           //this->treeAllPapers->Collapse(tii_rev);
         }
-#endif
 
         //this->treeAllPapers->Expand(item_papernum);
     }
@@ -246,7 +244,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 
 }
 
-void Dialog_Main::OnClose(wxCloseEvent& event)
+void Dialog_Main::OnClose(wxCloseEvent&)
 {
     this->Destroy();
 }

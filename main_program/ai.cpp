@@ -93,6 +93,8 @@ void AImanager::NewContext(size_t const token_count) noexcept(false)
 
     this->DiscardContext();
 
+    (void)token_count;
+
 #ifdef PAPERKERNELCXX_USE_AI
     llama_context_params ctx_params = llama_context_default_params();
     ctx_params.n_batch = token_count;
@@ -112,6 +114,8 @@ string AImanager::PutInAndGetOut( vector<int32_t> const &prompt_tokens ) noexcep
     assert( nullptr != this->vocab );
 
     string response;
+
+    (void)prompt_tokens;
 
 #ifdef PAPERKERNELCXX_USE_AI
     static_assert( std::is_same_v<int32_t, llama_token> );
@@ -156,6 +160,8 @@ string AImanager::PutInAndGetOut(string_view const prompt) noexcept(false)
     lock_guard mylock( this->mtx );
     assert( nullptr != this->ctx   );
     assert( nullptr != this->vocab );
+
+    (void)prompt;
 
 #ifdef PAPERKERNELCXX_USE_AI
     bool const is_first = (0 == llama_kv_self_used_cells(this->ctx));
