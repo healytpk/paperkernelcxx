@@ -12,7 +12,7 @@ void SemanticSearcher::Init( std::function<void(unsigned,unsigned)> SetProgress 
 {
     SetProgress(0u, 100u);
 
-    this->db.emplace( Xapian::InMemory::open() );
+    this->db.emplace( std::string{}, Xapian::DB_BACKEND_INMEMORY );
 
     Xapian::TermGenerator indexer;
     Xapian::Stem stemmer("en");
