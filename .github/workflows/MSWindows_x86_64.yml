@@ -66,7 +66,7 @@ jobs:
 
     - name: Run MSBuild
       run: |
-        cd build\Win && msbuild main_program.sln && cd ..\..
+        cd build\Win && msbuild paperkernelcxx.sln && cd ..\..
         copy wxWidgets_MSW64\lib\vc14x_x64_dll\*.dll build\bin\Release
 
     - uses: actions/upload-artifact@v4

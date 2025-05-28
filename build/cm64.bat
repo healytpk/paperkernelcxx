@@ -11,5 +11,4 @@ rmdir /S /Q Win
 mkdir Win
 cd Win
 cmake ../ -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE=../../vcpkg/scripts/buildsystems/vcpkg.cmake
-copy ..\main_program.sln64 .\main_program.sln
 cd ..
