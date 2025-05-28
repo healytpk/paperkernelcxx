@@ -47,6 +47,7 @@ jobs:
       # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
           boost_version: 1.86.0
           toolset: msvc
+          architecture: x64
 
     - name: Install wxWidgets
       run: |
