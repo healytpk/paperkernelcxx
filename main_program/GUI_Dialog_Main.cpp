@@ -112,6 +112,7 @@ public:
     }
     //unsigned GetColumnCount(void) const override { return column_count; }
     //wxString GetColumnType(unsigned const column) const override { return "string"; }
+    bool HasContainerColumns(wxDataViewItem const &) const override { return true; }
     wxDataViewItem GetParent(wxDataViewItem const &item) const override
     {
         auto const it = m_data.find(item);
