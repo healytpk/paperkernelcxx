@@ -1,5 +1,5 @@
-paperkernelc++  -  Paper Kernel C++
-===================================
+Paper Kernel C++
+================
 
 Graphical desktop program for browsing and searching through C++ papers on MS-Windows, Apple macOS and Linux, using wxWidgets for the graphical user interface.
 
