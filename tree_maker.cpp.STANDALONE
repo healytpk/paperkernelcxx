@@ -1,0 +1,85 @@
+#include <cstdlib>                  // EXIT_FAILURE
+#include <filesystem>                // directory_iterator, path
+#include <iostream>
+#include <map>                        // map
+#include <regex>                      // regex, smatch
+#include <string>                     // string
+#include <set>                        // set
+
+namespace fs = std::filesystem;
+using std::string;
+
+// Define the PaperTree structure
+using PaperTree = std::map< unsigned, std::set<unsigned> >;
+
+string Title(void)
+{
+    static long unsigned n = 0u;
+    return "Title" + std::to_string(++n);
+}
+
+string Author(void)
+{
+    static long unsigned n = 0u;
+    return "Author" + std::to_string(++n);
+}
+
+int main(void)
+{
+    // Path to the directory containing the .tokens files
+    string const path = "./papers/";
+
+    // Regex pattern to match files in the form "PxxxxRx.*"
+    std::regex const pattern(R"(p(\d+)r(\d+)\.[A-z]*)", std::regex::icase);
+
+    // PaperTree to store paper numbers and their corresponding revision numbers
+    PaperTree papers;
+
+    // Iterate through all files in the specified directory
+    for ( auto const &entry : fs::directory_iterator(path) )
+    {
+        auto const &filename = entry.path().filename().string();
+
+        // Check if the filename matches the pattern
+        if ( false == std::regex_match(filename, pattern) ) continue;
+
+        std::smatch match;
+        if ( false == std::regex_search(filename, match, pattern) ) continue;
+
+        // Extract the paper number and revision number
+        unsigned const paper_number = std::stoul(match[1].str());
+        unsigned const revision_number = std::stoul(match[2].str());
+
+        // Store the revision number under the corresponding paper number
+        auto [ iterator, is_new ] =  papers[paper_number].insert(revision_number);
+        if ( false == is_new )
+        {
+            std::cout << " -- DUPLICATE PAPER NUMBER --\n";
+            std::abort();
+        }
+    }
+
+    // Print out the PaperTree structure in the desired format
+    std::cout << "{\n";
+    for ( auto const &entry : papers )
+    {
+        std::cout << "    { ";
+
+        if ( entry.first <   10u ) std::cout << ' ';
+        if ( entry.first <  100u ) std::cout << ' ';
+        if ( entry.first < 1000u ) std::cout << ' ';
+
+        std::cout << entry.first << "u, { ";
+
+        auto rev_it = entry.second.begin();
+        for ( auto const &e : entry.second )
+        {
+            std::cout << "{ " << e << "u, \"" << Title() << "\", \"" << Author() << "\" }, ";
+        }
+
+        std::cout << "} },\n";
+    }
+    std::cout << "};\n";
+
+    return EXIT_SUCCESS;
+}

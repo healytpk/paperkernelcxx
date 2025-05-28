@@ -1,0 +1,255 @@
+#include "common.hpp"
+#include <cstddef>                    // size_t
+#include <cstdint>                    // int32_t
+#include <cstdlib>                    // EXIT_FAILURE
+#include <filesystem>                 // directory_iterator, path
+#include <fstream>                    // ifstream, ofstream
+#include <functional>                 // function
+#include <iostream>                   // cerr
+#include <memory>                     // unique_ptr
+#include <sstream>                    // ostringstream
+#include <string>                     // string, getline
+#include <utility>                    // move
+#include <vector>                     // vector
+#include <cmark-gfm.h>                // cmark_render_plaintext
+#include <gumbo.h>                    // GumboOutput, gumbo_parse
+#include <poppler-document.h>         // poppler::document
+#include <poppler-page.h>             // poppler::page
+#include "Auto.h"                     // The 'Auto' macro
+
+using std::cerr;
+using std::endl;
+using std::int32_t;
+using std::ifstream;
+using std::ofstream;
+using std::ostringstream;
+using std::size_t;
+using std::string;
+using std::unique_ptr;
+using std::vector;
+
+namespace fs = std::filesystem;
+
+extern ofstream logfile;
+
+string GetPlainText_PDF(fs::path const &path)
+{
+    logfile << "++++ Converting input file to plain text (in memory): " << path.string() << endl;
+
+    using poppler::document;
+    using poppler::page;
+
+    unique_ptr<document> doc( document::load_from_file(path.string()) );
+
+    if ( nullptr == doc ) return {};
+
+    int const num_pages = doc->pages();  /* Yes, pages() returns an int */
+    string retval;
+    for ( int i = 0; i < num_pages; ++i )
+    {
+        unique_ptr<page> p(  doc->create_page(i)  );
+        if ( p ) retval += p->text().to_latin1();
+    }
+
+    string const newfilename = path.string() + ".converted_to_txt";
+    std::ofstream f(newfilename);
+    if ( f )
+    {
+        f << retval;
+    }
+    else
+    {
+        logfile << "------------------- Failed to create pre-tokens file: " << newfilename << endl;
+    }
+
+    return retval;
+}
+
+string GetPlainText_HTML(fs::path const &path)
+{
+    logfile << "++++ Converting HTML to plain text: " << path.string() << std::endl;
+
+    std::ifstream file(path);
+    if ( !file )
+    {
+        logfile << "-------------------- Failed to open HTML file: " << path << std::endl;
+        return {};
+    }
+
+    ostringstream buffer;
+    buffer << file.rdbuf();
+    string const html = std::move(buffer).str();
+
+    GumboOutput *const output = gumbo_parse( html.c_str() );
+    if ( nullptr == output ) return {};
+    Auto( gumbo_destroy_output(&kGumboDefaultOptions, output) );
+
+    ostringstream text_out;
+
+    std::function<void(const GumboNode *)> extract_text;
+    extract_text = [&](const GumboNode *node)
+      {
+        if ( node->type == GUMBO_NODE_TEXT )
+        {
+            text_out << node->v.text.text << ' ';
+        }
+        else if ( node->type == GUMBO_NODE_ELEMENT )
+        {
+            GumboTag tag = node->v.element.tag;
+
+            // Skip non-visible content
+            if (tag == GUMBO_TAG_SCRIPT ||
+                tag == GUMBO_TAG_STYLE ||
+                tag == GUMBO_TAG_HEAD ||
+                tag == GUMBO_TAG_META ||
+                tag == GUMBO_TAG_NOSCRIPT)
+            {
+                return;
+            }
+
+            GumboVector const *const children = &node->v.element.children;
+            for ( unsigned i = 0u; i < children->length; ++i)
+            {
+                extract_text(static_cast<GumboNode *>(children->data[i]));
+            }
+
+            // Add a newline after block-level elements to improve formatting
+            if (tag == GUMBO_TAG_P ||
+                tag == GUMBO_TAG_DIV ||
+                tag == GUMBO_TAG_BR ||
+                tag == GUMBO_TAG_SECTION ||
+                tag == GUMBO_TAG_ARTICLE ||
+                tag == GUMBO_TAG_H1 || tag == GUMBO_TAG_H2 || tag == GUMBO_TAG_H3 ||
+                tag == GUMBO_TAG_H4 || tag == GUMBO_TAG_H5 || tag == GUMBO_TAG_H6)
+            {
+                text_out << '\n';
+            }
+        }
+        else if ( node->type == GUMBO_NODE_WHITESPACE )
+        {
+            text_out << ' ';
+        }
+      };
+
+    extract_text(output->root);
+
+    string const result = text_out.str();
+
+    string const newfilename = path.string() + ".converted_to_txt";
+    ofstream out(newfilename);
+    if (out)
+    {
+        out << result;
+    }
+    else
+    {
+        logfile << "-------------------- Failed to write pre-token output: " << newfilename << std::endl;
+    }
+
+    return result;
+}
+
+string GetPlainText_MD(fs::path const &path)
+{
+    logfile << "++++ Converting Markdown to plain text via cmark: " << path.string() << endl;
+
+    ifstream file(path);
+    if ( !file )
+    {
+        logfile << "-------------------- Failed to open file: " << path << endl;
+        return {};
+    }
+
+    ostringstream buffer;
+    buffer << file.rdbuf();
+    string markdown = std::move(buffer).str();
+
+    // Convert to CommonMark AST
+    cmark_node *doc = cmark_parse_document(markdown.c_str(), markdown.length(), CMARK_OPT_DEFAULT);
+    if ( nullptr == doc )
+    {
+        logfile << "-------------------- Failed to parse Markdown document\n";
+        return {};
+    }
+    Auto( cmark_node_free(doc) );
+
+    // Render as plain text
+    string retval;
+    char const *const plain = cmark_render_plaintext(doc, CMARK_OPT_DEFAULT, 80);
+    if ( nullptr == plain )
+    {
+        logfile << "-------------------- Failed to render Markdown as plain text\n";
+        return {};
+    }
+    Auto( std::free( const_cast<char*>(plain) ) );
+    retval = plain;
+
+    string const newfilename = path.string() + ".converted_to_txt";
+    ofstream out(newfilename);
+    if ( out )
+    {
+        out << retval;
+    }
+    else
+    {
+        logfile << "-------------------- Failed to write pre-token output: " << newfilename << endl;
+    }
+
+    return retval;
+}
+
+extern void IterateThroughFolder(
+    std::filesystem::path where,
+    std::function<bool(std::filesystem::path, std::string_view)> const &callback )
+{
+    for ( auto const &entry : fs::directory_iterator(where) )
+    {
+        if ( false == entry.is_regular_file() ) continue;
+
+        fs::path const path = entry.path();
+
+        string text;
+
+        if ( ".tokens" == path.extension() ) continue;
+        else if ( ".converted_to_txt" == path.extension() ) continue;
+        else if ( ".txt" == path.extension() )
+        {
+            ifstream file(path);
+
+            if ( ! file )
+            {
+                logfile << "-------------------- Failed to open input file: " << path << endl;
+                continue;
+            }
+
+            ostringstream buffer;
+            buffer << file.rdbuf();
+            text = std::move(buffer).str();
+        }
+        else if ( ".pdf" == path.extension() )
+        {
+            text = GetPlainText_PDF(path);
+        }
+        else if ( (".html" == path.extension()) || (".htm" == path.extension()) )
+        {
+            text = GetPlainText_HTML(path);
+        }
+        else if ( ".md" == path.extension() )
+        {
+            text = GetPlainText_MD(path);
+        }
+        else
+        {
+            logfile << "-------------------- Unrecognised input file type: " << path << endl;
+            continue;
+        }
+
+        if ( text.empty() )
+        {
+            logfile << "-------------------- Input file was empty after conversion to plain text: " << path << endl;
+            continue;
+        }
+
+        callback(path, text);
+    }
+}

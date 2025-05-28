@@ -232,16 +232,29 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // ================ Data Storage for wxDataViewCtrl ================
     this->treeStore = new std::remove_reference_t<decltype(*treeStore)>;
 
+    using std::get;
+
     for ( auto &e : g_map_papers )
     {
         auto &papernum = e.first;
         auto &set_revs = e.second;
 
-        wxDataViewItem const item_papernum = treeStore->AppendItemWithColumns( {}, { PaperString(papernum), "Title", "Author" } );
+        std::tuple<unsigned, char const*, char const* > const &last_rev = e.second.back();
 
-        for ( unsigned const rev : set_revs )
+        wxDataViewItem const item_papernum =
+          treeStore->AppendItemWithColumns(
+            {},
+            { PaperString(papernum), get<1u>(last_rev), get<2u>(last_rev) }
+          );
+
+        for ( auto const &rev : set_revs )
         {
-            wxDataViewItem const item_rev = treeStore->AppendItemWithColumns( item_papernum   , { "r" + wxString(std::to_string(rev)), "Title", "Author" } );
+            wxDataViewItem const item_rev =
+              treeStore->AppendItemWithColumns(
+                item_papernum,
+                { "r" + wxString(std::to_string(get<0u>(rev))), get<1u>(rev), get<2u>(rev) }
+              );
+
             (void)item_rev;
           //this->treeAllPapers->Collapse(tii_rev);
         }
