@@ -66,7 +66,7 @@ jobs:
 
     - name: Run MSBuild
       run: |
-        cd build\Win && msbuild wxModularHost.sln && cd ..\..
+        cd build\Win && msbuild main_program.sln && cd ..\..
         copy wxWidgets_MSW32\lib\vc14x_dll\*.dll build\bin\Release
 
     - uses: actions/upload-artifact@v4
