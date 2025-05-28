@@ -1,7 +1,7 @@
-wxModularApp
-============
+paperkernelc++  -  Paper Kernel C++
+===================================
 
-Cross-Platform Modular Application (Main app + plugins) example for C++/wxWidgets
+Graphical desktop program for browsing and searching through C++ papers on MS-Windows, Apple macOS and Linux, using wxWidgets for the graphical user interface.
 
 Requirements
 ------------
