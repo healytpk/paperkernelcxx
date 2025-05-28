@@ -93,46 +93,59 @@ inline char const *PaperString(unsigned const num)
 
 template<unsigned column_count>
 class wxDataViewTreeStoreWithColumns : public wxDataViewModel {
-private:
+protected:
     using ArrCols_t = std::array<wxString, column_count>;
 
     struct Node {
-        wxDataViewItem parent, last_child;
+        wxDataViewItem parent, prior_sibling, last_child;
         ArrCols_t column_values;
     };
 
+    long unsigned current_id = 0u;
     std::map< wxDataViewItem, Node > m_data;
 
 public:
+    wxDataViewTreeStoreWithColumns(void)
+    {
+        // The root node is a null wxDataViewItem
+        m_data[ wxDataViewItem{} ] = Node{ wxDataViewItem{}, wxDataViewItem{}, wxDataViewItem{}, ArrCols_t{} };
+    }
     //unsigned GetColumnCount(void) const override { return column_count; }
     //wxString GetColumnType(unsigned const column) const override { return "string"; }
     wxDataViewItem GetParent(wxDataViewItem const &item) const override
     {
         auto const it = m_data.find(item);
-        if ( m_data.end() == it ) return {};
+        assert( m_data.end() != it );
         return it->second.parent;
     }
     bool IsContainer(wxDataViewItem const &item) const override
     {
         auto const it = m_data.find(item);
-        if ( m_data.end() == it ) return {};
+        assert( m_data.end() != it );
         return it->second.last_child.IsOk();
     }
     unsigned GetChildren(wxDataViewItem const &item, wxDataViewItemArray &children) const override
     {
         unsigned counter = 0u;
-        for ( auto const &e : m_data )
+
+        auto it = m_data.find(item);
+        assert( m_data.end() != it );
+        wxDataViewItem x = it->second.last_child;
+        while ( x.IsOk() )
         {
-            if ( e.second.parent != item ) continue;
-            children.Add(e.first);
+            children.Add(x);
             ++counter;
+            it = m_data.find(x);
+            assert( m_data.end() != it );
+            x = it->second.prior_sibling;
         }
+
         return counter;
     }
     wxDataViewItem GetLastChild(wxDataViewItem const item) const
     {
         auto const it = m_data.find(item);
-        if ( m_data.end() == it ) return {};
+        assert( m_data.end() != it );
         return it->second.last_child;
     }
     void GetValue(wxVariant &value, wxDataViewItem const &item, unsigned const arg) const override
@@ -140,24 +153,30 @@ public:
         value.Clear();
         if ( arg >= column_count ) return;
         auto const it = m_data.find(item);
-        if ( m_data.end() == it ) return;
+        assert( m_data.end() != it );
         value = it->second.column_values[arg];
     }
     bool SetValue(wxVariant const &value, wxDataViewItem const &item, unsigned const arg) override
     {
         if ( arg >= column_count ) return false;
         auto const it = m_data.find(item);
-        if ( m_data.end() == it ) return false;
+        assert( m_data.end() != it );
         it->second.column_values[arg] = value.GetString();
         return true;
     }
     wxDataViewItem AppendItemWithColumns(wxDataViewItem const &parent, ArrCols_t &&columns)
     {
-        static long long unsigned current_id = 1u;
-        wxDataViewItem const dvi = (wxDataViewItem)(void*)++current_id;
+        // This is where we increment the 'current_id' so that each
+        // item in the tree has a unique ID. Note that the root node
+        // is zero (or null).
+        wxDataViewItem const dvi = (wxDataViewItem)(void*)++this->current_id;
 
-        if ( parent.IsOk() ) m_data[parent].last_child = dvi;
-        m_data[dvi] = Node{ parent, wxDataViewItem{}, std::move(columns) };
+        auto it = m_data.find(parent);  // It's okay to find the null node (i.e. the root node)
+        assert( m_data.end() != it );
+        wxDataViewItem const prior_sibling = it->second.last_child;
+        it->second.last_child = dvi;
+
+        m_data.emplace( dvi, Node{ parent, prior_sibling, wxDataViewItem{}, std::move(columns) } );
         //std::cout << " +++++++++++++++  about to add item to map\n";
         return dvi;
     }
