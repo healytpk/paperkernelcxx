@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name:  wxMSW_x86_64_MSBuild
+name:  MSWindows_x86_64_MSBuild
 
 on:
   push:
@@ -12,8 +12,8 @@ on:
     branches: [ "main" ]
 
 env:
-  BUILD_CONFIGURATION: Debug
-  BUILD_TYPE: Debug
+  BUILD_CONFIGURATION: Release
+  BUILD_TYPE: Release
 
 permissions:
   contents: read
@@ -28,8 +28,15 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
 
+    - name: Clone and bootstrap vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git
+        .\vcpkg\bootstrap-vcpkg.bat
+
     - name: Install dependencies using vcpkg
-      run: vcpkg install libarchive xapian
+      run: |
+        .\vcpkg\vcpkg.exe install libarchive:x64-windows xapian:x64-windows
+        echo "VCPKG_ROOT=${{ github.workspace }}\\vcpkg" >> $env:GITHUB_ENV
 
     - name: Install boost
       uses: MarkusJx/install-boost@v2.4.5
@@ -59,9 +66,9 @@ jobs:
     - name: Run MSBuild
       run: |
         cd build\Win && msbuild wxModularHost.sln && cd ..\..
-        copy wxWidgets_MSW64\lib\vc14x_x64_dll\*.dll build\bin\Debug
+        copy wxWidgets_MSW64\lib\vc14x_x64_dll\*.dll build\bin\Release
 
     - uses: actions/upload-artifact@v4
       with:
-        name: artifacts_wxMSW_x86_64_MSBuild
-        path: build/bin/Debug/
+        name: artifacts_MSWindows_x86_64_MSBuild
+        path: build/bin/Release/
