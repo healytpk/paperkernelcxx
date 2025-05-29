@@ -7,9 +7,11 @@ name:  MSWindows_x86_64_MSBuild
 
 on:
   push:
-    branches: [ "main" ]
+    branches: '*'
   pull_request:
-    branches: [ "main" ]
+    branches: '*'
+  workflow_dispatch:
+    branches: '*'
 
 env:
   BUILD_CONFIGURATION: Release
