@@ -171,7 +171,7 @@ public:
         // This is where we increment the 'current_id' so that each
         // item in the tree has a unique ID. Note that the root node
         // is zero (or null).
-        wxDataViewItem const dvi = reinterpret_cast<void*>(++this->current_id);
+        wxDataViewItem const dvi = wxDataViewItem( reinterpret_cast<void*>(++this->current_id) );  // constructor is 'explicit'
 
         auto it = m_data.find(parent);  // It's okay to find the null node (i.e. the root node)
         assert( m_data.end() != it );
