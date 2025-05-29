@@ -1,8 +1,12 @@
 #!/bin/sh
 
-g++ -o tree_maker -x c++ tree_maker.cpp.STANDALONE -x none \
-    -std=c++23 \
-    -static-libstdc++ -static-libgcc
+g++ -o tree_maker                            \
+    -x c++ tree_maker.cpp.STANDALONE -x none \
+    -x c++ common.cpp.STANDALONE     -x none \
+    -I /usr/include/poppler/cpp/             \
+    -std=c++23                               \
+    -static-libstdc++ -static-libgcc         \
+    -lpoppler-cpp -lgumbo -lcmark-gfm
 
 echo "Libraries needed by 'tree_maker': "
 readelf -a ./tree_maker | grep "(NEEDED)"

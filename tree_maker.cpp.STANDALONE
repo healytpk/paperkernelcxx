@@ -1,16 +1,27 @@
-#include <cstdlib>                  // EXIT_FAILURE
-#include <filesystem>                // directory_iterator, path
-#include <iostream>
+#include <cctype>
+#include <cstdlib>                    // EXIT_FAILURE
+#include <filesystem>                 // directory_iterator, path
+#include <fstream>                    // ifstream, ofstream
+#include <iostream>                   // endl
 #include <map>                        // map
 #include <regex>                      // regex, smatch
 #include <string>                     // string
 #include <set>                        // set
+#include "common.hpp"                 // ExtractTitleFromFileHTML/PDF
 
 namespace fs = std::filesystem;
 using std::string;
 
+std::ofstream logfile;
+
+struct RevInfo {
+    unsigned n;
+    string title, author;
+    constexpr bool operator<(RevInfo const &rhs) const { return this->n < rhs.n; }
+};
+
 // Define the PaperTree structure
-using PaperTree = std::map< unsigned, std::set<unsigned> >;
+using PaperTree = std::map< unsigned, std::set<RevInfo> >;
 
 string Title(void)
 {
@@ -24,8 +35,94 @@ string Author(void)
     return "Author" + std::to_string(++n);
 }
 
+void FixTitle(std::string &arg)
+{
+    // Step 1: Remove prefix "PxxxxRx: " or "PxxxxRxx: "
+    static const std::regex prefix_pattern("^P\\d{4}R\\d{1,2}: ");
+    arg = std::regex_replace(arg, prefix_pattern, "");
+
+    // Step 2: Convert all whitespace to ' ', remove other non-printables
+    std::string cleaned;
+    for ( char c : arg )
+    {
+        unsigned char uc = static_cast<unsigned char>(c);
+        if ( std::isprint(uc) )
+        {
+            cleaned += std::isspace(uc) ? ' ' : c;
+        }
+    }
+
+    // Step 3: Collapse multiple spaces into one
+    std::string collapsed;
+    bool in_space = false;
+    for ( char c : cleaned )
+    {
+        if ( c == ' ' )
+        {
+            if ( !in_space )
+            {
+                collapsed += ' ';
+                in_space = true;
+            }
+        }
+        else
+        {
+            collapsed += c;
+            in_space = false;
+        }
+    }
+
+    // Step 4: Trim leading and trailing spaces
+    size_t start = collapsed.find_first_not_of(' ');
+    size_t end = collapsed.find_last_not_of(' ');
+    std::string trimmed;
+    if ( start != std::string::npos )
+    {
+        trimmed = collapsed.substr(start, end - start + 1);
+    }
+
+    // Step 5: Escape all double quotes and remove backslashes before symbols
+    std::string final;
+    for ( size_t i = 0; i < trimmed.size(); ++i )
+    {
+        char c = trimmed[i];
+        if ( c == '"' )
+        {
+            final += "\\\"";
+        }
+        else if ( c == '\\' )
+        {
+            if ( i + 1 < trimmed.size() )
+            {
+                char next = trimmed[i + 1];
+                if ( !std::isalnum(static_cast<unsigned char>(next)) )
+                {
+                    // Skip the backslash
+                    continue;
+                }
+            }
+            final += '\\';
+        }
+        else
+        {
+            final += c;
+        }
+    }
+
+    arg = final;
+}
+
 int main(void)
 {
+    std::cerr << "Attempting to create 'log.txt' in current directory. . .\n";
+    logfile.open("log.txt");
+    if ( ! logfile )
+    {
+        std::cerr << "Failed to create file 'logfile.txt' in current directory\n";
+        return EXIT_FAILURE;
+    }
+    logfile << "First line in log file\n";
+
     // Path to the directory containing the .tokens files
     string const path = "./papers/";
 
@@ -50,8 +147,14 @@ int main(void)
         unsigned const paper_number = std::stoul(match[1].str());
         unsigned const revision_number = std::stoul(match[2].str());
 
+        string title;
+        /**/ if ( filename.contains("htm") ) title = ExtractTitleFromFileHTML(entry.path().string());
+        else if ( filename.contains("pdf") ) title = ExtractTitleFromFilePDF (entry.path().string());
+        FixTitle(title);
+        if ( title.empty() ) title = Title();
+
         // Store the revision number under the corresponding paper number
-        auto [ iterator, is_new ] =  papers[paper_number].insert(revision_number);
+        auto [ iterator, is_new ] =  papers[paper_number].insert( RevInfo{revision_number, title, Author() } );
         if ( false == is_new )
         {
             std::cout << " -- DUPLICATE PAPER NUMBER --\n";
@@ -74,7 +177,7 @@ int main(void)
         auto rev_it = entry.second.begin();
         for ( auto const &e : entry.second )
         {
-            std::cout << "{ " << e << "u, \"" << Title() << "\", \"" << Author() << "\" }, ";
+            std::cout << "{ " << e.n << "u, \"" << e.title << "\", \"" << e.author << "\" }, ";
         }
 
         std::cout << "} },\n";
