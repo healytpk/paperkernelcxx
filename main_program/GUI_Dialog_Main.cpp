@@ -241,18 +241,24 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 
         std::tuple<unsigned, char const*, char const* > const &last_rev = e.second.back();
 
+        char const *const  title_of_last_revision = get<1u>(last_rev),
+                   *const author_of_last_revision = get<2u>(last_rev);
+
         wxDataViewItem const item_papernum =
           treeStore->AppendItemWithColumns(
             {},
-            { PaperString(papernum), get<1u>(last_rev), get<2u>(last_rev) }
+            { PaperString(papernum), title_of_last_revision, author_of_last_revision }
           );
 
         for ( auto const &rev : set_revs )
         {
+            char const *const  title = (0 == strcmp(get<1u>(rev),  title_of_last_revision)) ? "^ ^ ^" : get<1u>(rev),
+                       *const author = (0 == strcmp(get<2u>(rev), author_of_last_revision)) ? "^ ^ ^" : get<2u>(rev);
+
             wxDataViewItem const item_rev =
               treeStore->AppendItemWithColumns(
                 item_papernum,
-                { "r" + wxString(std::to_string(get<0u>(rev))), get<1u>(rev), get<2u>(rev) }
+                { "r" + wxString(std::to_string(get<0u>(rev))), title, author }
               );
 
             (void)item_rev;
@@ -267,7 +273,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     assert( nullptr != this->treeAllPapers );
     this->bSizerForPaperTree->Add( this->treeAllPapers, 1, wxALL|wxEXPAND, 5 );
     wxDataViewColumn *const pcol = this->treeAllPapers->AppendTextColumn("Paper" , 0);
-    this->treeAllPapers->AppendTextColumn("Title" , 1);
+    this->treeAllPapers->AppendTextColumn("Title" , 1, wxDATAVIEW_CELL_INERT, 200);
     this->treeAllPapers->AppendTextColumn("Author", 2);
     this->treeAllPapers->SetExpanderColumn(pcol);
     this->treeAllPapers->AssociateModel(treeStore);
