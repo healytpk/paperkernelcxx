@@ -10,5 +10,5 @@ if exist "..\all_cxx_papers.tar.zst" (
 rmdir /S /Q Win
 mkdir Win
 cd Win
-cmake ../ -DCMAKE_BUILD_TYPE:STRING=Debug -G "Visual Studio 17 2022" -A Win32 --config Debug -DCMAKE_TOOLCHAIN_FILE=../../vcpkg/scripts/buildsystems/vcpkg.cmake
+cmake ../ -DCMAKE_BUILD_TYPE:STRING=Release -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE=../../vcpkg/scripts/buildsystems/vcpkg.cmake
 cd ..

@@ -62,13 +62,13 @@ jobs:
         cd ..
 
     - name: Execute CMake
-      run: cd build && cmd /c "set WXWIN=%cd%\..\wxWidgets_MSW64 && cm64.bat" && cd ..
+      run: cd build && cmd /c "set WXWIN=%cd%\..\wxWidgets_MSW64 && cmMSWindows_x86_64.bat" && cd ..
       env:
           BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
     - name: Run MSBuild
       run: |
-        cd build\Win && msbuild paperkernelcxx.sln /p:Configuration=Release /m && cd ..\..
+        cd build\Win && msbuild paperkernelcxx.sln /p:Configuration=Release /p:Platform=x64 /m && cd ..\..
         copy wxWidgets_MSW64\lib\vc14x_x64_dll\*.dll build\bin\Release
 
     - uses: actions/upload-artifact@v4
