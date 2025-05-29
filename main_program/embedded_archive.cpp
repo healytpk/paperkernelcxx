@@ -1,5 +1,6 @@
 #include "embedded_archive.hpp"
 #include <cassert>                             // assert
+#include <cstdlib>                             // abort
 #include <cstring>                             // strcmp
 #include <stdexcept>                           // runtime_error
 #include <string>                              // string
@@ -11,7 +12,28 @@
 #include <iostream>          // ----------- remove THIS -----------------------------------------------------------
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-    INCBIN(_archive, "all_cxx_papers.tar.zst");
+
+#include <cstddef>          // size_t
+#include <Windows.h>        // GetModuleHandle, FindResource
+#include "resource.h"       // IDR_PAPERKERNELCXX_EMBEDDED_ARCHIVE
+
+char unsigned const *g_archiveData = nullptr;
+std::size_t g_archiveSize = 0u;
+
+static void LoadEmbeddedArchiveFromExectuableResources(void) noexcept
+{
+    HMODULE const hModule = GetModuleHandle(nullptr);
+
+    HRSRC const hResInfo = FindResource(hModule, MAKEINTRESOURCE(IDR_PAPERKERNELCXX_EMBEDDED_ARCHIVE), RT_RCDATA);
+    if ( !hResInfo ) return;
+
+    HGLOBAL const hResData = LoadResource(hModule, hResInfo);
+    if ( !hResData ) return;
+
+    g_archiveSize = SizeofResource(hModule, hResInfo);
+    g_archiveData = static_cast<char unsigned const*>( LockResource(hResData) );
+}
+
 #elif __APPLE__
     INCBIN(_archive, "../../all_cxx_papers.tar.zst");
 #else
@@ -22,6 +44,13 @@ using std::runtime_error, std::string;
 
 string ArchiveGetFile(char const *const arg_filename) noexcept
 {
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    static int const n = ( LoadEmbeddedArchiveFromExectuableResources(), 666 );
+    assert(      0u != g_archiveSize );
+    assert( nullptr != g_archiveData );
+    if ( 0u == g_archiveSize ) std::abort();    // if NDEBUG
+#endif
+
     assert( nullptr != arg_filename );
 
     try

@@ -7,7 +7,7 @@ set(SRCS
 	paperman.cpp
 	papertree.cpp
 	semantic.cpp
-    view_portal.cpp)
+	view_portal.cpp)
 set(HEADERS
 	ai.hpp
 	AUTO_GENERATED_wxformbuilder.h
@@ -22,7 +22,8 @@ set(HEADERS
 	paper_tree_contents.hpp
 	papertree.hpp
 	semantic.hpp
-    view_portal.hpp)
+	view_portal.hpp
+	resource.h)
 
 if(WIN32)
 	set(SRCS ${SRCS} main_program.rc)

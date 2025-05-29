@@ -1,1 +1,3 @@
 #include "wx/msw/wx.rc"
+#include "resource.h"
+IDR_PAPERKERNELCXX_EMBEDDED_ARCHIVE RCDATA "..\\all_cxx_papers.tar.zst"
