@@ -1,6 +1,7 @@
 #include "GUI_Dialog_Main.hpp"
 #include <cassert>                                   // assert
 #include <cstddef>                                   // size_t
+#include <cstdint>                                   // uintptr_t
 #include <cstring>                                   // strcmp, strstr
 #include <string>                                    // string
 #include <vector>                                    // vector
@@ -101,7 +102,7 @@ protected:
         ArrCols_t column_values;
     };
 
-    long unsigned current_id = 0u;
+    std::uintptr_t current_id = 0u;
     std::map< wxDataViewItem, Node > m_data;
 
 public:
@@ -170,7 +171,7 @@ public:
         // This is where we increment the 'current_id' so that each
         // item in the tree has a unique ID. Note that the root node
         // is zero (or null).
-        wxDataViewItem const dvi = (wxDataViewItem)(void*)++this->current_id;
+        wxDataViewItem const dvi = reinterpret_cast<void*>(++this->current_id);
 
         auto it = m_data.find(parent);  // It's okay to find the null node (i.e. the root node)
         assert( m_data.end() != it );
