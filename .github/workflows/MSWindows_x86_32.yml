@@ -55,10 +55,10 @@ jobs:
       run: |
         mkdir wxWidgets_MSW32 | Out-Null
         cd wxWidgets_MSW32
-        curl -OL https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.5/wxWidgets-3.2.5-headers.7z
-        curl -OL https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.5/wxMSW-3.2.5_vc14x_Dev.7z
-        7z x wxWidgets-3.2.5-headers.7z
-        7z x wxMSW-3.2.5_vc14x_Dev.7z
+        curl -OL https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.8/wxWidgets-3.2.8-headers.7z
+        curl -OL https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.8/wxMSW-3.2.8_vc14x_ReleaseDLL.7z
+        7z x wxWidgets-3.2.8-headers.7z
+        7z x wxMSW-3.2.8_vc14x_ReleaseDLL.7z
         cd ..
 
     - name: Execute CMake
