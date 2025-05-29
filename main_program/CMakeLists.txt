@@ -81,6 +81,10 @@ if(APPLE)
 endif(APPLE)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	find_package(archive REQUIRED)
+	target_include_directories(main_program PRIVATE ${archive_INCLUDE_DIRS})
+	target_link_libraries(main_program archive)
+
 	target_include_directories(main_program PRIVATE ../build/xapian/build_debug/include/)
 	target_link_directories(main_program PRIVATE ../build/xapian/build_debug/.libs/)
 	target_link_libraries(main_program libxapian.a)
