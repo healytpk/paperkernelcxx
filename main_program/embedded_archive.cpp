@@ -11,7 +11,7 @@
 #include <iostream>          // ----------- remove THIS -----------------------------------------------------------
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-    INCBIN(_archive, "../all_cxx_papers.tar.zst");
+    INCBIN(_archive, "all_cxx_papers.tar.zst");
 #elif __APPLE__
     INCBIN(_archive, "../../all_cxx_papers.tar.zst");
 #else
