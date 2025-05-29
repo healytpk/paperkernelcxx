@@ -46,6 +46,8 @@ jobs:
       run: |
         cd build/LinuxDebug && make && cd ../..
         cp --preserve=links /usr/lib/x86_64-linux-gnu/libwx*.so* build/bin/Debug/
+        cp --preserve=links /usr/lib/x86_64-linux-gnu/libarchive.so* build/bin/Debug/
+        cp --preserve=links /usr/lib/x86_64-linux-gnu/libxapian.so* build/bin/Debug/
 
     - uses: actions/upload-artifact@v4
       with:

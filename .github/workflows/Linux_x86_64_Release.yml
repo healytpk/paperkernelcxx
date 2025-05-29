@@ -46,6 +46,8 @@ jobs:
       run: |
         cd build/LinuxRelease && make && cd ../..
         cp --preserve=links /usr/lib/x86_64-linux-gnu/libwx*.so* build/bin/Release/
+        cp --preserve=links /usr/lib/x86_64-linux-gnu/libarchive.so* build/bin/Release/
+        cp --preserve=links /usr/lib/x86_64-linux-gnu/libxapian.so* build/bin/Release/
 
     - uses: actions/upload-artifact@v4
       with:
