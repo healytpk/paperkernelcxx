@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22.0)
 cmake_policy(SET CMP0026 OLD)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
+#set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")   ---  Doesn't work --- link unresolved basic_streambuf
 
 if(LINUX)
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
