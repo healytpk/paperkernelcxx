@@ -4,7 +4,7 @@ if exist "..\all_cxx_papers.tar.zst" (
     echo Compressed tar archive of all C++ papers already exists
 ) else (
     echo Downloading compressed tar archive of all C++ papers from virjacode.com
-    curl -o "..\all_cxx_papers.tar.zst" http://virjacode.com/downloads/all_cxx_papers.tar.zst
+    curl -o ../all_cxx_papers.tar.zst http://www.virjacode.com/downloads/all_cxx_papers.tar.zst
 )
 
 rmdir /S /Q Win
