@@ -37,6 +37,14 @@ set(LIBS ${wxWidgets_LIBRARIES})
 
 set(EXECUTABLE_NAME main_program)
 
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+if(APPLE)
+    set(CMAKE_INSTALL_RPATH "@loader_path")
+elseif(LINUX)
+    set(CMAKE_INSTALL_RPATH "$ORIGIN")
+endif()
+
 add_definitions(${PREPROCESSOR_DEFINITIONS})
 include_directories(${INCLUDE_DIRECTORIES} ${BASE_INCLUDE_DIRECTORIES})
 link_directories(${LINK_DIRECTORIES})
