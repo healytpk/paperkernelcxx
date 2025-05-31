@@ -3,6 +3,8 @@
 #include <cstddef>                                   // size_t
 #include <cstdint>                                   // uintptr_t
 #include <cstring>                                   // strcmp, strstr
+#include <array>                                     // array
+#include <map>                                       // map
 #include <string>                                    // string
 #include <vector>                                    // vector
 #include <thread>                                    // jthread
@@ -88,10 +90,6 @@ inline char const *PaperString(unsigned const num)
     return s;
 }
 
-#include <cstddef>
-#include <array>
-#include <map>
-
 template<unsigned column_count>
 class wxDataViewTreeStoreWithColumns : public wxDataViewModel {
 protected:
@@ -109,10 +107,8 @@ public:
     wxDataViewTreeStoreWithColumns(void)
     {
         // The root node is a null wxDataViewItem
-        m_data[ wxDataViewItem{} ] = Node{ wxDataViewItem{}, wxDataViewItem{}, wxDataViewItem{}, ArrCols_t{} };
+        m_data.emplace( wxDataViewItem{}, Node{ wxDataViewItem{}, wxDataViewItem{}, wxDataViewItem{}, ArrCols_t{} } );
     }
-    //unsigned GetColumnCount(void) const override { return column_count; }
-    //wxString GetColumnType(unsigned const column) const override { return "string"; }
     bool HasContainerColumns(wxDataViewItem const &) const override { return true; }
     wxDataViewItem GetParent(wxDataViewItem const &item) const override
     {
@@ -213,34 +209,33 @@ void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
 
     if ( html.empty() )
     {
-        html = "<html><body><h1>Hello, wxHtmlWindow!</h1>"
+        html = "<html><body><h1>Hello!</h1>"
                "<p>This is an example of loading HTML using SetPage().</p></body></html>";
     }
 
     assert( nullptr != this->view_portal );
-    SetViewPortal( this->view_portal, html );
+    ::SetViewPortal( this->view_portal, html );
 }
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
     // ====================== View Portal ==============================
-    this->view_portal = CreateViewPortal(this->panelBrowse);
+    this->view_portal = ::CreateViewPortal(this->panelBrowse);
     assert( nullptr != this->view_portal );
     this->bSizerForViewPortal->Add( this->view_portal, 1, wxALL|wxEXPAND, 5 );
-    this->Layout();
     // =================================================================
 
     // ================ Data Storage for wxDataViewCtrl ================
     this->treeStore = new std::remove_reference_t<decltype(*treeStore)>;
 
-    using std::get;
-
-    for ( auto &e : g_map_papers )
+    for ( auto const &e : g_map_papers )
     {
+        using std::get;
+
         auto &papernum = e.first;
         auto &set_revs = e.second;
 
-        std::tuple<unsigned, char const*, char const* > const &last_rev = e.second.back();
+        std::tuple< unsigned, char const*, char const* > const &last_rev = e.second.back();
 
         char const *const  title_of_last_revision = get<1u>(last_rev),
                    *const author_of_last_revision = get<2u>(last_rev);
@@ -257,7 +252,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
                        *const author = (0 == strcmp(get<2u>(rev), author_of_last_revision)) ? "^ ^ ^" : get<2u>(rev);
 
             wxDataViewItem const item_rev =
-              treeStore->AppendItemWithColumns(
+              this->treeStore->AppendItemWithColumns(
                 item_papernum,
                 { "r" + wxString(std::to_string(get<0u>(rev))), title, author }
               );
@@ -277,11 +272,12 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     this->treeAllPapers->AppendTextColumn("Title" , 1, wxDATAVIEW_CELL_INERT, 200);
     this->treeAllPapers->AppendTextColumn("Author", 2);
     this->treeAllPapers->SetExpanderColumn(pcol);
-    this->treeAllPapers->AssociateModel(treeStore);
-    this->Layout();
-    this->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &Dialog_Main::PaperTree_OnSelChanged, this);
+    this->treeAllPapers->AssociateModel(this->treeStore);
+    this->treeAllPapers->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &Dialog_Main::PaperTree_OnSelChanged, this);
     // =================================================================
 
+    this->panelBrowse->Layout();
+    this->Layout();
 }
 
 void Dialog_Main::OnClose(wxCloseEvent&)
