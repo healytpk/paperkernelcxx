@@ -19,17 +19,25 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	m_notebook1 = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	panelBrowse = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer8;
-	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
+	bSizer8 = new wxBoxSizer( wxVERTICAL );
 
-	bSizerForPaperTree = new wxBoxSizer( wxVERTICAL );
+	bSizerForPanelBrowse = new wxBoxSizer( wxHORIZONTAL );
+
+	panelBrowse_panelLineBrowseDivider = new wxPanel( panelBrowse, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer11;
+	bSizer11 = new wxBoxSizer( wxHORIZONTAL );
+
+	lineBrowseDivider = new wxStaticLine( panelBrowse_panelLineBrowseDivider, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
+	bSizer11->Add( lineBrowseDivider, 0, wxALL|wxEXPAND, 10 );
 
 
-	bSizer8->Add( bSizerForPaperTree, 1, wxEXPAND, 5 );
+	panelBrowse_panelLineBrowseDivider->SetSizer( bSizer11 );
+	panelBrowse_panelLineBrowseDivider->Layout();
+	bSizer11->Fit( panelBrowse_panelLineBrowseDivider );
+	bSizerForPanelBrowse->Add( panelBrowse_panelLineBrowseDivider, 0, wxALL|wxEXPAND, 5 );
 
-	bSizerForViewPortal = new wxBoxSizer( wxVERTICAL );
 
-
-	bSizer8->Add( bSizerForViewPortal, 1, wxEXPAND, 5 );
+	bSizer8->Add( bSizerForPanelBrowse, 1, wxEXPAND, 5 );
 
 
 	panelBrowse->SetSizer( bSizer8 );
@@ -152,6 +160,11 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 
 	// Connect Events
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( Dialog_Main__Auto_Base_Class::OnClose ) );
+	panelBrowse_panelLineBrowseDivider->Connect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( Dialog_Main__Auto_Base_Class::lineBrowseDivider_OnEnterWindow ), NULL, this );
+	panelBrowse_panelLineBrowseDivider->Connect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( Dialog_Main__Auto_Base_Class::lineBrowseDivider_OnLeaveWindow ), NULL, this );
+	panelBrowse_panelLineBrowseDivider->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( Dialog_Main__Auto_Base_Class::lineBrowseDivider_OnLeftDown ), NULL, this );
+	panelBrowse_panelLineBrowseDivider->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( Dialog_Main__Auto_Base_Class::lineBrowseDivider_OnLeftUp ), NULL, this );
+	panelBrowse_panelLineBrowseDivider->Connect( wxEVT_MOTION, wxMouseEventHandler( Dialog_Main__Auto_Base_Class::lineBrowseDivider_OnMotion ), NULL, this );
 	btnXapianLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianLoadPapers_OnButtonClick ), NULL, this );
 	btnLoadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnLoadModel_OnButtonClick ), NULL, this );
 	btnUnloadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnUnloadModel_OnButtonClick ), NULL, this );

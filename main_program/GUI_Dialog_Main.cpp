@@ -18,6 +18,7 @@
 #include "papertree.hpp"
 #include "semantic.hpp"
 #include "view_portal.hpp"
+#include "Auto.h"
 
 using std::string;
 
@@ -219,12 +220,6 @@ void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
-    // ====================== View Portal ==============================
-    this->view_portal = ::CreateViewPortal(this->panelBrowse);
-    assert( nullptr != this->view_portal );
-    this->bSizerForViewPortal->Add( this->view_portal, 1, wxALL|wxEXPAND, 5 );
-    // =================================================================
-
     // ================ Data Storage for wxDataViewCtrl ================
     this->treeStore = new std::remove_reference_t<decltype(*treeStore)>;
 
@@ -265,15 +260,22 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     }
 
     // ================ Create the wxDataViewCtrl widget ===============
-    this->treeAllPapers = new std::remove_reference_t<decltype(*this->treeAllPapers)>(this->panelBrowse, wxID_ANY);
+    this->treeAllPapers = new std::remove_reference_t<decltype(*this->treeAllPapers)>(
+        this->panelBrowse, wxID_ANY, wxDefaultPosition, wxSize(150, -1) );
     assert( nullptr != this->treeAllPapers );
-    this->bSizerForPaperTree->Add( this->treeAllPapers, 1, wxALL|wxEXPAND, 5 );
+    this->bSizerForPanelBrowse->Insert( 0uz, this->treeAllPapers, 0, wxALL|wxEXPAND, 5 );
     wxDataViewColumn *const pcol = this->treeAllPapers->AppendTextColumn("Paper" , 0);
     this->treeAllPapers->AppendTextColumn("Title" , 1, wxDATAVIEW_CELL_INERT, 200);
     this->treeAllPapers->AppendTextColumn("Author", 2);
     this->treeAllPapers->SetExpanderColumn(pcol);
     this->treeAllPapers->AssociateModel(this->treeStore);
     this->treeAllPapers->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &Dialog_Main::PaperTree_OnSelChanged, this);
+    // =================================================================
+
+    // ====================== View Portal ==============================
+    this->view_portal = ::CreateViewPortal(this->panelBrowse);
+    assert( nullptr != this->view_portal );
+    this->bSizerForPanelBrowse->Add( this->view_portal, 1, wxALL|wxEXPAND, 5 );
     // =================================================================
 
     this->panelBrowse->Layout();
@@ -423,3 +425,67 @@ wxString Dialog_Main::GetPaperTreeItemLastChildText(wxDataViewItem const selecte
     wxDataViewItem const lastChild = this->treeStore->GetLastChild(selected_item);
     return this->GetPaperTreeItemText(lastChild);
 }
+
+void Dialog_Main::lineBrowseDivider_OnMotion(wxMouseEvent &event)
+{
+/*
+    std::cout << "lineBrowseDivider_OnMotion\n";
+    this->lineBrowseDivider->SetCursor(wxCURSOR_SIZEWE); // Horizontal resize cursor
+    if ( false == this->m_isResizing ) return;
+    std::cout << "--------------------- stretching ------------------------\n";
+*/
+}
+
+void Dialog_Main::lineBrowseDivider_OnLeftDown(wxMouseEvent &event)
+{
+    std::cout << "lineBrowseDivider_OnLeftDown\n";
+    assert(   false == this->m_isResizing     );
+    assert( INT_MAX == this->m_dragStartPoint );
+    this->m_isResizing = true;
+    this->m_dragStartPoint = event.GetPosition().x;
+}
+
+void Dialog_Main::lineBrowseDivider_OnLeftUp(wxMouseEvent &event)
+{
+    std::cout << "lineBrowseDivider_OnLeftUp\n";
+    if ( false == m_isResizing ) return;
+    this->m_isResizing     = false;
+    Auto(this->m_dragStartPoint = INT_MAX);
+    std::cout << " --------- About to Resize -----------\n";
+    int const delta = event.GetPosition().x - this->m_dragStartPoint;  // might be negative
+    std::cout << "delta = " << delta << std::endl;
+    if ( delta < INT_MIN/2 || delta > INT_MAX/2 ) return;
+    int const current_width = this->treeAllPapers->GetSize().x;
+    std::cout << "current width = " << current_width << std::endl;
+    if ( current_width < INT_MIN/2 || current_width > INT_MAX/2 ) return;
+    int const new_width = current_width + delta;
+    std::cout << "new width = " << new_width << std::endl;
+    this->treeAllPapers->SetSize(new_width, -1);
+    wxSize  const sV = this->view_portal->GetSize();
+    wxPoint const pV = this->view_portal->GetPosition();
+    this->view_portal->SetPosition( wxPoint(pV.x + delta, pV.y) );
+    this->view_portal->SetSize( sV.x - delta, sV.y );
+    wxPoint const sL = this->panelBrowse_panelLineBrowseDivider->GetPosition();
+    this->panelBrowse_panelLineBrowseDivider->SetPosition( wxPoint(sL.x + delta, sL.y) );
+    this->InvalidateBestSize();
+    //this->SendSizeEvent();
+    //this->bSizerForPanelBrowse->Layout();
+    //this->panelBrowse->Layout();
+}
+
+void Dialog_Main::lineBrowseDivider_OnLeaveWindow(wxMouseEvent &event)
+{
+    std::cout << "lineBrowseDivider_OnLeaveWindow\n";
+/*
+    if ( m_isResizing ) return;
+    this->lineBrowseDivider->GetParent()->SetCursor(wxCURSOR_ARROW); // Reset cursor when mouse leaves
+*/
+}
+
+void Dialog_Main::lineBrowseDivider_OnEnterWindow(wxMouseEvent &event)
+{
+    std::cout << "lineBrowseDivider_OnEnterWindow\n";
+    if ( m_isResizing ) return;
+    this->lineBrowseDivider->GetParent()->SetCursor(wxCURSOR_SIZEWE); // Reset cursor when mouse leaves
+}
+
