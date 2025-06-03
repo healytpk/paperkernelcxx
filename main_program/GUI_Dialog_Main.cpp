@@ -263,7 +263,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     this->treeAllPapers = new std::remove_reference_t<decltype(*this->treeAllPapers)>(
         this->panelBrowse, wxID_ANY, wxDefaultPosition, wxSize(150, -1) );
     assert( nullptr != this->treeAllPapers );
-    this->bSizerForPanelBrowse->Insert( 0uz, this->treeAllPapers, 0, wxALL|wxEXPAND, 5 );
+    this->bSizerForPanelBrowse->Insert( 0u, this->treeAllPapers, 0, wxALL|wxEXPAND, 5 );
     wxDataViewColumn *const pcol = this->treeAllPapers->AppendTextColumn("Paper" , 0);
     this->treeAllPapers->AppendTextColumn("Title" , 1, wxDATAVIEW_CELL_INERT, 200);
     this->treeAllPapers->AppendTextColumn("Author", 2);
