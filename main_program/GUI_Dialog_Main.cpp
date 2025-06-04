@@ -40,22 +40,22 @@ public:
         return true;
     }
 
-	int OnExit(void) override
-	{
-		return 0;
-	}
+    int OnExit(void) override
+    {
+        return 0;
+    }
 
-	void RecreateGUI(void)
-	{
-		//wxMessageBox( wxT("Recreating GUI") );
+    void RecreateGUI(void)
+    {
+        //wxMessageBox( wxT("Recreating GUI") );
 
-		wxWindow *const topwindow = this->GetTopWindow();
+        wxWindow *const topwindow = this->GetTopWindow();
 
-		if ( topwindow )
-		{
-			this->SetTopWindow(nullptr);
-			topwindow->Destroy();
-		}
+        if ( topwindow )
+        {
+            this->SetTopWindow(nullptr);
+            topwindow->Destroy();
+        }
 
         g_p_dlgmain = new Dialog_Main(nullptr);
 
@@ -72,7 +72,7 @@ public:
             }
         }
 #endif
-	}
+    }
 };
 
 //DECLARE_APP(App_CxxPapers);  -  Not needed

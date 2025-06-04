@@ -27,7 +27,7 @@ protected:
     void OnTool_ShowPaperTree(wxCommandEvent&) override;
     void OnTool_ShowViewPortal(wxCommandEvent&) override;
 public:
-	Dialog_Main(wxWindow *parent);
+    Dialog_Main(wxWindow *parent);
 };
 
 extern Dialog_Main *g_p_dlgmain;

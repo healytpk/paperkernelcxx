@@ -109,7 +109,7 @@ public:
         this->m_txt_under  ->SetLabel(arg_txt_under);
     }
 
-	void OnClick_Cancel(wxCommandEvent&) override
+    void OnClick_Cancel(wxCommandEvent&) override
     {
         member_stop_source.request_stop();
 
