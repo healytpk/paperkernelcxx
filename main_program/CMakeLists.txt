@@ -1,6 +1,6 @@
 set(SRCS
-	ai.cpp
 	AUTO_GENERATED_wxformbuilder.cpp
+	ai.cpp
 	embedded_archive.cpp
 	GUI_Dialog_Main.cpp
 	paper.cpp
@@ -8,11 +8,11 @@ set(SRCS
 	papertree.cpp
 	semantic.cpp
 	view_portal.cpp)
+
 set(HEADERS
-	ai.hpp
 	AUTO_GENERATED_wxformbuilder.h
 	Auto.h
-	common.hpp
+	ai.hpp
 	embedded_archive.hpp
 	GUI_Dialog_Main.hpp
 	GUI_Dialog_Waiting.hpp
@@ -21,9 +21,9 @@ set(HEADERS
 	paperman.hpp
 	paper_tree_contents.hpp
 	papertree.hpp
+	resource.h
 	semantic.hpp
-	view_portal.hpp
-	resource.h)
+	view_portal.hpp)
 
 if(WIN32)
 	set(SRCS ${SRCS} main_program.rc)
