@@ -7,6 +7,9 @@
 
 #include "AUTO_GENERATED_wxformbuilder.h"
 
+#include "../pictures/circle.xpm"
+#include "../pictures/triangle.xpm"
+
 ///////////////////////////////////////////////////////////////////////////
 
 Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -15,6 +18,21 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer111;
+	bSizer111 = new wxBoxSizer( wxVERTICAL );
+
+	m_toolBar1 = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL );
+	toolShowPaperTree = m_toolBar1->AddTool( wxID_ANY, _("Show List of Papers"), wxBitmap( circle_xpm ), wxNullBitmap, wxITEM_CHECK, _("Show List of Papers"), wxEmptyString, NULL );
+
+	toolShowViewPortal = m_toolBar1->AddTool( wxID_ANY, _("Show Paper"), wxBitmap( triangle_xpm ), wxNullBitmap, wxITEM_CHECK, _("Show Paper"), wxEmptyString, NULL );
+
+	m_toolBar1->Realize();
+
+	bSizer111->Add( m_toolBar1, 0, wxEXPAND, 5 );
+
+
+	bSizer1->Add( bSizer111, 1, wxEXPAND, 5 );
 
 	m_notebook1 = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	panelBrowse = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
@@ -147,6 +165,8 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 
 	// Connect Events
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( Dialog_Main__Auto_Base_Class::OnClose ) );
+	this->Connect( toolShowPaperTree->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowPaperTree ) );
+	this->Connect( toolShowViewPortal->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowViewPortal ) );
 	btnXapianLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianLoadPapers_OnButtonClick ), NULL, this );
 	btnLoadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnLoadModel_OnButtonClick ), NULL, this );
 	btnUnloadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnUnloadModel_OnButtonClick ), NULL, this );

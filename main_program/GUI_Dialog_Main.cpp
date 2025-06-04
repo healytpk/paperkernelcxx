@@ -11,7 +11,6 @@
 #include <wx/app.h>                                  // wxApp
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include <wx/dataview.h>                             // wxDataViewCtrl
-#include <wx/splitter.h>                             // wxSplitterWindow
 #include "GUI_Dialog_Waiting.hpp"
 #include "ai.hpp"
 #include "embedded_archive.hpp"
@@ -221,6 +220,9 @@ void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
+    this->m_toolBar1->ToggleTool(this->toolShowPaperTree ->GetId(), true);
+    this->m_toolBar1->ToggleTool(this->toolShowViewPortal->GetId(), true);
+
     // ================ Data Storage for wxDataViewCtrl ================
     this->treeStore = new std::remove_reference_t<decltype(*treeStore)>;
 
@@ -260,11 +262,11 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
         //this->treeAllPapers->Expand(item_papernum);
     }
 
-    wxSplitterWindow *const splitter = new wxSplitterWindow(this->panelBrowse, wxID_ANY);
-    assert( nullptr != splitter );
+    this->splitter = new wxSplitterWindow(this->panelBrowse, wxID_ANY);
+    assert( nullptr != this->splitter );
 
     // ================ Create the wxDataViewCtrl widget ===============
-    this->treeAllPapers = new std::remove_reference_t<decltype(*this->treeAllPapers)>(splitter, wxID_ANY);
+    this->treeAllPapers = new std::remove_reference_t<decltype(*this->treeAllPapers)>(this->splitter, wxID_ANY);
     assert( nullptr != this->treeAllPapers );
     wxDataViewColumn *const pcol = this->treeAllPapers->AppendTextColumn("Paper" , 0);
     this->treeAllPapers->AppendTextColumn("Title" , 1, wxDATAVIEW_CELL_INERT, 200);
@@ -275,12 +277,12 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // =================================================================
 
     // ====================== View Portal ==============================
-    this->view_portal = ::CreateViewPortal(splitter);
+    this->view_portal = ::CreateViewPortal(this->splitter);
     assert( nullptr != this->view_portal );
     // =================================================================
 
-    this->bSizerForPanelBrowse->Add(splitter, 1, wxEXPAND, 0);
-    splitter->SplitVertically( this->treeAllPapers, this->view_portal, FromDIP(250) );
+    this->bSizerForPanelBrowse->Add(this->splitter, 1, wxEXPAND, 0);
+    this->splitter->SplitVertically( this->treeAllPapers, this->view_portal, FromDIP(250) );
     this->panelBrowse->Layout();
     this->Layout();
 }
@@ -427,4 +429,50 @@ wxString Dialog_Main::GetPaperTreeItemLastChildText(wxDataViewItem const selecte
 {
     wxDataViewItem const lastChild = this->treeStore->GetLastChild(selected_item);
     return this->GetPaperTreeItemText(lastChild);
+}
+
+void Dialog_Main::OnTool_Common(int const this_tool, int const other_tool, wxWindow *const this_window, wxWindow *const other_window)
+{
+    bool const show = this->m_toolBar1->GetToolState(this_tool);
+    if ( show )
+    {
+        this_window->Show();
+        this->splitter->SplitVertically( this->treeAllPapers, this->view_portal, FromDIP(250) );
+    }
+    else
+    {
+        bool const other_is_shown = this->m_toolBar1->GetToolState(other_tool);
+        if ( other_is_shown )
+        {
+            this_window->Hide();
+            this->splitter->Unsplit(this_window);
+        }
+        else
+        {
+            this->m_toolBar1->ToggleTool( this_tool, true );
+            return;
+        }
+    }
+
+    this->splitter->Layout();
+}
+
+void Dialog_Main::OnTool_ShowPaperTree(wxCommandEvent&)
+{
+    std::cout << "OnTool_ShowPaperTree\n";
+
+    auto const this_one  = this->toolShowPaperTree ->GetId(),
+               other_one = this->toolShowViewPortal->GetId();
+
+    this->OnTool_Common( this_one, other_one, this->treeAllPapers, this->view_portal );
+}
+
+void Dialog_Main::OnTool_ShowViewPortal(wxCommandEvent&)
+{
+    std::cout << "OnTool_ShowViewPortal\n";
+
+    auto const this_one  = this->toolShowViewPortal->GetId(),
+               other_one = this->toolShowPaperTree ->GetId();
+
+    this->OnTool_Common( this_one, other_one, this->view_portal, this->treeAllPapers );
 }
