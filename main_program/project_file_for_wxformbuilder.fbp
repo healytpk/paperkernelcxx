@@ -18,7 +18,7 @@
     <property name="internationalize">1</property>
     <property name="lua_skip_events">1</property>
     <property name="lua_ui_table">UI</property>
-    <property name="name">ai-cxxpapers</property>
+    <property name="name">paperkernelcxx</property>
     <property name="path">.</property>
     <property name="php_disconnect_events">0</property>
     <property name="php_disconnect_mode">source_name</property>
