@@ -16,7 +16,7 @@
 #include <poppler-page.h>             // poppler::page
 #include "llama.h"                    // llama_* APIs
 #include "common.hpp"                 // GetPlainText_*
-#include "Auto.h"                     // The 'Auto' macro
+#include "../main_program/Auto.h"     // The 'Auto' macro
 
 constexpr char model_path[] = "./deepseek.gguf";
 

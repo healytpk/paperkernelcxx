@@ -15,7 +15,7 @@
 #include <gumbo.h>                    // GumboOutput, gumbo_parse
 #include <poppler-document.h>         // poppler::document
 #include <poppler-page.h>             // poppler::page
-#include "main_program/Auto.h"        // The 'Auto' macro
+#include "../main_program/Auto.h"     // The 'Auto' macro
 
 using std::cerr;
 using std::endl;

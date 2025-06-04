@@ -124,7 +124,7 @@ int main(void)
     logfile << "First line in log file\n";
 
     // Path to the directory containing the .tokens files
-    string const path = "./papers/";
+    string const path = "../papers/";
 
     // Regex pattern to match files in the form "PxxxxRx.*"
     std::regex const pattern(R"(p(\d+)r(\d+)\.[A-z]*)", std::regex::icase);
