@@ -21,15 +21,6 @@ protected:
     void PaperTree_OnSelChanged(wxDataViewEvent& event);
     wxString GetPaperTreeItemText(wxDataViewItem) const;
     wxString GetPaperTreeItemLastChildText(wxDataViewItem) const;
-
-    void lineBrowseDivider_OnEnterWindow(wxMouseEvent&) override;
-    void lineBrowseDivider_OnLeaveWindow(wxMouseEvent&) override;
-    void lineBrowseDivider_OnLeftDown   (wxMouseEvent&) override;
-    void lineBrowseDivider_OnLeftUp     (wxMouseEvent&) override;
-    void lineBrowseDivider_OnMotion     (wxMouseEvent&) override;
-
-    bool m_isResizing = false;
-    int m_dragStartPoint = INT_MAX;
 public:
 	Dialog_Main(wxWindow *parent);
 };

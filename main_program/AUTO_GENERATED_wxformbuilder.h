@@ -10,18 +10,18 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-#include <wx/statline.h>
+#include <wx/sizer.h>
 #include <wx/gdicmn.h>
+#include <wx/panel.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
-#include <wx/sizer.h>
-#include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/button.h>
+#include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/listctrl.h>
@@ -42,8 +42,6 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		wxNotebook* m_notebook1;
 		wxPanel* panelBrowse;
 		wxBoxSizer* bSizerForPanelBrowse;
-		wxPanel* panelBrowse_panelLineBrowseDivider;
-		wxStaticLine* lineBrowseDivider;
 		wxPanel* panelXapian;
 		wxButton* btnXapianLoadPapers;
 		wxButton* btnUnloadPapers1;
@@ -67,11 +65,6 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
-		virtual void lineBrowseDivider_OnEnterWindow( wxMouseEvent& event ) { event.Skip(); }
-		virtual void lineBrowseDivider_OnLeaveWindow( wxMouseEvent& event ) { event.Skip(); }
-		virtual void lineBrowseDivider_OnLeftDown( wxMouseEvent& event ) { event.Skip(); }
-		virtual void lineBrowseDivider_OnLeftUp( wxMouseEvent& event ) { event.Skip(); }
-		virtual void lineBrowseDivider_OnMotion( wxMouseEvent& event ) { event.Skip(); }
 		virtual void btnXapianLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnLoadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnUnloadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
