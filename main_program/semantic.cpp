@@ -4,13 +4,15 @@
 #include <filesystem>
 #include <sstream>                       // ostringstream
 #include <iostream>         //////// ======== REMOVE THIS - cout, endl
+#include <fcntl.h>                  // open, _O_RDWR
 
 #ifdef _WIN32
 #    include <Windows.h>            // CreateFileA
+#    include <io.h>                 // _open_osfhandle
 #elif __APPLE__
 #    include <mach-o/dyld.h>        // _NSGetExecutablePath
 #else
-#    include <fcntl.h>              // open
+
 #    include <unistd.h>             // readlink
 #endif
 
