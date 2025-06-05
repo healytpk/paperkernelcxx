@@ -199,8 +199,8 @@ string GetPlainText_MD(fs::path const &path)
 }
 
 extern void IterateThroughFolder(
-    std::filesystem::path where,
-    std::function<bool(std::filesystem::path, std::string_view)> const &callback )
+    std::filesystem::path const &where,
+    std::function<bool(std::filesystem::path const &, std::string_view)> const &callback )
 {
     for ( auto const &entry : fs::directory_iterator(where) )
     {

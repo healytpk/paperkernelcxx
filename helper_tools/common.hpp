@@ -22,8 +22,8 @@ extern std::string GetPlainText_HTML(std::filesystem::path const &);
 extern std::string GetPlainText_MD  (std::filesystem::path const &);
 
 extern void IterateThroughFolder(
-    std::filesystem::path where,
-    std::function<bool(std::filesystem::path, std::string_view)> const &callback );
+    std::filesystem::path const &where,
+    std::function<bool(std::filesystem::path const &, std::string_view)> const &callback );
 
 extern std::string ExtractTitleFromFileHTML(std::string const &filename);
 extern std::string ExtractTitleFromFilePDF (std::string const &filename);
