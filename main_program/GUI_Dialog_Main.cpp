@@ -438,7 +438,7 @@ wxString Dialog_Main::GetPaperTreeItemLastChildText(wxDataViewItem const selecte
     return this->GetPaperTreeItemText(lastChild);
 }
 
-void Dialog_Main::OnTool_Common(int const this_tool, int const other_tool, wxWindow *const this_window, wxWindow *const other_window)
+void Dialog_Main::OnTool_Common(int const this_tool, int const other_tool, wxWindow *const this_window)
 {
     bool const show = this->m_toolBar1->GetToolState(this_tool);
     if ( show )
@@ -471,7 +471,7 @@ void Dialog_Main::OnTool_ShowPaperTree(wxCommandEvent&)
     auto const this_one  = this->toolShowPaperTree ->GetId(),
                other_one = this->toolShowViewPortal->GetId();
 
-    this->OnTool_Common( this_one, other_one, this->treeAllPapers, this->view_portal );
+    this->OnTool_Common( this_one, other_one, this->treeAllPapers );
 }
 
 void Dialog_Main::OnTool_ShowViewPortal(wxCommandEvent&)
@@ -481,5 +481,5 @@ void Dialog_Main::OnTool_ShowViewPortal(wxCommandEvent&)
     auto const this_one  = this->toolShowViewPortal->GetId(),
                other_one = this->toolShowPaperTree ->GetId();
 
-    this->OnTool_Common( this_one, other_one, this->view_portal, this->treeAllPapers );
+    this->OnTool_Common( this_one, other_one, this->view_portal );
 }

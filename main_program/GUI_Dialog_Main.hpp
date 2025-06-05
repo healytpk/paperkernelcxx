@@ -24,7 +24,7 @@ protected:
     void PaperTree_OnSelChanged(wxDataViewEvent& event);
     wxString GetPaperTreeItemText(wxDataViewItem) const;
     wxString GetPaperTreeItemLastChildText(wxDataViewItem) const;
-    void OnTool_Common(int this_tool, int other_tool, wxWindow *this_window, wxWindow *other_window);
+    void OnTool_Common(int this_tool, int other_tool, wxWindow *this_window);
     void OnTool_ShowPaperTree(wxCommandEvent&) override;
     void OnTool_ShowViewPortal(wxCommandEvent&) override;
 public:
