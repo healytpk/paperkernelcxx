@@ -83,5 +83,5 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: artifacts_macOS_x86_64
+        name: artifacts_macOS_arm64
         path: build/bin/main_program.app/Contents/MacOS
