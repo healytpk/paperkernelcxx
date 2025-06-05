@@ -52,7 +52,7 @@ jobs:
         cd wxwidgets-3.2.8.1
         mkdir buildOSX
         cd buildOSX
-        ../configure --enable-debug
+        ../configure
         make -j$(getconf _NPROCESSORS_ONLN)
         sudo make install
         cd ../..
@@ -73,7 +73,7 @@ jobs:
       run: |
         cd build
         mkdir -p bin
-        mkdir -p bin/Debug
+        mkdir -p bin/Release
         cd Mac
         make VERBOSE=1 -j$(getconf _NPROCESSORS_ONLN)
         cd ../..
