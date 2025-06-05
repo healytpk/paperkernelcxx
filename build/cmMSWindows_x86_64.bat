@@ -4,7 +4,14 @@ if exist "..\all_cxx_papers.tar.zst" (
     echo Compressed tar archive of all C++ papers already exists
 ) else (
     echo Downloading compressed tar archive of all C++ papers from virjacode.com
-     curl -o ../all_cxx_papers.tar.zst http://www.virjacode.com/downloads/all_cxx_papers.tar.zst
+    curl -o ../all_cxx_papers.tar.zst http://www.virjacode.com/downloads/all_cxx_papers.tar.zst
+)
+
+if exist "..\database_xapian_for_all_cxx_papers" (
+    echo Xapian database for all papers already exists
+) else (
+    echo Downloading Xapian database for all papers from virjacode.com
+    curl -o ../database_xapian_for_all_cxx_papers http://www.virjacode.com/downloads/database_xapian_for_all_cxx_papers
 )
 
 rmdir /S /Q Win

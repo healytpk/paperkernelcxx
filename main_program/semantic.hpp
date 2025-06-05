@@ -8,7 +8,8 @@
 
 class SemanticSearcher {
 protected:
-    std::optional< Xapian::WritableDatabase > db;
+    int fd;
+    std::optional< Xapian::Database > db;
 
 public:
     void Init( std::function<void(unsigned,unsigned)> SetProgress ) noexcept(false);

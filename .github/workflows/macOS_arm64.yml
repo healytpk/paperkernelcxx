@@ -78,6 +78,7 @@ jobs:
         make VERBOSE=1 -j$(getconf _NPROCESSORS_ONLN)
         cd ../..
         cp wxWidgets-3.2.8.1/buildOSX/lib/*.dylib build/bin/main_program.app/Contents/MacOS
+        cp database_xapian_for_all_cxx_papers build/bin/main_program.app/Contents/MacOS
 
     - uses: actions/upload-artifact@v4
       with:

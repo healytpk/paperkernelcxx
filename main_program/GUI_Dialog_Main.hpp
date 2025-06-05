@@ -19,6 +19,7 @@ protected:
     void btnUnloadModel_OnButtonClick(wxCommandEvent&) override;
     void btnLoadPapers_OnButtonClick(wxCommandEvent&) override;
     void btnXapianLoadPapers_OnButtonClick(wxCommandEvent&) override;
+    void btnXapianUnloadPapers_OnButtonClick(wxCommandEvent&) override;
     void btnWhittleDownPapers_OnButtonClick(wxCommandEvent&) override;
     void PaperTree_OnSelChanged(wxDataViewEvent& event);
     wxString GetPaperTreeItemText(wxDataViewItem) const;

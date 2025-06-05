@@ -48,7 +48,7 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		wxBoxSizer* bSizerForPanelBrowse;
 		wxPanel* panelXapian;
 		wxButton* btnXapianLoadPapers;
-		wxButton* btnUnloadPapers1;
+		wxButton* btnXapianUnloadPapers;
 		wxPanel* panelAI;
 		wxButton* btnLoadModel;
 		wxButton* btnUnloadModel;
@@ -72,6 +72,7 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		virtual void OnTool_ShowPaperTree( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTool_ShowViewPortal( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnXapianLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void btnXapianUnloadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnLoadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnUnloadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }

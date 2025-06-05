@@ -8,7 +8,18 @@ else
     curl -o ../all_cxx_papers.tar.zst http://www.virjacode.com/downloads/all_cxx_papers.tar.zst
     if [ ! -e "../all_cxx_papers.tar.zst" ]; then
         echo "Failed to retrieve all C++ papers from the internet."
-        exit
+        exit 1
+    fi
+fi
+
+if [ -e "../database_xapian_for_all_cxx_papers" ]; then
+    echo Xapian database for all papers already exists
+else
+    echo Downloading Xapian database for all papers from virjacode.com
+    curl http://www.virjacode.com/downloads/database_xapian_for_all_cxx_papers -o ../database_xapian_for_all_cxx_papers
+    if [ ! -e "../database_xapian_for_all_cxx_papers" ]; then
+        echo "Failed to retrieve Xapian database for all papers from the internet."
+        exit 1
     fi
 fi
 

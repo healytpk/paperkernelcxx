@@ -59,10 +59,10 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	btnXapianLoadPapers = new wxButton( panelXapian, wxID_ANY, _("Load Papers"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer41->Add( btnXapianLoadPapers, 0, wxALL, 5 );
 
-	btnUnloadPapers1 = new wxButton( panelXapian, wxID_ANY, _("Unload Papers"), wxDefaultPosition, wxDefaultSize, 0 );
-	btnUnloadPapers1->Enable( false );
+	btnXapianUnloadPapers = new wxButton( panelXapian, wxID_ANY, _("Unload Papers"), wxDefaultPosition, wxDefaultSize, 0 );
+	btnXapianUnloadPapers->Enable( false );
 
-	bSizer41->Add( btnUnloadPapers1, 0, wxALL, 5 );
+	bSizer41->Add( btnXapianUnloadPapers, 0, wxALL, 5 );
 
 
 	bSizer61->Add( bSizer41, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -168,6 +168,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	this->Connect( toolShowPaperTree->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowPaperTree ) );
 	this->Connect( toolShowViewPortal->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowViewPortal ) );
 	btnXapianLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianLoadPapers_OnButtonClick ), NULL, this );
+	btnXapianUnloadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianUnloadPapers_OnButtonClick ), NULL, this );
 	btnLoadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnLoadModel_OnButtonClick ), NULL, this );
 	btnUnloadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnUnloadModel_OnButtonClick ), NULL, this );
 	btnLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnLoadPapers_OnButtonClick ), NULL, this );

@@ -12,6 +12,17 @@ else
     fi
 fi
 
+if [ -e "../database_xapian_for_all_cxx_papers" ]; then
+    echo Xapian database for all papers already exists
+else
+    echo Downloading Xapian database for all papers from virjacode.com
+    curl http://www.virjacode.com/downloads/database_xapian_for_all_cxx_papers -o ../database_xapian_for_all_cxx_papers
+    if [ ! -e "../database_xapian_for_all_cxx_papers" ]; then
+        echo "Failed to retrieve Xapian database for all papers from the internet."
+        exit 1
+    fi
+fi
+
 if [ ! -e "../xapian-core-1.4.29.tar.xz" ]; then
     echo Downloading libxapian from oligarchy.co.uk
     curl -o ../xapian-core-1.4.29.tar.xz https://oligarchy.co.uk/xapian/1.4.29/xapian-core-1.4.29.tar.xz

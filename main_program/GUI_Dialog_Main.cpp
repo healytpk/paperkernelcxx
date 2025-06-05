@@ -379,6 +379,11 @@ void Dialog_Main::btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
     this->btnUnloadPapers->Enable(   is_loaded );
 }
 
+void Dialog_Main::btnXapianUnloadPapers_OnButtonClick(wxCommandEvent&)
+{
+    wxMessageBox("I haven't coded this yet", "paperkernelcxx", wxOK|wxCENTRE, this);
+}
+
 void Dialog_Main::btnXapianLoadPapers_OnButtonClick(wxCommandEvent&)
 {
     Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, "Loading Papers. . .");
@@ -387,7 +392,7 @@ void Dialog_Main::btnXapianLoadPapers_OnButtonClick(wxCommandEvent&)
 
     std::atomic_bool is_loaded{false};
 
-    std::jthread mythread([&dlg,&is_loaded]
+    std::jthread mythread([this,&dlg,&is_loaded]
       {
           try
           {
@@ -413,8 +418,10 @@ void Dialog_Main::btnXapianLoadPapers_OnButtonClick(wxCommandEvent&)
 
     dlg.ShowModal();
 
+    if ( false == is_loaded ) wxMessageBox("Failed to load Xapian database file", "Paper Kernel C++", wxICON_ERROR|wxCENTRE, this);
+
     this->btnXapianLoadPapers  ->Enable( ! is_loaded );
-    //this->btnUnloadPapers->Enable(   is_loaded );
+    this->btnXapianUnloadPapers->Enable(   is_loaded );
 }
 
 wxString Dialog_Main::GetPaperTreeItemText(wxDataViewItem const selected_item) const
