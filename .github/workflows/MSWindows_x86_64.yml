@@ -73,6 +73,7 @@ jobs:
         cd build\Win && msbuild paperkernelcxx.sln /p:Configuration=Release /p:Platform=x64 /m && cd ..\..
         copy wxWidgets_MSW64\lib\vc14x_x64_dll\*.dll build\bin\Release
         copy database_xapian_for_all_cxx_papers build\bin\Release
+        rename build\bin\Release\main_program.exe build\bin\Release\paperkernelcxx.exe
 
     - uses: actions/upload-artifact@v4
       with:
