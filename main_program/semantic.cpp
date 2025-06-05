@@ -46,7 +46,7 @@ void SemanticSearcher::Init( std::function<void(unsigned,unsigned)> SetProgress 
 {
     SetProgress(0u, 100u);
 
-    std::string const str = GetExecutableDirectory() / "database_xapian_for_all_cxx_papers";
+    std::string const str = (GetExecutableDirectory() / "database_xapian_for_all_cxx_papers").string();
     char const *const dbfile = str.c_str();
 
 #ifdef _WIN32
