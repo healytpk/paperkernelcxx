@@ -67,6 +67,32 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 
 	bSizer61->Add( bSizer41, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 
+	wxBoxSizer* bSizer11;
+	bSizer11 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText4 = new wxStaticText( panelXapian, wxID_ANY, _("Search for:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4->Wrap( -1 );
+	bSizer11->Add( m_staticText4, 0, wxALL, 5 );
+
+	txtXapianSearchFor = new wxTextCtrl( panelXapian, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer11->Add( txtXapianSearchFor, 0, wxALL|wxEXPAND, 5 );
+
+	btnXapianSearch = new wxButton( panelXapian, wxID_ANY, _("Search"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer11->Add( btnXapianSearch, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	bSizer11->Add( 0, 0, 0, 0, 5 );
+
+	m_staticText5 = new wxStaticText( panelXapian, wxID_ANY, _("Results:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5->Wrap( -1 );
+	bSizer11->Add( m_staticText5, 0, wxALL, 5 );
+
+	listXapianResults = new wxListBox( panelXapian, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	bSizer11->Add( listXapianResults, 1, wxALL|wxEXPAND, 5 );
+
+
+	bSizer61->Add( bSizer11, 1, wxEXPAND, 5 );
+
 
 	panelXapian->SetSizer( bSizer61 );
 	panelXapian->Layout();

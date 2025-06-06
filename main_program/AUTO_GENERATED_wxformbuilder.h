@@ -22,11 +22,11 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/button.h>
-#include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/listctrl.h>
 #include <wx/listbox.h>
+#include <wx/statline.h>
+#include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/dialog.h>
 
@@ -49,6 +49,11 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		wxPanel* panelXapian;
 		wxButton* btnXapianLoadPapers;
 		wxButton* btnXapianUnloadPapers;
+		wxStaticText* m_staticText4;
+		wxTextCtrl* txtXapianSearchFor;
+		wxButton* btnXapianSearch;
+		wxStaticText* m_staticText5;
+		wxListBox* listXapianResults;
 		wxPanel* panelAI;
 		wxButton* btnLoadModel;
 		wxButton* btnUnloadModel;
