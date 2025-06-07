@@ -1,9 +1,11 @@
 #include "view_portal.hpp"
 
-#include <wx/webview.h>                     // wxWebView
-
 wxWindow *CreateViewPortal(wxWindow *const parent) noexcept(false)
 {
+#ifdef __WXMSW__
+    //return wxWebView::New(parent, wxID_ANY, wxWebViewDefaultURLStr, wxDefaultPosition, wxDefaultSize, wxWebViewBackendEdge);
+#endif
+
     return wxWebView::New(parent, wxID_ANY);
 }
 
