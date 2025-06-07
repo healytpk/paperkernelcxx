@@ -194,7 +194,7 @@ void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
 
     assert( nullptr != this->view_portal );
     this->is_viewportal_loaded = false;
-    ::SetViewPortal(this->view_portal, "<html><body><h1>Loading. . .</h1></body></html>");
+    ::ViewPortal_Set(this->view_portal, "<html><body><h1>Loading. . .</h1></body></html>");
     //do wxGetApp().SafeYield(nullptr, false); while ( false == this->is_viewportal_loaded );   -- This locks up and freezes
     this->is_viewportal_loaded = false;
     this->view_portal->Refresh();
@@ -232,7 +232,7 @@ void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
     }
 
     assert( nullptr != this->view_portal );
-    ::SetViewPortal( this->view_portal, html );
+    ::ViewPortal_Set( this->view_portal, html );
 }
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
@@ -294,7 +294,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // =================================================================
 
     // ====================== View Portal ==============================
-    this->view_portal = ::CreateViewPortal(this->splitter);
+    this->view_portal = ::ViewPortal_Create(this->splitter);
     assert( nullptr != this->view_portal );
     ::ViewPortal_BindFinishedLoading( this->view_portal, &Dialog_Main::OnViewPortalLoaded, this );
     // =================================================================

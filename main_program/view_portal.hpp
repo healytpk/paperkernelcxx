@@ -4,9 +4,9 @@
 #include <wx/window.h>                          // wxWindow
 #include <wx/webview.h>                         // wxWebView
 
-wxWindow *CreateViewPortal(wxWindow *parent) noexcept(false);
+wxWindow *ViewPortal_Create(wxWindow *parent) noexcept(false);
 
-void SetViewPortal(wxWindow*, wxString const &) noexcept(false);
+void ViewPortal_Set(wxWindow*, wxString const &) noexcept(false);
 
 template<class T>
 void ViewPortal_BindFinishedLoading( wxWindow *const pw, void (T::*const mfp)(wxEvent&), T *const pdlg ) noexcept(false)
