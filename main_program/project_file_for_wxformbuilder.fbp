@@ -163,11 +163,11 @@
             </object>
           </object>
         </object>
-        <object class="sizeritem" expanded="false">
+        <object class="sizeritem" expanded="true">
           <property name="border">5</property>
           <property name="flag">wxEXPAND | wxALL</property>
           <property name="proportion">1</property>
-          <object class="wxNotebook" expanded="false">
+          <object class="wxNotebook" expanded="true">
             <property name="BottomDockable">1</property>
             <property name="LeftDockable">1</property>
             <property name="RightDockable">1</property>
@@ -221,11 +221,11 @@
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
-            <object class="notebookpage" expanded="false">
+            <object class="notebookpage" expanded="true">
               <property name="bitmap"></property>
               <property name="label">Browse All Papers</property>
               <property name="select">1</property>
-              <object class="wxPanel" expanded="false">
+              <object class="wxPanel" expanded="true">
                 <property name="BottomDockable">1</property>
                 <property name="LeftDockable">1</property>
                 <property name="RightDockable">1</property>
@@ -296,11 +296,11 @@
                 </object>
               </object>
             </object>
-            <object class="notebookpage" expanded="false">
+            <object class="notebookpage" expanded="true">
               <property name="bitmap"></property>
               <property name="label">Xapian</property>
               <property name="select">0</property>
-              <object class="wxPanel" expanded="false">
+              <object class="wxPanel" expanded="true">
                 <property name="BottomDockable">1</property>
                 <property name="LeftDockable">1</property>
                 <property name="RightDockable">1</property>
@@ -352,16 +352,16 @@
                 <property name="window_extra_style"></property>
                 <property name="window_name"></property>
                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                <object class="wxBoxSizer" expanded="false">
+                <object class="wxBoxSizer" expanded="true">
                   <property name="minimum_size"></property>
                   <property name="name">bSizer61</property>
                   <property name="orient">wxVERTICAL</property>
                   <property name="permission">none</property>
-                  <object class="sizeritem" expanded="false">
+                  <object class="sizeritem" expanded="true">
                     <property name="border">5</property>
                     <property name="flag">wxALIGN_CENTER_HORIZONTAL</property>
                     <property name="proportion">0</property>
-                    <object class="wxBoxSizer" expanded="false">
+                    <object class="wxBoxSizer" expanded="true">
                       <property name="minimum_size"></property>
                       <property name="name">bSizer41</property>
                       <property name="orient">wxHORIZONTAL</property>
@@ -518,11 +518,11 @@
                       </object>
                     </object>
                   </object>
-                  <object class="sizeritem" expanded="false">
+                  <object class="sizeritem" expanded="true">
                     <property name="border">5</property>
                     <property name="flag">wxEXPAND</property>
                     <property name="proportion">1</property>
-                    <object class="wxBoxSizer" expanded="false">
+                    <object class="wxBoxSizer" expanded="true">
                       <property name="minimum_size"></property>
                       <property name="name">bSizer11</property>
                       <property name="orient">wxVERTICAL</property>
@@ -801,11 +801,11 @@
                           <property name="wrap">-1</property>
                         </object>
                       </object>
-                      <object class="sizeritem" expanded="false">
+                      <object class="sizeritem" expanded="true">
                         <property name="border">5</property>
                         <property name="flag">wxALL|wxEXPAND</property>
                         <property name="proportion">1</property>
-                        <object class="wxListBox" expanded="false">
+                        <object class="wxListCtrl" expanded="true">
                           <property name="BottomDockable">1</property>
                           <property name="LeftDockable">1</property>
                           <property name="RightDockable">1</property>
@@ -819,7 +819,6 @@
                           <property name="caption"></property>
                           <property name="caption_visible">1</property>
                           <property name="center_pane">0</property>
-                          <property name="choices"></property>
                           <property name="close_button">1</property>
                           <property name="context_help"></property>
                           <property name="context_menu">1</property>
@@ -852,7 +851,7 @@
                           <property name="resize">Resizable</property>
                           <property name="show">1</property>
                           <property name="size"></property>
-                          <property name="style"></property>
+                          <property name="style">wxLC_REPORT|wxLC_SINGLE_SEL</property>
                           <property name="subclass">; ; forward_declare</property>
                           <property name="toolbar_pane">0</property>
                           <property name="tooltip"></property>
@@ -863,7 +862,7 @@
                           <property name="window_extra_style"></property>
                           <property name="window_name"></property>
                           <property name="window_style"></property>
-                          <event name="OnListBoxDClick">listXapianResults_OnListBoxDClick</event>
+                          <event name="OnListItemActivated">listXapianResults_OnListItemActivated</event>
                         </object>
                       </object>
                     </object>

@@ -24,7 +24,7 @@ protected:
     void btnXapianLoadPapers_OnButtonClick(wxCommandEvent&) override;
     void btnXapianUnloadPapers_OnButtonClick(wxCommandEvent&) override;
     void btnXapianSearch_OnButtonClick(wxCommandEvent&) override;
-    void listXapianResults_OnListBoxDClick(wxCommandEvent&) override;
+    void listXapianResults_OnListItemActivated(wxListEvent&) override;
     void btnWhittleDownPapers_OnButtonClick(wxCommandEvent&) override;
     void PaperTree_OnSelChanged(wxDataViewEvent&);
     wxString GetPaperTreeItemText(wxDataViewItem) const;

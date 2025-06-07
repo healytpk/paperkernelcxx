@@ -5,7 +5,6 @@
 #include <cstring>                                   // strcmp, strstr
 #include <array>                                     // array
 #include <map>                                       // map
-#include <set>                                       // set
 #include <string>                                    // string
 #include <vector>                                    // vector
 #include <thread>                                    // jthread
@@ -237,6 +236,17 @@ void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
+    this->listXapianResults->InsertColumn(0, "Paper" );
+    this->listXapianResults->InsertColumn(1, "Title" );
+    this->listXapianResults->InsertColumn(2, "Author");
+    this->listXapianResults->InsertItem(0, "P1234R56ZZZ");
+    this->listXapianResults->SetItem(0,1, "This is the title of the paper and it's a little long, what do you thinkZZZ" );
+    this->listXapianResults->SetItem(0,2, "Thomas PK Healy, Thomas PK Healy, Thomas PK Healy, Thomas PK Healy, Thomas PK Healy" );
+    this->listXapianResults->SetColumnWidth(0,wxLIST_AUTOSIZE);
+    this->listXapianResults->SetColumnWidth(1,wxLIST_AUTOSIZE);
+    this->listXapianResults->SetColumnWidth(2,wxLIST_AUTOSIZE);
+    this->listXapianResults->DeleteItem(0);
+
     this->m_toolBar1->ToggleTool(this->toolShowPaperTree ->GetId(), true);
     this->m_toolBar1->ToggleTool(this->toolShowViewPortal->GetId(), true);
 
@@ -505,26 +515,25 @@ void Dialog_Main::OnTool_ShowViewPortal(wxCommandEvent&)
 
 void Dialog_Main::btnXapianSearch_OnButtonClick(wxCommandEvent&)
 {
-    this->listXapianResults->Clear();
+    this->listXapianResults->DeleteAllItems();
     wxGetApp().SafeYield(nullptr, false);
 
-    std::set<Paper> results;
-
-    auto const mylambda = [&results](std::string_view const sv) -> void
+    auto const mylambda = [this](std::string_view const sv) -> void
      {
-        results.insert(sv);
+        Paper paper(sv);
+        this->listXapianResults->InsertItem(0, paper.c_str());
+        this->listXapianResults->SetItem(0,1,paper.GetTitle ());
+        this->listXapianResults->SetItem(0,2,paper.GetAuthor());
      };
 
     g_seman.Search(this->txtXapianSearchFor->GetValue().ToStdString(), mylambda);
-
-    for ( auto const &e : results ) this->listXapianResults->Append( e.c_str() );
 }
 
-void Dialog_Main::listXapianResults_OnListBoxDClick(wxCommandEvent &event)
+void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
 {
     int const index = event.GetSelection();  // index of clicked item
-    if ( (index < 0) || (index >= this->listXapianResults->GetCount()) ) return;
-    wxString const itemText = this->listXapianResults->GetString(index);  // text of clicked item
+    if ( (index < 0) || (index >= this->listXapianResults->GetItemCount()) ) return;
+    wxString const itemText = this->listXapianResults->GetItemText(index,0);  // text of clicked item
     if ( itemText.IsEmpty() ) return;
 
     Paper paper_selected( itemText.ToStdString() );  // will throw if entry in listbox is dodgy

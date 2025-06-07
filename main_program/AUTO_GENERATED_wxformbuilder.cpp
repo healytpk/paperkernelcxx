@@ -89,7 +89,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	m_staticText5->Wrap( -1 );
 	bSizer11->Add( m_staticText5, 0, wxALL, 5 );
 
-	listXapianResults = new wxListBox( panelXapian, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	listXapianResults = new wxListCtrl( panelXapian, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL );
 	bSizer11->Add( listXapianResults, 1, wxALL|wxEXPAND, 5 );
 
 
@@ -198,7 +198,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	btnXapianLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianLoadPapers_OnButtonClick ), NULL, this );
 	btnXapianUnloadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianUnloadPapers_OnButtonClick ), NULL, this );
 	btnXapianSearch->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianSearch_OnButtonClick ), NULL, this );
-	listXapianResults->Connect( wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::listXapianResults_OnListBoxDClick ), NULL, this );
+	listXapianResults->Connect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler( Dialog_Main__Auto_Base_Class::listXapianResults_OnListItemActivated ), NULL, this );
 	btnLoadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnLoadModel_OnButtonClick ), NULL, this );
 	btnUnloadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnUnloadModel_OnButtonClick ), NULL, this );
 	btnLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnLoadPapers_OnButtonClick ), NULL, this );
