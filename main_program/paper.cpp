@@ -6,26 +6,32 @@ Paper::Paper(std::string_view const p) noexcept(false)
 {
     using std::isdigit, std::tolower;
 
+    if ( p.size() < 7u ) throw std::runtime_error("invalid paper name"); // P1234R0
+
     do
     {
         if ( 'p' != tolower(p[0]) ) break;
-        if (    !isdigit(p[1])    ) break;
-        if (    !isdigit(p[2])    ) break;
-        if (    !isdigit(p[3])    ) break;
-        if (    !isdigit(p[4])    ) break;
+        if ( !isdigit(p[1]) ) break;
+        if ( !isdigit(p[2]) ) break;
+        if ( !isdigit(p[3]) ) break;
+        if ( !isdigit(p[4]) ) break;
         num  = (p[1]-'0') * 1000u;
         num += (p[2]-'0') *  100u;
         num += (p[3]-'0') *   10u;
         num += (p[4]-'0') *    1u;
         if ( 'r' != tolower(p[5]) ) break;
-        if (    !isdigit(p[6])    ) break;
-        rev =  (p[6]-'0') *    1u;
+        if ( !isdigit(p[6]) ) break;
+        rev = (p[6]-'0');
 
-        if ( isdigit(p[7]) )
+        if ( 7u == p.size() )  // P1234R0
+        {
+            // fall through
+        }
+        else if ( isdigit(p[7]) )
         {
             rev *= 10u;
             rev += (p[7]-'0');
-            if ( ('\0' != p[8]) && ('.' != p[8]) ) break;
+            if ( (p.size() > 8u) && ('\0' != p[8]) && ('.' != p[8]) ) break; // P1234R15
             // fall through
         }
         else if ( ('\0' == p[7]) || ('.' == p[7]) )
