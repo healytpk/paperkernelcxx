@@ -78,6 +78,8 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		virtual void OnTool_ShowViewPortal( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnXapianLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnXapianUnloadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void btnXapianSearch_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void listXapianResults_OnListBoxDClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnLoadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnUnloadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }

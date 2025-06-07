@@ -69,27 +69,26 @@ void SemanticSearcher::Init( std::function<void(unsigned,unsigned)> SetProgress 
     if ( -1 == this->fd ) throw std::runtime_error("Failed to open Xapian database file");
 #endif
 
-    Xapian::Database db( this->fd, Xapian::DB_OPEN|Xapian::DB_BACKEND_GLASS );
+    this->db.emplace( this->fd, Xapian::DB_OPEN|Xapian::DB_BACKEND_GLASS );
     SetProgress(100u, 100u);
 }
 
-void SemanticSearcher::Search(string_view const query_string)
+void SemanticSearcher::Search(string_view const query_string, std::function<void(std::string_view)> callback)
 {
-    Xapian::QueryParser parser;
-    parser.set_stemmer(Xapian::Stem("en"));
-    parser.set_database( *db );
-    parser.set_default_op(Xapian::Query::OP_AND);
+    Xapian::QueryParser query_parser;
+    query_parser.set_database( *db );
+    query_parser.set_stemmer(Xapian::Stem("en")); // Optional: for stemming
+    query_parser.set_stemming_strategy(Xapian::QueryParser::STEM_SOME);
+    Xapian::Query query = query_parser.parse_query( string(query_string) );
 
-    Xapian::Query query = parser.parse_query( string(query_string) );
     Xapian::Enquire enquire( *db );
     enquire.set_query(query);
+    Xapian::MSet matches = enquire.get_mset(0, 10); // Get top 10 results
 
-    Xapian::MSet matches = enquire.get_mset(0, 20);
-    std::cout << "\nTop matches for: \"" << query_string << "\"\n";
-
-    for ( auto it = matches.begin(); it != matches.end(); ++it )
+    for ( Xapian::MSetIterator it = matches.begin(); it != matches.end(); ++it )
     {
-        std::cout << "- Score: " << it.get_weight()
-                  << " | File: " << it.get_document().get_data() << "\n";
+        Xapian::Document doc = it.get_document();
+        std::cout << "Rank " << *it << ": " << doc.get_value(0) << std::endl;
+        callback( doc.get_value(0) );
     }
 }

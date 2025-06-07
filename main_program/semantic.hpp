@@ -13,7 +13,7 @@ protected:
 
 public:
     void Init( std::function<void(unsigned,unsigned)> SetProgress ) noexcept(false);
-    void Search(std::string_view);
+    void Search( std::string_view, std::function<void(std::string_view)> callback );
 };
 
 #endif

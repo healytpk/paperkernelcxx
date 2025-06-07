@@ -5,12 +5,14 @@
 #include <cstring>                                   // strcmp, strstr
 #include <array>                                     // array
 #include <map>                                       // map
+#include <set>                                       // set
 #include <string>                                    // string
 #include <vector>                                    // vector
 #include <thread>                                    // jthread
 #include <wx/app.h>                                  // wxApp
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include <wx/dataview.h>                             // wxDataViewCtrl
+#include <wx/splitter.h>                             // wxSplitterWindow
 #include "GUI_Dialog_Waiting.hpp"
 #include "ai.hpp"
 #include "embedded_archive.hpp"
@@ -181,9 +183,24 @@ public:
     }
 };
 
+void Dialog_Main::OnViewPortalLoaded(wxEvent&) noexcept
+{
+    this->is_viewportal_loaded = true;
+}
+
 void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
 {
     std::cout << "Entered OnSelChanged --------------------\n";
+
+    assert( nullptr != this->view_portal );
+    this->is_viewportal_loaded = false;
+    ::SetViewPortal(this->view_portal, "<html><body><h1>Loading. . .</h1></body></html>");
+    //do wxGetApp().SafeYield(nullptr, false); while ( false == this->is_viewportal_loaded );   -- This locks up and freezes
+    this->is_viewportal_loaded = false;
+    this->view_portal->Refresh();
+    this->view_portal->Update();
+    wxGetApp().SafeYield(nullptr, false);
+
     wxDataViewItem const selectedItem = event.GetItem();
 
     wxString const itemText = this->GetPaperTreeItemText(selectedItem);
@@ -210,8 +227,8 @@ void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
 
     if ( html.empty() )
     {
-        html = "<html><body><h1>Hello!</h1>"
-               "<p>This is an example of loading HTML using SetPage().</p></body></html>";
+        html = "<html><body><h1>Error</h1>"
+               "<p>Failed to display the paper in the view portal.</p></body></html>";
     }
 
     assert( nullptr != this->view_portal );
@@ -279,6 +296,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // ====================== View Portal ==============================
     this->view_portal = ::CreateViewPortal(this->splitter);
     assert( nullptr != this->view_portal );
+    ::ViewPortal_BindFinishedLoading( this->view_portal, &Dialog_Main::OnViewPortalLoaded, this );
     // =================================================================
 
     this->bSizerForPanelBrowse->Add(this->splitter, 1, wxEXPAND, 0);
@@ -422,6 +440,7 @@ void Dialog_Main::btnXapianLoadPapers_OnButtonClick(wxCommandEvent&)
 
     this->btnXapianLoadPapers  ->Enable( ! is_loaded );
     this->btnXapianUnloadPapers->Enable(   is_loaded );
+    this->btnXapianSearch      ->Enable(   is_loaded );
 }
 
 wxString Dialog_Main::GetPaperTreeItemText(wxDataViewItem const selected_item) const
@@ -482,4 +501,66 @@ void Dialog_Main::OnTool_ShowViewPortal(wxCommandEvent&)
                other_one = this->toolShowPaperTree ->GetId();
 
     this->OnTool_Common( this_one, other_one, this->view_portal );
+}
+
+void Dialog_Main::btnXapianSearch_OnButtonClick(wxCommandEvent&)
+{
+    this->listXapianResults->Clear();
+    wxGetApp().SafeYield(nullptr, false);
+
+    std::set<Paper> results;
+
+    auto const mylambda = [&results](std::string_view const sv) -> void
+     {
+        results.insert(sv);
+     };
+
+    g_seman.Search(this->txtXapianSearchFor->GetValue().ToStdString(), mylambda);
+
+    for ( auto const &e : results ) this->listXapianResults->Append( e.c_str() );
+}
+
+void Dialog_Main::listXapianResults_OnListBoxDClick(wxCommandEvent &event)
+{
+    int const index = event.GetSelection();  // index of clicked item
+    if ( (index < 0) || (index >= this->listXapianResults->GetCount()) ) return;
+    wxString const itemText = this->listXapianResults->GetString(index);  // text of clicked item
+    if ( itemText.IsEmpty() ) return;
+
+    Paper paper_selected( itemText.ToStdString() );  // will throw if entry in listbox is dodgy
+
+    wxDataViewModel const *const model = this->treeAllPapers->GetModel();
+    wxDataViewItemArray children;
+    model->GetChildren( wxDataViewItem{}, children );
+
+    for ( wxDataViewItem const item : children )
+    {
+        wxVariant value;
+        model->GetValue(value, item, 0u);
+        wxString wxs = value.GetString();
+        if ( wxs.empty() ) continue;  // revisit fix -- this should be fatal because of corruption
+        if ( paper_selected.IsRelatedTo( wxs.ToStdString() + "r0" ) )  // revisit fix -- this is horrible
+        {
+            children.Clear();
+            model->GetChildren(item, children);
+            for ( wxDataViewItem const item2 : children )
+            {
+                value.Clear();
+                model->GetValue(value, item2, 0u);
+                wxs = value.GetString();
+                if ( wxs.empty() ) continue;  // revisit fix -- this should be fatal because of corruption
+                if ( wxs == (wxString("r") << paper_selected.rev) )
+                {
+                    this->treeAllPapers->EnsureVisible(item ); // scroll to item
+                    this->treeAllPapers->EnsureVisible(item2); // scroll to item
+                    this->treeAllPapers->Select(item2);
+                    this->m_notebook1->SetSelection(0u);
+                    wxDataViewEvent myevent(wxEVT_DATAVIEW_SELECTION_CHANGED, this->treeAllPapers, item2);
+                    this->PaperTree_OnSelChanged(myevent);
+                    return;
+                }
+            }
+            return;
+        }
+    }
 }
