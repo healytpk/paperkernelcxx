@@ -12,7 +12,7 @@ struct Paper {
     Paper(std::string const &s) noexcept(false)
       : Paper( std::string_view(s) ) {}
 
-    Paper( long long unsigned const Anum, long long unsigned const Arev )
+    Paper( long long unsigned const Anum, long long unsigned const Arev ) noexcept
       : num(static_cast<unsigned>(Anum)), rev(static_cast<unsigned>(Arev)) {}
 
     bool operator<(Paper const other) const noexcept
@@ -22,8 +22,8 @@ struct Paper {
 
     char const *c_str(void) const noexcept;
 
-    bool IsRelatedTo(Paper const other) const noexcept
-    {
-        return num == other.num;
-    }
+    bool IsRelatedTo(Paper const other) const noexcept { return num == other.num; }
+
+    char const *GetTitle (void) noexcept;
+    char const *GetAuthor(void) noexcept;
 };

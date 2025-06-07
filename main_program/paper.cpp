@@ -1,14 +1,16 @@
 #include "paper.hpp"
+#include <cassert>                          // assert
 #include <cctype>                           // isdigit, tolower
 #include <stdexcept>                        // runtime_error
+#include "papertree.hpp"                    // g_map_papers
+
+using std::vector, std::tuple;
 
 Paper::Paper(std::string_view const p) noexcept(false)
 {
     using std::isdigit, std::tolower;
 
-    if ( p.size() < 7u ) throw std::runtime_error("invalid paper name"); // P1234R0
-
-    do
+    while ( p.size() >= 7u )
     {
         if ( 'p' != tolower(p[0]) ) break;
         if ( !isdigit(p[1]) ) break;
@@ -27,31 +29,31 @@ Paper::Paper(std::string_view const p) noexcept(false)
         {
             // fall through
         }
-        else if ( isdigit(p[7]) )
+        else if ( isdigit(p[7]) )  // length is >= 8
         {
             rev *= 10u;
             rev += (p[7]-'0');
-            if ( (p.size() > 8u) && ('\0' != p[8]) && ('.' != p[8]) ) break; // P1234R15
+            if ( (p.size() > 8u) && ('\0' != p[8]) && ('.' != p[8]) ) break;  // P1234R15
             // fall through
         }
-        else if ( ('\0' == p[7]) || ('.' == p[7]) )
+        else if ( ('\0' == p[7]) || ('.' == p[7]) )  // length is >= 8
         {
             // fall through
         }
-        else
+        else  // length is >= 8
         {
             break;
         }
         
         return;
-    } while (false);
+    }
 
-    throw std::runtime_error("invalid paper name");
+    throw std::runtime_error("invalid paper name string");
 }
 
 char const *Paper::c_str(void) const noexcept
 {
-    static thread_local char s[] = "PxxxxRxx";
+    static thread_local char s[] = "p1234r56";
 
     s[1] = '0' + num / 1000u % 10u;
     s[2] = '0' + num /  100u % 10u;
@@ -66,9 +68,36 @@ char const *Paper::c_str(void) const noexcept
     else
     {
         s[6] = '0' + rev / 10u % 10u;
-        s[7] = '0' + rev / 1u % 10u;
+        s[7] = '0' + rev /  1u % 10u;
         s[8] = '\0';
     }
 
     return s;
+}
+
+static char const *Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned const n)
+{
+    auto const it = g_map_papers.find( pthis->num );
+    assert( g_map_papers.end() != it );
+    vector< tuple<unsigned, char const*, char const* > > const &vec = it->second;
+    for ( auto const &e : vec )
+    {
+        if ( pthis->rev != std::get<0u>(e) ) continue;
+        switch ( n )
+        {
+        case 1u: return std::get<1u>(e);
+        case 2u: return std::get<2u>(e);
+        }
+    }
+    assert( nullptr == "invalid paper not listed in tree" );
+}
+
+char const *Paper::GetTitle(void) noexcept
+{
+    return Paper_GetDatumFromPaperTree(this,1u);
+}
+
+char const *Paper::GetAuthor(void) noexcept
+{
+    return Paper_GetDatumFromPaperTree(this,2u);
 }
