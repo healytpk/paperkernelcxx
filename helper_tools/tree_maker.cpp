@@ -147,14 +147,23 @@ int main(void)
         unsigned const paper_number = std::stoul(match[1].str());
         unsigned const revision_number = std::stoul(match[2].str());
 
-        string title;
-        /**/ if ( filename.contains("htm") ) title = ExtractTitleFromFileHTML(entry.path().string());
-        else if ( filename.contains("pdf") ) title = ExtractTitleFromFilePDF (entry.path().string());
+        string title, author;
+        if ( filename.contains("htm") )
+        {
+            title  = ExtractTitleFromFileHTML (entry.path().string());
+            author = ExtractAuthorFromFileHTML(entry.path().string());
+        }
+        else if ( filename.contains("pdf") )
+        {
+            title  = ExtractTitleFromFilePDF (entry.path().string());
+            author = ExtractAuthorFromFilePDF(entry.path().string());
+        }
         FixTitle(title);
-        if ( title.empty() ) title = Title();
+        if ( title .empty() ) title  = Title ();
+        if ( author.empty() ) author = Author();
 
         // Store the revision number under the corresponding paper number
-        auto [ iterator, is_new ] =  papers[paper_number].insert( RevInfo{revision_number, title, Author() } );
+        auto [ iterator, is_new ] =  papers[paper_number].insert( RevInfo{revision_number, title, author } );
         if ( false == is_new )
         {
             std::cout << " -- DUPLICATE PAPER NUMBER --\n";

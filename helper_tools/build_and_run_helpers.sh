@@ -1,5 +1,17 @@
 #!/bin/sh
 
+g++ -o tree_maker -std=c++23                 \
+    tree_maker.cpp common.cpp                \
+    -static-libstdc++ -static-libgcc         \
+    -I/usr/include/poppler/cpp/              \
+    -lpoppler-cpp -lgumbo -lcmark-gfm -ggdb3 -D_GLIBC_DEBUG -D_GLIBCXX_DEBUG
+
+echo "Libraries needed by 'tree_maker': "
+readelf -a ./tree_maker | grep "(NEEDED)"
+./tree_maker > ../main_program/paper_tree_contents.hpp
+
+exit 0
+
 rm index_for_xapian
 
 g++ -o index_for_xapian -std=c++23               \
@@ -29,18 +41,6 @@ echo "Libraries needed by 'test_load_xapian_database': "
 readelf -a ./test_load_xapian_database | grep "(NEEDED)"
 
 ./test_load_xapian_database
-
-exit 0
-
-g++ -o tree_maker -std=c++23                 \
-    tree_maker.cpp common.cpp                \
-    -static-libstdc++ -static-libgcc         \
-    -I/usr/include/poppler/cpp/              \
-    -lpoppler-cpp -lgumbo -lcmark-gfm
-
-echo "Libraries needed by 'tree_maker': "
-readelf -a ./tree_maker | grep "(NEEDED)"
-./tree_maker > ../main_program/paper_tree_contents.hpp
 
 exit 0
 

@@ -7,6 +7,7 @@
 #include <functional>                 // function
 #include <iostream>                   // cerr
 #include <memory>                     // unique_ptr
+#include <regex>                      // regex_search
 #include <sstream>                    // ostringstream
 #include <string>                     // string, getline
 #include <utility>                    // move
@@ -308,7 +309,47 @@ string ExtractTitleFromFilePDF(string const &filename)
 {
     std::unique_ptr<poppler::document> doc( poppler::document::load_from_file(filename) );
     if ( !doc ) return {};
-    auto title_vec = doc->info_key("Title").to_utf8();
-    if ( title_vec.empty() ) return {};
-    return string( title_vec.data() );
+    poppler::ustring us = doc->info_key("Title");
+    if ( us.empty() ) return {};
+    std::string const s = us.to_latin1();
+    if ( s.empty() ) return {};
+    return s;
+}
+
+static std::string Trim(std::string const &s)
+{
+    size_t const start = s.find_first_not_of(" \t\n\r\"'`.,:;!?()[]{}<>");
+    if ( start == std::string::npos ) return {};
+
+    size_t const end = s.find_last_not_of(" \t\n\r\"'`.,:;!?()[]{}<>");
+
+    return s.substr(start, end - start + 1);
+}
+
+static std::string ExtractAuthor(std::string const &s)
+{
+    std::regex r(R"(author[s]{0,1}:\s*([^\s\n\r\t\(:<]*)\s([^\s\n\r\t\(:<]*))", std::regex::icase);
+    std::smatch match;
+
+    if ( std::regex_search(s, match, r) && (match.size() > 2u) )
+    {
+        string s = match[1].str() + ' ' + match[2].str();
+        string st = Trim(s);
+        //std::cerr << st << std::endl;
+        return st;
+    }
+
+    return {};
+}
+
+std::string ExtractAuthorFromFileHTML(std::string const &filename)
+{
+    string s = GetPlainText_HTML(filename);
+    return ExtractAuthor(s);
+}
+
+std::string ExtractAuthorFromFilePDF (std::string const &filename)
+{
+    string s = GetPlainText_PDF(filename);
+    return ExtractAuthor(s);
 }

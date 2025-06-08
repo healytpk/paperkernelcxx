@@ -27,3 +27,6 @@ extern void IterateThroughFolder(
 
 extern std::string ExtractTitleFromFileHTML(std::string const &filename);
 extern std::string ExtractTitleFromFilePDF (std::string const &filename);
+
+extern std::string ExtractAuthorFromFileHTML(std::string const &filename);
+extern std::string ExtractAuthorFromFilePDF (std::string const &filename);
