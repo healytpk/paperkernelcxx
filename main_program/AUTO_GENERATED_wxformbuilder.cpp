@@ -22,15 +22,6 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	wxBoxSizer* bSizer111;
 	bSizer111 = new wxBoxSizer( wxVERTICAL );
 
-	m_toolBar1 = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL );
-	toolShowPaperTree = m_toolBar1->AddTool( wxID_ANY, _("Show List of Papers"), wxBitmap( circle_xpm ), wxNullBitmap, wxITEM_CHECK, _("Show List of Papers"), wxEmptyString, NULL );
-
-	toolShowViewPortal = m_toolBar1->AddTool( wxID_ANY, _("Show Paper"), wxBitmap( triangle_xpm ), wxNullBitmap, wxITEM_CHECK, _("Show Paper"), wxEmptyString, NULL );
-
-	m_toolBar1->Realize();
-
-	bSizer111->Add( m_toolBar1, 0, wxEXPAND, 5 );
-
 
 	bSizer1->Add( bSizer111, 1, wxEXPAND, 5 );
 
@@ -38,6 +29,15 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	panelBrowse = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer8;
 	bSizer8 = new wxBoxSizer( wxVERTICAL );
+
+	m_toolBar1 = new wxToolBar( panelBrowse, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL );
+	toolShowPaperTree = m_toolBar1->AddTool( wxID_ANY, _("Show List of Papers"), wxBitmap( circle_xpm ), wxNullBitmap, wxITEM_CHECK, _("Show List of Papers"), wxEmptyString, NULL );
+
+	toolShowViewPortal = m_toolBar1->AddTool( wxID_ANY, _("Show Paper"), wxBitmap( triangle_xpm ), wxNullBitmap, wxITEM_CHECK, _("Show Paper"), wxEmptyString, NULL );
+
+	m_toolBar1->Realize();
+
+	bSizer8->Add( m_toolBar1, 0, wxEXPAND, 5 );
 
 	bSizerForPanelBrowse = new wxBoxSizer( wxHORIZONTAL );
 

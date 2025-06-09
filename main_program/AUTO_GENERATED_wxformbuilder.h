@@ -10,16 +10,16 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
+#include <wx/sizer.h>
+#include <wx/gdicmn.h>
 #include <wx/string.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/gdicmn.h>
 #include <wx/toolbar.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
-#include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/button.h>
 #include <wx/stattext.h>
@@ -40,11 +40,11 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 	private:
 
 	protected:
+		wxNotebook* m_notebook1;
+		wxPanel* panelBrowse;
 		wxToolBar* m_toolBar1;
 		wxToolBarToolBase* toolShowPaperTree;
 		wxToolBarToolBase* toolShowViewPortal;
-		wxNotebook* m_notebook1;
-		wxPanel* panelBrowse;
 		wxBoxSizer* bSizerForPanelBrowse;
 		wxPanel* panelXapian;
 		wxButton* btnXapianLoadPapers;
