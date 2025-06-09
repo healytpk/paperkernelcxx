@@ -49,6 +49,18 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	panelBrowse->Layout();
 	bSizer8->Fit( panelBrowse );
 	m_notebook1->AddPage( panelBrowse, _("Browse All Papers"), true );
+	panelAuthors = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxVERTICAL );
+
+	listAuthors = new wxListCtrl( panelAuthors, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL );
+	bSizer12->Add( listAuthors, 1, wxALL, 5 );
+
+
+	panelAuthors->SetSizer( bSizer12 );
+	panelAuthors->Layout();
+	bSizer12->Fit( panelAuthors );
+	m_notebook1->AddPage( panelAuthors, _("Authors"), false );
 	panelXapian = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer61;
 	bSizer61 = new wxBoxSizer( wxVERTICAL );
@@ -195,6 +207,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( Dialog_Main__Auto_Base_Class::OnClose ) );
 	this->Connect( toolShowPaperTree->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowPaperTree ) );
 	this->Connect( toolShowViewPortal->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowViewPortal ) );
+	listAuthors->Connect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler( Dialog_Main__Auto_Base_Class::listAuthors_OnListItemActivated ), NULL, this );
 	btnXapianLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianLoadPapers_OnButtonClick ), NULL, this );
 	btnXapianUnloadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianUnloadPapers_OnButtonClick ), NULL, this );
 	btnXapianSearch->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianSearch_OnButtonClick ), NULL, this );

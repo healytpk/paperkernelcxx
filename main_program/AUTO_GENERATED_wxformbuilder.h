@@ -21,10 +21,10 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/panel.h>
+#include <wx/listctrl.h>
 #include <wx/button.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/listctrl.h>
 #include <wx/statline.h>
 #include <wx/listbox.h>
 #include <wx/notebook.h>
@@ -46,6 +46,8 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		wxToolBarToolBase* toolShowPaperTree;
 		wxToolBarToolBase* toolShowViewPortal;
 		wxBoxSizer* bSizerForPanelBrowse;
+		wxPanel* panelAuthors;
+		wxListCtrl* listAuthors;
 		wxPanel* panelXapian;
 		wxButton* btnXapianLoadPapers;
 		wxButton* btnXapianUnloadPapers;
@@ -76,6 +78,7 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnTool_ShowPaperTree( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTool_ShowViewPortal( wxCommandEvent& event ) { event.Skip(); }
+		virtual void listAuthors_OnListItemActivated( wxListEvent& event ) { event.Skip(); }
 		virtual void btnXapianLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnXapianUnloadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnXapianSearch_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
