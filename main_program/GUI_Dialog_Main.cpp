@@ -6,6 +6,7 @@
 #include <array>                                     // array
 #include <map>                                       // map
 #include <string>                                    // string
+#include <string_view>                               // string_view
 #include <vector>                                    // vector
 #include <thread>                                    // jthread
 #include <wx/app.h>                                  // wxApp
@@ -14,6 +15,7 @@
 #include <wx/splitter.h>                             // wxSplitterWindow
 #include "GUI_Dialog_Waiting.hpp"
 #include "ai.hpp"
+#include "authortree.hpp"
 #include "embedded_archive.hpp"
 #include "paperman.hpp"
 #include "papertree.hpp"
@@ -318,6 +320,33 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     this->view_portal = ::ViewPortal_Create(this->splitter);
     assert( nullptr != this->view_portal );
     ::ViewPortal_BindFinishedLoading( this->view_portal, &Dialog_Main::OnViewPortalLoaded, this );
+    // =================================================================
+
+    // ====================== wxListCtrl for authors ===================
+    size_t i = -1;
+    for ( auto const &e : g_map_authors )
+    {
+        ++i;
+        this->listAuthors->InsertItem (i, e.second.first);
+        this->listAuthors->SetItemData(i, (std::uintptr_t)e.second.first);
+      //this->listAuthors->SetItem(0, 1, "AuthoredZZZ");
+      //this->listAuthors->SetItem(0, 2, "AcknowledgedZZZ");
+    }
+
+    static_assert( sizeof(wxIntPtr) >= sizeof(void*) );  // sanity check
+
+    constexpr auto compare =
+      +[](wxIntPtr const item1, wxIntPtr const item2, wxIntPtr) -> int
+      {
+        std::string_view a( (char const*)item1 ),
+                         b( (char const*)item2 );
+
+        if ( a == b ) return  0;
+        if ( a  < b ) return -1;
+        /* if ( a  > b ) */ return +1;  // the only possibility left
+      };
+
+    this->listAuthors->SortItems(compare, 0);
     // =================================================================
 
     this->bSizerForPanelBrowse->Add(this->splitter, 1, wxEXPAND, 0);

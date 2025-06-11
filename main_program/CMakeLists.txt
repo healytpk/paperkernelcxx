@@ -1,4 +1,5 @@
 set(SRCS
+	authortree.cpp
 	AUTO_GENERATED_wxformbuilder.cpp
 	ai.cpp
 	embedded_archive.cpp
@@ -10,6 +11,7 @@ set(SRCS
 	view_portal.cpp)
 
 set(HEADERS
+	authortree.hpp
 	AUTO_GENERATED_tree_contents_author.hpp
 	AUTO_GENERATED_tree_contents_paper.hpp
 	AUTO_GENERATED_wxformbuilder.h
