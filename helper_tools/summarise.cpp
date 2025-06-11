@@ -14,6 +14,7 @@
 #include <gumbo.h>
 #include "common.hpp"                 // ExtractTitleFromFileHTML/PDF
 #include "hasher.hpp"
+#include "../main_program/paper.hpp"  // Paper
 
 namespace fs = std::filesystem;
 using std::string;
@@ -332,11 +333,12 @@ int main(void)
     cout << "{\n";
     for ( auto &mypair : g_all_authors )
     {
-        cout << "    { " << mypair.first << "u, \"" << mypair.second.name << "\", {";
+        cout << "    { " << mypair.first << "u, \"" << mypair.second.name << "\", { ";
 
         for ( auto &e : mypair.second.files )
         {
-            cout << "\"" << e << "\", ";
+            Paper paper(e);
+            cout << "{ " << paper.num << "u, " << paper.rev << "u }, ";
         }
         cout << " } },\n";
     }
