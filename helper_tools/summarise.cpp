@@ -107,7 +107,7 @@ void normalize_name(string &name)
 
 void RecordAuthor(string_view arg, string_view filename)
 {
-    cout << arg << " ------ ";
+    cerr << arg << " ------ ";
 
     string s2(arg);
     Trim(s2);
@@ -122,14 +122,14 @@ void RecordAuthor(string_view arg, string_view filename)
     if ( -1 != (pos = s2.find("("   )) ) s2.resize(pos);
     Trim(s2);
 
-    cout << s2 << " ------ ";
+    cerr << s2 << " ------ ";
     string s(s2);
     normalize_name(s);
-    cout << s << " ---- ";
+    cerr << s << " ---- ";
 
     long long unsigned digest = GetHash(s.c_str());
-    cout << "0x" << std::hex << std::setfill('0') << std::setw(16) << digest << endl;
-    cout << std::dec;
+    cerr << "0x" << std::hex << std::setfill('0') << std::setw(16) << digest << endl;
+    cerr << std::dec;
     Author &a = g_all_authors[digest];
     if ( false == a.name.empty() )
     {
@@ -137,8 +137,8 @@ void RecordAuthor(string_view arg, string_view filename)
         else if ( (a.name == "D. S. Hollman") && (s2 == "D.S. Hollman") ) {}
         else if ( false == std::ranges::equal(a.name, s2, [](char a, char b){ return std::tolower(a) == std::tolower(b); } ) )
         {
-            cout << "======== ERROR: " << a.name << " != " << s2 << endl;
-            cout << "size = " << a.name.size() << ", size = " <<  s2.size() << endl;
+            cerr << "======== ERROR: " << a.name << " != " << s2 << endl;
+            cerr << "size = " << a.name.size() << ", size = " <<  s2.size() << endl;
             std::abort();
         }
     }
@@ -151,11 +151,11 @@ void RecordAuthor(string_view arg, string_view filename)
 
 int main(void)
 {
-    std::cerr << "Attempting to create 'log.txt' in current directory. . .\n";
+    cerr << "Attempting to create 'log.txt' in current directory. . .\n";
     logfile.open("log.txt");
     if ( ! logfile )
     {
-        std::cerr << "Failed to create file 'logfile.txt' in current directory\n";
+        cerr << "Failed to create file 'logfile.txt' in current directory\n";
         return EXIT_FAILURE;
     }
     logfile << "First line in log file\n";
@@ -199,12 +199,12 @@ int main(void)
                 size_t n2 = ifind(s,"<dt", n + 3u);
                 if ( -1 == n2 )
                 {
-                    std::cerr << "---------- missing another \"<dt\" after Author ----------\n";
+                    cerr << "---------- missing another \"<dt\" after Author ----------\n";
                     std::abort();
                 }
                 std::string_view sv( &s[n], n2 - n );
                 assert( '<' != sv.back() );
-                //std::cout << "====== " << sv << " ======\n";
+                //cerr << "====== " << sv << " ======\n";
                 size_t n3 = 0u;
                 size_t n4 = -1;
                 while ( -1 != (n4 = ifind(sv,"<dd",n3)) )
@@ -212,7 +212,7 @@ int main(void)
                     n3 = ifind(sv, ">",n4 + 3);
                     if ( -1 == n3 )
                     {
-                        std::cerr << "---------- missing a close angle bracket after \"<dd\" ----------\n";
+                        cerr << "---------- missing a close angle bracket after \"<dd\" ----------\n";
                         std::abort();
                     }
                     ++n3;  // move forward after the close angle bracket
@@ -232,7 +232,7 @@ int main(void)
                         }
                     }
                     if ( is_just_whitespace ) continue;
-                    //std::cout << "Author len=" << sv_author.size() << " : " << sv_author << " ::: " << filename << std::endl;
+                    //cerr << "Author len=" << sv_author.size() << " : " << sv_author << " ::: " << filename << endl;
 
                     Author author;
                     std::regex simple_name_regex(R"(<span class="p-name fn">(.*?)</span>\s*((.+))?)"); // Extracts name from <span>
@@ -270,34 +270,34 @@ int main(void)
                     RecordAuthor(author.name, filename);
 
 #if 0
-                    std::cout << "Author: " << author.name << " --- Email: " << author.email << " --- Affiliation: " << author.affiliation
-                              << GetHash(author.name.c_str()) << std::endl;
+                    cerr << "Author: " << author.name << " --- Email: " << author.email << " --- Affiliation: " << author.affiliation
+                              << GetHash(author.name.c_str()) << endl;
 #endif
                 }
             }
             else if ( -1 != ifind(s,"<span class=\"metadata-key\">author") )
             {
-                std::cerr << "This BikeShed has multiple span metadata-key's  -- " << entry.path().string() << endl;
+                cerr << "This BikeShed has multiple span metadata-key's  -- " << entry.path().string() << endl;
             }
             else if ( -1 != ifind(s,"<dt class=\"editor\">editor") )
             {
-                std::cerr << "This BikeShed has Editor -- " << entry.path().string() << endl;
+                cerr << "This BikeShed has Editor -- " << entry.path().string() << endl;
             }
             else if ( -1 != ifind(s,"reply-to") )
             {
-                std::cerr << "This BikeShed has Reply-to -- " << entry.path().string() << endl;
+                cerr << "This BikeShed has Reply-to -- " << entry.path().string() << endl;
             }
             else if ( -1 != ifind(s,"polls</h1>") )
             {
-                std::cerr << "This BikeShed is a poll -- " << entry.path().string() << endl;
+                cerr << "This BikeShed is a poll -- " << entry.path().string() << endl;
             }
             else if ( -1 != ifind(s,"report</h1>") )
             {
-                std::cerr << "This BikeShed is a report -- " << entry.path().string() << endl;
+                cerr << "This BikeShed is a report -- " << entry.path().string() << endl;
             }
             else
             {
-                std::cerr << "Bikeshed doesn't have Author -- " << entry.path().string() << endl;
+                cerr << "Bikeshed doesn't have Author -- " << entry.path().string() << endl;
             }
         }
         else if ( filename.contains(".pdf") )
@@ -318,16 +318,16 @@ int main(void)
         }
     }
 
-    cout << "count_html  = " << count_html  << endl;
-    cout << "count_bikeshed  = " << count_bikeshed << endl;
-    cout << "count_pdf   = " << count_pdf   << endl;
-    cout << "count_md    = " << count_md    << endl;
-    cout << "count_txt   = " << count_txt   << endl;
-    cout << "count_other = " << count_other << endl;
+    cerr << "count_html  = " << count_html  << endl;
+    cerr << "count_bikeshed  = " << count_bikeshed << endl;
+    cerr << "count_pdf   = " << count_pdf   << endl;
+    cerr << "count_md    = " << count_md    << endl;
+    cerr << "count_txt   = " << count_txt   << endl;
+    cerr << "count_other = " << count_other << endl;
 
     for ( auto &mypair : g_all_authors )
     {
-        cout << mypair.second.name << " has " << mypair.second.files.size() << " papers\n";
+        cerr << mypair.second.name << " has " << mypair.second.files.size() << " papers\n";
     }
 
     cout << "{\n";

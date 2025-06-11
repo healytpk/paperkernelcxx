@@ -1,5 +1,19 @@
 #!/bin/sh
 
+rm -f ./summarise
+
+g++ -o summarise -std=c++23 -DPAPERKERNELCXX_MINIMAL_PAPER \
+    summarise.cpp \
+    ../main_program/paper.cpp \
+    -lssl -lcrypto -D_GLIBC_DEBUG -D_GLIBCXX_DEBUG
+
+echo "Libraries needed by 'summarise': "
+readelf -a ./summarise | grep "(NEEDED)"
+
+./summarise > ../main_program/author_tree_contents.hpp
+
+exit 0
+
 g++ -o enumerate_authors -std=c++23          \
     enumerate_authors.cpp common.cpp         \
     -static-libstdc++ -static-libgcc         \
