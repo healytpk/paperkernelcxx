@@ -98,8 +98,8 @@ static char const *Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigne
 {
     auto const it = g_map_papers.find( pthis->num );
     assert( g_map_papers.end() != it );
-    vector< tuple<unsigned, char const*, char const* > > const &vec = it->second;
-    for ( auto const &e : vec )
+    auto const &vec = it->second;
+    for ( auto const &e : vec )  // 'e' is a 'tuple<unsigned, char const*, char const* >'
     {
         if ( pthis->rev != std::get<0u>(e) ) continue;
         switch ( n )
