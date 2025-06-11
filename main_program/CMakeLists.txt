@@ -10,6 +10,8 @@ set(SRCS
 	view_portal.cpp)
 
 set(HEADERS
+	AUTO_GENERATED_tree_contents_author.hpp
+	AUTO_GENERATED_tree_contents_paper.hpp
 	AUTO_GENERATED_wxformbuilder.h
 	Auto.h
 	ai.hpp
@@ -19,7 +21,6 @@ set(HEADERS
 	incbin.h
 	paper.hpp
 	paperman.hpp
-	AUTO_GENERATED_tree_contents_paper.hpp
 	papertree.hpp
 	resource.h
 	semantic.hpp
