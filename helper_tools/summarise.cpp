@@ -338,7 +338,7 @@ int main(void)
         {
             cout << "\"" << e << "\", ";
         }
-        cout << " }  }\n";
+        cout << " } },\n";
     }
     cout << "}\n";
 }
