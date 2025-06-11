@@ -193,5 +193,8 @@ int main(void)
     }
     std::cout << "};\n";
 
+    std::cerr << Title()  << std::endl;
+    std::cerr << Author() << std::endl;
+
     return EXIT_SUCCESS;
 }

@@ -339,6 +339,15 @@ static std::string ExtractAuthor(std::string const &s)
         return st;
     }
 
+    std::regex r2(R"(Reply-to:\s*([^\s\n\r\t\(:<]*)\s([^\s\n\r\t\(:<]*))", std::regex::icase);
+    if ( std::regex_search(s, match, r2) && (match.size() > 2u) )
+    {
+        string s = match[1].str() + ' ' + match[2].str();
+        string st = Trim(s);
+        //std::cerr << st << std::endl;
+        return st;
+    }
+
     return {};
 }
 
