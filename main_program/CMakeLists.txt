@@ -19,7 +19,7 @@ set(HEADERS
 	incbin.h
 	paper.hpp
 	paperman.hpp
-	paper_tree_contents.hpp
+	AUTO_GENERATED_tree_contents_paper.hpp
 	papertree.hpp
 	resource.h
 	semantic.hpp
