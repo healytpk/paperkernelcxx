@@ -330,17 +330,27 @@ int main(void)
         cerr << mypair.second.name << " has " << mypair.second.files.size() << " papers\n";
     }
 
+    for ( auto &mypair : g_all_authors )
+    {
+        string &s = mypair.second.name;
+        for ( size_t i = 0u; i < s.size(); ++i )
+        {
+            if ( '\"' != s[i] ) continue;
+            s.insert(i++,"\\");
+        }
+    }
+
     cout << "{\n";
     for ( auto &mypair : g_all_authors )
     {
-        cout << "    { " << mypair.first << "u, \"" << mypair.second.name << "\", { ";
+        cout << "    { " << mypair.first << "u, { \"" << mypair.second.name << "\", { ";
 
         for ( auto &e : mypair.second.files )
         {
             Paper paper(e);
             cout << "{ " << paper.num << "u, " << paper.rev << "u }, ";
         }
-        cout << " } },\n";
+        cout << " } } },\n";
     }
     cout << "}\n";
 }

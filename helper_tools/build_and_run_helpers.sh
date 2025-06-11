@@ -10,7 +10,7 @@ g++ -o summarise -std=c++23 -DPAPERKERNELCXX_MINIMAL_PAPER \
 echo "Libraries needed by 'summarise': "
 readelf -a ./summarise | grep "(NEEDED)"
 
-./summarise > ../main_program/author_tree_contents.hpp
+./summarise > ../main_program/AUTO_GENERATED_tree_contents_author.hpp
 
 exit 0
 
