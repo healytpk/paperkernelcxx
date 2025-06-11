@@ -2,7 +2,12 @@
 #include <cassert>                          // assert
 #include <cctype>                           // isdigit, tolower
 #include <stdexcept>                        // runtime_error
-#include "papertree.hpp"                    // g_map_papers
+#include <tuple>                            // tuple
+#include <vector>                           // vector
+
+#ifndef PAPERKERNELCXX_MINIMAL_PAPER
+#    include "papertree.hpp"                    // g_map_papers
+#endif
 
 using std::vector, std::tuple;
 
@@ -75,6 +80,20 @@ char const *Paper::c_str(void) const noexcept
     return s;
 }
 
+#ifdef PAPERKERNELCXX_MINIMAL_PAPER
+
+char const *Paper::GetTitle(void) noexcept
+{
+    return "Title";
+}
+
+char const *Paper::GetAuthor(void) noexcept
+{
+    return "Author";
+}
+
+#else
+
 static char const *Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned const n)
 {
     auto const it = g_map_papers.find( pthis->num );
@@ -101,3 +120,5 @@ char const *Paper::GetAuthor(void) noexcept
 {
     return Paper_GetDatumFromPaperTree(this,2u);
 }
+
+#endif
