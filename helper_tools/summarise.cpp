@@ -54,7 +54,7 @@ size_t ifind(std::string const &haystack, std::string const &needle, size_t cons
     return ifind(string_view(haystack), string_view(needle), i);
 }
 
-string_view Trim(string_view &sv)
+string_view &Trim(string_view &sv)
 {
     while ( !sv.empty() && std::isspace(static_cast<unsigned char>(sv.front())) )
     {
@@ -68,7 +68,7 @@ string_view Trim(string_view &sv)
     return sv;
 }
 
-void Trim(string &s)
+string &Trim(string &s)
 {
     while ( !s.empty() && std::isspace(static_cast<unsigned char>(s.front())) )
     {
@@ -78,6 +78,8 @@ void Trim(string &s)
     {
         s.pop_back();
     }
+
+    return s;
 }
 
 struct Author {
@@ -91,34 +93,32 @@ std::map<long long unsigned, Author> g_all_authors;
 
 void normalize_name(string &name)
 {
-    Trim(name);
-
     name.erase(std::remove_if(name.begin(), name.end(), [](unsigned char c) {
         return !std::isalpha(c); // Keep only letters
-
     }), name.end());
 
     std::transform(name.begin(), name.end(), name.begin(), [](unsigned char c) {
         return std::tolower(c);
     });
+
+    Trim(name);
 }
 
-void RecordAuthor(string_view sv, string_view filename)
+void RecordAuthor(string_view arg, string_view filename)
 {
-    cout << sv << " ------ ";
+    cout << arg << " ------ ";
 
-    string_view sv2(sv);
-    Trim(sv2);
-    string s2(sv2);
+    string s2(arg);
+    Trim(s2);
     size_t pos = 0;
     while ( -1 != (pos = s2.find("\xE2\x80\x94", pos)) )
     {
         s2.replace(pos, 3, "-");
         ++pos;
     }
-    if ( -1 != (pos = s2.find(" - ")) ) s2.resize(pos);
+    if ( -1 != (pos = s2.find(" - " )) ) s2.resize(pos);
     if ( -1 != (pos = s2.find("&lt;")) ) s2.resize(pos);
-    if ( -1 != (pos = s2.find("(")) ) s2.resize(pos);
+    if ( -1 != (pos = s2.find("("   )) ) s2.resize(pos);
     Trim(s2);
 
     cout << s2 << " ------ ";
@@ -134,7 +134,6 @@ void RecordAuthor(string_view sv, string_view filename)
     {
         if ( (a.name == "H. Carter Edwards") && (s2 == "H Carter Edwards") ) {}
         else if ( (a.name == "D. S. Hollman") && (s2 == "D.S. Hollman") ) {}
-        //else if ( (a.name == "Billy Baker — Library Evolution Incubator Chair") && (s == "Billy Baker - Library Evolution Incubator Chair") ) {}
         else if ( false == std::ranges::equal(a.name, s2, [](char a, char b){ return std::tolower(a) == std::tolower(b); } ) )
         {
             cout << "======== ERROR: " << a.name << " != " << s2 << endl;
@@ -330,9 +329,17 @@ int main(void)
         cout << mypair.second.name << " has " << mypair.second.files.size() << " papers\n";
     }
 
+    cout << "{\n";
     for ( auto &mypair : g_all_authors )
     {
-        if ( false == mypair.second.name.contains("-") ) continue;
-        cout << mypair.second.name << endl;
+        cout << "    { " << mypair.first << "u, \"" << mypair.second.name << "\", {";
+
+        for ( auto &e : mypair.second.files )
+        {
+            cout << "\"" << e << "\", ";
+        }
+        cout << " }  }\n";
     }
+    cout << "}\n";
 }
+
