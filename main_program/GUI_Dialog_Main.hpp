@@ -2,6 +2,7 @@
 #define H__dynamoMain
 
 #include "AUTO_GENERATED_wxformbuilder.h"
+#include "MySortableListCtrl.hpp"
 
 class wxDataViewCtrl;
 class wxDataViewEvent;
@@ -13,6 +14,7 @@ class wxDataViewTreeStoreWithColumns;
 
 class Dialog_Main : public Dialog_Main__Auto_Base_Class {
 protected:
+    MySortableListCtrl adapter_over_listAuthors{this->listAuthors};
     wxSplitterWindow *splitter = nullptr;
     wxDataViewCtrl *treeAllPapers = nullptr;
     wxDataViewTreeStoreWithColumns<3u> *treeStore = nullptr;

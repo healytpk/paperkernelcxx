@@ -4,6 +4,7 @@ set(SRCS
 	ai.cpp
 	embedded_archive.cpp
 	GUI_Dialog_Main.cpp
+	MySortableListCtrl.cpp
 	paper.cpp
 	paperman.cpp
 	papertree.cpp
@@ -21,9 +22,11 @@ set(HEADERS
 	GUI_Dialog_Main.hpp
 	GUI_Dialog_Waiting.hpp
 	incbin.h
+	MySortableListCtrl.hpp
 	paper.hpp
 	paperman.hpp
 	papertree.hpp
+	reservations_multithreaded.hpp
 	resource.h
 	semantic.hpp
 	view_portal.hpp)

@@ -5,6 +5,7 @@
 #include <cstring>                                   // strcmp, strstr
 #include <array>                                     // array
 #include <map>                                       // map
+#include <random>                                    // ------------------------------ remove this ---- just for testing
 #include <string>                                    // string
 #include <string_view>                               // string_view
 #include <vector>                                    // vector
@@ -323,30 +324,26 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // =================================================================
 
     // ====================== wxListCtrl for authors ===================
+    constexpr auto number =
+      +[](void) -> int
+      {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::discrete_distribution<> dist({5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
+        return dist(gen) + 1; // Adjusting index to match range 1-20
+      };
+
     size_t i = -1;
     for ( auto const &e : g_map_authors )
     {
         ++i;
         this->listAuthors->InsertItem (i, e.second.first);
-        this->listAuthors->SetItemData(i, (std::uintptr_t)e.second.first);
-      //this->listAuthors->SetItem(0, 1, "AuthoredZZZ");
-      //this->listAuthors->SetItem(0, 2, "AcknowledgedZZZ");
+        this->listAuthors->SetItem(i, 1, wxString() << e.second.second.size() );
+        this->listAuthors->SetItem(i, 2, wxString() << number() );
+        this->listAuthors->SetItemData(i, (std::uintptr_t)&e);
     }
 
-    static_assert( sizeof(wxIntPtr) >= sizeof(void*) );  // sanity check
-
-    constexpr auto compare =
-      +[](wxIntPtr const item1, wxIntPtr const item2, wxIntPtr) -> int
-      {
-        std::string_view a( (char const*)item1 ),
-                         b( (char const*)item2 );
-
-        if ( a == b ) return  0;
-        if ( a  < b ) return -1;
-        /* if ( a  > b ) */ return +1;  // the only possibility left
-      };
-
-    this->listAuthors->SortItems(compare, 0);
+    //this->listAuthors->SortItems(compare, 0);
     // =================================================================
 
     this->bSizerForPanelBrowse->Add(this->splitter, 1, wxEXPAND, 0);
