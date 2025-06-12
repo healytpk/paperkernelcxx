@@ -267,7 +267,8 @@ int main(void)
                         std::abort();
                     }
 
-                    RecordAuthor(author.name, filename);
+                    Trim(author.name);
+                    if ( false == author.name.empty() ) RecordAuthor(author.name, filename);
 
 #if 0
                     cerr << "Author: " << author.name << " --- Email: " << author.email << " --- Affiliation: " << author.affiliation
@@ -343,7 +344,7 @@ int main(void)
     cout << "{\n";
     for ( auto &mypair : g_all_authors )
     {
-        cout << "    { " << mypair.first << "u, { \"" << mypair.second.name << "\", { ";
+        cout << "    { " << mypair.first << "u, { L\"" << mypair.second.name << "\", { ";
 
         for ( auto &e : mypair.second.files )
         {
