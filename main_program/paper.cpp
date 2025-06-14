@@ -1,5 +1,6 @@
 #include "paper.hpp"
 #include <cassert>                          // assert
+#include <cstdlib>                          // abort
 #include <cctype>                           // isdigit, tolower
 #include <stdexcept>                        // runtime_error
 #include <tuple>                            // tuple
@@ -109,6 +110,8 @@ static char const *Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigne
         }
     }
     assert( nullptr == "invalid paper not listed in tree" );
+    std::abort();    // if NDEBUG
+    return nullptr;  // suppress compiler warning
 }
 
 char const *Paper::GetTitle(void) noexcept
