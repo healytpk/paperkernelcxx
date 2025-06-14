@@ -18,6 +18,7 @@ protected:
     wxSplitterWindow *splitter = nullptr;
     wxDataViewCtrl *treeAllPapers = nullptr;
     wxDataViewTreeStoreWithColumns<3u> *treeStore = nullptr;
+    wxDataViewTreeStoreWithColumns<1u> *authorPaperStore = nullptr;
     wxWindow *view_portal = nullptr;
     void OnClose(wxCloseEvent&) override;
     void btnLoadModel_OnButtonClick(wxCommandEvent&) override;
@@ -26,6 +27,7 @@ protected:
     void btnXapianLoadPapers_OnButtonClick(wxCommandEvent&) override;
     void btnXapianUnloadPapers_OnButtonClick(wxCommandEvent&) override;
     void btnXapianSearch_OnButtonClick(wxCommandEvent&) override;
+    void listAuthors_OnListItemSelected(wxListEvent&) override;
     void listXapianResults_OnListItemActivated(wxListEvent&) override;
     void btnWhittleDownPapers_OnButtonClick(wxCommandEvent&) override;
     void PaperTree_OnSelChanged(wxDataViewEvent&);

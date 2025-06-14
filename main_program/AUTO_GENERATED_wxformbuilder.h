@@ -22,6 +22,8 @@
 #include <wx/settings.h>
 #include <wx/panel.h>
 #include <wx/listctrl.h>
+#include <wx/dataview.h>
+#include <wx/splitter.h>
 #include <wx/button.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
@@ -47,7 +49,11 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		wxToolBarToolBase* toolShowViewPortal;
 		wxBoxSizer* bSizerForPanelBrowse;
 		wxPanel* panelAuthors;
+		wxSplitterWindow* m_splitter2;
+		wxPanel* m_panel5;
 		wxListCtrl* listAuthors;
+		wxPanel* m_panel6;
+		wxDataViewCtrl* treeAuthorPapers;
 		wxPanel* panelXapian;
 		wxButton* btnXapianLoadPapers;
 		wxButton* btnXapianUnloadPapers;
@@ -78,7 +84,7 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnTool_ShowPaperTree( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTool_ShowViewPortal( wxCommandEvent& event ) { event.Skip(); }
-		virtual void listAuthors_OnListItemActivated( wxListEvent& event ) { event.Skip(); }
+		virtual void listAuthors_OnListItemSelected( wxListEvent& event ) { event.Skip(); }
 		virtual void btnXapianLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnXapianUnloadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnXapianSearch_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
@@ -95,6 +101,12 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		Dialog_Main__Auto_Base_Class( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Paper Kernel C++"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 815,794 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER );
 
 		~Dialog_Main__Auto_Base_Class();
+
+		void m_splitter2OnIdle( wxIdleEvent& )
+		{
+			m_splitter2->SetSashPosition( 0 );
+			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( Dialog_Main__Auto_Base_Class::m_splitter2OnIdle ), NULL, this );
+		}
 
 };
 

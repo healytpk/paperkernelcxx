@@ -53,8 +53,33 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	wxBoxSizer* bSizer12;
 	bSizer12 = new wxBoxSizer( wxVERTICAL );
 
-	listAuthors = new wxListCtrl( panelAuthors, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL );
-	bSizer12->Add( listAuthors, 1, wxALL, 5 );
+	m_splitter2 = new wxSplitterWindow( panelAuthors, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
+	m_splitter2->Connect( wxEVT_IDLE, wxIdleEventHandler( Dialog_Main__Auto_Base_Class::m_splitter2OnIdle ), NULL, this );
+
+	m_panel5 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer15;
+	bSizer15 = new wxBoxSizer( wxVERTICAL );
+
+	listAuthors = new wxListCtrl( m_panel5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT );
+	bSizer15->Add( listAuthors, 1, wxALL|wxEXPAND, 5 );
+
+
+	m_panel5->SetSizer( bSizer15 );
+	m_panel5->Layout();
+	bSizer15->Fit( m_panel5 );
+	m_panel6 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer16;
+	bSizer16 = new wxBoxSizer( wxVERTICAL );
+
+	treeAuthorPapers = new wxDataViewCtrl( m_panel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer16->Add( treeAuthorPapers, 1, wxALL|wxEXPAND, 5 );
+
+
+	m_panel6->SetSizer( bSizer16 );
+	m_panel6->Layout();
+	bSizer16->Fit( m_panel6 );
+	m_splitter2->SplitVertically( m_panel5, m_panel6, 0 );
+	bSizer12->Add( m_splitter2, 1, wxEXPAND, 5 );
 
 
 	panelAuthors->SetSizer( bSizer12 );
@@ -207,7 +232,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( Dialog_Main__Auto_Base_Class::OnClose ) );
 	this->Connect( toolShowPaperTree->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowPaperTree ) );
 	this->Connect( toolShowViewPortal->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowViewPortal ) );
-	listAuthors->Connect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler( Dialog_Main__Auto_Base_Class::listAuthors_OnListItemActivated ), NULL, this );
+	listAuthors->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( Dialog_Main__Auto_Base_Class::listAuthors_OnListItemSelected ), NULL, this );
 	btnXapianLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianLoadPapers_OnButtonClick ), NULL, this );
 	btnXapianUnloadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianUnloadPapers_OnButtonClick ), NULL, this );
 	btnXapianSearch->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianSearch_OnButtonClick ), NULL, this );

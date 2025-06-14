@@ -349,6 +349,10 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     this->bSizerForPanelBrowse->Add(this->splitter, 1, wxEXPAND, 0);
     this->splitter->SplitVertically( this->treeAllPapers, this->view_portal, FromDIP(250) );
     this->panelBrowse->Layout();
+
+    this->authorPaperStore = new std::remove_reference_t<decltype(*this->authorPaperStore)>;
+    this->treeAuthorPapers->AssociateModel(this->authorPaperStore);
+
     this->Layout();
 }
 
@@ -608,5 +612,23 @@ void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
             }
             return;
         }
+    }
+}
+
+void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent&)
+{
+    for ( Paper const &e : g_map_authors[0].second )
+    {
+        wxDataViewItem const item_papernum =
+            this->authorPaperStore->AppendItemWithColumns(
+            {},
+            { wxString("p") << e.num }
+        );
+
+        wxDataViewItem const item_rev =
+            this->authorPaperStore->AppendItemWithColumns(
+            item_papernum,
+            { wxString("r") << e.num }
+        );
     }
 }
