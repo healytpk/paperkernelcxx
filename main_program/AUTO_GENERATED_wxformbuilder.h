@@ -63,22 +63,22 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		wxStaticText* m_staticText5;
 		wxListCtrl* listXapianResults;
 		wxPanel* panelAI;
-		wxButton* btnLoadModel;
-		wxButton* btnUnloadModel;
+		wxButton* AI_btnLoadModel;
+		wxButton* AI_btnUnloadModel;
 		wxStaticLine* m_staticline1;
-		wxButton* btnLoadPapers;
-		wxButton* btnUnloadPapers;
+		wxButton* AI_btnLoadPapers;
+		wxButton* AI_btnUnloadPapers;
 		wxStaticLine* m_staticline2;
 		wxStaticText* m_staticText1;
-		wxTextCtrl* txtBooleanQuestion;
-		wxButton* btnWhittleDownPapers;
-		wxListCtrl* lcPapers;
+		wxTextCtrl* AI_txtBooleanQuestion;
+		wxButton* AI_btnWhittleDownPapers;
+		wxListCtrl* AI_lcPapers;
 		wxStaticText* m_staticText2;
-		wxTextCtrl* txtDetailedQuestion;
-		wxButton* btnAnalysePapers;
+		wxTextCtrl* AI_txtDetailedQuestion;
+		wxButton* AI_btnAnalysePapers;
 		wxStaticText* m_staticText3;
-		wxListBox* listPapers;
-		wxTextCtrl* txtDetailedAnswer;
+		wxListBox* AI_listPapers;
+		wxTextCtrl* AI_txtDetailedAnswer;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
@@ -90,11 +90,12 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		virtual void btnXapianUnloadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void btnXapianSearch_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void listXapianResults_OnListItemActivated( wxListEvent& event ) { event.Skip(); }
-		virtual void btnLoadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void btnUnloadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void btnLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void btnWhittleDownPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void btnAnalysePapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void AI_btnLoadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void AI_btnUnloadModel_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void AI_btnLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void AI_btnUnloadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void AI_btnWhittleDownPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void AI_btnAnalysePapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

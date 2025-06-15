@@ -144,13 +144,13 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxHORIZONTAL );
 
-	btnLoadModel = new wxButton( panelAI, wxID_ANY, _("Load Model"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer6->Add( btnLoadModel, 0, wxALL, 5 );
+	AI_btnLoadModel = new wxButton( panelAI, wxID_ANY, _("Load Model"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer6->Add( AI_btnLoadModel, 0, wxALL, 5 );
 
-	btnUnloadModel = new wxButton( panelAI, wxID_ANY, _("Unload Model"), wxDefaultPosition, wxDefaultSize, 0 );
-	btnUnloadModel->Enable( false );
+	AI_btnUnloadModel = new wxButton( panelAI, wxID_ANY, _("Unload Model"), wxDefaultPosition, wxDefaultSize, 0 );
+	AI_btnUnloadModel->Enable( false );
 
-	bSizer6->Add( btnUnloadModel, 0, wxALL, 5 );
+	bSizer6->Add( AI_btnUnloadModel, 0, wxALL, 5 );
 
 
 	bSizer3->Add( bSizer6, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -161,13 +161,13 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	wxBoxSizer* bSizer4;
 	bSizer4 = new wxBoxSizer( wxHORIZONTAL );
 
-	btnLoadPapers = new wxButton( panelAI, wxID_ANY, _("Load Papers"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer4->Add( btnLoadPapers, 0, wxALL, 5 );
+	AI_btnLoadPapers = new wxButton( panelAI, wxID_ANY, _("Load Papers"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer4->Add( AI_btnLoadPapers, 0, wxALL, 5 );
 
-	btnUnloadPapers = new wxButton( panelAI, wxID_ANY, _("Unload Papers"), wxDefaultPosition, wxDefaultSize, 0 );
-	btnUnloadPapers->Enable( false );
+	AI_btnUnloadPapers = new wxButton( panelAI, wxID_ANY, _("Unload Papers"), wxDefaultPosition, wxDefaultSize, 0 );
+	AI_btnUnloadPapers->Enable( false );
 
-	bSizer4->Add( btnUnloadPapers, 0, wxALL, 5 );
+	bSizer4->Add( AI_btnUnloadPapers, 0, wxALL, 5 );
 
 
 	bSizer3->Add( bSizer4, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -179,24 +179,24 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	m_staticText1->Wrap( -1 );
 	bSizer3->Add( m_staticText1, 0, wxALL, 5 );
 
-	txtBooleanQuestion = new wxTextCtrl( panelAI, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
-	bSizer3->Add( txtBooleanQuestion, 0, wxALL|wxEXPAND, 5 );
+	AI_txtBooleanQuestion = new wxTextCtrl( panelAI, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
+	bSizer3->Add( AI_txtBooleanQuestion, 0, wxALL|wxEXPAND, 5 );
 
-	btnWhittleDownPapers = new wxButton( panelAI, wxID_ANY, _("Next"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer3->Add( btnWhittleDownPapers, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	AI_btnWhittleDownPapers = new wxButton( panelAI, wxID_ANY, _("Next"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer3->Add( AI_btnWhittleDownPapers, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	lcPapers = new wxListCtrl( panelAI, wxID_ANY, wxDefaultPosition, wxSize( -1,200 ), wxLC_REPORT );
-	bSizer3->Add( lcPapers, 0, wxALL|wxEXPAND, 5 );
+	AI_lcPapers = new wxListCtrl( panelAI, wxID_ANY, wxDefaultPosition, wxSize( -1,200 ), wxLC_REPORT );
+	bSizer3->Add( AI_lcPapers, 0, wxALL|wxEXPAND, 5 );
 
 	m_staticText2 = new wxStaticText( panelAI, wxID_ANY, _("More detailed question to ask for each of the above papers:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
 	bSizer3->Add( m_staticText2, 0, wxALL, 5 );
 
-	txtDetailedQuestion = new wxTextCtrl( panelAI, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,80 ), wxTE_MULTILINE );
-	bSizer3->Add( txtDetailedQuestion, 0, wxALL|wxEXPAND, 5 );
+	AI_txtDetailedQuestion = new wxTextCtrl( panelAI, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,80 ), wxTE_MULTILINE );
+	bSizer3->Add( AI_txtDetailedQuestion, 0, wxALL|wxEXPAND, 5 );
 
-	btnAnalysePapers = new wxButton( panelAI, wxID_ANY, _("Ask"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer3->Add( btnAnalysePapers, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	AI_btnAnalysePapers = new wxButton( panelAI, wxID_ANY, _("Ask"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer3->Add( AI_btnAnalysePapers, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
 	m_staticText3 = new wxStaticText( panelAI, wxID_ANY, _("Responses:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText3->Wrap( -1 );
@@ -205,11 +205,11 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxHORIZONTAL );
 
-	listPapers = new wxListBox( panelAI, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
-	bSizer2->Add( listPapers, 1, wxALL|wxEXPAND, 5 );
+	AI_listPapers = new wxListBox( panelAI, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	bSizer2->Add( AI_listPapers, 1, wxALL|wxEXPAND, 5 );
 
-	txtDetailedAnswer = new wxTextCtrl( panelAI, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-	bSizer2->Add( txtDetailedAnswer, 1, wxALL|wxEXPAND, 5 );
+	AI_txtDetailedAnswer = new wxTextCtrl( panelAI, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
+	bSizer2->Add( AI_txtDetailedAnswer, 1, wxALL|wxEXPAND, 5 );
 
 
 	bSizer3->Add( bSizer2, 1, wxEXPAND, 5 );
@@ -238,11 +238,12 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	btnXapianUnloadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianUnloadPapers_OnButtonClick ), NULL, this );
 	btnXapianSearch->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnXapianSearch_OnButtonClick ), NULL, this );
 	listXapianResults->Connect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler( Dialog_Main__Auto_Base_Class::listXapianResults_OnListItemActivated ), NULL, this );
-	btnLoadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnLoadModel_OnButtonClick ), NULL, this );
-	btnUnloadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnUnloadModel_OnButtonClick ), NULL, this );
-	btnLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnLoadPapers_OnButtonClick ), NULL, this );
-	btnWhittleDownPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnWhittleDownPapers_OnButtonClick ), NULL, this );
-	btnAnalysePapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnAnalysePapers_OnButtonClick ), NULL, this );
+	AI_btnLoadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnLoadModel_OnButtonClick ), NULL, this );
+	AI_btnUnloadModel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnUnloadModel_OnButtonClick ), NULL, this );
+	AI_btnLoadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnLoadPapers_OnButtonClick ), NULL, this );
+	AI_btnUnloadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnUnloadPapers_OnButtonClick ), NULL, this );
+	AI_btnWhittleDownPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnWhittleDownPapers_OnButtonClick ), NULL, this );
+	AI_btnAnalysePapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnAnalysePapers_OnButtonClick ), NULL, this );
 }
 
 Dialog_Main__Auto_Base_Class::~Dialog_Main__Auto_Base_Class()

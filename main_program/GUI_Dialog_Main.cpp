@@ -449,6 +449,13 @@ void Dialog_Main::AI_btnLoadModel_OnButtonClick(wxCommandEvent&)
     this->AI_btnUnloadModel->Enable(   is_loaded );
 }
 
+void Dialog_Main::AI_btnUnloadModel_OnButtonClick(wxCommandEvent&)
+{
+    g_aimanager.Reset();
+    this->AI_btnLoadModel->Enable(true);
+    this->AI_btnUnloadModel->Enable(false);
+}
+
 void Dialog_Main::AI_btnLoadPapers_OnButtonClick(wxCommandEvent&)
 {
     Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, "Loading the thousands of C++ papers. . .");
@@ -475,11 +482,9 @@ void Dialog_Main::AI_btnLoadPapers_OnButtonClick(wxCommandEvent&)
     this->AI_btnUnloadPapers->Enable(   is_loaded );
 }
 
-void Dialog_Main::AI_btnUnloadModel_OnButtonClick(wxCommandEvent&)
+void Dialog_Main::AI_btnUnloadPapers_OnButtonClick(wxCommandEvent&)
 {
-    g_aimanager.Reset();
-    this->AI_btnLoadModel  ->Enable( true  );
-    this->AI_btnUnloadModel->Enable( false );
+    // Unload all the papers
 }
 
 void Dialog_Main::AI_btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
@@ -488,9 +493,7 @@ void Dialog_Main::AI_btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
     dlg.m_gauge->SetRange( g_paperman.size() );
     //dlg.m_gauge->Hide();
 
-    std::atomic_bool is_loaded{false};
-
-    std::jthread mythread([&dlg,&is_loaded]
+    std::jthread mythread([&dlg]
       {
           try
           {
@@ -502,7 +505,6 @@ void Dialog_Main::AI_btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
                   g_aimanager.LoadInPaper(ptokens);
                   dlg.CallAfter( &Dialog_Waiting::CallAfter_Increment );
               }
-              is_loaded = true;
           }
           catch(...) {}
 
@@ -510,9 +512,6 @@ void Dialog_Main::AI_btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
       });
 
     dlg.ShowModal();
-
-    this->AI_btnLoadPapers  ->Enable( ! is_loaded );
-    this->AI_btnUnloadPapers->Enable(   is_loaded );
 }
 
 void Dialog_Main::btnXapianUnloadPapers_OnButtonClick(wxCommandEvent&)
