@@ -10,6 +10,7 @@
 #include <string_view>                               // string_view
 #include <vector>                                    // vector
 #include <thread>                                    // jthread
+#include <type_traits>                               // is_same
 #include <wx/app.h>                                  // wxApp
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include <wx/dataview.h>                             // wxDataViewCtrl
@@ -109,6 +110,23 @@ protected:
     std::map< wxDataViewItem, Node > m_data;
 
 public:
+
+    wxDataViewItem FindItem(wxString const &s) const
+    {
+        for ( auto const &e : this->m_data )
+        {
+            if ( s == e.second.column_values[0] ) return e.first;
+        }
+        return wxDataViewItem{};
+    }
+
+    void ClearData(void)
+    {
+        this->current_id = 0u;
+        this->m_data.clear();
+        this->m_data.emplace(wxDataViewItem{}, Node{ wxDataViewItem{}, wxDataViewItem{}, wxDataViewItem{}, ArrCols_t{} });
+    }
+
     wxDataViewTreeStoreWithColumns(void)
     {
         // The root node is a null wxDataViewItem
@@ -340,7 +358,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
         this->listAuthors->InsertItem (i, e.second.first);
         this->listAuthors->SetItem(i, 1, wxString() << e.second.second.size() );
         this->listAuthors->SetItem(i, 2, wxString() << number() );
-        this->listAuthors->SetItemData(i, (std::uintptr_t)&e);
+        this->listAuthors->SetItemPtrData(i, reinterpret_cast<std::uintptr_t>(const_cast<void*>(static_cast<void const*>(&e))) );
     }
 
     //this->listAuthors->SortItems(compare, 0);
@@ -351,6 +369,9 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     this->panelBrowse->Layout();
 
     this->authorPaperStore = new std::remove_reference_t<decltype(*this->authorPaperStore)>;
+    wxDataViewColumn *const pcolAuthor = this->treeAuthorPapers->AppendTextColumn("Paper" , 0);
+    this->treeAuthorPapers->AppendTextColumn("Title" , 1, wxDATAVIEW_CELL_INERT, 200);
+    this->treeAuthorPapers->SetExpanderColumn(pcolAuthor);
     this->treeAuthorPapers->AssociateModel(this->authorPaperStore);
 
     this->Layout();
@@ -615,20 +636,41 @@ void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
     }
 }
 
-void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent&)
+void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
 {
-    for ( Paper const &e : g_map_authors[0].second )
+    this->authorPaperStore->ClearData();
+    this->authorPaperStore->Cleared();
+
+    typedef decltype(g_map_authors)::value_type MapPairType;
+    typedef MapPairType::second_type::second_type ContainerType;
+    static_assert( std::is_same_v< Paper, ContainerType::value_type > );
+
+    static_assert( sizeof(wxUIntPtr) >= sizeof(void*) );
+    std::uintptr_t const addr_as_int = static_cast<std::uintptr_t>(event.GetData());
+    assert( 0u != addr_as_int );
+    MapPairType const *const mypair = static_cast<MapPairType*>( reinterpret_cast<void*>(addr_as_int) );
+
+    for ( Paper const &e : mypair->second.second )
     {
-        wxDataViewItem const item_papernum =
-            this->authorPaperStore->AppendItemWithColumns(
-            {},
-            { wxString("p") << e.num }
-        );
+        wxString const paper_str = wxString("p") << e.num;
+
+        wxDataViewItem item_papernum = this->authorPaperStore->FindItem(paper_str);
+
+        if ( wxDataViewItem{} == item_papernum )
+        {
+            item_papernum = this->authorPaperStore->AppendItemWithColumns(
+                {},
+                { paper_str }
+            );
+            this->authorPaperStore->ItemAdded(wxDataViewItem{}, item_papernum);
+        }
 
         wxDataViewItem const item_rev =
             this->authorPaperStore->AppendItemWithColumns(
             item_papernum,
-            { wxString("r") << e.num }
+            { wxString("r") << e.rev }
         );
+
+        this->authorPaperStore->ItemAdded(item_papernum, item_rev);
     }
 }
