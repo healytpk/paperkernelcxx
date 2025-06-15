@@ -11,6 +11,7 @@
 #include <vector>                                    // vector
 #include <thread>                                    // jthread
 #include <type_traits>                               // is_same
+#include <utility>                                   // move
 #include <wx/app.h>                                  // wxApp
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include <wx/dataview.h>                             // wxDataViewCtrl
@@ -208,10 +209,8 @@ void Dialog_Main::OnViewPortalLoaded(wxEvent&) noexcept
     this->is_viewportal_loaded = true;
 }
 
-void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
+void Dialog_Main::PresentPaperInViewPortal(Paper const paper)
 {
-    std::cout << "Entered OnSelChanged --------------------\n";
-
     assert( nullptr != this->view_portal );
     this->is_viewportal_loaded = false;
     ::ViewPortal_Set(this->view_portal, "<html><body><h1>Loading. . .</h1></body></html>");
@@ -221,24 +220,10 @@ void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
     this->view_portal->Update();
     wxGetApp().SafeYield(nullptr, false);
 
-    wxDataViewItem const selectedItem = event.GetItem();
-
-    wxString const itemText = this->GetPaperTreeItemText(selectedItem);
-    wxString htmlPath;
-    if ( itemText.StartsWith('p') )
-    {
-        wxString const lastChildText = this->GetPaperTreeItemLastChildText(selectedItem);
-        htmlPath = itemText + lastChildText + ".html";
-    }
-    else
-    {
-        wxDataViewItem const parent = this->treeStore->GetParent(selectedItem);
-        wxString const parentText = this->GetPaperTreeItemText(parent);
-        htmlPath = parentText + itemText + ".html";
-    }
-    std::cout << "htmlPath = " << htmlPath.ToStdString() << " --------------------\n";
+    string const htmlPath = paper.c_str() + string(".html");
+    std::cout << "htmlPath = " << htmlPath << " --------------------\n";
     std::cout << "About to call 'GetFile'\n";
-    string html = ArchiveGetFile( htmlPath.ToStdString().c_str() );
+    string html = ArchiveGetFile( htmlPath.c_str() );
     std::cout << "Returned from 'GetFile'\n";
 
     std::cout << "Length of string returned from GetFile: " << html.size() << std::endl;
@@ -251,8 +236,69 @@ void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
                "<p>Failed to display the paper in the view portal.</p></body></html>";
     }
 
-    assert( nullptr != this->view_portal );
     ::ViewPortal_Set( this->view_portal, html );
+}
+
+Paper Dialog_Main::GetPaperFromDataViewEvent(wxDataViewEvent &event)
+{
+    wxDataViewItem const selectedItem = event.GetItem();
+    if ( wxDataViewItem{} == selectedItem ) return {};
+    wxDataViewCtrl *const pdv = dynamic_cast<wxDataViewCtrl*>( event.GetEventObject() );
+    if ( nullptr == pdv ) return {};
+    wxString itemText = this->GetPaperTreeItemText(pdv, selectedItem);
+    wxString paper_str;
+    if ( itemText.StartsWith('p') )
+    {
+        wxString lastChildText = this->GetPaperTreeItemLastChildText(pdv, selectedItem);
+        paper_str = std::move(itemText) + std::move(lastChildText);
+    }
+    else
+    {
+        wxDataViewModel *const pdvm = pdv->GetModel();
+        wxDataViewItem parent{};
+        auto *const pdvm2 = dynamic_cast<  wxDataViewTreeStoreWithColumns<2u> *  >(pdvm);
+        if ( pdvm2 ) parent = pdvm2->GetParent(selectedItem);
+        else
+        {
+            auto *const pdvm3 = dynamic_cast<  wxDataViewTreeStoreWithColumns<3u> *  >(pdvm);
+            if ( pdvm3 ) parent = pdvm3->GetParent(selectedItem);
+        }
+
+        if ( wxDataViewItem{} == parent ) return {};
+        wxString parentText = this->GetPaperTreeItemText(pdv, parent);
+        paper_str = std::move(parentText) + std::move(itemText);
+    }
+
+    return Paper( paper_str.ToStdString() );
+}
+
+void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
+{
+    std::cout << "Entered OnSelChanged --------------------\n";
+    this->PresentPaperInViewPortal( this->GetPaperFromDataViewEvent(event) );
+}
+
+void Dialog_Main::treeAuthorPapers_OnDataViewCtrlItemActivated(wxDataViewEvent &event)
+{
+    Paper const paper = this->GetPaperFromDataViewEvent(event);
+    if ( false == this->SelectPaperInPaperTree(paper) ) return;
+    this->m_notebook1->SetSelection(0u);
+    wxGetApp().SafeYield(nullptr, false);
+    this->PresentPaperInViewPortal(paper);
+}
+
+void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
+{
+    int const index = event.GetSelection();  // index of clicked item
+    if ( (index < 0) || (index >= this->listXapianResults->GetItemCount()) ) return;
+    wxString const itemText = this->listXapianResults->GetItemText(index,0);  // text of clicked item
+    if ( itemText.IsEmpty() ) return;
+
+    Paper const paper( itemText.ToStdString() );  // will throw if entry in listbox is dodgy
+    if ( false == this->SelectPaperInPaperTree(paper) ) return;
+    this->m_notebook1->SetSelection(0u);
+    wxGetApp().SafeYield(nullptr, false);
+    this->PresentPaperInViewPortal(paper);
 }
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
@@ -515,18 +561,27 @@ void Dialog_Main::btnXapianLoadPapers_OnButtonClick(wxCommandEvent&)
     this->btnXapianSearch      ->Enable(   is_loaded );
 }
 
-wxString Dialog_Main::GetPaperTreeItemText(wxDataViewItem const selected_item) const
+wxString Dialog_Main::GetPaperTreeItemText(wxDataViewCtrl *const pdvc, wxDataViewItem const selected_item) const
 {
     if ( false == selected_item.IsOk() ) return {};
     wxVariant myvar;
-    this->treeStore->GetValue(myvar, selected_item, 0u);
+    pdvc->GetModel()->GetValue(myvar, selected_item, 0u);
     return myvar.GetString();
 }
 
-wxString Dialog_Main::GetPaperTreeItemLastChildText(wxDataViewItem const selected_item) const
+wxString Dialog_Main::GetPaperTreeItemLastChildText(wxDataViewCtrl *const pdv, wxDataViewItem const selected_item) const
 {
-    wxDataViewItem const lastChild = this->treeStore->GetLastChild(selected_item);
-    return this->GetPaperTreeItemText(lastChild);
+    wxDataViewModel *const pdvm = pdv->GetModel();
+    wxDataViewItem child{};
+    auto *const pdvm2 = dynamic_cast<  wxDataViewTreeStoreWithColumns<2u> *  >(pdvm);
+    if ( pdvm2 ) child = pdvm2->GetLastChild(selected_item);
+    else
+    {
+        auto *const pdvm3 = dynamic_cast<  wxDataViewTreeStoreWithColumns<3u> *  >(pdvm);
+        if ( pdvm3 ) child = pdvm3->GetLastChild(selected_item);
+    }
+    if ( wxDataViewItem{} == child ) return {};
+    return this->GetPaperTreeItemText(pdv, child);
 }
 
 void Dialog_Main::OnTool_Common(int const this_tool, int const other_tool, wxWindow *const this_window)
@@ -591,15 +646,8 @@ void Dialog_Main::btnXapianSearch_OnButtonClick(wxCommandEvent&)
     g_seman.Search(this->txtXapianSearchFor->GetValue().ToStdString(), mylambda);
 }
 
-void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
+bool Dialog_Main::SelectPaperInPaperTree(Paper const paper_selected)
 {
-    int const index = event.GetSelection();  // index of clicked item
-    if ( (index < 0) || (index >= this->listXapianResults->GetItemCount()) ) return;
-    wxString const itemText = this->listXapianResults->GetItemText(index,0);  // text of clicked item
-    if ( itemText.IsEmpty() ) return;
-
-    Paper paper_selected( itemText.ToStdString() );  // will throw if entry in listbox is dodgy
-
     wxDataViewModel const *const model = this->treeAllPapers->GetModel();
     wxDataViewItemArray children;
     model->GetChildren( wxDataViewItem{}, children );
@@ -625,15 +673,13 @@ void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
                     this->treeAllPapers->EnsureVisible(item ); // scroll to item
                     this->treeAllPapers->EnsureVisible(item2); // scroll to item
                     this->treeAllPapers->Select(item2);
-                    this->m_notebook1->SetSelection(0u);
-                    wxDataViewEvent myevent(wxEVT_DATAVIEW_SELECTION_CHANGED, this->treeAllPapers, item2);
-                    this->PaperTree_OnSelChanged(myevent);
-                    return;
+                    return true;
                 }
             }
-            return;
+            break;
         }
     }
+    return false;
 }
 
 void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
@@ -652,7 +698,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
 
     for ( Paper const &e : mypair->second.second )
     {
-        wxString const paper_str = wxString("p") << e.num;
+        wxString const paper_str = wxString::Format("p%04u", e.num);
 
         wxDataViewItem item_papernum = this->authorPaperStore->FindItem(paper_str);
 

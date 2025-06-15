@@ -8,6 +8,7 @@ class wxDataViewCtrl;
 class wxDataViewEvent;
 class wxDataViewItem;
 class wxSplitterWindow;
+class Paper;
 
 template<unsigned column_count>
 class wxDataViewTreeStoreWithColumns;
@@ -31,12 +32,16 @@ protected:
     void listXapianResults_OnListItemActivated(wxListEvent&) override;
     void btnWhittleDownPapers_OnButtonClick(wxCommandEvent&) override;
     void PaperTree_OnSelChanged(wxDataViewEvent&);
-    wxString GetPaperTreeItemText(wxDataViewItem) const;
-    wxString GetPaperTreeItemLastChildText(wxDataViewItem) const;
+    wxString GetPaperTreeItemText(wxDataViewCtrl*,wxDataViewItem) const;
+    wxString GetPaperTreeItemLastChildText(wxDataViewCtrl*,wxDataViewItem) const;
     void OnTool_Common(int this_tool, int other_tool, wxWindow *this_window);
     void OnTool_ShowPaperTree(wxCommandEvent&) override;
     void OnTool_ShowViewPortal(wxCommandEvent&) override;
     void OnViewPortalLoaded(wxEvent&) noexcept;
+    void PresentPaperInViewPortal(Paper);
+    Paper GetPaperFromDataViewEvent(wxDataViewEvent&);
+    void treeAuthorPapers_OnDataViewCtrlItemActivated(wxDataViewEvent&) override;
+    bool SelectPaperInPaperTree(Paper);
     bool is_viewportal_loaded = false;
 public:
     Dialog_Main(wxWindow *parent);
