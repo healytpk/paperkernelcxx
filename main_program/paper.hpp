@@ -1,11 +1,17 @@
 #pragma once
 
+#include <stdexcept>                              // runtime_error
 #include <string>                                 // string
 #include <string_view>                            // string_view
 
 struct Paper {
 
     unsigned num, rev;
+
+    Paper(void) noexcept(false)
+    {
+        throw std::runtime_error("invalid or null paper");
+    }
 
     Paper(std::string_view) noexcept(false);
 
