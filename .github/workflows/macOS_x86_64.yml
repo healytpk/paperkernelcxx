@@ -16,7 +16,8 @@ jobs:
     steps:
     - name: Install newer version of compiler
       run: |
-        rm -f /usr/local/bin/idle3
+        rm /usr/local/bin/idle3.13
+        brew link --overwrite python@3.13
         brew update
         brew install llvm
         echo "PATH=$(brew --prefix llvm)/bin:$PATH" >> $GITHUB_ENV
