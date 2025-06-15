@@ -428,7 +428,7 @@ void Dialog_Main::OnClose(wxCloseEvent&)
     this->Destroy();
 }
 
-void Dialog_Main::btnLoadModel_OnButtonClick(wxCommandEvent&)
+void Dialog_Main::AI_btnLoadModel_OnButtonClick(wxCommandEvent&)
 {
     Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, "Loading the artificial intelligence model. . .");
     dlg.m_gauge->SetRange(100u);
@@ -445,11 +445,11 @@ void Dialog_Main::btnLoadModel_OnButtonClick(wxCommandEvent&)
 
     dlg.ShowModal();
 
-    this->btnLoadModel  ->Enable( ! is_loaded );
-    this->btnUnloadModel->Enable(   is_loaded );
+    this->AI_btnLoadModel  ->Enable( ! is_loaded );
+    this->AI_btnUnloadModel->Enable(   is_loaded );
 }
 
-void Dialog_Main::btnLoadPapers_OnButtonClick(wxCommandEvent&)
+void Dialog_Main::AI_btnLoadPapers_OnButtonClick(wxCommandEvent&)
 {
     Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, "Loading the thousands of C++ papers. . .");
     dlg.m_gauge->SetRange(100u);
@@ -471,18 +471,18 @@ void Dialog_Main::btnLoadPapers_OnButtonClick(wxCommandEvent&)
 
     dlg.ShowModal();
 
-    this->btnLoadPapers  ->Enable( ! is_loaded );
-    this->btnUnloadPapers->Enable(   is_loaded );
+    this->AI_btnLoadPapers  ->Enable( ! is_loaded );
+    this->AI_btnUnloadPapers->Enable(   is_loaded );
 }
 
-void Dialog_Main::btnUnloadModel_OnButtonClick(wxCommandEvent&)
+void Dialog_Main::AI_btnUnloadModel_OnButtonClick(wxCommandEvent&)
 {
     g_aimanager.Reset();
-    this->btnLoadModel  ->Enable( true  );
-    this->btnUnloadModel->Enable( false );
+    this->AI_btnLoadModel  ->Enable( true  );
+    this->AI_btnUnloadModel->Enable( false );
 }
 
-void Dialog_Main::btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
+void Dialog_Main::AI_btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
 {
     Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, "Whittling down the list of papers. . .");
     dlg.m_gauge->SetRange( g_paperman.size() );
@@ -511,8 +511,8 @@ void Dialog_Main::btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
 
     dlg.ShowModal();
 
-    this->btnLoadPapers  ->Enable( ! is_loaded );
-    this->btnUnloadPapers->Enable(   is_loaded );
+    this->AI_btnLoadPapers  ->Enable( ! is_loaded );
+    this->AI_btnUnloadPapers->Enable(   is_loaded );
 }
 
 void Dialog_Main::btnXapianUnloadPapers_OnButtonClick(wxCommandEvent&)
