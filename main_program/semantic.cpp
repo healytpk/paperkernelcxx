@@ -49,20 +49,20 @@ void SemanticSearcher::Init( std::function<void(unsigned,unsigned)> SetProgress 
     std::string const str = (GetExecutableDirectory() / "database_xapian_for_all_cxx_papers").string();
     char const *const dbfile = str.c_str();
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
     HANDLE const hFile = CreateFileA(
         dbfile,                               // File name
-        GENERIC_READ | GENERIC_WRITE,         // Read/write access
-        0,                                    // No sharing
-        NULL,                                 // Default security
+        GENERIC_READ,                         // Read/write access
+        FILE_SHARE_READ,                      // No sharing
+        nullptr,                              // Default security
         OPEN_EXISTING,                        // Open existing or create new
         FILE_ATTRIBUTE_NORMAL,                // Normal file attributes
-        NULL                                  // No template file
+        nullptr                               // No template file
     );
 
     if ( INVALID_HANDLE_VALUE == hFile ) throw std::runtime_error("Failed to open Xapian database file");
 
-    this->fd = _open_osfhandle( reinterpret_cast<std::intptr_t>(hFile), _O_RDWR );
+    this->fd = _open_osfhandle( reinterpret_cast<std::intptr_t>(hFile), _O_RDONLY );
     if ( -1 == this->fd ) throw std::runtime_error("Failed to get a file descriptor from a HANDLE on MS-Windows");
 #else
     this->fd = open(dbfile, O_RDWR);
