@@ -121,10 +121,11 @@ public:
         return wxDataViewItem{};
     }
 
-    void ClearData(void)
+    void Reset(void)
     {
         this->current_id = 0u;
         this->m_data.clear();
+        // The root node is a null wxDataViewItem
         this->m_data.emplace(wxDataViewItem{}, Node{ wxDataViewItem{}, wxDataViewItem{}, wxDataViewItem{}, ArrCols_t{} });
     }
 
@@ -418,7 +419,6 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     wxDataViewColumn *const pcolAuthor = this->treeAuthorPapers->AppendTextColumn("Paper" , 0);
     this->treeAuthorPapers->AppendTextColumn("Title" , 1, wxDATAVIEW_CELL_INERT, 200);
     this->treeAuthorPapers->SetExpanderColumn(pcolAuthor);
-    this->treeAuthorPapers->AssociateModel(this->authorPaperStore);
 
     this->Layout();
 }
@@ -683,8 +683,14 @@ bool Dialog_Main::SelectPaperInPaperTree(Paper const paper_selected)
 
 void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
 {
-    this->authorPaperStore->ClearData();
-    this->authorPaperStore->Cleared();
+    assert( 1u == this->authorPaperStore->GetRefCount() );
+    this->authorPaperStore->IncRef();
+    assert( 2u == this->authorPaperStore->GetRefCount() );
+    this->treeAuthorPapers->AssociateModel(nullptr);
+    // Next line is required if model was never associated
+    if ( 2u == this->authorPaperStore->GetRefCount() ) this->authorPaperStore->DecRef();
+    assert( 1u == this->authorPaperStore->GetRefCount() );
+    this->authorPaperStore->Reset();
 
     typedef decltype(g_map_authors)::value_type MapPairType;
     typedef MapPairType::second_type::second_type ContainerType;
@@ -707,7 +713,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
                 {},
                 { paper_str, e.GetTitle() }
             );
-            this->authorPaperStore->ItemAdded(wxDataViewItem{}, item_papernum);
+          //this->authorPaperStore->ItemAdded(wxDataViewItem{}, item_papernum);   --  not associated
         }
 
         wxDataViewItem const item_rev =
@@ -716,6 +722,12 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
             { wxString("r") << e.rev }
         );
 
-        this->authorPaperStore->ItemAdded(item_papernum, item_rev);
+      //this->authorPaperStore->ItemAdded(item_papernum, item_rev);  --  not associated
     }
+
+    assert( 1u == this->authorPaperStore->GetRefCount() );
+    this->treeAuthorPapers->AssociateModel( this->authorPaperStore );
+    assert( 2u == this->authorPaperStore->GetRefCount() );
+    this->authorPaperStore->DecRef();
+    assert( 1u == this->authorPaperStore->GetRefCount() );
 }
