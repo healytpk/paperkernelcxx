@@ -136,7 +136,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	panelXapian->SetSizer( bSizer61 );
 	panelXapian->Layout();
 	bSizer61->Fit( panelXapian );
-	m_notebook1->AddPage( panelXapian, _("Xapian"), false );
+	m_notebook1->AddPage( panelXapian, _("Semantic Search"), false );
 	panelAI = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
@@ -218,7 +218,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	panelAI->SetSizer( bSizer3 );
 	panelAI->Layout();
 	bSizer3->Fit( panelAI );
-	m_notebook1->AddPage( panelAI, _("AI"), false );
+	m_notebook1->AddPage( panelAI, _("Artificial Intelligence"), false );
 
 	bSizer1->Add( m_notebook1, 1, wxEXPAND | wxALL, 5 );
 
