@@ -83,12 +83,12 @@ char const *Paper::c_str(void) const noexcept
 
 #ifdef PAPERKERNELCXX_MINIMAL_PAPER
 
-char const *Paper::GetTitle(void) noexcept
+char const *Paper::GetTitle(void) const noexcept
 {
     return "Title";
 }
 
-char const *Paper::GetAuthor(void) noexcept
+char const *Paper::GetAuthor(void) const noexcept
 {
     return "Author";
 }
@@ -114,12 +114,12 @@ static char const *Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigne
     return nullptr;  // suppress compiler warning
 }
 
-char const *Paper::GetTitle(void) noexcept
+char const *Paper::GetTitle(void) const noexcept
 {
     return Paper_GetDatumFromPaperTree(this,1u);
 }
 
-char const *Paper::GetAuthor(void) noexcept
+char const *Paper::GetAuthor(void) const noexcept
 {
     return Paper_GetDatumFromPaperTree(this,2u);
 }

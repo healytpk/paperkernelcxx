@@ -660,7 +660,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
         {
             item_papernum = this->authorPaperStore->AppendItemWithColumns(
                 {},
-                { paper_str }
+                { paper_str, e.GetTitle() }
             );
             this->authorPaperStore->ItemAdded(wxDataViewItem{}, item_papernum);
         }

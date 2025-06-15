@@ -18,7 +18,7 @@ protected:
     wxSplitterWindow *splitter = nullptr;
     wxDataViewCtrl *treeAllPapers = nullptr;
     wxDataViewTreeStoreWithColumns<3u> *treeStore = nullptr;
-    wxDataViewTreeStoreWithColumns<1u> *authorPaperStore = nullptr;
+    wxDataViewTreeStoreWithColumns<2u> *authorPaperStore = nullptr;
     wxWindow *view_portal = nullptr;
     void OnClose(wxCloseEvent&) override;
     void btnLoadModel_OnButtonClick(wxCommandEvent&) override;

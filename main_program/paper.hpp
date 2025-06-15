@@ -24,6 +24,6 @@ struct Paper {
 
     bool IsRelatedTo(Paper const other) const noexcept { return num == other.num; }
 
-    char const *GetTitle (void) noexcept;
-    char const *GetAuthor(void) noexcept;
+    char const *GetTitle (void) const noexcept;
+    char const *GetAuthor(void) const noexcept;
 };
