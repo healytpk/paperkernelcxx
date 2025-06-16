@@ -26,6 +26,8 @@ set(HEADERS
 	paper.hpp
 	paperman.hpp
 	papertree.hpp
+	pictures/left_pane.ico.h
+	pictures/right_pane.ico.h
 	reservations_multithreaded.hpp
 	resource.h
 	semantic.hpp
