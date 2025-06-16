@@ -728,7 +728,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
             item_papernum,
             { wxString("r") << e.rev }
         );
-
+        (void)item_rev;
       //this->authorPaperStore->ItemAdded(item_papernum, item_rev);  --  not associated
     }
 
