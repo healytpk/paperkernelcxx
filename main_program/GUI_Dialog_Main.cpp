@@ -13,6 +13,7 @@
 #include <type_traits>                               // is_same
 #include <utility>                                   // move
 #include <wx/app.h>                                  // wxApp
+#include <wx/image.h>                                // wxImage::AddHandler, wxICOHandler
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include <wx/dataview.h>                             // wxDataViewCtrl
 #include <wx/splitter.h>                             // wxSplitterWindow
@@ -40,6 +41,8 @@ public:
     bool OnInit(void) override
     {
         wxThread::SetConcurrency(2u);
+
+        wxImage::AddHandler(new wxICOHandler);
 
         RecreateGUI();
 
