@@ -331,6 +331,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 
     // ================ Data Storage for wxDataViewCtrl ================
     this->treeStore = new std::remove_reference_t<decltype(*treeStore)>;
+    assert( 1u == this->treeStore->GetRefCount() );
 
     for ( auto const &e : g_map_papers )
     {
@@ -379,6 +380,9 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     this->treeAllPapers->AppendTextColumn("Author", 2);
     this->treeAllPapers->SetExpanderColumn(pcol);
     this->treeAllPapers->AssociateModel(this->treeStore);
+    assert( 2u == this->treeStore->GetRefCount() );
+    this->treeStore->DecRef();
+    assert( 1u == this->treeStore->GetRefCount() );
     this->treeAllPapers->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &Dialog_Main::PaperTree_OnSelChanged, this);
     // =================================================================
 
