@@ -31,8 +31,7 @@ set(HEADERS
 	reservations_multithreaded.hpp
 	resource.h
 	semantic.hpp
-	view_portal.hpp
-	wxStringView.hpp)
+	view_portal.hpp)
 
 if(WIN32)
 	set(SRCS ${SRCS} main_program.rc)
