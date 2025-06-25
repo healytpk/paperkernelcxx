@@ -2,19 +2,24 @@
 #include <cassert>                          // assert
 #include <cstdlib>                          // abort
 #include <cctype>                           // isdigit, tolower
+#include <algorithm>                        // lower_bound
 #include <stdexcept>                        // runtime_error
 #include <tuple>                            // tuple
 #include <vector>                           // vector
 
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
-#    include "papertree.hpp"                    // g_map_papers
+#    include "papertree.hpp"                // g_map_papers
 #endif
 
 using std::vector, std::tuple;
 
-Paper::Paper(std::string_view const p) noexcept(false)
+template<typename T>
+static void Constructor_Paper(Paper *const this_paper, T const p)
 {
     using std::isdigit, std::tolower;
+
+    auto &num = this_paper->num;
+    auto &rev = this_paper->rev;
 
     while ( p.size() >= 7u )
     {
@@ -57,9 +62,23 @@ Paper::Paper(std::string_view const p) noexcept(false)
     throw std::runtime_error("invalid paper name string");
 }
 
-char const *Paper::c_str(void) const noexcept
+Paper::Paper(std:: string_view const p) noexcept(false)
 {
-    static thread_local char s[] = "p1234r56";
+    Constructor_Paper(this, p);
+}
+
+Paper::Paper(std::wstring_view const p) noexcept(false)
+{
+    Constructor_Paper(this, p);
+}
+
+template<typename T> requires (!std::is_const_v<T> && !std::is_reference_v<T>)
+static T *null_terminated_string(Paper const *const this_paper)
+{
+    auto const &num = this_paper->num;
+    auto const &rev = this_paper->rev;
+
+    static thread_local T s[] = { 'p', '1', '2', '3', '4', 'r', '5', '6', '\0' };
 
     s[1] = '0' + num / 1000u % 10u;
     s[2] = '0' + num /  100u % 10u;
@@ -81,26 +100,21 @@ char const *Paper::c_str(void) const noexcept
     return s;
 }
 
-#ifdef PAPERKERNELCXX_MINIMAL_PAPER
+char    const *Paper:: c_str(void) const noexcept { return null_terminated_string< char  >(this); }
+wchar_t const *Paper::wc_str(void) const noexcept { return null_terminated_string<wchar_t>(this); }
 
-char const *Paper::GetTitle(void) const noexcept
+#ifndef PAPERKERNELCXX_MINIMAL_PAPER
+
+static wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned const n)
 {
-    return "Title";
-}
+    auto const it = std::lower_bound( std::cbegin(g_map_papers), std::cend(g_map_papers),
+                                      pthis->num,
+                                      [](auto &&arg1, auto &&arg2) { return arg1.first < arg2; } );
 
-char const *Paper::GetAuthor(void) const noexcept
-{
-    return "Author";
-}
+    assert( std::cend(g_map_papers) != it );
 
-#else
-
-static char const *Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned const n)
-{
-    auto const it = g_map_papers.find( pthis->num );
-    assert( g_map_papers.end() != it );
     auto const &vec = it->second;
-    for ( auto const &e : vec )  // 'e' is a 'tuple<unsigned, char const*, char const* >'
+    for ( auto const &e : vec )  // 'e' is a 'std::tuple<unsigned, Pretender_wxString, Pretender_wxString>'
     {
         if ( pthis->rev != std::get<0u>(e) ) continue;
         switch ( n )
@@ -111,17 +125,22 @@ static char const *Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigne
     }
     assert( nullptr == "invalid paper not listed in tree" );
     std::abort();    // if NDEBUG
-    return nullptr;  // suppress compiler warning
+    return wxEmptyString;  // suppress compiler warning
 }
 
-char const *Paper::GetTitle(void) const noexcept
+wxString const &Paper::GetTitle(void) const noexcept
 {
     return Paper_GetDatumFromPaperTree(this,1u);
 }
 
-char const *Paper::GetAuthor(void) const noexcept
+wxString const &Paper::GetAuthor(void) const noexcept
 {
     return Paper_GetDatumFromPaperTree(this,2u);
+}
+
+wxString const &Paper::GetPaper(void) const noexcept
+{
+    return null_terminated_string< wxStringCharType >(this);
 }
 
 #endif
