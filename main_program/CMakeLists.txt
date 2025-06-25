@@ -31,6 +31,7 @@ set(HEADERS
 	reservations_multithreaded.hpp
 	resource.h
 	semantic.hpp
+	stringcraft.hpp
 	view_portal.hpp)
 
 if(WIN32)
