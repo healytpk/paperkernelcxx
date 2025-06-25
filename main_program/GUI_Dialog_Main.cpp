@@ -343,10 +343,11 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
         auto &papernum = e.first;
         auto &set_revs = e.second;
 
-        std::tuple< unsigned, char const*, char const* > const &last_rev = e.second.back();
+        assert( 0u != e.second.size() );
+        auto const &last_rev = e.second.back();
 
-        char const *const  title_of_last_revision = get<1u>(last_rev),
-                   *const author_of_last_revision = get<2u>(last_rev);
+        wxString const & title_of_last_revision = get<1u>(last_rev);
+        wxString const &author_of_last_revision = get<2u>(last_rev);
 
         wxDataViewItem const item_papernum =
           treeStore->AppendItemWithColumns(
@@ -356,8 +357,9 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 
         for ( auto const &rev : set_revs )
         {
-            char const *const  title = (0 == strcmp(get<1u>(rev),  title_of_last_revision)) ? "^ ^ ^" : get<1u>(rev),
-                       *const author = (0 == strcmp(get<2u>(rev), author_of_last_revision)) ? "^ ^ ^" : get<2u>(rev);
+            static wxString const up_arrows = wxS("^ ^ ^");   // REVISIT FIX - Make this more efficient with Pretender
+            wxString const & title = ( get<1u>(rev) ==  title_of_last_revision ) ? wxS("^ ^ ^") : get<1u>(rev);
+            wxString const &author = ( get<2u>(rev) == author_of_last_revision ) ? wxS("^ ^ ^") : get<2u>(rev);
 
             wxDataViewItem const item_rev =
               this->treeStore->AppendItemWithColumns(
@@ -699,7 +701,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
     assert( 1u == this->authorPaperStore->GetRefCount() );
     this->authorPaperStore->Reset();
 
-    typedef decltype(g_map_authors)::value_type MapPairType;
+    typedef std::remove_reference_t< decltype( *std::cbegin(g_map_authors) ) > MapPairType;
     typedef MapPairType::second_type::second_type ContainerType;
     static_assert( std::is_same_v< Paper, ContainerType::value_type > );
 
