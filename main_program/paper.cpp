@@ -114,13 +114,13 @@ static wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, uns
     assert( std::cend(g_map_papers) != it );
 
     auto const &vec = it->second;
-    for ( auto const &e : vec )  // 'e' is a 'std::tuple<unsigned, Pretender_wxString, Pretender_wxString>'
+    for ( auto const &e : vec )  // 'e' is a tuple
     {
         if ( pthis->rev != std::get<0u>(e) ) continue;
         switch ( n )
         {
-        case 1u: return std::get<1u>(e);
-        case 2u: return std::get<2u>(e);
+        case 1u: return *new wxString(std::get<1u>(e));  // REVISIT FIX - this is horrible
+        case 2u: return *new wxString(std::get<2u>(e));  // REVISIT FIX - this is horrible
         }
     }
     assert( nullptr == "invalid paper not listed in tree" );
