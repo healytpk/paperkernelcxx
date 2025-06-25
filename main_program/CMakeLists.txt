@@ -35,6 +35,7 @@ set(HEADERS
 	view_portal.hpp)
 
 if(WIN32)
+	add_compile_options(/bigobj)
 	set(SRCS ${SRCS} main_program.rc)
 	set(PREPROCESSOR_DEFINITIONS ${PREPROCESSOR_DEFINITIONS};
 		/D_USRDLL;
