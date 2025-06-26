@@ -100,10 +100,10 @@ static T *null_terminated_string(Paper const *const this_paper)
     return s;
 }
 
+#ifndef PAPERKERNELCXX_MINIMAL_PAPER
+
 char    const *Paper:: c_str(void) const noexcept { return null_terminated_string< char  >(this); }
 wchar_t const *Paper::wc_str(void) const noexcept { return null_terminated_string<wchar_t>(this); }
-
-#ifndef PAPERKERNELCXX_MINIMAL_PAPER
 
 static wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned const n)
 {
@@ -125,7 +125,7 @@ static wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, uns
     }
     assert( nullptr == "invalid paper not listed in tree" );
     std::abort();    // if NDEBUG
-    return wxEmptyString;  // suppress compiler warning
+    return *new wxString;  // suppress compiler warning
 }
 
 wxString const &Paper::GetTitle(void) const noexcept
@@ -138,7 +138,7 @@ wxString const &Paper::GetAuthor(void) const noexcept
     return Paper_GetDatumFromPaperTree(this,2u);
 }
 
-wxString const &Paper::GetPaper(void) const noexcept
+wxString Paper::GetPaper(void) const noexcept
 {
     return null_terminated_string< wxStringCharType >(this);
 }

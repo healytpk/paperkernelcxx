@@ -36,7 +36,7 @@ struct Paper {
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
     wxString const &GetTitle (void) const noexcept;
     wxString const &GetAuthor(void) const noexcept;
-    wxString const &GetPaper (void) const noexcept;
+    wxString        GetPaper (void) const noexcept;
      char   const * c_str(void) const noexcept;
     wchar_t const *wc_str(void) const noexcept;
 #endif
