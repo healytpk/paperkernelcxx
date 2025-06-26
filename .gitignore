@@ -30,3 +30,26 @@
 *.exe
 *.out
 *.app
+
+# Specific files
+all_cxx_papers.tar.zst
+build/LinuxDebug/
+build/bin/
+build/cppcheck-main.zip
+build/cppcheck-main/
+build/dir_cppcheck_html/
+build/dir_cppcheck_work/
+build/xapian/
+database_xapian_for_all_cxx_papers
+helper_tools/database_xapian_multiple_files/
+helper_tools/enumerate_authors
+helper_tools/index_for_xapian
+helper_tools/log.txt
+helper_tools/summarise
+helper_tools/tree_maker
+main_program/Linux/
+papers/
+sample_ribbon/
+sample_splitter/
+sample_wxwebview/
+xapian-core-1.4.29.tar.xz
