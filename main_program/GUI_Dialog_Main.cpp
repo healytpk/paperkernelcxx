@@ -19,11 +19,11 @@
 #include <wx/splitter.h>                             // wxSplitterWindow
 #include "GUI_Dialog_Waiting.hpp"
 #include "ai.hpp"
-#include "authortree.hpp"
 #include "embedded_archive.hpp"
 #include "paperman.hpp"
-#include "papertree.hpp"
 #include "semantic.hpp"
+#include "tree_author.hpp"
+#include "tree_paper.hpp"
 #include "view_portal.hpp"
 #include "Auto.h"
 

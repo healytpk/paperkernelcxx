@@ -8,7 +8,7 @@
 #include <vector>                           // vector
 
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
-#    include "papertree.hpp"                // g_map_papers
+#    include "tree_paper.hpp"               // g_map_papers
 #endif
 
 using std::vector, std::tuple;

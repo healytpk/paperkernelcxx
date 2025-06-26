@@ -1,5 +1,4 @@
 set(SRCS
-	authortree.cpp
 	AUTO_GENERATED_wxformbuilder.cpp
 	ai.cpp
 	embedded_archive.cpp
@@ -7,12 +6,12 @@ set(SRCS
 	MySortableListCtrl.cpp
 	paper.cpp
 	paperman.cpp
-	papertree.cpp
 	semantic.cpp
+	tree_author.cpp
+	tree_paper.cpp
 	view_portal.cpp)
 
 set(HEADERS
-	authortree.hpp
 	AUTO_GENERATED_tree_contents_author_char.hpp
 	AUTO_GENERATED_tree_contents_author_wchar_t.hpp
 	AUTO_GENERATED_tree_contents_paper_char.hpp
@@ -27,13 +26,14 @@ set(HEADERS
 	MySortableListCtrl.hpp
 	paper.hpp
 	paperman.hpp
-	papertree.hpp
 	../pictures/left_pane.ico.h
 	../pictures/right_pane.ico.h
 	reservations_multithreaded.hpp
 	resource.h
 	semantic.hpp
 	stringcraft.hpp
+	tree_author.hpp
+	tree_paper.hpp
 	view_portal.hpp)
 
 if(WIN32)
