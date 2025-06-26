@@ -1,5 +1,19 @@
 #!/bin/sh
 
+rm -f ./tree_maker
+
+g++ -o tree_maker -std=c++23                 \
+    tree_maker.cpp common.cpp                \
+    -static-libstdc++ -static-libgcc         \
+    -I/usr/include/poppler/cpp/              \
+    -lpoppler-cpp -lgumbo -lcmark-gfm -ggdb3 -D_GLIBC_DEBUG -D_GLIBCXX_DEBUG
+
+echo "Libraries needed by 'tree_maker': "
+readelf -a ./tree_maker | grep "(NEEDED)"
+./tree_maker
+
+exit 0
+
 rm -f ./summarise
 
 g++ -o summarise -std=c++23 -DPAPERKERNELCXX_MINIMAL_PAPER \
@@ -10,9 +24,11 @@ g++ -o summarise -std=c++23 -DPAPERKERNELCXX_MINIMAL_PAPER \
 echo "Libraries needed by 'summarise': "
 readelf -a ./summarise | grep "(NEEDED)"
 
-./summarise > ../main_program/AUTO_GENERATED_tree_contents_author.hpp
+./summarise
 
 exit 0
+
+rm -f ./enumerate_authors
 
 g++ -o enumerate_authors -std=c++23          \
     enumerate_authors.cpp common.cpp         \
@@ -23,18 +39,6 @@ g++ -o enumerate_authors -std=c++23          \
 echo "Libraries needed by 'enumerate_authors': "
 readelf -a ./enumerate_authors | grep "(NEEDED)"
 ./enumerate_authors
-
-exit 0
-
-g++ -o tree_maker -std=c++23                 \
-    tree_maker.cpp common.cpp                \
-    -static-libstdc++ -static-libgcc         \
-    -I/usr/include/poppler/cpp/              \
-    -lpoppler-cpp -lgumbo -lcmark-gfm -ggdb3 -D_GLIBC_DEBUG -D_GLIBCXX_DEBUG
-
-echo "Libraries needed by 'tree_maker': "
-readelf -a ./tree_maker | grep "(NEEDED)"
-./tree_maker > ../main_program/paper_tree_contents.hpp
 
 exit 0
 

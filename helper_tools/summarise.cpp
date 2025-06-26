@@ -15,6 +15,7 @@
 #include "common.hpp"                 // ExtractTitleFromFileHTML/PDF
 #include "hasher.hpp"
 #include "../main_program/paper.hpp"  // Paper
+#include "escape_hex.hpp"
 
 namespace fs = std::filesystem;
 using std::string;
@@ -341,18 +342,39 @@ int main(void)
         }
     }
 
-    cout << "{\n";
+    std::ofstream  fs("../main_program/AUTO_GENERATED_tree_contents_author_char.hpp" );
+    std::ofstream fws("../main_program/AUTO_GENERATED_tree_contents_author_wchar_t.hpp");
+
+    fs  << "{\n";
+    fws << "{\n";
     for ( auto &mypair : g_all_authors )
     {
-        cout << "    { " << mypair.first << "u, { L\"" << mypair.second.name << "\", { ";
+        fs  << "    { " << mypair.first << "u, {  \"";
+        fws << "    { " << mypair.first << "u, { L\"";
+
+        string name_char    = mypair.second.name;
+        if ( std::string_view(name_char).starts_with("Hana Dus") ) name_char = "Hana Dusikova";
+        string name_wchar_t = name_char;
+
+         replace_non_ascii_with_hex( name_char    );
+        Lreplace_non_ascii_with_hex( name_wchar_t );
+
+        fs  << name_char;
+        fws << name_wchar_t;
+
+        fs  << "\", { ";
+        fws << "\", { ";
 
         for ( auto &e : mypair.second.files )
         {
             Paper paper(e);
-            cout << "{ " << paper.num << "u, " << paper.rev << "u }, ";
+            fs  << "{ " << paper.num << "u, " << paper.rev << "u }, ";
+            fws << "{ " << paper.num << "u, " << paper.rev << "u }, ";
         }
-        cout << " } } },\n";
+        fs  << " } } },\n";
+        fws << " } } },\n";
     }
-    cout << "}\n";
+    fs  << "}\n";
+    fws << "}\n";
 }
 

@@ -8,6 +8,7 @@
 #include <string>                     // string
 #include <set>                        // set
 #include "common.hpp"                 // ExtractTitleFromFileHTML/PDF
+#include "escape_hex.hpp"
 
 namespace fs = std::filesystem;
 using std::string;
@@ -123,6 +124,9 @@ int main(void)
     }
     logfile << "First line in log file\n";
 
+    std::ofstream  fs("../main_program/AUTO_GENERATED_tree_contents_paper_char.hpp" );
+    std::ofstream fws("../main_program/AUTO_GENERATED_tree_contents_paper_wchar_t.hpp");
+
     // Path to the directory containing the .tokens files
     string const path = "../papers/";
 
@@ -172,26 +176,46 @@ int main(void)
     }
 
     // Print out the PaperTree structure in the desired format
-    std::cout << "{\n";
+    fs  << "{\n";
+    fws << "{\n";
     for ( auto const &entry : papers )
     {
-        std::cout << "    { ";
+        fs  << "    { ";
+        fws << "    { ";
 
-        if ( entry.first <   10u ) std::cout << ' ';
-        if ( entry.first <  100u ) std::cout << ' ';
-        if ( entry.first < 1000u ) std::cout << ' ';
+        if ( entry.first <   10u ) fs << ' ', fws << ' ';
+        if ( entry.first <  100u ) fs << ' ', fws << ' ';
+        if ( entry.first < 1000u ) fs << ' ', fws << ' ';
 
-        std::cout << entry.first << "u, { ";
+        fs  << entry.first << "u, { ";
+        fws << entry.first << "u, { ";
 
         auto rev_it = entry.second.begin();
+
         for ( auto const &e : entry.second )
         {
-            std::cout << "{ " << e.n << "u, \"" << e.title << "\", \"" << e.author << "\" }, ";
+            string title  = e.title ;
+            string author = e.author;
+            if ( std::string_view(author).starts_with("Hana Dus") ) author = "Hana Dusikova";
+            if ( author == "R. \"Tim" ) author = "R. Tim";
+            replace_non_ascii_with_hex(title );
+            replace_non_ascii_with_hex(author);            
+            fs  << "{ " << e.n << "u, \""  << title << "\", \""  << author << "\" }, ";
+
+            string title2  = e.title ;
+            string author2 = e.author;
+            if ( std::string_view(author2).starts_with("Hana Dus") ) author2 = "Hana Dusikova";
+            if ( author2 == "R. \"Tim" ) author2 = "R. Tim";
+            Lreplace_non_ascii_with_hex(title2 );
+            Lreplace_non_ascii_with_hex(author2);            
+            fws << "{ " << e.n << "u, L\"" << title2 << "\", L\"" << author2 << "\" }, ";
         }
 
-        std::cout << "} },\n";
+        fs  << "} },\n" << std::flush;
+        fws << "} },\n" << std::flush;
     }
-    std::cout << "};\n";
+    fs  << "};\n";
+    fws << "};\n";
 
     std::cerr << Title()  << std::endl;
     std::cerr << Author() << std::endl;
