@@ -8,6 +8,9 @@
 
 #if 1
 #   include <vector>
+    extern std::pair< long long unsigned, std::pair< Pretender_wxString, std::vector<Paper> > > const g_map_authors[216u];
+#elif 1
+#   include <vector>
     extern std::pair< long long unsigned, std::pair< wxString, std::vector<Paper> > > const g_map_authors[216u];
 #elif defined(NDEBUG)
 #   include <boost/container/small_vector.hpp>

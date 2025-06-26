@@ -6,6 +6,9 @@
 
 #if 1
 #   include <vector>
+    extern std::pair<unsigned, std::vector< std::tuple<unsigned, Pretender_wxString, Pretender_wxString> > > const g_map_papers[3025u];
+#elif 1
+#   include <vector>
     extern std::pair<unsigned, std::vector< std::tuple<unsigned, wxStringCharType const *, wxStringCharType const *> > > const g_map_papers[3025u];
 #elif defined(NDEBUG)
 #   include <boost/container/small_vector.hpp>

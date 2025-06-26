@@ -357,9 +357,9 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 
         for ( auto const &rev : set_revs )
         {
-            static wxString const up_arrows = wxS("^ ^ ^");   // REVISIT FIX - Make this more efficient with Pretender
-            wxString const & title = ( get<1u>(rev) ==  title_of_last_revision ) ? wxS("^ ^ ^") : get<1u>(rev);
-            wxString const &author = ( get<2u>(rev) == author_of_last_revision ) ? wxS("^ ^ ^") : get<2u>(rev);
+            static constexpr Pretender_wxString up_arrows = wxS("^ ^ ^");
+            wxString const & title = ( get<1u>(rev) ==  title_of_last_revision ) ? up_arrows : get<1u>(rev);
+            wxString const &author = ( get<2u>(rev) == author_of_last_revision ) ? up_arrows : get<2u>(rev);
 
             wxDataViewItem const item_rev =
               this->treeStore->AppendItemWithColumns(

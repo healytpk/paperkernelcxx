@@ -119,8 +119,8 @@ static wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, uns
         if ( pthis->rev != std::get<0u>(e) ) continue;
         switch ( n )
         {
-        case 1u: return *new wxString(std::get<1u>(e));  // REVISIT FIX - this is horrible
-        case 2u: return *new wxString(std::get<2u>(e));  // REVISIT FIX - this is horrible
+        case 1u: return std::get<1u>(e);
+        case 2u: return std::get<2u>(e);
         }
     }
     assert( nullptr == "invalid paper not listed in tree" );
