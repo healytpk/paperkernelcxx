@@ -13,8 +13,10 @@ set(SRCS
 
 set(HEADERS
 	authortree.hpp
-	AUTO_GENERATED_tree_contents_author.hpp
-	AUTO_GENERATED_tree_contents_paper.hpp
+	AUTO_GENERATED_tree_contents_author_char.hpp
+	AUTO_GENERATED_tree_contents_author_wchar_t.hpp
+	AUTO_GENERATED_tree_contents_paper_char.hpp
+	AUTO_GENERATED_tree_contents_paper_wchar_t.hpp
 	AUTO_GENERATED_wxformbuilder.h
 	Auto.h
 	ai.hpp
