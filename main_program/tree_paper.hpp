@@ -11,6 +11,7 @@ struct PaperInfo {
 };
 
 struct PaperRevInfo_t {
+    static constexpr std::uint_fast64_t terminator = (std::uint_fast64_t)-1;
     std::uint_fast64_t rev;
     std::uint_fast64_t const *hashes_authors;   // points to null-terminated array
     wxStringCharType const *title;
