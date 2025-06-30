@@ -8,7 +8,6 @@ set(SRCS
 	paperman.cpp
 	semantic.cpp
 	tree_author.cpp
-	tree_paper.cpp
 	view_portal.cpp)
 
 set(HEADERS
