@@ -357,7 +357,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 
         for ( auto const &rev : set_revs )
         {
-            static constexpr Pretender_wxString up_arrows = wxS("^ ^ ^");
+            static Pretender_wxString const up_arrows = wxS("^ ^ ^");
             wxString const & title = ( get<1u>(rev) ==  title_of_last_revision ) ? up_arrows : get<1u>(rev);
             wxString const &author = ( get<2u>(rev) == author_of_last_revision ) ? up_arrows : get<2u>(rev);
 
