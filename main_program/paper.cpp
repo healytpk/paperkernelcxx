@@ -113,7 +113,7 @@ static wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, uns
 
     assert( std::cend(g_map_papers) != it );
 
-    for ( PaperRevInfo_t const *p = it->prevs; (decltype(PaperRevInfo_t::rev))-1 != p->rev; ++p )
+    for ( PaperRevInfo_t const *p = it->prevs; PaperRevInfo_t::terminator != p->rev; ++p )
     {
         if ( pthis->rev != p->rev ) continue;
         switch ( n )

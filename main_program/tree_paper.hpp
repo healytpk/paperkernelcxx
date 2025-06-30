@@ -41,7 +41,7 @@ template<typename... RevHolders>
 struct PaperRevList_detail {
     static constexpr PaperRevInfo_t value[sizeof...(RevHolders) + 1u] = {
         RevHolders::value... ,     // all revs
-        { (decltype(PaperRevInfo_t::rev))-1, nullptr, nullptr }   // minus-one-terminator
+        { PaperRevInfo_t::terminator, nullptr, nullptr }   // minus-one-terminator
     };
 };
 
