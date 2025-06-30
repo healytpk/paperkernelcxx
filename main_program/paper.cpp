@@ -109,18 +109,17 @@ static wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, uns
 {
     auto const it = std::lower_bound( std::cbegin(g_map_papers), std::cend(g_map_papers),
                                       pthis->num,
-                                      [](auto &&arg1, auto &&arg2) { return arg1.first < arg2; } );
+                                      [](auto &&arg1, auto &&arg2) { return arg1.num < arg2; } );
 
     assert( std::cend(g_map_papers) != it );
 
-    auto const &vec = it->second;
-    for ( auto const &e : vec )  // 'e' is a tuple
+    for ( PaperRevInfo_t const *p = it->prevs; (decltype(PaperRevInfo_t::rev))-1 != p->rev; ++p )
     {
-        if ( pthis->rev != std::get<0u>(e) ) continue;
+        if ( pthis->rev != p->rev ) continue;
         switch ( n )
         {
-        case 1u: return std::get<1u>(e);
-        case 2u: return std::get<2u>(e);
+        case 1u: return *new wxString(p->title);                      // REVISIT - FIX - This is horrible
+        case 2u: return *new wxString() << p->hashes_authors[0];      // REVISIT - FIX - This is horrible
         }
     }
     assert( nullptr == "invalid paper not listed in tree" );
