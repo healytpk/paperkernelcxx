@@ -340,14 +340,17 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     {
         using std::get;
 
-        auto &papernum = e.first;
-        auto &set_revs = e.second;
+        auto const papernum = e.num;
+        assert( 0u != papernum );
 
-        assert( 0u != e.second.size() );
-        auto const &last_rev = e.second.back();
+        assert( nullptr != e.prevs );  // we need at least one revision
+        assert( PaperRevInfo_t::terminator != e.prevs->rev );
 
-        wxString const & title_of_last_revision = get<1u>(last_rev);
-        wxString const &author_of_last_revision = get<2u>(last_rev);
+        PaperRevInfo_t const *last_rev = e.prevs;
+        while ( PaperRevInfo_t::terminator != last_rev[1].rev ) ++last_rev;
+
+        wxString const  title_of_last_revision = last_rev->title;
+        wxString const author_of_last_revision = wxString() << last_rev->hashes_authors[0];
 
         wxDataViewItem const item_papernum =
           treeStore->AppendItemWithColumns(
@@ -355,16 +358,16 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
             { PaperString(papernum), title_of_last_revision, author_of_last_revision }
           );
 
-        for ( auto const &rev : set_revs )
+        for ( PaperRevInfo_t const *p = e.prevs; PaperRevInfo_t::terminator != p->rev; ++p )
         {
-            static Pretender_wxString const up_arrows = wxS("^ ^ ^");
-            wxString const & title = ( get<1u>(rev) ==  title_of_last_revision ) ? up_arrows : get<1u>(rev);
-            wxString const &author = ( get<2u>(rev) == author_of_last_revision ) ? up_arrows : get<2u>(rev);
+            static wxString const up_arrows = wxS("^ ^ ^");
+            wxString const  title = ( p->title == title_of_last_revision ) ? up_arrows : wxString(p->title);
+            wxString const author = ( (wxString() << p->hashes_authors[0]) == author_of_last_revision ) ? up_arrows : (wxString() << p->hashes_authors[0]);
 
             wxDataViewItem const item_rev =
               this->treeStore->AppendItemWithColumns(
                 item_papernum,
-                { "r" + wxString(std::to_string(get<0u>(rev))), title, author }
+                { wxString("r") << p->rev, title, author }
               );
 
             (void)item_rev;
