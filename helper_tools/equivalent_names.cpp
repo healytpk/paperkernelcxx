@@ -225,13 +225,15 @@ int main()
     cout << "#pragma once\n\n";
     cout << "#include <cstdint>         // uint_fast64_t\n"
             "#include <algorithm>       // lower_bound\n"
-            "#include <string_view>     // string_view\n\n";
+            "#include <string_view>     // string_view\n"
+            "#include <wx/string.h>     // wxS, wxStringCharType\n"
+            "#include \"hash.hpp\"        // Hash\n\n";
 
     cout << "namespace Author_details {\n\n";
 
     cout << "struct Author_Primary {\n"
          << "    std::uint_fast64_t hash;\n"
-         << "    char const *name;\n"
+         << "    wxStringCharType const *name;\n"
          << "};\n\n";
 
     cout << "inline constexpr Author_Primary names_primary[] = {\n";
@@ -239,7 +241,7 @@ int main()
     {
         cout << "    { 0x" << std::hex << std::setfill('0') << std::setw(16)
              << primaryAuthors[i].hash << std::dec << ", "
-             << "\"" << primaryAuthors[i].name << "\" }";
+             << "wxS(\"" << primaryAuthors[i].name << "\") }";
         if (i + 1 != primaryAuthors.size())
             cout << ",";
         cout << "\n";
@@ -248,7 +250,7 @@ int main()
 
     cout << "struct Author_Alternative {\n"
          << "    std::uint_fast64_t hash;\n"
-         << "    char const *name;\n"
+         << "    wxStringCharType const *name;\n"
          << "    std::uint_fast64_t primary;\n"
          << "};\n\n";
 
@@ -268,68 +270,16 @@ int main()
 
         cout << "    { 0x" << std::hex << std::setfill('0') << std::setw(16)
              << alternativeAuthors[i].hash << std::dec << ", "
-             << "\"" << alternativeAuthors[i].name << "\", "
+             << "wxS(\"" << alternativeAuthors[i].name << "\"), "
              << "0x" << std::hex << std::setfill('0') << std::setw(16)
              << alternativeAuthors[i].primary << std::dec << " }";
 
         if (primaryNamePtr)
-            cout << ", // primary = \"" << *primaryNamePtr << "\"";
+            cout << ", // \"" << *primaryNamePtr << "\"";
 
         cout << "\n";
     }
     cout << "};\n\n";
-
-    // Write helper and hash functions inside an anonymous namespace
-    cout <<
-R"(
-inline constexpr char tolower_consteval(char c) noexcept
-{
-    switch (c)
-    {
-        case 'A': return 'a'; case 'B': return 'b'; case 'C': return 'c'; case 'D': return 'd';
-        case 'E': return 'e'; case 'F': return 'f'; case 'G': return 'g'; case 'H': return 'h';
-        case 'I': return 'i'; case 'J': return 'j'; case 'K': return 'k'; case 'L': return 'l';
-        case 'M': return 'm'; case 'N': return 'n'; case 'O': return 'o'; case 'P': return 'p';
-        case 'Q': return 'q'; case 'R': return 'r'; case 'S': return 's'; case 'T': return 't';
-        case 'U': return 'u'; case 'V': return 'v'; case 'W': return 'w'; case 'X': return 'x';
-        case 'Y': return 'y'; case 'Z': return 'z';
-        default:  return c;
-    }
-}
-
-inline constexpr char letters[] = "abcdefghijklmnopqrstuvwxyz";
-)";
-
-    cout <<
-R"(
-inline constexpr std::uint_fast64_t Hash(std::string_view const input) noexcept
-{
-    std::uint_fast64_t h = 0xcbf29ce484222325;
-
-    for ( char const cX : input )
-    {
-        char const c = tolower_consteval(cX);
-        bool is_letter = false;
-
-        for ( char letter : letters )
-        {
-            if ( letter == c )
-            {
-                is_letter = true;
-                break;
-            }
-        }
-
-        if ( false == is_letter ) continue;
-
-        h ^= static_cast<std::uint_fast64_t>(c);
-        h *= 0x100000001B3;
-    }
-
-    return h;
-}
-)";
-
     cout << "\n} // namespace Author_details\n";
 
     cout <<
