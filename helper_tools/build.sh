@@ -78,6 +78,15 @@ equivalent_names()
     readelf -a ./equivalent_names | grep "(NEEDED)"
 }
 
+header()
+{
+    echo "Building header..."
+    rm -f ./header
+    $CXX -o header header.cpp -I../main_program/ `wx-config --cxxflags --libs` $LIB
+    echo "Libraries needed by 'header':"
+    readelf -a ./header | grep "(NEEDED)"
+}
+
 build_all()
 {
     tree_maker
@@ -88,6 +97,7 @@ build_all()
     tokenizer
     crawl
     equivalent_names
+    header
 }
 
 # Entry point
@@ -101,6 +111,7 @@ if [ $# -eq 0 ]; then
     echo "    tokenizer"
     echo "    crawl"
     echo "    equivalent_names"
+    echo "    header"
     echo "    all"
     exit 1
 else
@@ -113,11 +124,12 @@ else
             test_load_xapian_database) test_load_xapian_database ;;
             tokenizer)                 tokenizer ;;
             crawl)                     crawl ;;
-            equivalent_names)                equivalent_names ;;
+            equivalent_names)          equivalent_names ;;
+            header)                    header ;;
             all)                       build_all ;;
             *)
                 echo "Unknown target: $target"
-                echo "Valid targets: tree_maker, summarise, enumerate_authors, index_for_xapian, test_load_xapian_database, tokenizer, crawl, equivalent_names, all"
+                echo "Valid targets: tree_maker, summarise, enumerate_authors, index_for_xapian, test_load_xapian_database, tokenizer, crawl, equivalent_names, header, all"
                 exit 1
                 ;;
         esac

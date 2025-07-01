@@ -45,11 +45,21 @@ crawl()
 equivalent_names()
 {
     if ! [ -f ./names.txt ]; then
-        echo "You must run 'crawl' to create 'names.txt' before running equivalent_names."
+        echo "You must run 'crawl' to create 'names.txt' before running 'equivalent_names'."
         exit 1
     fi
 
-    cat ./names.txt | ./equivalent_names | sed 's/\\/\\\\/g' > header.hpp
+    cat ./names.txt | ./equivalent_names > header.hpp
+}
+
+header()
+{
+    if ! [ -f ./header.hpp ]; then
+        echo "You must run 'equivalent_names' to create 'header.hpp' before running 'header'."
+        exit 1
+    fi
+
+    ./header
 }
 
 run_all()
@@ -62,6 +72,7 @@ run_all()
     tokenizer
     crawl
     equivalent_names
+    header
 }
 
 # Entry point
@@ -75,6 +86,7 @@ if [ $# -eq 0 ]; then
     echo "    tokenizer"
     echo "    crawl"
     echo "    equivalent_names"
+    echo "    header"
     echo "    all"
     exit 1
 else
@@ -87,11 +99,12 @@ else
             test_load_xapian_database) test_load_xapian_database ;;
             tokenizer)                 tokenizer ;;
             crawl)                     crawl ;;
-            equivalent_names)                equivalent_names ;;
+            equivalent_names)          equivalent_names ;;
+            header)                    header ;;
             all)                       run_all ;;
             *)
                 echo "Unknown target: $target"
-                echo "Valid targets: tree_maker, summarise, enumerate_authors, index_for_xapian, test_load_xapian_database, tokenizer, crawl, equivalent_names, all"
+                echo "Valid targets: tree_maker, summarise, enumerate_authors, index_for_xapian, test_load_xapian_database, tokenizer, crawl, equivalent_names, header, all"
                 exit 1
                 ;;
         esac
