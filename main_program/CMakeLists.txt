@@ -21,6 +21,7 @@ set(HEADERS
 	embedded_archive.hpp
 	GUI_Dialog_Main.hpp
 	GUI_Dialog_Waiting.hpp
+	hash.hpp
 	incbin.h
 	MySortableListCtrl.hpp
 	paper.hpp

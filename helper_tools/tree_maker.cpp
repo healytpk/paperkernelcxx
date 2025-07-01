@@ -207,7 +207,7 @@ int main(void)
             if ( author == "R. \"Tim" ) author = "R. Tim";
             replace_non_ascii_with_hex(title );
             replace_non_ascii_with_hex(author);            
-            fs  << " Rev< " << e.n << "u, Arr64< Hash< \"" << author << "\">() >(),  \"" << title << "\" > ";
+            fs  << " Rev< " << e.n << "u, Arr64< Hash( \"" << author << "\") >(),  \"" << title << "\" > ";
 
             string title2  = e.title ;
             string author2 = e.author;
@@ -215,7 +215,7 @@ int main(void)
             if ( author2 == "R. \"Tim" ) author2 = "R. Tim";
             Lreplace_non_ascii_with_hex(title2 );
             Lreplace_non_ascii_with_hex(author2);            
-            fws << " Rev< " << e.n << "u, Arr64< Hash<L\"" << author << "\">() >(), L\"" << title << "\" > ";
+            fws << " Rev< " << e.n << "u, Arr64< Hash(L\"" << author << "\") >(), L\"" << title << "\" > ";
         }
 
         fs  << " >() },\n" << std::flush;
