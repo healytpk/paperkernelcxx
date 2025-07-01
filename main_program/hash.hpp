@@ -3,7 +3,7 @@
 #include <cstdint>                       // uint_fast64_t
 #include <string_view>                   // string_view, wstring_view
 
-inline consteval char tolower_consteval_char(char const c) noexcept
+inline constexpr char tolower_consteval_char(char const c) noexcept
 {
     switch ( c )
     {
@@ -35,7 +35,7 @@ inline constexpr wchar_t tolower_consteval_wchar_t(wchar_t const c) noexcept
     return c;
 }
 
-inline consteval std::uint_fast64_t Hash(std::string_view const input) noexcept
+inline constexpr std::uint_fast64_t Hash(std::string_view const input) noexcept
 {
     std::uint_fast64_t h = 0xcbf29ce484222325;
 
@@ -64,7 +64,7 @@ inline consteval std::uint_fast64_t Hash(std::string_view const input) noexcept
     return h;
 }
 
-inline consteval std::uint_fast64_t Hash(std::wstring_view const input) noexcept
+inline constexpr std::uint_fast64_t Hash(std::wstring_view const input) noexcept
 {
     std::uint_fast64_t h = 0xcbf29ce484222325;
 
