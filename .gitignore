@@ -42,6 +42,7 @@ helper_tools/equivalent_names
 helper_tools/tree_maker
 helper_tools/index_for_xapian
 helper_tools/log.txt
+helper_tools/header.hpp
 
 # Specific files
 all_cxx_papers.tar.zst
