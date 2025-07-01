@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>                       // size_t
 #include <cstdint>                       // uint_fast64_t
+#include <string_view>                   // string_view, wstring_view
 
 inline consteval char tolower_consteval_char(char const c) noexcept
 {
@@ -34,15 +35,15 @@ inline constexpr wchar_t tolower_consteval_wchar_t(wchar_t const c) noexcept
     return c;
 }
 
-inline consteval std::uint_fast64_t Hash(char const *const input) noexcept
+inline consteval std::uint_fast64_t Hash(std::string_view const input) noexcept
 {
     std::uint_fast64_t h = 0xcbf29ce484222325;
 
     constexpr char letters[] = "abcdefghijklmnopqrstuvwxyz";
 
-    for ( std::size_t i = 0u; input[i] != '\0'; ++i )
+    for ( char const cX : input )
     {
-        char const c = tolower_consteval_char(input[i]);
+        char const c = tolower_consteval_char(cX);
         bool is_letter = false;
 
         for ( char const letter : letters )
@@ -63,15 +64,15 @@ inline consteval std::uint_fast64_t Hash(char const *const input) noexcept
     return h;
 }
 
-inline consteval std::uint_fast64_t Hash(wchar_t const *const input) noexcept
+inline consteval std::uint_fast64_t Hash(std::wstring_view const input) noexcept
 {
     std::uint_fast64_t h = 0xcbf29ce484222325;
 
     constexpr wchar_t letters[] = L"abcdefghijklmnopqrstuvwxyz";
 
-    for ( std::size_t i = 0u; input[i] != L'\0'; ++i )
+    for ( wchar_t const cX : input )
     {
-        wchar_t const c = tolower_consteval_wchar_t(input[i]);
+        wchar_t const c = tolower_consteval_wchar_t(cX);
         bool is_letter = false;
 
         for ( wchar_t const letter : letters )
