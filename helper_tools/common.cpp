@@ -1,4 +1,6 @@
 #include "common.hpp"
+#include <cstdint>                    // uint_fast64_t
+#include <cctype>                     // tolower
 #include <cstddef>                    // size_t
 #include <cstdint>                    // int32_t
 #include <cstdlib>                    // EXIT_FAILURE
@@ -361,4 +363,206 @@ std::string ExtractAuthorFromFilePDF (std::string const &filename)
 {
     string s = GetPlainText_PDF(filename);
     return ExtractAuthor(s);
+}
+
+void ReplaceHtmlNumericEscapesInPlace(std::string &text)
+{
+    std::regex numeric_escape(R"(&#(x?)([0-9a-fA-F]+);)", std::regex::icase);
+    std::smatch match;
+
+    std::string result;
+    std::string::const_iterator search_start_iter = text.cbegin();
+
+    while (std::regex_search(search_start_iter, text.cend(), match, numeric_escape))
+    {
+        // Append text before match
+        result.append(search_start_iter, match.prefix().second);
+
+        bool is_hex = !match[1].str().empty();
+        std::string number_str = match[2].str();
+
+        int codepoint = 0;
+        std::istringstream iss(number_str);
+        if (is_hex)
+            iss >> std::hex >> codepoint;
+        else
+            iss >> std::dec >> codepoint;
+
+        std::stringstream ss;
+        if (codepoint <= 0xFFFF)
+            ss << "\\u" << std::setfill('0') << std::setw(4) << std::uppercase << std::hex << codepoint;
+        else
+            ss << "\\U" << std::setfill('0') << std::setw(8) << std::uppercase << std::hex << codepoint;
+
+        result.append(ss.str());
+
+        search_start_iter = match.suffix().first;
+    }
+
+    // Append remaining text
+    result.append(search_start_iter, text.cend());
+
+    text.swap(result);
+}
+
+void ReplaceInPlace(std::string &text, std::string_view const target, std::string_view replacement)
+{
+    size_t pos = 0u;
+    while ( (pos = text.find(target, pos)) != std::string::npos )
+    {
+        text.replace(pos, target.length(), replacement);
+        pos += replacement.length(); // move past the replacement
+    }
+}
+
+void TrimWhitespace(std::string &s)
+{
+    const std::string whitespace = " \t\n\r\f\v";
+
+    size_t start = s.find_first_not_of(whitespace);
+    if (start == std::string::npos)
+    {
+        s.clear();
+        return;
+    }
+
+    size_t end = s.find_last_not_of(whitespace);
+
+    // Erase leading whitespace first
+    s.erase(0, start);
+
+    // Erase trailing whitespace after adjusting for leading erase
+    s.erase(end - start + 1);
+}
+
+std::vector<std::string> SplitByNewLines(std::string_view const sv)
+{
+    std::vector<std::string> result;
+    size_t start = 0u;
+
+    for (; /* ever */;)
+    {
+        size_t pos = sv.find('\n', start);
+        if ( -1 == pos )
+        {
+            // Last line or no newline found
+            if ( start < sv.size() ) result.emplace_back(sv.substr(start));
+            break;
+        }
+        // Extract substring [start, pos)
+        result.emplace_back( sv.substr(start, pos - start) );
+        start = pos + 1u;
+    }
+
+    return result;
+}
+
+void EscapeNonAscii(std::string &str, bool escape_wide)
+{
+    auto decode_utf8_char = [](std::string const &s, size_t pos, uint32_t &codepoint) -> size_t
+    {
+        unsigned char c = static_cast<unsigned char>(s[pos]);
+        if (c < 0x80)
+        {
+            codepoint = c;
+            return 1;
+        }
+        else if ((c & 0xE0) == 0xC0 && pos + 1 < s.size())
+        {
+            codepoint = ((c & 0x1F) << 6) | (static_cast<unsigned char>(s[pos+1]) & 0x3F);
+            return 2;
+        }
+        else if ((c & 0xF0) == 0xE0 && pos + 2 < s.size())
+        {
+            codepoint = ((c & 0x0F) << 12) | ((static_cast<unsigned char>(s[pos+1]) & 0x3F) << 6) | (static_cast<unsigned char>(s[pos+2]) & 0x3F);
+            return 3;
+        }
+        else if ((c & 0xF8) == 0xF0 && pos + 3 < s.size())
+        {
+            codepoint = ((c & 0x07) << 18) | ((static_cast<unsigned char>(s[pos+1]) & 0x3F) << 12) | ((static_cast<unsigned char>(s[pos+2]) & 0x3F) << 6) | (static_cast<unsigned char>(s[pos+3]) & 0x3F);
+            return 4;
+        }
+        // Invalid UTF-8 or truncated sequence: treat byte as codepoint
+        codepoint = c;
+        return 1;
+    };
+
+    std::ostringstream oss;
+    size_t i = 0;
+
+    while ( i < str.size() )
+    {
+        uint32_t cp = 0;
+        size_t len = decode_utf8_char(str, i, cp);
+
+        if ( cp < 0x80 )
+        {
+            oss << static_cast<char>(cp);
+        }
+        else if (escape_wide)
+        {
+            if ( cp <= 0xFFFF )
+            {
+                oss << "\\u"
+                    << std::uppercase << std::hex << std::setw(4) << std::setfill('0')
+                    << cp;
+            }
+            else
+            {
+                oss << "\\U"
+                    << std::uppercase << std::hex << std::setw(8) << std::setfill('0')
+                    << cp;
+            }
+        }
+        else
+        {
+            // Encode codepoint as UTF-8 bytes and output each byte as \xHH
+            if (cp <= 0x7F)
+            {
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << cp;
+            }
+            else if (cp <= 0x7FF)
+            {
+                char b1 = 0xC0 | (cp >> 6);
+                char b2 = 0x80 | (cp & 0x3F);
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << (unsigned char)b1;
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << (unsigned char)b2;
+            }
+            else if (cp <= 0xFFFF)
+            {
+                char b1 = 0xE0 | (cp >> 12);
+                char b2 = 0x80 | ((cp >> 6) & 0x3F);
+                char b3 = 0x80 | (cp & 0x3F);
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << (unsigned char)b1;
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << (unsigned char)b2;
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << (unsigned char)b3;
+            }
+            else
+            {
+                char b1 = 0xF0 | (cp >> 18);
+                char b2 = 0x80 | ((cp >> 12) & 0x3F);
+                char b3 = 0x80 | ((cp >> 6) & 0x3F);
+                char b4 = 0x80 | (cp & 0x3F);
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << (unsigned char)b1;
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << (unsigned char)b2;
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << (unsigned char)b3;
+                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << (unsigned char)b4;
+            }
+        }
+
+        i += len;
+    }
+
+    str = std::move(oss).str();
+}
+
+void Erase(std::string &str, std::string_view const sv)
+{
+    size_t pos = 0u;
+
+    while ( -1 != (pos = str.find(sv, pos)) )
+    {
+        str.erase( pos, sv.length() );
+        // Don't increment pos — content shifted left, might be repeated
+    }
 }
