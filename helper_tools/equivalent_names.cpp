@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <iomanip>  // for setw, setfill
 #include "common.hpp"
+#include "../main_program/hash.hpp"
 
 using std::string;
 using std::string_view;
