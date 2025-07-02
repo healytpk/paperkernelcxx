@@ -4,6 +4,7 @@
 #include <algorithm>                         // replace
 #include <iostream>
 #include <fstream>
+#include <map>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -16,7 +17,7 @@ using std::size_t, std::string, std::string_view, std::cout, std::cerr, std::end
 
 std::ofstream logfile;
 
-std::set<string> names;
+std::map< string, std::vector<string> > names;
 
 bool IsNotName(string_view const s) noexcept
 {
@@ -146,9 +147,8 @@ void ExtractYearLinks(std::string_view const html, std::set<unsigned> &years)
     }
 }
 
-void ProcessAuthorSquareFromTable(string author, unsigned const year)
+void ProcessAuthorSquareFromTable(string author, string_view const doc)
 {
-    std::replace(author.begin(), author.end(), ',', '\n');
     ReplaceHtmlNumericEscapesInPlace(author);
 
 // ============================ Bugs on ISO webpages
@@ -177,6 +177,7 @@ void ProcessAuthorSquareFromTable(string author, unsigned const year)
     ReplaceInPlace(author, ";"       , "\n"    );
     ReplaceInPlace(author, " and "   , "\n"    );
     ReplaceInPlace(author, " / "     , "\n"    );
+    ReplaceInPlace(author, ","       , "\n"    );
     TrimWhitespace(author);
 
     std::vector<string_view> authors = SplitByNewLines(author);
@@ -218,9 +219,10 @@ void ProcessAuthorSquareFromTable(string author, unsigned const year)
         ReplaceInPlace(s, "Tomasz Kami_ski", "Tomasz Kami\\u0144ski");
         Erase(s, "(h2 AT fsfe.org)");
         Erase(s, " et al.");
+        if ( !s.empty() && ('.' == s.back()) ) s.pop_back();
         if ( ContainsNonASCII(s) )
         {
-            cout << "----- " << year << " --- " << s << " --- ";
+            cout << "----- " << doc << " --- " << s << " --- ";
             for ( char const c : s )
             {
                 cout << std::hex << std::setfill('0') << std::setw(2u) << (unsigned)(char unsigned)c << " ";
@@ -228,7 +230,7 @@ void ProcessAuthorSquareFromTable(string author, unsigned const year)
             cout << endl;
         }
         if ( s.empty() ) continue;
-        names.insert(s);
+        names[s].emplace_back(doc);
     }
 }
 
@@ -260,7 +262,7 @@ void ParseYearTable(string_view const html, unsigned const year)
             author       = match[4];
         }
 
-        ProcessAuthorSquareFromTable(author, year);
+        ProcessAuthorSquareFromTable(author, wg21_number);
 
         begin = match.suffix().first;
     }
@@ -306,10 +308,30 @@ int main(void)
     }
 
     std::cerr << "==================== " << names.size() << " unique names ==================\n";
-    for ( std::size_t i = 0u; i < names.size(); ++i )
+
+    std::ofstream fnames("names.txt");
+    if ( fnames.is_open() )
     {
-        string const &s = *std::next(std::begin(names), i);
-        cout << s << endl;
+        for ( std::size_t i = 0u; i < names.size(); ++i )
+        {
+            string const &s = std::next(std::begin(names), i)->first;
+            fnames << s << endl;
+        }
+    }
+
+    std::ofstream fnames_papers("names_papers.txt");
+    if ( fnames_papers.is_open() )
+    {
+        for ( std::size_t i = 0u; i < names.size(); ++i )
+        {
+            fnames_papers << std::next(std::begin(names), i)->first << " --- ";
+            auto const &myvec = std::next(std::begin(names), i)->second;
+            for ( auto const &e : myvec )
+            {
+                fnames_papers << e << ", ";
+            }
+            fnames_papers << endl;
+        }
     }
 
     return EXIT_SUCCESS;
