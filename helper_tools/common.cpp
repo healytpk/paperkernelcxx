@@ -435,9 +435,9 @@ void TrimWhitespace(std::string &s)
     s.erase(end - start + 1);
 }
 
-std::vector<std::string> SplitByNewLines(std::string_view const sv)
+std::vector<std::string_view> SplitByNewLines(std::string_view const sv)
 {
-    std::vector<std::string> result;
+    std::vector<std::string_view> result;
     size_t start = 0u;
 
     for (; /* ever */;)

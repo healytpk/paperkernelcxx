@@ -39,7 +39,7 @@ extern void ReplaceInPlace(std::string &text, std::string_view const target, std
 
 extern void TrimWhitespace(std::string &s);
 
-extern std::vector<std::string> SplitByNewLines(std::string_view const sv);
+extern std::vector<std::string_view> SplitByNewLines(std::string_view const sv);
 
 extern void EscapeNonAscii(std::string &str, bool escape_wide = false);
 
