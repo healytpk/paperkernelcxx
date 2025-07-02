@@ -3,57 +3,6 @@
 #include <string>
 #include <sstream>
 
-inline void replace_non_ascii_with_hex(std::string &str)
-{
-    std::string result;
-
-    size_t i = 0u;
-    while ( i < str.size() )
-    {
-        unsigned char c = static_cast<unsigned char>(str[i]);
-        size_t charLen = 0u;
-
-        if ( (c & 0x80) == 0x00 )
-        {
-            // ASCII
-            result += c;
-            ++i;
-            continue;
-        }
-        else if ( (c & 0xE0) == 0xC0 ) charLen = 2;
-        else if ( (c & 0xF0) == 0xE0 ) charLen = 3;
-        else if ( (c & 0xF8) == 0xF0 ) charLen = 4;
-        else
-        {
-            // Invalid UTF-8 start byte
-            //std::abort();
-            ++i;
-            continue;
-        }
-
-        if ( (i+charLen) <= str.size() )
-        {
-            std::ostringstream oss;
-            for ( size_t j = 0u; j < charLen; ++j )
-            {
-                unsigned char byte = static_cast<unsigned char>(str[i + j]);
-                oss << "\\x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0')
-                    << static_cast<unsigned>(byte);
-            }
-            result += oss.str();
-            i += charLen;
-        }
-        else
-        {
-            // Incomplete UTF-8 sequence
-            //std::abort();
-            break;
-        }
-    }
-
-    str = std::move(result); // Update the original string with the result
-}
-
 inline void Lreplace_non_ascii_with_hex(std::string &str)
 {
     std::string result;

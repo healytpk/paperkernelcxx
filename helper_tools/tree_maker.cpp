@@ -124,8 +124,7 @@ int main(void)
     }
     logfile << "First line in log file\n";
 
-    std::ofstream  fs("../main_program/AUTO_GENERATED_tree_contents_paper_char.hpp" );
-    std::ofstream fws("../main_program/AUTO_GENERATED_tree_contents_paper_wchar_t.hpp");
+    std::ofstream  fs("../main_program/AUTO_GENERATED_tree_contents_paper.hpp" );
 
     // Path to the directory containing the .tokens files
     string const path = "../papers/";
@@ -177,18 +176,15 @@ int main(void)
 
     // Print out the PaperTree structure in the desired format
     fs  << "{\n";
-    fws << "{\n";
     for ( auto const &entry : papers )
     {
         fs  << "    { ";
-        fws << "    { ";
 
-        if ( entry.first <   10u ) fs << ' ', fws << ' ';
-        if ( entry.first <  100u ) fs << ' ', fws << ' ';
-        if ( entry.first < 1000u ) fs << ' ', fws << ' ';
+        if ( entry.first <   10u ) fs << ' ';
+        if ( entry.first <  100u ) fs << ' ';
+        if ( entry.first < 1000u ) fs << ' ';
 
         fs  << entry.first << "u, RevList<";
-        fws << entry.first << "u, RevList<";
 
         auto rev_it = entry.second.begin();
 
@@ -198,31 +194,21 @@ int main(void)
             if ( false == is_first_rev_on_line )
             {
                 fs  << ",";
-                fws << ",";
             }
             is_first_rev_on_line = false;
+
             string title  = e.title ;
             string author = e.author;
             if ( std::string_view(author).starts_with("Hana Dus") ) author = "Hana Dusikova";
             if ( author == "R. \"Tim" ) author = "R. Tim";
-            replace_non_ascii_with_hex(title );
-            replace_non_ascii_with_hex(author);            
-            fs  << " Rev< " << e.n << "u, Arr64< Hash( \"" << author << "\") >(),  \"" << title << "\" > ";
-
-            string title2  = e.title ;
-            string author2 = e.author;
-            if ( std::string_view(author2).starts_with("Hana Dus") ) author2 = "Hana Dusikova";
-            if ( author2 == "R. \"Tim" ) author2 = "R. Tim";
-            Lreplace_non_ascii_with_hex(title2 );
-            Lreplace_non_ascii_with_hex(author2);            
-            fws << " Rev< " << e.n << "u, Arr64< Hash(L\"" << author << "\") >(), L\"" << title << "\" > ";
+            Lreplace_non_ascii_with_hex(title );
+            Lreplace_non_ascii_with_hex(author);
+            fs << " Rev< " << e.n << "u, Arr64< Hash(wxS(\"" << author << "\")) >(), wxS(\"" << title << "\") > ";
         }
 
         fs  << " >() },\n" << std::flush;
-        fws << " >() },\n" << std::flush;
     }
     fs  << "}\n";
-    fws << "}\n";
 
     std::cerr << Title()  << std::endl;
     std::cerr << Author() << std::endl;

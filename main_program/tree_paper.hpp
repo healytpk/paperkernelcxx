@@ -52,9 +52,5 @@ consteval PaperRevInfo_t const *RevList(void)
 }
 
 constexpr PaperInfo g_map_papers[] =
-#if wxUSE_UNICODE_WCHAR
-#    include "AUTO_GENERATED_tree_contents_paper_wchar_t.hpp"
-#else
-#    include "AUTO_GENERATED_tree_contents_paper_char.hpp"
-#endif
+#    include "AUTO_GENERATED_tree_contents_paper.hpp"
 ;
