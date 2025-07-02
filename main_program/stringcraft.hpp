@@ -10,7 +10,8 @@ allocation required).
 #include <cstddef>         // ptrdiff_t, size_t
 #include <cstdint>         // uint_fast64_t
 #include <algorithm>       // max
-#include <string>          // basic_string, string, wstring
+#include <string>          // basic_string     , string     , wstring
+#include <string_view>     // basic_string_view, string_view, wstring_view
 #include <type_traits>     // is_reference, is_same
 #include <wx/string.h>     // wxString, wxStringCharType
 #include "hash.hpp"        // Hash (consteval)
@@ -18,9 +19,11 @@ allocation required).
 #if wxUSE_UNICODE_WCHAR    // See approx. line #150 in wx/chartype.h
     static_assert( std::is_same_v<wchar_t, wxStringCharType> );
     typedef std::wstring wxstring;
+    typedef std::wstring_view wxstring_view;
 #else
     static_assert( std::is_same_v< char  , wxStringCharType> );
     typedef std::string wxstring;
+    typedef std::string_view wxstring_view;
 #endif
 
 template<std::size_t N>
