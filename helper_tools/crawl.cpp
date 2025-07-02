@@ -169,6 +169,7 @@ void ParseYearTable(std::string const &html, std::string const &year)
 #else
         std::replace(author.begin(), author.end(), ',', '\n');
         ReplaceHtmlNumericEscapesInPlace(author);
+        ReplaceInPlace(author, "\u00A0"  , " "     );  // Non-breaking space
 
         ReplaceInPlace(author, "Pablo Halpern Ville Voutilainen", "Pablo Halpern\nVille Voutilainen");
 // ============================ Bugs on ISO webpages
@@ -189,12 +190,12 @@ void ParseYearTable(std::string const &html, std::string const &year)
         ReplaceInPlace(author, "&ordf;"  , "\u00AA");
         ReplaceInPlace(author, "&ntilde;", "\u00F1");
         
-        ReplaceInPlace(author, "&nbsp;"  , " ");
-        ReplaceInPlace(author, "&amp;"   , "\n");
+        ReplaceInPlace(author, "&nbsp;"  , " "     );
+        ReplaceInPlace(author, "&amp;"   , "\n"    );
         ReplaceInPlace(author, "&Eacute;", "\u00C9");
-        ReplaceInPlace(author, ";"       , "\n");
-        ReplaceInPlace(author, " and ", "\n");
-        ReplaceInPlace(author, " / ", "\n");
+        ReplaceInPlace(author, ";"       , "\n"    );
+        ReplaceInPlace(author, " and "   , "\n"    );
+        ReplaceInPlace(author, " / "     ,  "\n"   );
         TrimWhitespace(author);
         
         std::vector<std::string> authors = SplitByNewLines(author);
