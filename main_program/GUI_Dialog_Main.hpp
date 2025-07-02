@@ -26,6 +26,7 @@ protected:
     void AI_btnUnloadModel_OnButtonClick(wxCommandEvent&) override;
     void AI_btnLoadPapers_OnButtonClick(wxCommandEvent&) override;
     void AI_btnUnloadPapers_OnButtonClick(wxCommandEvent&) override;
+    void btnDebug_Refresh_OnButtonClick(wxCommandEvent&) override;
     void btnXapianLoadPapers_OnButtonClick(wxCommandEvent&) override;
     void btnXapianUnloadPapers_OnButtonClick(wxCommandEvent&) override;
     void btnXapianSearch_OnButtonClick(wxCommandEvent&) override;

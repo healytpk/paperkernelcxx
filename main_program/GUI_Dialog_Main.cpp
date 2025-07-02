@@ -1,5 +1,6 @@
 #include "GUI_Dialog_Main.hpp"
 #include <cassert>                                   // assert
+#include <climits>                                   // CHAR_BIT
 #include <cstddef>                                   // size_t
 #include <cstdint>                                   // uintptr_t
 #include <cstring>                                   // strcmp, strstr
@@ -10,7 +11,7 @@
 #include <string_view>                               // string_view
 #include <vector>                                    // vector
 #include <thread>                                    // jthread
-#include <type_traits>                               // is_same
+#include <type_traits>                               // is_same, remove_cvref
 #include <utility>                                   // move
 #include <wx/app.h>                                  // wxApp
 #include <wx/image.h>                                // wxImage::AddHandler, wxICOHandler
@@ -19,6 +20,7 @@
 #include <wx/splitter.h>                             // wxSplitterWindow
 #include "GUI_Dialog_Waiting.hpp"
 #include "ai.hpp"
+#include "debug.hpp"
 #include "embedded_archive.hpp"
 #include "paperman.hpp"
 #include "semantic.hpp"
@@ -742,4 +744,63 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
     assert( 2u == this->authorPaperStore->GetRefCount() );
     this->authorPaperStore->DecRef();
     assert( 1u == this->authorPaperStore->GetRefCount() );
+}
+
+void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
+{
+    assert( wxIsMainThread() );
+    static bool already_done = false;
+    if ( false == already_done )
+    {
+        already_done = true;
+        this->labelDebug_Info->SetFont( wxFont(12, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
+    }
+
+    wxString s;
+
+    auto print_size = [&s]<typename T>(wxStringCharType const *const name, unsigned const len = 14u)
+      {
+        s << wxS("sizeof(");
+        for ( unsigned i = 0u; i < (len - wxstring_view(name).size()); ++i ) s << " ";
+        s << name << wxS(") == ") << sizeof(T) << wxS(" bytes == ") << (sizeof(T) * CHAR_BIT) << wxS("-Bit\n");
+      };
+
+    #define PRINT_TYPE(type) print_size.operator()<type>( wxS( #type ) )
+    #define PRINT_TYPE_LEN(type, len) print_size.operator()<type>( wxS( #type ), len )
+
+    constexpr wxStringCharType endl[] = wxS("\n");
+
+    s << wxS("Total resident memory in use by this process: ") << GetResidentMemory() / 1024u / 1024u << wxS(" MiB") << endl;
+    s << wxS("This process has ") << GetThreadCount() << wxS(" threads") << endl;
+    s << wxS("This process has ") << GetChildProcessCount() << wxS(" child processes") << endl << endl;
+
+    s << wxS("CHAR_BIT == ") << CHAR_BIT << endl << endl;
+    PRINT_TYPE_LEN(wxStringCharType, 16u);
+    PRINT_TYPE_LEN(char, 16u);
+    PRINT_TYPE_LEN(wchar_t, 16u);
+    s << wxS("is_same_v<wxStringCharType,  char  >  == ") << (std::is_same_v<wxStringCharType,  char  > ? wxS("true") : wxS("false")) << endl;
+    s << wxS("is_same_v<wxStringCharType, wchar_t>  == ") << (std::is_same_v<wxStringCharType, wchar_t> ? wxS("true") : wxS("false")) << endl;
+    s << wxS("is_signed_v<            char>  == ") << (std::is_signed_v<            char> ? wxS("true") : wxS("false")) << endl;
+    s << wxS("is_signed_v<         wchar_t>  == ") << (std::is_signed_v<         wchar_t> ? wxS("true") : wxS("false")) << endl;
+    s << wxS("is_signed_v<wxStringCharType>  == ") << (std::is_signed_v<wxStringCharType> ? wxS("true") : wxS("false")) << endl << endl;
+
+    PRINT_TYPE(bool);
+    PRINT_TYPE(char);
+    PRINT_TYPE(short);
+    PRINT_TYPE(int);
+    PRINT_TYPE(long);
+    PRINT_TYPE(long long);
+    using std::uint_least32_t, std::uint_least64_t, std::uint_fast32_t, std::uint_fast64_t;
+    PRINT_TYPE(uint_least32_t);
+    PRINT_TYPE(uint_fast32_t);
+    PRINT_TYPE(uint_least64_t);
+    PRINT_TYPE(uint_fast64_t);
+
+    wxGetApp().SafeYield(nullptr, false);
+    this->labelDebug_Info->SetLabel(s);
+    wxGetApp().SafeYield(nullptr, false);
+    this->labelDebug_Info->Refresh();
+    wxGetApp().SafeYield(nullptr, false);
+    this->labelDebug_Info->Update();
+    wxGetApp().SafeYield(nullptr, false);
 }

@@ -221,6 +221,22 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	panelAI->Layout();
 	bSizer3->Fit( panelAI );
 	m_notebook1->AddPage( panelAI, wxT("Artificial Intelligence"), false );
+	panelDebug = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer151;
+	bSizer151 = new wxBoxSizer( wxVERTICAL );
+
+	labelDebug_Info = new wxStaticText( panelDebug, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	labelDebug_Info->Wrap( -1 );
+	bSizer151->Add( labelDebug_Info, 1, wxALL|wxEXPAND, 5 );
+
+	btnDebug_Refresh = new wxButton( panelDebug, wxID_ANY, wxT("Refresh"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer151->Add( btnDebug_Refresh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	panelDebug->SetSizer( bSizer151 );
+	panelDebug->Layout();
+	bSizer151->Fit( panelDebug );
+	m_notebook1->AddPage( panelDebug, wxT("Debug"), false );
 
 	bSizer1->Add( m_notebook1, 1, wxEXPAND | wxALL, 5 );
 
@@ -246,6 +262,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	AI_btnUnloadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnUnloadPapers_OnButtonClick ), NULL, this );
 	AI_btnWhittleDownPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnWhittleDownPapers_OnButtonClick ), NULL, this );
 	AI_btnAnalysePapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnAnalysePapers_OnButtonClick ), NULL, this );
+	btnDebug_Refresh->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnDebug_Refresh_OnButtonClick ), NULL, this );
 }
 
 Dialog_Main__Auto_Base_Class::~Dialog_Main__Auto_Base_Class()

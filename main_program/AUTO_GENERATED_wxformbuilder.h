@@ -78,6 +78,9 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		wxStaticText* m_staticText3;
 		wxListBox* AI_listPapers;
 		wxTextCtrl* AI_txtDetailedAnswer;
+		wxPanel* panelDebug;
+		wxStaticText* labelDebug_Info;
+		wxButton* btnDebug_Refresh;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
@@ -95,6 +98,7 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		virtual void AI_btnUnloadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void AI_btnWhittleDownPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void AI_btnAnalysePapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void btnDebug_Refresh_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

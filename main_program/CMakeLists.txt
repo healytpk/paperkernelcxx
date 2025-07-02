@@ -1,6 +1,7 @@
 set(SRCS
 	AUTO_GENERATED_wxformbuilder.cpp
 	ai.cpp
+	debug.cpp
 	embedded_archive.cpp
 	GUI_Dialog_Main.cpp
 	MySortableListCtrl.cpp
@@ -15,6 +16,7 @@ set(HEADERS
 	AUTO_GENERATED_wxformbuilder.h
 	Auto.h
 	ai.hpp
+	debug.hpp
 	embedded_archive.hpp
 	GUI_Dialog_Main.hpp
 	GUI_Dialog_Waiting.hpp
