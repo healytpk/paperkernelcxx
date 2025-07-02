@@ -13,8 +13,8 @@
 #include <set>                        // set
 #include <gumbo.h>
 #include "common.hpp"                 // ExtractTitleFromFileHTML/PDF
-#include "hasher.hpp"
 #include "../main_program/paper.hpp"  // Paper
+#include "../main_program/hash.hpp"   // Hash
 #include "escape_hex.hpp"
 
 namespace fs = std::filesystem;
@@ -128,7 +128,7 @@ void RecordAuthor(string_view arg, string_view filename)
     normalize_name(s);
     cerr << s << " ---- ";
 
-    long long unsigned digest = GetHash(s.c_str());
+    long long unsigned digest = Hash(s.c_str());
     cerr << "0x" << std::hex << std::setfill('0') << std::setw(16) << digest << endl;
     cerr << std::dec;
     Author &a = g_all_authors[digest];
@@ -342,39 +342,29 @@ int main(void)
         }
     }
 
-    std::ofstream  fs("../main_program/AUTO_GENERATED_tree_contents_author_char.hpp" );
-    std::ofstream fws("../main_program/AUTO_GENERATED_tree_contents_author_wchar_t.hpp");
+    std::ofstream  fs("../main_program/AUTO_GENERATED_tree_contents_author.hpp" );
 
     fs  << "{\n";
-    fws << "{\n";
     for ( auto &mypair : g_all_authors )
     {
-        fs  << "    { " << mypair.first << "u, {  \"";
-        fws << "    { " << mypair.first << "u, { L\"";
+        fs  << "    { 0x" << std::hex << std::setfill('0') << std::setw(16) << mypair.first << ", { wxS(\"";
 
-        string name_char    = mypair.second.name;
-        if ( std::string_view(name_char).starts_with("Hana Dus") ) name_char = "Hana Dusikova";
-        string name_wchar_t = name_char;
+        string name = mypair.second.name;
+        if ( std::string_view(name).starts_with("Hana Dus") ) name = "Hana Dusikova";
 
-         replace_non_ascii_with_hex( name_char    );
-        Lreplace_non_ascii_with_hex( name_wchar_t );
+        Lreplace_non_ascii_with_hex( name );
 
-        fs  << name_char;
-        fws << name_wchar_t;
+        fs  << name;
 
-        fs  << "\", { ";
-        fws << "\", { ";
+        fs  << "\"), { ";
 
         for ( auto &e : mypair.second.files )
         {
             Paper paper(e);
-            fs  << "{ " << paper.num << "u, " << paper.rev << "u }, ";
-            fws << "{ " << paper.num << "u, " << paper.rev << "u }, ";
+            fs  << "{ " << std::dec << paper.num << "u, " << paper.rev << "u }, ";
         }
         fs  << " } } },\n";
-        fws << " } } },\n";
     }
     fs  << "}\n";
-    fws << "}\n";
 }
 

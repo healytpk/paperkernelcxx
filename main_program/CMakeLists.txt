@@ -7,14 +7,11 @@ set(SRCS
 	paper.cpp
 	paperman.cpp
 	semantic.cpp
-	tree_author.cpp
 	view_portal.cpp)
 
 set(HEADERS
-	AUTO_GENERATED_tree_contents_author_char.hpp
-	AUTO_GENERATED_tree_contents_author_wchar_t.hpp
-	AUTO_GENERATED_tree_contents_paper_char.hpp
-	AUTO_GENERATED_tree_contents_paper_wchar_t.hpp
+	AUTO_GENERATED_tree_contents_author.hpp
+	AUTO_GENERATED_tree_contents_paper.hpp
 	AUTO_GENERATED_wxformbuilder.h
 	Auto.h
 	ai.hpp
