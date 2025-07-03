@@ -13,8 +13,22 @@
 #endif
 
 struct Paper {
+public:
     char letter;
     unsigned num, rev;
+private:
+    struct PaperTerminator_t {};
+    consteval Paper(PaperTerminator_t) noexcept
+        : letter('Z'), num(0), rev(0) {}
+public:
+    static consteval Paper Terminator(void) noexcept
+    {
+        return Paper(PaperTerminator_t());
+    }
+    constexpr bool IsTerminator(void) const noexcept
+    {
+        return 'Z' == letter;
+    }
 
     template<typename T>
     requires(    std::is_convertible_v<decltype(std::declval<T&&>()[0]),  char  >

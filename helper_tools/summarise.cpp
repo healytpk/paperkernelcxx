@@ -356,14 +356,17 @@ int main(void)
 
         fs  << name;
 
-        fs  << "\"), { ";
+        fs  << "\"), PaperList< ";
 
+        bool have_one_already = false;
         for ( auto &e : mypair.second.files )
         {
+            if ( have_one_already ) fs << ", ";
+            have_one_already = true;
             Paper paper(e);
-            fs  << "\"" << paper.c_str() <<  "\", ";
+            fs  << "\"" << paper.c_str() <<  "\"";
         }
-        fs  << " } } },\n";
+        fs  << " >() } },\n";
     }
     fs  << "}\n";
 }

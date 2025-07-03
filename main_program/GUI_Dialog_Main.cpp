@@ -413,12 +413,15 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
       };
 
     size_t i = -1;
-    for ( auto const &e : g_map_authors )
+    for ( std::pair< std::uint_fast64_t, std::pair< wchar_t const*, Paper const * > > const &e : g_map_authors )
     {
         ++i;
         this->listAuthors->InsertItem (i, e.second.first);
-        this->listAuthors->SetItem(i, 1, wxString() << e.second.second.size() );
-        this->listAuthors->SetItem(i, 2, wxString() << number() );
+        Paper const *const pbegin = e.second.second;
+        Paper const *      p      = pbegin;
+        while ( false == p->IsTerminator() ) ++p;
+        this->listAuthors->SetItem(i, 1, wxString() << (p - pbegin) );
+        this->listAuthors->SetItem(i, 2, wxString() << number()     );
         this->listAuthors->SetItemPtrData(i, reinterpret_cast<std::uintptr_t>(const_cast<void*>(static_cast<void const*>(&e))) );
     }
 
@@ -707,17 +710,16 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
     this->authorPaperStore->Reset();
 
     typedef std::remove_reference_t< decltype( *std::cbegin(g_map_authors) ) > MapPairType;
-    typedef MapPairType::second_type::second_type ContainerType;
-    static_assert( std::is_same_v< Paper, ContainerType::value_type > );
+    //std::pair< std::uint_fast64_t, std::pair< wchar_t const*, Paper const * > >
 
     static_assert( sizeof(wxUIntPtr) >= sizeof(void*) );
     std::uintptr_t const addr_as_int = static_cast<std::uintptr_t>(event.GetData());
     assert( 0u != addr_as_int );
     MapPairType const *const mypair = static_cast<MapPairType*>( reinterpret_cast<void*>(addr_as_int) );
 
-    for ( Paper const &e : mypair->second.second )
+    for ( Paper const *p = mypair->second.second; false == p->IsTerminator(); ++p )
     {
-        wxString const paper_str = wxString::Format("p%04u", e.num);
+        wxString const paper_str = wxString::Format("p%04u", p->num);
 
         wxDataViewItem item_papernum = this->authorPaperStore->FindItem(paper_str);
 
@@ -725,7 +727,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
         {
             item_papernum = this->authorPaperStore->AppendItemWithColumns(
                 {},
-                { paper_str, e.GetTitle() }
+                { paper_str, p->GetTitle() }
             );
           //this->authorPaperStore->ItemAdded(wxDataViewItem{}, item_papernum);   --  not associated
         }
@@ -733,7 +735,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
         wxDataViewItem const item_rev =
             this->authorPaperStore->AppendItemWithColumns(
             item_papernum,
-            { wxString("r") << e.rev }
+            { wxString("r") << p->rev }
         );
         (void)item_rev;
       //this->authorPaperStore->ItemAdded(item_papernum, item_rev);  --  not associated
