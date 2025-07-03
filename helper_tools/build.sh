@@ -64,7 +64,7 @@ crawl()
 {
     echo "Building crawl..."
     rm -f ./crawl
-    $CXX -o crawl crawl.cpp common.cpp $LIB
+    $CXX -o crawl crawl.cpp common.cpp ../main_program/paper.cpp $LIB -DPAPERKERNELCXX_MINIMAL_PAPER
     echo "Libraries needed by 'crawl':"
     readelf -a ./crawl | grep "(NEEDED)"
 }

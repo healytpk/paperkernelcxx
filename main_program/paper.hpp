@@ -56,6 +56,7 @@ public:
             {
             case 'n':
                 letter = 'n';
+                rev = 0u;
                 if ( 5u == p.size() )  // N1234
                 {
                     // fall through

@@ -12,6 +12,8 @@
 #include <set>
 #include <curl/curl.h>
 #include "common.hpp"
+#include "../main_program/hash.hpp"
+#include "../main_program/paper.hpp"
 
 using std::size_t, std::string, std::string_view, std::cout, std::cerr, std::endl;
 
@@ -262,7 +264,12 @@ void ParseYearTable(string_view const html, unsigned const year)
             author       = match[4];
         }
 
-        ProcessAuthorSquareFromTable(author, wg21_number);
+        try
+        {
+            Paper{wg21_number};  // just to see if it throws because of invalid paper (e.g. SD-1)
+            ProcessAuthorSquareFromTable(author, wg21_number);
+        }
+        catch(...){}
 
         begin = match.suffix().first;
     }
@@ -314,25 +321,32 @@ int main(void)
     {
         for ( std::size_t i = 0u; i < names.size(); ++i )
         {
-            string const &s = std::next(std::begin(names), i)->first;
+            string const &s = std::next(std::cbegin(names), i)->first;
             fnames << s << endl;
         }
     }
 
-    std::ofstream fnames_papers("names_papers.txt");
+    std::ofstream fnames_papers("../main_program/AUTO_GENERATED_tree_contents_author.hpp");
     if ( fnames_papers.is_open() )
     {
+        fnames_papers << "{\n";
         for ( std::size_t i = 0u; i < names.size(); ++i )
         {
-            fnames_papers << std::next(std::begin(names), i)->first << " --- ";
-            auto const &myvec = std::next(std::begin(names), i)->second;
-            for ( auto const &e : myvec )
+            auto const &e = *std::next(std::cbegin(names), i);
+            fnames_papers << "    { 0x"
+                          << std::hex << std::setfill('0') << std::setw(16)
+                          << Hash(e.first) << std::dec << ", { wxS(\"" << e.first << "\"), PaperList< ";
+            bool already_got_one = false;
+            for ( auto const &e2 : e.second )
             {
-                fnames_papers << e << ", ";
+                if ( already_got_one ) fnames_papers << ", ";
+                already_got_one = true;
+                fnames_papers << "\"" << Paper(e2).c_str() << "\"";
             }
-            fnames_papers << endl;
+            fnames_papers << " >() } },\n";
         }
     }
+    fnames_papers << "};\n";
 
     return EXIT_SUCCESS;
 }
