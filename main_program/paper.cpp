@@ -1,17 +1,4 @@
-/*
- *
- *  This file is empty if PAPERKERNELCXX_MINIMAL_PAPER is defined
- *
- */
-
-#ifndef PAPERKERNELCXX_MINIMAL_PAPER
-
 #include "paper.hpp"
-#include <cstdlib>                      // abort
-#include <algorithm>                    // lower_bound
-#include <iterator>                     // cbegin, cend
-#include <type_traits>                  // is_same
-#include "tree_paper.hpp"               // g_map_papers
 
 namespace Paper_detail {
 
@@ -56,6 +43,21 @@ T const *null_terminated_string(Paper const *const this_paper)
     return s;
 }
 
+}  // close namespace 'Paper_detail'
+
+char    const *Paper:: c_str(void) const noexcept { return Paper_detail::null_terminated_string< char  >(this); }
+wchar_t const *Paper::wc_str(void) const noexcept { return Paper_detail::null_terminated_string<wchar_t>(this); }
+
+#ifndef PAPERKERNELCXX_MINIMAL_PAPER
+
+#include <cstdlib>                      // abort
+#include <algorithm>                    // lower_bound
+#include <iterator>                     // cbegin, cend
+#include <type_traits>                  // is_same
+#include "tree_paper.hpp"               // g_map_papers
+
+namespace Paper_detail {
+
 wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned const n)
 {
     auto const it = std::lower_bound( std::cbegin(g_map_papers), std::cend(g_map_papers),
@@ -79,9 +81,6 @@ wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned c
 }
 
 }  // close namespace Paper_detail
-
-char    const *Paper:: c_str(void) const noexcept { return Paper_detail::null_terminated_string< char  >(this); }
-wchar_t const *Paper::wc_str(void) const noexcept { return Paper_detail::null_terminated_string<wchar_t>(this); }
 
 wxString const &Paper::GetTitle(void) const noexcept
 {

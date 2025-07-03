@@ -130,12 +130,13 @@ struct Paper {
 
     constexpr bool IsRelatedTo(Paper const other) const noexcept { return (letter == other.letter) && (num == other.num); }
 
+     char   const * c_str(void) const noexcept;
+    wchar_t const *wc_str(void) const noexcept;
+
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
     wxString const &GetTitle (void) const noexcept;
     wxString const &GetAuthor(void) const noexcept;
     wxString        GetPaper (void) const noexcept;
-     char   const * c_str(void) const noexcept;
-    wchar_t const *wc_str(void) const noexcept;
 #endif
 };
 
