@@ -37,7 +37,7 @@ void PaperManager::LoadAllTokensFromAllPapers(void) noexcept(false)
         std::smatch m;
         if ( false == std::regex_match(filename, m, pattern) ) continue;
 
-        Paper paper( std::stoul(m[1]), std::stoul(m[2]) );
+        Paper paper( 'p', std::stoul(m[1]), std::stoul(m[2]) );
 
         std::ifstream f(path, std::ios::binary);
         if ( ! f ) throw "Failed to open token file";

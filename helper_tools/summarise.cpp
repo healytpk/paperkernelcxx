@@ -361,7 +361,7 @@ int main(void)
         for ( auto &e : mypair.second.files )
         {
             Paper paper(e);
-            fs  << "{ " << std::dec << paper.num << "u, " << paper.rev << "u }, ";
+            fs  << "{ 'p', " << std::dec << paper.num << "u, " << paper.rev << "u }, ";
         }
         fs  << " } } },\n";
     }
