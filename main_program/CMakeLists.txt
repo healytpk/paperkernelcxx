@@ -16,6 +16,7 @@ set(HEADERS
 	AUTO_GENERATED_wxformbuilder.h
 	Auto.h
 	ai.hpp
+	cctype_constexpr.hpp
 	debug.hpp
 	embedded_archive.hpp
 	GUI_Dialog_Main.hpp
