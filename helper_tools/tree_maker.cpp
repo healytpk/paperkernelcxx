@@ -9,6 +9,7 @@
 #include <set>                        // set
 #include "common.hpp"                 // ExtractTitleFromFileHTML/PDF
 #include "escape_hex.hpp"
+#include "../main_program/paper.hpp"  // Paper
 
 namespace fs = std::filesystem;
 using std::string;
@@ -22,7 +23,7 @@ struct RevInfo {
 };
 
 // Define the PaperTree structure
-using PaperTree = std::map< unsigned, std::set<RevInfo> >;
+using PaperTree = std::map< Paper, std::set<RevInfo> >;
 
 string Title(void)
 {
@@ -166,7 +167,16 @@ int main(void)
         if ( author.empty() ) author = Author();
 
         // Store the revision number under the corresponding paper number
-        auto [ iterator, is_new ] =  papers[paper_number].insert( RevInfo{revision_number, title, author } );
+        std::stringstream ss;
+        ss << "p"
+           << std::dec << std::setfill('0') << std::setw(4)
+           << paper_number
+           << "r"
+           << revision_number;
+        string const str_paper = std::move(ss).str();
+        std::cerr << str_paper << std::endl;
+        auto [ iterator, is_new ] =
+            papers[str_paper].insert( RevInfo{revision_number, title, author } );
         if ( false == is_new )
         {
             std::cout << " -- DUPLICATE PAPER NUMBER --\n";
@@ -180,11 +190,13 @@ int main(void)
     {
         fs  << "    { ";
 
+/*
         if ( entry.first <   10u ) fs << ' ';
         if ( entry.first <  100u ) fs << ' ';
         if ( entry.first < 1000u ) fs << ' ';
+*/
 
-        fs  << entry.first << "u, RevList<";
+        fs  << "\"" << entry.first.c_str() << "\" , RevList<";
 
         auto rev_it = entry.second.begin();
 

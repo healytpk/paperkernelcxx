@@ -1,12 +1,13 @@
 #pragma once
 
 #include <cstdint>                          // uint_fast64_t, uintptr_t
+#include "../main_program/paper.hpp"        // Paper
 #include "stringcraft.hpp"                  // wxStringCharType, Hash
 
 struct PaperRevInfo_t;
 
 struct PaperInfo {
-    std::uintptr_t num;
+    Paper paper;                  // Revision will be set to 0
     PaperRevInfo_t const *prevs;  // points to minus-one-terminated array
 };
 

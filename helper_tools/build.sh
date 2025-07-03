@@ -10,7 +10,7 @@ tree_maker()
 {
     echo "Building tree_maker..."
     rm -f ./tree_maker
-    $CXX -o tree_maker tree_maker.cpp common.cpp $LIB
+    $CXX -o tree_maker tree_maker.cpp common.cpp ../main_program/paper.cpp $LIB -DPAPERKERNELCXX_MINIMAL_PAPER
     echo "Libraries needed by 'tree_maker':"
     readelf -a ./tree_maker | grep "(NEEDED)"
 }

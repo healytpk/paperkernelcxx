@@ -342,7 +342,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     {
         using std::get;
 
-        auto const papernum = e.num;
+        auto const papernum = e.paper.num;
         assert( 0u != papernum );
 
         assert( nullptr != e.prevs );  // we need at least one revision

@@ -61,8 +61,8 @@ namespace Paper_detail {
 wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned const n)
 {
     auto const it = std::lower_bound( std::cbegin(g_map_papers), std::cend(g_map_papers),
-                                      pthis->num,
-                                      [](auto &&arg1, auto &&arg2) { return arg1.num < arg2; } );
+                                      *pthis,
+                                      [](auto &&arg1, auto &&arg2) { return arg1.paper < arg2; } );
 
     assert( std::cend(g_map_papers) != it );
 
