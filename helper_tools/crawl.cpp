@@ -1,5 +1,5 @@
 #include <cassert>
-#include <cstring>                           // strcmp
+#include <cstring>                           // strchr, strcmp
 #include <charconv>                          // from_chars
 #include <algorithm>                         // replace
 #include <iostream>
@@ -10,6 +10,7 @@
 #include <vector>
 #include <regex>
 #include <set>
+#include <utility>
 #include <curl/curl.h>
 #include "common.hpp"
 #include "../main_program/hash.hpp"
@@ -20,6 +21,8 @@ using std::size_t, std::string, std::string_view, std::cout, std::cerr, std::end
 std::ofstream logfile;
 
 std::map< string, std::vector<string> > names;
+
+std::map< string, std::map<string, std::pair<string, string> > > papers;
 
 bool IsNotName(string_view const s) noexcept
 {
@@ -140,7 +143,8 @@ void ExtractYearLinks(std::string_view const html, std::set<unsigned> &years)
         // Use the iterators of the sub_match
         auto [ptr, ec] = std::from_chars(&*year.first, &*year.second, result);
 
-        if (ec == std::errc()) {
+        if ( ec == std::errc() )
+        {
             years.insert(result);
         }
 
@@ -219,6 +223,9 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
         ReplaceInPlace(s, "R. \"Tim\" Song", "R. Tim Song");
         ReplaceInPlace(s, "_ukasz Mendakiewicz", "Lukasz Mendakiewicz");
         ReplaceInPlace(s, "Tomasz Kami_ski", "Tomasz Kami\\u0144ski");
+        ReplaceInPlace(s, "H. Br\\U001AEBA9mann"       , "Herv\\00e9 Br\\u00f6nnimann");
+        ReplaceInPlace(s, "Herv\\u9802r\\U001AEBA9mann", "Herv\\00e9 Br\\u00f6nnimann");
+        ReplaceInPlace(s, "Joseph S. Berr\\uDBF3", "Joseph S. Berr\\u00edos");
         Erase(s, "(h2 AT fsfe.org)");
         Erase(s, " et al.");
         if ( !s.empty() && ('.' == s.back()) ) s.pop_back();
@@ -266,13 +273,27 @@ void ParseYearTable(string_view const html, unsigned const year)
 
         try
         {
-            Paper{wg21_number};  // just to see if it throws because of invalid paper (e.g. SD-1)
+            Paper paper{wg21_number};  // just to see if it throws because of invalid paper (e.g. SD-1)
+            auto &map = papers[ paper.PaperNameWithoutRevision() ];
+            map[ paper.c_str() ] = { author, title };
             ProcessAuthorSquareFromTable(author, wg21_number);
         }
         catch(...){}
 
         begin = match.suffix().first;
     }
+}
+
+void MonkeyString(string &s)
+{
+    string retval;
+
+    for ( char const c : s )
+    {
+        if ( std::strchr( "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ", c ) ) retval +=c;
+    }
+
+    s = std::move(retval);
 }
 
 int main(void)
@@ -347,6 +368,40 @@ int main(void)
         }
     }
     fnames_papers << "};\n";
+
+    std::ofstream fpapers("../main_program/AUTO_GENERATED_tree_contents_paper.hpp");
+    if ( fpapers.is_open() )
+    {
+        fpapers << "{\n";
+        for ( std::size_t i = 0u; i < papers.size(); ++i )
+        {
+            auto const &e = *std::next(std::cbegin(papers), i);
+            fpapers << "    { \"" << e.first;
+            if ( 'p' == e.first[0] ) fpapers << "r0";
+            fpapers << "\", RevList< ";
+
+            auto const &mymap = e.second;
+            bool already_got_one = false;
+            for ( std::size_t j = 0u; j < mymap.size(); ++j )
+            {
+                auto const &mypair = *std::next(std::cbegin(mymap), j);
+                if ( already_got_one ) fpapers << ", ";
+                already_got_one = true;
+                fpapers << "Rev< " << Paper(mypair.first).rev << "u, Arr64< Hash(wxS(\"";
+                string author = mypair.second.first;
+                MonkeyString(author);
+                fpapers << author;
+                fpapers << "\")) >(), wxS(\"";
+                string title = mypair.second.second;
+                MonkeyString(title);
+                fpapers << title << "\") >";
+            }
+            fpapers << " >() },\n";
+        }
+        // Don't uncomment the next line -- don't put a null terminator at the end of the papers array
+        // fpapers << "    { Paper::Terminator(), RevList< Rev< 0u, Arr64< 0u >(), wxS(\"\") > >() },\n";
+        fpapers << "};\n";
+    }
 
     return EXIT_SUCCESS;
 }

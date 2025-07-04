@@ -424,7 +424,6 @@ Guanduo Mu
 Guy Davidson
 Guy Somberg
 H. Boehm
-H. Br\U001AEBA9mann
 H. Carter Edwards
 H. Finkel
 H. Hinnant
@@ -447,7 +446,7 @@ Harry Bott
 Hartmut Kaiser
 Hassan Sajjad
 Herb Sutter
-Herv\u9802r\U001AEBA9mann
+Herv\00e9 Br\u00f6nnimann
 Hewill Kang
 Hong Hong
 Hongli Zhao
@@ -615,7 +614,7 @@ Jordan Saxonberg
 Jorg Brown
 Jose Daniel Garcia
 Jose Daniel Garcia Sanchez
-Joseph S. Berr\uDBF3
+Joseph S. Berr\u00edos
 Josh Levenberg
 Joshua Berne
 Joshua Cranmer
