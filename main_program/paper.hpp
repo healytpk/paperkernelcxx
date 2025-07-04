@@ -1,14 +1,13 @@
 #pragma once
 
 #include <cassert>                                // assert
+#include <cstddef>                                // size_t
 #include <stdexcept>                              // runtime_error
-#include <string>                                 // string     , wstring
+#include <string>                                 // string     , wstring     , char_traits<T>::length
 #include <string_view>                            // string_view, wstring_view
-#include <type_traits>                            // is_convertible
+#include <type_traits>                            // is_constant_evaluated, is_convertible
 #include <utility>                                // declval
 #include "cctype_constexpr.hpp"                   // isdigit, tolower
-
-#include <iostream>  // ====================== debugging ---- REMOVE THIS ------------------ REMOVE THIS ------------- REMOVE THIS
 
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
     class wxString;
@@ -20,8 +19,7 @@ public:
     unsigned num, rev;
 private:
     struct PaperTerminator_t {};
-    consteval Paper(PaperTerminator_t) noexcept
-        : letter('z'), num(0), rev(0) {}
+    consteval Paper(PaperTerminator_t) noexcept : letter('z'), num(0u), rev(0u) {}
 public:
     static consteval Paper Terminator(void) noexcept
     {
@@ -31,19 +29,20 @@ public:
     {
         return 'z' == letter;
     }
-
+private:
+    struct PaperConstructor_t {};
     template<typename T>
     requires(    std::is_convertible_v<decltype(std::declval<T&&>()[0]),  char  >
               || std::is_convertible_v<decltype(std::declval<T&&>()[0]), wchar_t> )
-    static constexpr void Constructor_Paper(Paper *const this_paper, T &&p)
+    constexpr Paper(PaperConstructor_t, T const p, std::size_t const len)
     {
         using namespace cctype_constexpr;  // isdigit, tolower
 
-        auto &letter = this_paper->letter;
-        auto &num    = this_paper->num   ;
-        auto &rev    = this_paper->rev   ;
+        auto &letter = this->letter;
+        auto &num    = this->num   ;
+        auto &rev    = this->rev   ;
 
-        while ( p.size() >= 5u )  // fake loop only iterates once (so we can 'break')
+        while ( len >= 5u )  // fake loop only iterates once (so we can 'break')
         {
             if ( !isdigit(p[1]) ) break;
             if ( !isdigit(p[2]) ) break;
@@ -59,7 +58,7 @@ public:
             case 'n':
                 letter = 'n';
                 rev = 0u;
-                if ( 5u == p.size() )  // N1234
+                if ( 5u == len )  // N1234
                 {
                     // fall through
                 }
@@ -76,12 +75,12 @@ public:
 
             case 'p':
                 letter = 'p';
-                if ( p.size() < 7u ) break;
+                if ( len < 7u ) break;
                 if ( 'r' != tolower(p[5]) ) break;
                 if ( !isdigit(p[6]) ) break;
                 rev = (p[6]-'0');
 
-                if ( 7u == p.size() )  // P1234R0
+                if ( 7u == len )  // P1234R0
                 {
                     // fall through
                 }
@@ -93,7 +92,7 @@ public:
                 {
                     rev *= 10u;
                     rev += (p[7]-'0');
-                    if ( (p.size() > 8u) && ('\0' != p[8]) && ('.' != p[8]) ) break;  // P1234R15
+                    if ( (len > 8u) && ('\0' != p[8]) && ('.' != p[8]) ) break;  // P1234R15
                     // fall through
                 }
                 else  // length is >= 8
@@ -106,9 +105,22 @@ public:
 
             break;  // fake loop only iterates once!
         }
-        throw std::runtime_error("invalid paper name string");
+
+        // The Microsoft compiler won't allow the throwing
+        // of an exception inside a constexpr function (not
+        // even if it never gets thrown), so the following
+        // 'if' statement is a workaround:
+        if ( std::is_constant_evaluated() )
+        {
+            assert( "invalid paper name string"==0 );
+        }
+        else
+        {
+            throw std::runtime_error("invalid paper name string");
+        }
     }
 
+public:
     // Constructor takes 'llu' because of 'std::stoull'
     constexpr Paper( char const Aletter, long long unsigned const Anum, long long unsigned const Arev ) noexcept
       : letter( cctype_constexpr::tolower(Aletter) ),
@@ -129,14 +141,14 @@ public:
         throw std::runtime_error("null or invalid paper");
     }
 
-    constexpr Paper(std:: string_view const arg) noexcept(false) { Constructor_Paper(this, arg); }
-    constexpr Paper(std::wstring_view const arg) noexcept(false) { Constructor_Paper(this, arg); }
+    constexpr Paper( char   const *const arg) : Paper( PaperConstructor_t(), arg, std::char_traits< char  >::length(arg) ) {}
+    constexpr Paper(wchar_t const *const arg) : Paper( PaperConstructor_t(), arg, std::char_traits<wchar_t>::length(arg) ) {}
 
-    constexpr Paper(   char const *const arg) noexcept(false) : Paper( std:: string_view(arg) ) {}
-    constexpr Paper(wchar_t const *const arg) noexcept(false) : Paper( std::wstring_view(arg) ) {}
+    constexpr Paper(std:: string_view const arg) : Paper( PaperConstructor_t(), arg.data(), arg.size() ) {}
+    constexpr Paper(std::wstring_view const arg) : Paper( PaperConstructor_t(), arg.data(), arg.size() ) {}
 
-    constexpr Paper(std:: string const &s) noexcept(false) : Paper( std:: string_view(s) ) {}
-    constexpr Paper(std::wstring const &s) noexcept(false) : Paper( std::wstring_view(s) ) {}
+    constexpr Paper(std:: string const &s) : Paper( PaperConstructor_t(), s.c_str(), s.size() ) {}
+    constexpr Paper(std::wstring const &s) : Paper( PaperConstructor_t(), s.c_str(), s.size() ) {}
 
     constexpr bool operator<(Paper const other) const noexcept
     {
@@ -148,11 +160,7 @@ public:
 
     constexpr bool IsRelatedTo(Paper const other) const noexcept
     {
-        assert( nullptr != this );
-        if consteval {} else { std::cout << "Got this far  --  111\n"; }
-        bool const retval = (letter == other.letter) && (num == other.num);
-        if consteval {} else { std::cout << "Got this far  --  222\n"; }
-        return retval;
+        return (letter == other.letter) && (num == other.num);
     }
 
      char   const * c_str(void) const noexcept;
@@ -164,13 +172,5 @@ public:
     wxString const &GetTitle (void) const noexcept;
     wxString const &GetAuthor(void) const noexcept;
     wxString        GetPaper (void) const noexcept;
-
-
 #endif
 };
-
-#ifndef NDEBUG
-namespace Paper_detail {
-    constexpr Paper my_compile_time_paper("p1234r7");    // just testing that constexpr works
-}
-#endif
