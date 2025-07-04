@@ -7,6 +7,8 @@ wxString without copying the original string (i.e. no dynamic memory
 allocation required).
 */
 
+#define PAPERKERNEL_DONT_USE_STRING_PRETENDER
+
 #include <cstddef>         // ptrdiff_t, size_t
 #include <cstdint>         // uint_fast64_t
 #include <algorithm>       // max

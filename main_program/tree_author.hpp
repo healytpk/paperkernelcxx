@@ -20,6 +20,6 @@ consteval Paper const *PaperList(void)
     return PaperList_detail<RevHolders...>::value;
 }
 
-inline constexpr std::pair< std::uint_fast64_t, std::pair< wchar_t const*, Paper const * > > g_map_authors[1187u] =
+inline constexpr std::pair< std::uint_fast64_t, std::pair< wchar_t const*, Paper const * > > g_map_authors[1186u] =
 #    include "AUTO_GENERATED_tree_contents_author.hpp"
 ;

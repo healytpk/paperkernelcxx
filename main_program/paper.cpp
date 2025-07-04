@@ -3,7 +3,7 @@
 namespace Paper_detail {
 
 template<typename T> requires( std::is_same_v<T,char> || std::is_same_v<T,wchar_t> )
-T const *null_terminated_string(Paper const *const this_paper)
+T *null_terminated_string(Paper const *const this_paper)
 {
     auto const &letter = this_paper->letter;
     auto const &num    = this_paper->num   ;
@@ -48,6 +48,20 @@ T const *null_terminated_string(Paper const *const this_paper)
 char    const *Paper:: c_str(void) const noexcept { return Paper_detail::null_terminated_string< char  >(this); }
 wchar_t const *Paper::wc_str(void) const noexcept { return Paper_detail::null_terminated_string<wchar_t>(this); }
 
+char const *Paper::PaperNameWithoutRevision(void) const noexcept
+{
+    char *const p = Paper_detail::null_terminated_string<char>(this);
+    p[5] = '\0';
+    return p;
+}
+
+wchar_t const *Paper::PaperNameWithoutRevisionL(void) const noexcept
+{
+    wchar_t *const p = Paper_detail::null_terminated_string<wchar_t>(this);
+    p[5] = '\0';
+    return p;
+}
+
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
 
 #include <cstdlib>                      // abort
@@ -55,6 +69,10 @@ wchar_t const *Paper::wc_str(void) const noexcept { return Paper_detail::null_te
 #include <iterator>                     // cbegin, cend
 #include <type_traits>                  // is_same
 #include "tree_paper.hpp"               // g_map_papers
+
+#ifndef NDEBUG
+#    include <iostream>                 // cout, endl
+#endif
 
 namespace Paper_detail {
 
@@ -75,6 +93,7 @@ wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned c
         case 2u: return *new wxString() << p->hashes_authors[0];      // REVISIT - FIX - This is horrible
         }
     }
+    std::cout << "pthis == " << pthis->c_str() << std::endl;  
     assert( nullptr == "invalid paper not listed in tree" );
     std::abort();    // if NDEBUG
     return *new wxString;  // suppress compiler warning

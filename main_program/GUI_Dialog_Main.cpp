@@ -90,18 +90,6 @@ public:
 
 IMPLEMENT_APP(App_CxxPapers);  // This creates the "main" function
 
-inline char const *PaperString(unsigned const num)
-{
-    static thread_local char s[] = "pxxxx";
-
-    s[1] = '0' + num / 1000u % 10u;
-    s[2] = '0' + num /  100u % 10u;
-    s[3] = '0' + num /   10u % 10u;
-    s[4] = '0' + num /    1u % 10u;
-
-    return s;
-}
-
 template<unsigned column_count>
 class wxDataViewTreeStoreWithColumns : public wxDataViewModel {
 protected:
@@ -253,12 +241,16 @@ Paper Dialog_Main::GetPaperFromDataViewEvent(wxDataViewEvent &event)
     if ( nullptr == pdv ) return {};
     wxString itemText = this->GetPaperTreeItemText(pdv, selectedItem);
     wxString paper_str;
-    if ( itemText.StartsWith('p') )
+    if ( itemText.StartsWith('n') )
+    {
+        paper_str = std::move(itemText);
+    }
+    else if ( itemText.StartsWith('p') )
     {
         wxString lastChildText = this->GetPaperTreeItemLastChildText(pdv, selectedItem);
         paper_str = std::move(itemText) + std::move(lastChildText);
     }
-    else
+    else  // e.g. "r3"
     {
         wxDataViewModel *const pdvm = pdv->GetModel();
         wxDataViewItem parent{};
@@ -340,40 +332,53 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 
     for ( auto const &e : g_map_papers )
     {
+        //if ( e.paper.IsTerminator() ) break;  // -- Not needed because not null terminated FIX FIX FIX REVISIT REVISIT REVISIT FIX FIX FIX
+
         using std::get;
 
         auto const papernum = e.paper.num;
         assert( 0u != papernum );
 
-        assert( nullptr != e.prevs );  // we need at least one revision
-        assert( PaperRevInfo_t::terminator != e.prevs->rev );
-
-        PaperRevInfo_t const *last_rev = e.prevs;
-        while ( PaperRevInfo_t::terminator != last_rev[1].rev ) ++last_rev;
-
-        wxString const  title_of_last_revision = last_rev->title;
-        wxString const author_of_last_revision = wxString() << last_rev->hashes_authors[0];
+        wxString title_of_last_revision;
+        wxString author_of_last_revision;
+        if ( 'p' == e.paper.letter )
+        {
+            assert( nullptr != e.prevs );  // we need at least one revision
+            assert( PaperRevInfo_t::terminator != e.prevs->rev );
+            PaperRevInfo_t const *last_rev = e.prevs;
+            while ( PaperRevInfo_t::terminator != last_rev[1].rev ) ++last_rev;
+             title_of_last_revision = last_rev->title;
+            author_of_last_revision = wxString() << last_rev->hashes_authors[0];
+        }
+        else
+        {
+             title_of_last_revision = e.paper.GetTitle ();
+            author_of_last_revision = e.paper.GetAuthor();
+        }
 
         wxDataViewItem const item_papernum =
           treeStore->AppendItemWithColumns(
             {},
-            { PaperString(papernum), title_of_last_revision, author_of_last_revision }
+            { e.paper.PaperNameWithoutRevision(), title_of_last_revision, author_of_last_revision }
           );
 
-        for ( PaperRevInfo_t const *p = e.prevs; PaperRevInfo_t::terminator != p->rev; ++p )
+        if ( 'p' == e.paper.letter )
         {
-            static wxString const up_arrows = wxS("^ ^ ^");
-            wxString const  title = ( p->title == title_of_last_revision ) ? up_arrows : wxString(p->title);
-            wxString const author = ( (wxString() << p->hashes_authors[0]) == author_of_last_revision ) ? up_arrows : (wxString() << p->hashes_authors[0]);
+            for ( PaperRevInfo_t const *p = e.prevs; PaperRevInfo_t::terminator != p->rev; ++p )
+            {
+                static wxString const up_arrows = wxS("^ ^ ^");
+                wxString const  title = ( p->title == title_of_last_revision ) ? up_arrows : wxString(p->title);
+                wxString const author = ( (wxString() << p->hashes_authors[0]) == author_of_last_revision ) ? up_arrows : (wxString() << p->hashes_authors[0]);
 
-            wxDataViewItem const item_rev =
-              this->treeStore->AppendItemWithColumns(
-                item_papernum,
-                { wxString("r") << p->rev, title, author }
-              );
+                wxDataViewItem const item_rev =
+                  this->treeStore->AppendItemWithColumns(
+                    item_papernum,
+                    { wxString("r") << p->rev, title, author }
+                  );
 
-            (void)item_rev;
-          //this->treeAllPapers->Collapse(tii_rev);
+                (void)item_rev;
+              //this->treeAllPapers->Collapse(tii_rev);
+            }
         }
 
         //this->treeAllPapers->Expand(item_papernum);
@@ -418,7 +423,9 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
         ++i;
         this->listAuthors->InsertItem (i, e.second.first);
         Paper const *const pbegin = e.second.second;
+        assert( nullptr != pbegin );
         Paper const *      p      = pbegin;
+        assert( nullptr != p );
         while ( false == p->IsTerminator() ) ++p;
         this->listAuthors->SetItem(i, 1, wxString() << (p - pbegin) );
         this->listAuthors->SetItem(i, 2, wxString() << number()     );
@@ -668,14 +675,31 @@ bool Dialog_Main::SelectPaperInPaperTree(Paper const paper_selected)
     wxDataViewItemArray children;
     model->GetChildren( wxDataViewItem{}, children );
 
+    std::cout << "Got this far - A\n";
+
     for ( wxDataViewItem const item : children )
     {
         wxVariant value;
         model->GetValue(value, item, 0u);
         wxString wxs = value.GetString();
         if ( wxs.empty() ) continue;  // revisit fix -- this should be fatal because of corruption
-        if ( paper_selected.IsRelatedTo( wxs.ToStdString() + "r0" ) )  // revisit fix -- this is horrible
+        if ( 'p' == paper_selected.letter ) wxs += wxS("r0");    // REVISIT FIX - REVISIT FIX -- this is horrible
+        std::cout << "Got this far - B\n";
+        Paper temp_paper(wxs.ToStdString());
+        std::cout << "Got this far - C\n";
+        if ( paper_selected.IsRelatedTo(temp_paper) )
         {
+            std::cout << "Got this far - D\n";
+            if ( 'n' == paper_selected.letter )
+            {
+                std::cout << "Got this far - E\n";
+                this->treeAllPapers->EnsureVisible(item); // scroll to item
+                this->treeAllPapers->Select(item);
+                return true;
+            }
+
+            std::cout << "Got this far - F\n";
+            assert( 'p' == paper_selected.letter );
             children.Clear();
             model->GetChildren(item, children);
             for ( wxDataViewItem const item2 : children )
@@ -719,7 +743,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
 
     for ( Paper const *p = mypair->second.second; false == p->IsTerminator(); ++p )
     {
-        wxString const paper_str = wxString::Format("p%04u", p->num);
+        wxString const paper_str = p->PaperNameWithoutRevision();
 
         wxDataViewItem item_papernum = this->authorPaperStore->FindItem(paper_str);
 
@@ -731,6 +755,8 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
             );
           //this->authorPaperStore->ItemAdded(wxDataViewItem{}, item_papernum);   --  not associated
         }
+
+        if ( 'p' != p->letter ) continue;
 
         wxDataViewItem const item_rev =
             this->authorPaperStore->AppendItemWithColumns(

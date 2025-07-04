@@ -52,6 +52,6 @@ consteval PaperRevInfo_t const *RevList(void)
     return PaperRevList_detail<RevHolders...>::value;
 }
 
-constexpr PaperInfo g_map_papers[] =
+inline constexpr PaperInfo g_map_papers[] =
 #    include "AUTO_GENERATED_tree_contents_paper.hpp"
 ;

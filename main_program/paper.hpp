@@ -8,6 +8,8 @@
 #include <utility>                                // declval
 #include "cctype_constexpr.hpp"                   // isdigit, tolower
 
+#include <iostream>  // ====================== debugging ---- REMOVE THIS ------------------ REMOVE THIS ------------- REMOVE THIS
+
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
     class wxString;
 #endif
@@ -19,7 +21,7 @@ public:
 private:
     struct PaperTerminator_t {};
     consteval Paper(PaperTerminator_t) noexcept
-        : letter('Z'), num(0), rev(0) {}
+        : letter('z'), num(0), rev(0) {}
 public:
     static consteval Paper Terminator(void) noexcept
     {
@@ -27,7 +29,7 @@ public:
     }
     constexpr bool IsTerminator(void) const noexcept
     {
-        return 'Z' == letter;
+        return 'z' == letter;
     }
 
     template<typename T>
@@ -138,20 +140,32 @@ public:
 
     constexpr bool operator<(Paper const other) const noexcept
     {
+        // The terminator has letter == 'z', which will come after 'n' and 'p'
         if ( letter != other.letter ) return letter < other.letter;
         if (    num != other.num    ) return    num < other.num   ;
         return rev < other.rev;
     }
 
-    constexpr bool IsRelatedTo(Paper const other) const noexcept { return (letter == other.letter) && (num == other.num); }
+    constexpr bool IsRelatedTo(Paper const other) const noexcept
+    {
+        assert( nullptr != this );
+        if consteval {} else { std::cout << "Got this far  --  111\n"; }
+        bool const retval = (letter == other.letter) && (num == other.num);
+        if consteval {} else { std::cout << "Got this far  --  222\n"; }
+        return retval;
+    }
 
      char   const * c_str(void) const noexcept;
     wchar_t const *wc_str(void) const noexcept;
+     char   const *PaperNameWithoutRevision (void) const noexcept;
+    wchar_t const *PaperNameWithoutRevisionL(void) const noexcept;
 
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
     wxString const &GetTitle (void) const noexcept;
     wxString const &GetAuthor(void) const noexcept;
     wxString        GetPaper (void) const noexcept;
+
+
 #endif
 };
 
