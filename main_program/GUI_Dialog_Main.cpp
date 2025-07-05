@@ -681,27 +681,8 @@ bool Dialog_Main::SelectPaperInPaperTree(Paper const paper_selected)
         model->GetValue(value, item, 0u);
         wxString wxs = value.GetString();
         if ( wxs.empty() ) continue;  // revisit fix -- this should be fatal because of corruption
-        if ( 'p' == paper_selected.letter ) wxs += wxS("r0");    // REVISIT FIX - REVISIT FIX -- this is horrible
-        /* =============================================================
-         *   Something very strange is going on here with the GNU g++
-         *   compiler. Instead of just doing:
-         *
-         *        Paper temp_paper( wxString_inner(wxs) );
-         *
-         * I instead need to do a try-catch . . . it seems like an
-         * exception is getting thrown even though the value of
-         * temp_paper gets changed -- I've no idea what's going on.
-         * What's even weirder is that 'temp_paper.IsTerminator()'
-         * evaluates to true even though IsRelatedTo also evaluates
-         * to true. So strange.
-         * ============================================================= */
-        Paper temp_paper = Paper::Terminator();
-        try
-        {
-            temp_paper = Paper( wxString_inner(wxs) );
-        }
-        catch(...){}
-        //assert( false == temp_paper.IsTerminator() );   --- Oddly this fails???
+        if ( wxS('p') == wxs[0] ) wxs += wxS("r0");    // REVISIT FIX - REVISIT FIX
+        Paper temp_paper( wxString_inner(wxs) );
         if ( false == paper_selected.IsRelatedTo(temp_paper) ) continue;
         if ( 'n' == paper_selected.letter )
         {

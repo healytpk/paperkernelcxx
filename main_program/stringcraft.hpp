@@ -14,7 +14,7 @@ allocation required).
 #include <algorithm>       // max
 #include <string>          // basic_string     , string     , wstring
 #include <string_view>     // basic_string_view, string_view, wstring_view
-#include <type_traits>     // is_reference, is_same
+#include <type_traits>     // is_lvalue_reference, is_same
 #include <wx/string.h>     // wxString, wxStringCharType
 #include "hash.hpp"        // Hash (consteval)
 
@@ -46,7 +46,7 @@ struct StringLiteral {
     }
 };
 
-#ifdef PAPERKERNEL_DONT_USE_STRING_PRETENDER
+#ifndef PAPERKERNEL_DONT_USE_STRING_PRETENDER
 
 // The next function is for getting an std::basic_string
 // from a wxString without copying anything
@@ -108,10 +108,10 @@ typedef Pretender_wxstring Pretender_wxString;
 inline wxstring const &wxString_inner(wxString const &s)
 {
 #if wxUSE_UNICODE_WCHAR
-    static_assert( std::is_reference_v< decltype(s.ToStdWstring()) > );
+    static_assert( std::is_lvalue_reference_v< decltype(s.ToStdWstring()) > );
     return s.ToStdWstring();
 #else
-    static_assert( std::is_reference_v< decltype(s.ToStdString()) > );
+    static_assert( std::is_lvalue_reference_v< decltype(s.ToStdString()) > );
     return s.ToStdString();
 #endif
 }
