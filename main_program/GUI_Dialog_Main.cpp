@@ -6,6 +6,7 @@
 #include <cstring>                                   // strcmp, strstr
 #include <array>                                     // array
 #include <map>                                       // map
+#include <memory>                                    // addressof
 #include <random>                                    // ------------------------------ remove this ---- just for testing
 #include <string>                                    // string
 #include <string_view>                               // string_view
@@ -29,7 +30,7 @@
 #include "view_portal.hpp"
 #include "Auto.h"
 
-using std::string;
+using std::string, std::string_view;
 
 Dialog_Main *g_p_dlgmain = nullptr;
 
@@ -90,6 +91,30 @@ public:
 
 IMPLEMENT_APP(App_CxxPapers);  // This creates the "main" function
 
+wxDataViewItem EncodeStringAsTreeItem(wxstring_view const wsv) noexcept
+{
+    static_assert(  sizeof(wxDataViewItem) ==  sizeof(void*) );
+    static_assert( alignof(wxDataViewItem) == alignof(void*) );
+
+    assert( (wsv.size() >= 5u) && (wsv.size() <= 8u) );
+
+    if constexpr ( 8u == sizeof(void*) )
+    {
+        wxDataViewItem dvi{nullptr};  // all bits zero
+        char *const q = static_cast<char*>(static_cast<void*>(std::addressof(dvi)));
+        for ( unsigned i = 0u; i < wsv.size(); ++i ) q[i] = (char)wsv[i];
+        return dvi;
+    }
+    else if constexpr ( 4u == sizeof(void*) )
+    {
+        return {};
+    }
+    else
+    {
+        static_assert( (8u == sizeof(void*)) || (4u == sizeof(void*)) );
+    }
+}
+
 template<unsigned column_count>
 class wxDataViewTreeStoreWithColumns : public wxDataViewModel {
 protected:
@@ -100,10 +125,13 @@ protected:
         ArrCols_t column_values;
     };
 
-    std::uintptr_t current_id = 0u;
     std::map< wxDataViewItem, Node > m_data;
 
 public:
+    bool AlreadyExists(wxDataViewItem const arg) const
+    {
+        return m_data.end() != m_data.find(arg);
+    }
 
     wxDataViewItem FindItem(wxString const &s) const
     {
@@ -116,7 +144,6 @@ public:
 
     void Reset(void)
     {
-        this->current_id = 0u;
         this->m_data.clear();
         // The root node is a null wxDataViewItem
         this->m_data.emplace(wxDataViewItem{}, Node{ wxDataViewItem{}, wxDataViewItem{}, wxDataViewItem{}, ArrCols_t{} });
@@ -182,16 +209,12 @@ public:
     }
     wxDataViewItem AppendItemWithColumns(wxDataViewItem const &parent, ArrCols_t &&columns)
     {
-        // This is where we increment the 'current_id' so that each
-        // item in the tree has a unique ID. Note that the root node
-        // is zero (or null).
-        wxDataViewItem const dvi = wxDataViewItem( reinterpret_cast<void*>(++this->current_id) );  // constructor is 'explicit'
-
+        wxDataViewItem const dvi = EncodeStringAsTreeItem( wxString_inner(columns[0]) );
         auto it = m_data.find(parent);  // It's okay to find the null node (i.e. the root node)
         assert( m_data.end() != it );
         wxDataViewItem const prior_sibling = it->second.last_child;
         it->second.last_child = dvi;
-
+        if ( columns[0].size() > 5u ) columns[0].erase(0u,5u);
         m_data.emplace( dvi, Node{ parent, prior_sibling, wxDataViewItem{}, std::move(columns) } );
         //std::cout << " +++++++++++++++  about to add item to map\n";
         return dvi;
@@ -233,41 +256,34 @@ void Dialog_Main::PresentPaperInViewPortal(Paper const paper)
     ::ViewPortal_Set( this->view_portal, html );
 }
 
+Paper DecodeTreeItem(wxDataViewItem const arg) noexcept
+{
+    static_assert(  sizeof(wxDataViewItem) ==  sizeof(void*) );
+    static_assert( alignof(wxDataViewItem) == alignof(void*) );
+
+    if constexpr ( 8u == sizeof(void*) )
+    {
+        char const *const p = static_cast<char const*>(static_cast<void const*>(std::addressof(arg)));
+        string_view sv(p, p + sizeof(void*));
+        if ( 'n' == sv[0] ) return Paper(sv);
+        if ( 'r' == sv[5] ) return Paper(sv);
+        while ( sv.ends_with('\0') ) sv.remove_suffix(1u);
+        return Paper( string(sv) + "r0" );
+    }
+    else if constexpr ( 4u == sizeof(void*) )
+    {
+        return {};
+    }
+    else
+    {
+        static_assert( (8u == sizeof(void*)) || (4u == sizeof(void*)) );
+        return {}; // suppress compiler warning
+    }
+}
+
 Paper Dialog_Main::GetPaperFromDataViewEvent(wxDataViewEvent &event)
 {
-    wxDataViewItem const selectedItem = event.GetItem();
-    if ( wxDataViewItem{} == selectedItem ) return {};
-    wxDataViewCtrl *const pdv = dynamic_cast<wxDataViewCtrl*>( event.GetEventObject() );
-    if ( nullptr == pdv ) return {};
-    wxString itemText = this->GetPaperTreeItemText(pdv, selectedItem);
-    wxString paper_str;
-    if ( itemText.StartsWith('n') )
-    {
-        paper_str = std::move(itemText);
-    }
-    else if ( itemText.StartsWith('p') )
-    {
-        wxString lastChildText = this->GetPaperTreeItemLastChildText(pdv, selectedItem);
-        paper_str = std::move(itemText) + std::move(lastChildText);
-    }
-    else  // e.g. "r3"
-    {
-        wxDataViewModel *const pdvm = pdv->GetModel();
-        wxDataViewItem parent{};
-        auto *const pdvm2 = dynamic_cast<  wxDataViewTreeStoreWithColumns<2u> *  >(pdvm);
-        if ( pdvm2 ) parent = pdvm2->GetParent(selectedItem);
-        else
-        {
-            auto *const pdvm3 = dynamic_cast<  wxDataViewTreeStoreWithColumns<3u> *  >(pdvm);
-            if ( pdvm3 ) parent = pdvm3->GetParent(selectedItem);
-        }
-
-        if ( wxDataViewItem{} == parent ) return {};
-        wxString parentText = this->GetPaperTreeItemText(pdv, parent);
-        paper_str = std::move(parentText) + std::move(itemText);
-    }
-
-    return Paper( paper_str.ToStdString() );
+    return DecodeTreeItem( event.GetItem() );
 }
 
 void Dialog_Main::PaperTree_OnSelChanged(wxDataViewEvent &event)
@@ -336,8 +352,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 
         using std::get;
 
-        auto const papernum = e.paper.num;
-        assert( 0u != papernum );
+        assert( 0u != e.paper.num );
 
         wxString title_of_last_revision;
         wxString author_of_last_revision;
@@ -356,10 +371,12 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
             author_of_last_revision = e.paper.GetAuthor();
         }
 
+        wxString str = e.paper.PaperNameWithoutRevisionWx();
+
         wxDataViewItem const item_papernum =
           treeStore->AppendItemWithColumns(
             {},
-            { e.paper.PaperNameWithoutRevision(), title_of_last_revision, author_of_last_revision }
+            { str, title_of_last_revision, author_of_last_revision }
           );
 
         if ( 'p' == e.paper.letter )
@@ -373,7 +390,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
                 wxDataViewItem const item_rev =
                   this->treeStore->AppendItemWithColumns(
                     item_papernum,
-                    { wxString("r") << p->rev, title, author }
+                    { std::move(str) + wxS("r") << p->rev, title, author }
                   );
 
                 (void)item_rev;
@@ -671,46 +688,11 @@ void Dialog_Main::btnXapianSearch_OnButtonClick(wxCommandEvent&)
 
 bool Dialog_Main::SelectPaperInPaperTree(Paper const paper_selected)
 {
-    wxDataViewModel const *const model = this->treeAllPapers->GetModel();
-    wxDataViewItemArray children;
-    model->GetChildren( wxDataViewItem{}, children );
-
-    for ( wxDataViewItem const item : children )
-    {
-        wxVariant value;
-        model->GetValue(value, item, 0u);
-        wxString wxs = value.GetString();
-        if ( wxs.empty() ) continue;  // revisit fix -- this should be fatal because of corruption
-        if ( wxS('p') == wxs[0] ) wxs += wxS("r0");    // REVISIT FIX - REVISIT FIX
-        Paper temp_paper( wxString_inner(wxs) );
-        if ( false == paper_selected.IsRelatedTo(temp_paper) ) continue;
-        if ( 'n' == paper_selected.letter )
-        {
-            this->treeAllPapers->EnsureVisible(item); // scroll to item
-            this->treeAllPapers->Select(item);
-            return true;
-        }
-
-        assert( 'p' == paper_selected.letter );
-        children.Clear();
-        model->GetChildren(item, children);
-        for ( wxDataViewItem const item2 : children )
-        {
-            value.Clear();
-            model->GetValue(value, item2, 0u);
-            wxs = value.GetString();
-            if ( wxs.empty() ) continue;  // revisit fix -- this should be fatal because of corruption
-            if ( wxs == (wxString("r") << paper_selected.rev) )
-            {
-                this->treeAllPapers->EnsureVisible(item ); // scroll to item
-                this->treeAllPapers->EnsureVisible(item2); // scroll to item
-                this->treeAllPapers->Select(item2);
-                return true;
-            }
-        }
-        break;
-    }
-    return false;
+    wxDataViewItem const item = EncodeStringAsTreeItem(paper_selected.wx_str());
+    assert( this->treeStore->AlreadyExists(item) );
+    this->treeAllPapers->EnsureVisible(item); // scroll to item
+    this->treeAllPapers->Select(item);
+    return true;
 }
 
 void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
@@ -734,16 +716,16 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
 
     for ( Paper const *p = mypair->second.second; false == p->IsTerminator(); ++p )
     {
-        wxString const paper_str = p->PaperNameWithoutRevision();
-
-        wxDataViewItem item_papernum = this->authorPaperStore->FindItem(paper_str);
-
-        if ( wxDataViewItem{} == item_papernum )
+        wxString paper_str = p->PaperNameWithoutRevisionWx();
+        wxDataViewItem const item_papernum = EncodeStringAsTreeItem( wxString_inner(paper_str) );
+        if ( false == this->authorPaperStore->AlreadyExists(item_papernum) )
         {
-            item_papernum = this->authorPaperStore->AppendItemWithColumns(
+            wxDataViewItem const temp = this->authorPaperStore->AppendItemWithColumns(
                 {},
                 { paper_str, p->GetTitle() }
             );
+
+            assert( temp == item_papernum );  // just a sanity check
           //this->authorPaperStore->ItemAdded(wxDataViewItem{}, item_papernum);   --  not associated
         }
 
@@ -752,7 +734,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
         wxDataViewItem const item_rev =
             this->authorPaperStore->AppendItemWithColumns(
             item_papernum,
-            { wxString("r") << p->rev }
+            { std::move(paper_str) + "r" << p->rev }
         );
         (void)item_rev;
       //this->authorPaperStore->ItemAdded(item_papernum, item_rev);  --  not associated

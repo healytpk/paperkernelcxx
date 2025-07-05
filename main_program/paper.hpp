@@ -10,7 +10,7 @@
 #include "cctype_constexpr.hpp"                   // isdigit, tolower
 
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
-    class wxString;
+#    include <wx/string.h>                        // wxString
 #endif
 
 struct Paper {
@@ -165,10 +165,21 @@ public:
 
      char   const * c_str(void) const noexcept;
     wchar_t const *wc_str(void) const noexcept;
+
      char   const *PaperNameWithoutRevision (void) const noexcept;
     wchar_t const *PaperNameWithoutRevisionL(void) const noexcept;
 
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
+    wxStringCharType const *wx_str(void) const noexcept
+    {
+        if constexpr ( std::is_same_v<wxStringCharType, char> ) { return (wxStringCharType const*)this-> c_str(); }
+        /************************************************/ else { return (wxStringCharType const*)this->wc_str(); }
+    }
+    wxStringCharType const *PaperNameWithoutRevisionWx(void) const noexcept
+    {
+        if constexpr ( std::is_same_v<wxStringCharType, char> ) { return (wxStringCharType const*)this->PaperNameWithoutRevision (); }
+        /************************************************/ else { return (wxStringCharType const*)this->PaperNameWithoutRevisionL(); }
+    }
     wxString const &GetTitle (void) const noexcept;
     wxString const &GetAuthor(void) const noexcept;
     wxString        GetPaper (void) const noexcept;

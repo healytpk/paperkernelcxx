@@ -1,4 +1,5 @@
 #include "paper.hpp"
+#include <wx/dataview.h>                           // wxDataViewItem
 
 namespace Paper_detail {
 
