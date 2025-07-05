@@ -675,8 +675,6 @@ bool Dialog_Main::SelectPaperInPaperTree(Paper const paper_selected)
     wxDataViewItemArray children;
     model->GetChildren( wxDataViewItem{}, children );
 
-    std::cout << "Got this far - A\n";
-
     for ( wxDataViewItem const item : children )
     {
         wxVariant value;
@@ -684,40 +682,52 @@ bool Dialog_Main::SelectPaperInPaperTree(Paper const paper_selected)
         wxString wxs = value.GetString();
         if ( wxs.empty() ) continue;  // revisit fix -- this should be fatal because of corruption
         if ( 'p' == paper_selected.letter ) wxs += wxS("r0");    // REVISIT FIX - REVISIT FIX -- this is horrible
-        std::cout << "Got this far - B\n";
-        Paper temp_paper(wxs.ToStdString());
-        std::cout << "Got this far - C\n";
-        if ( paper_selected.IsRelatedTo(temp_paper) )
+        /* =============================================================
+         *   Something very strange is going on here with the GNU g++
+         *   compiler. Instead of just doing:
+         *
+         *        Paper temp_paper( wxString_inner(wxs) );
+         *
+         * I instead need to do a try-catch . . . it seems like an
+         * exception is getting thrown even though the value of
+         * temp_paper gets changed -- I've no idea what's going on.
+         * What's even weirder is that 'temp_paper.IsTerminator()'
+         * evaluates to true even though IsRelatedTo also evaluates
+         * to true. So strange.
+         * ============================================================= */
+        Paper temp_paper = Paper::Terminator();
+        try
         {
-            std::cout << "Got this far - D\n";
-            if ( 'n' == paper_selected.letter )
+            temp_paper = Paper( wxString_inner(wxs) );
+        }
+        catch(...){}
+        //assert( false == temp_paper.IsTerminator() );   --- Oddly this fails???
+        if ( false == paper_selected.IsRelatedTo(temp_paper) ) continue;
+        if ( 'n' == paper_selected.letter )
+        {
+            this->treeAllPapers->EnsureVisible(item); // scroll to item
+            this->treeAllPapers->Select(item);
+            return true;
+        }
+
+        assert( 'p' == paper_selected.letter );
+        children.Clear();
+        model->GetChildren(item, children);
+        for ( wxDataViewItem const item2 : children )
+        {
+            value.Clear();
+            model->GetValue(value, item2, 0u);
+            wxs = value.GetString();
+            if ( wxs.empty() ) continue;  // revisit fix -- this should be fatal because of corruption
+            if ( wxs == (wxString("r") << paper_selected.rev) )
             {
-                std::cout << "Got this far - E\n";
-                this->treeAllPapers->EnsureVisible(item); // scroll to item
-                this->treeAllPapers->Select(item);
+                this->treeAllPapers->EnsureVisible(item ); // scroll to item
+                this->treeAllPapers->EnsureVisible(item2); // scroll to item
+                this->treeAllPapers->Select(item2);
                 return true;
             }
-
-            std::cout << "Got this far - F\n";
-            assert( 'p' == paper_selected.letter );
-            children.Clear();
-            model->GetChildren(item, children);
-            for ( wxDataViewItem const item2 : children )
-            {
-                value.Clear();
-                model->GetValue(value, item2, 0u);
-                wxs = value.GetString();
-                if ( wxs.empty() ) continue;  // revisit fix -- this should be fatal because of corruption
-                if ( wxs == (wxString("r") << paper_selected.rev) )
-                {
-                    this->treeAllPapers->EnsureVisible(item ); // scroll to item
-                    this->treeAllPapers->EnsureVisible(item2); // scroll to item
-                    this->treeAllPapers->Select(item2);
-                    return true;
-                }
-            }
-            break;
         }
+        break;
     }
     return false;
 }
