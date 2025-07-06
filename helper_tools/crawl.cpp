@@ -256,7 +256,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
     }
 }
 
-void ParseYearTable(string_view const html, unsigned const year)
+void ParseYearTable(string_view const html, unsigned const year, unsigned const scan)
 {
     std::regex row_regex(R"(<tr[^>]*>\s*<td[^>]*>\s*<a[^>]*>([^<]+)</a>\s*</td>\s*<td[^>]*>(.*?)</td>\s*<td[^>]*>(.*?)</td>\s*<td[^>]*>(.*?)</td>)", std::regex::icase);
 
@@ -287,9 +287,16 @@ void ParseYearTable(string_view const html, unsigned const year)
         try
         {
             Paper paper{wg21_number};  // just to see if it throws because of invalid paper (e.g. SD-1)
-            auto &map = papers[ paper.PaperNameWithoutRevision() ];
-            map[ paper.c_str() ] = { author, title };
-            ProcessAuthorSquareFromTable(author, wg21_number);
+            switch ( scan )
+            {
+            case 1u:
+                ProcessAuthorSquareFromTable(author, wg21_number);
+                break;
+            case 2u:
+                auto &map = papers[ paper.PaperNameWithoutRevision() ];
+                map[ paper.c_str() ] = { author, title };
+                break;
+            }
         }
         catch(...){}
 
@@ -307,6 +314,46 @@ void MonkeyString(string &s)
     }
 
     s = std::move(retval);
+}
+
+void MergeAlternativeNames(std::map< std::string, std::vector<std::string> >&names)
+{
+    NameManager nm;
+
+    // 1. Add all names to NameManager
+    std::vector<std::string> all_names;
+    for ( const auto& [name, _] : names ) all_names.push_back(name);
+    nm.AddNames( all_names.begin(), all_names.end() );
+
+    // 2. Collect alternative names and their primaries
+    std::vector< std::pair<std::string, std::string> > to_merge; // {alt, primary}
+    for ( const auto& [name, _] : names )
+    {
+        auto primary = std::string(nm.GetPrimaryName(name));
+        if (primary != name) to_merge.emplace_back(name, primary);
+    }
+
+    // 3. Merge and erase
+    for ( const auto& [alt, primary] : to_merge )
+    {
+        auto alt_it = names.find(alt);
+        if (alt_it == names.end()) continue;
+
+        auto& alt_vec = alt_it->second;
+        auto prim_it = names.find(primary);
+        if ( prim_it == names.end() )
+        {
+            names[primary] = std::move(alt_vec);
+        }
+        else
+        {
+            auto& prim_vec = prim_it->second;
+            prim_vec.insert(prim_vec.end(),
+                            std::make_move_iterator(alt_vec.begin()),
+                            std::make_move_iterator(alt_vec.end()));
+        }
+        names.erase(alt_it);
+    }
 }
 
 int main(void)
@@ -345,14 +392,32 @@ int main(void)
             continue;
         }
 
-        ParseYearTable(year_html, year);
+        ParseYearTable(year_html, year, 1u);
     }
-
-    std::cerr << "==================== " << names.size() << " unique names ==================\n";
 
     std::vector<string> names2;
     for ( auto const &mypair : names ) names2.emplace_back( mypair.first );
     NameManager().WriteHeaders( names2.cbegin(), names2.cend(), "../main_program/AUTO_GENERATED_names.hpp" );
+
+    MergeAlternativeNames(names);
+
+    for ( auto const &year : years )
+    {
+        string year_html;
+
+        std::cerr << "Fetching year: " << year << "\n";
+
+        if ( false == DownloadPage( (index_url + std::to_string(year) + "/").c_str(), year_html ) )
+        {
+            std::cerr << "Failed to fetch year page: " << year << "\n";
+            continue;
+        }
+
+        ParseYearTable(year_html, year, 2u);
+    }
+
+    std::cerr << "==================== " << names.size() << " unique names ==================\n";
+
     std::ofstream fnames("names.txt");
     if ( fnames.is_open() )
     {
@@ -403,11 +468,11 @@ int main(void)
                 auto const &mypair = *std::next(std::cbegin(mymap), j);
                 if ( already_got_one ) fpapers << ", ";
                 already_got_one = true;
-                fpapers << "Rev< " << Paper(mypair.first).rev << "u, Arr64< Hash(wxS(\"";
+                fpapers << "Rev< " << Paper(mypair.first).rev << "u, Arr64< Hash(\"";
                 string author = mypair.second.first;
                 MonkeyString(author);
                 fpapers << author;
-                fpapers << "\")) >(), wxS(\"";
+                fpapers << "\") >(), wxS(\"";
                 string title = mypair.second.second;
                 MonkeyString(title);
                 fpapers << title << "\") >";
