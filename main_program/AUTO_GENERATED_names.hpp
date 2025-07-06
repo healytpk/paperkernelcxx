@@ -1233,6 +1233,20 @@ inline constexpr std::uint_fast64_t PrimaryHash(wxStringCharType const *const na
     return h;
 }
 
+inline constexpr wxStringCharType const *HashToDirectString(std::uint_fast64_t const h)
+{
+    auto const it = std::ranges::lower_bound(
+        g_primary_names, h, {}, [](auto const &e) { return std::get<0u>(e); }
+    );
+    if ( (it != std::end(g_primary_names)) && (std::get<0u>(*it) == h) ) return std::get<1u>(*it);
+
+    auto const it2 = std::ranges::lower_bound(
+        g_alternative_names, h, {}, [](auto const &e) { return std::get<0u>(e); }
+    );
+    if ( (it2 != std::end(g_alternative_names)) && (std::get<0u>(*it2) == h) ) return std::get<1u>(*it2);
+    return nullptr;
+}
+
 inline constexpr wxStringCharType const *Primary(wxStringCharType const *const name)
 {
     std::uint_fast64_t const h = PrimaryHash(name);

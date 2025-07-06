@@ -25,6 +25,18 @@ std::map< string, std::vector<string> > names;
 
 std::map< string, std::map<string, std::pair<string, string> > > papers;
 
+void escape_for_hash(std::string &s)
+{
+    std::string out;
+    out.reserve(s.size());
+    for ( char const c : s )
+    {
+        if ( c == '\\' ) out += "\\\\";
+        else out += c;
+    }
+    s = std::move(out);
+}
+
 bool IsNotName(string_view const s) noexcept
 {
     static constexpr char const *not_names[] = {
@@ -358,9 +370,9 @@ int main(void)
         for ( std::size_t i = 0u; i < names.size(); ++i )
         {
             auto const &e = *std::next(std::cbegin(names), i);
-            fnames_papers << "    { 0x"
-                          << std::hex << std::setfill('0') << std::setw(16)
-                          << Hash(e.first) << std::dec << ", { wxS(\"" << e.first << "\"), PaperList< ";
+            string escaped = e.first;
+            escape_for_hash(escaped);
+            fnames_papers << "    { Hash(\"" << escaped << "\"), PaperList< ";
             bool already_got_one = false;
             for ( auto const &e2 : e.second )
             {
@@ -368,7 +380,7 @@ int main(void)
                 already_got_one = true;
                 fnames_papers << "\"" << Paper(e2).c_str() << "\"";
             }
-            fnames_papers << " >() } },\n";
+            fnames_papers << " >() },\n";
         }
     }
     fnames_papers << "};\n";

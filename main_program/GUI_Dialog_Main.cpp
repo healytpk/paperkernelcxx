@@ -437,11 +437,12 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
       };
 
     size_t i = -1;
-    for ( std::pair< std::uint_fast64_t, std::pair< wchar_t const*, Paper const * > > const &e : g_map_authors )
+    for ( std::pair< std::uint_fast64_t, Paper const * > const &e : g_map_authors )
     {
         ++i;
-        this->listAuthors->InsertItem (i, e.second.first);
-        Paper const *const pbegin = e.second.second;
+        wxString str_name( HashToDirectString(e.first) );
+        this->listAuthors->InsertItem(i, str_name);
+        Paper const *const pbegin = e.second;
         assert( nullptr != pbegin );
         Paper const *      p      = pbegin;
         assert( nullptr != p );
@@ -709,14 +710,14 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
     this->authorPaperStore->Reset();
 
     typedef std::remove_reference_t< decltype( *std::cbegin(g_map_authors) ) > MapPairType;
-    //std::pair< std::uint_fast64_t, std::pair< wchar_t const*, Paper const * > >
+    //std::pair< std::uint_fast64_t, Paper const * >
 
     static_assert( sizeof(wxUIntPtr) >= sizeof(void*) );
     std::uintptr_t const addr_as_int = static_cast<std::uintptr_t>(event.GetData());
     assert( 0u != addr_as_int );
     MapPairType const *const mypair = static_cast<MapPairType*>( reinterpret_cast<void*>(addr_as_int) );
 
-    for ( Paper const *p = mypair->second.second; false == p->IsTerminator(); ++p )
+    for ( Paper const *p = mypair->second; false == p->IsTerminator(); ++p )
     {
         wxString paper_str = p->PaperNameWithoutRevisionWx();
         wxDataViewItem const item_papernum = EncodeStringAsTreeItem( wxString_inner(paper_str) );
