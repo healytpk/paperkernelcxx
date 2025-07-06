@@ -38,6 +38,16 @@ set(HEADERS
 	view_portal.hpp)
 
 if(WIN32)
+add_compile_options(/constexpr:steps99999999)
+endif(WIN32)
+if(APPLE)
+add_compile_options(-fconstexpr-steps=99999999)
+endif(APPLE)
+if(LINUX)
+add_compile_options(-fconstexpr-ops-limit=999999999)
+endif(LINUX)
+
+if(WIN32)
 	add_compile_options(/bigobj)
 	set(SRCS ${SRCS} main_program.rc)
 	set(PREPROCESSOR_DEFINITIONS ${PREPROCESSOR_DEFINITIONS};
