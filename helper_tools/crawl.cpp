@@ -204,6 +204,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
     {
         string s(sv);
         TrimWhitespace(s);
+        if ( "Alex" == s ) s = "Alex Waffl3x";
         if ( IsNotName(s) ) continue;
         EscapeNonAscii(s, true);
         ReplaceInPlace(s, "a\\u0301", "\\u00E1");  // á
