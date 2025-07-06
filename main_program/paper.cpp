@@ -93,7 +93,9 @@ wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned c
         case 2u: return *new wxString() << p->hashes_authors[0];      // REVISIT - FIX - This is horrible
         }
     }
-    std::cout << "pthis == " << pthis->c_str() << std::endl;  
+#ifndef NDEBUG
+    std::cout << "pthis == " << pthis->c_str() << std::endl;
+#endif
     assert( nullptr == "invalid paper not listed in tree" );
     std::abort();    // if NDEBUG
     return *new wxString;  // suppress compiler warning
