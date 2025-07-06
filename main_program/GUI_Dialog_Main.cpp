@@ -321,13 +321,10 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
 {
     this->listAuthors->InsertColumn(0, "Name");
     this->listAuthors->InsertColumn(1, "Authored");
-    this->listAuthors->InsertColumn(2, "Acknowledged");
-    this->listAuthors->InsertItem(0, "Thomas Patrick HealyZZZ");
+    this->listAuthors->InsertItem(0, "Thomas Patrick Kevin Healy III Esquire ZZZ");
     this->listAuthors->SetItem(0, 1, "AuthoredZZZ");
-    this->listAuthors->SetItem(0, 2, "AcknowledgedZZZ");
     this->listAuthors->SetColumnWidth(0, wxLIST_AUTOSIZE);
     this->listAuthors->SetColumnWidth(1, wxLIST_AUTOSIZE);
-    this->listAuthors->SetColumnWidth(2, wxLIST_AUTOSIZE);
     this->listAuthors->DeleteItem(0);
 
     this->listXapianResults->InsertColumn(0, "Paper" );
@@ -427,15 +424,6 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // =================================================================
 
     // ====================== wxListCtrl for authors ===================
-    constexpr auto number =
-      +[](void) -> int
-      {
-        static std::random_device rd;
-        static std::mt19937 gen(rd());
-        static std::discrete_distribution<> dist({5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
-        return dist(gen) + 1; // Adjusting index to match range 1-20
-      };
-
     size_t i = -1;
     for ( std::pair< std::uint_fast64_t, Paper const * > const &e : g_map_authors )
     {
@@ -448,7 +436,6 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
         assert( nullptr != p );
         while ( false == p->IsTerminator() ) ++p;
         this->listAuthors->SetItem(i, 1, wxString() << (p - pbegin) );
-        this->listAuthors->SetItem(i, 2, wxString() << number()     );
         this->listAuthors->SetItemPtrData(i, reinterpret_cast<std::uintptr_t>(const_cast<void*>(static_cast<void const*>(&e))) );
     }
 
