@@ -44,10 +44,9 @@ bool IsNotName(string_view const s) noexcept
         "et al.",
         "thomas.rodgers@woven-planet.global",
         "various SG14 contibutors including Nicolas Fleury (Ubisoft)",
-        "(h2 AT fsfe.org)",
-        "(EIDOS)",
         "Add container pop methods that return the popped value",
         "Woven By Toyota",
+        "Bloomberg",
         "others",
     };
 
@@ -57,6 +56,36 @@ bool IsNotName(string_view const s) noexcept
     }
 
     return false;
+}
+
+void IrregularNameReplacement(string &s)
+{
+    static constexpr std::pair<char const *, char const *> names[] = {
+        { "Alex"                                                   , "Alex Waffl3x"                                 },
+        { "Hana Dusikova"                                          , "Hana Dus\\u00EDkov\\u00E1"                    },
+        { "Andrzej Krzemienski"                                    , "Andrzej Krzemie\\u0144ski"                    },
+        { "Bengt Gustafsonn"                                       , "Bengt Gustafsson"                             },
+        { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
+        { "Daniel Krugler"                                         , "Daniel Kr\\u00FCgler"                         },
+        { "Dietmar Kuhl"                                           , "Dietmar K\\u00FChl"                           },
+        { "Dietmar Kuehl"                                          , "Dietmar K\\u00FChl"                           },
+        { "Domagoj Saric"                                          , "Domagoj \\u0160ari\\u0107"                    },
+        { "Gonzalo Brito"                                          , "Gonzalo Brito Gadeschi"                       },
+        { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
+        { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
+        { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
+        { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
+        { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
+    };
+
+    for ( auto const &mypair : names )
+    {
+        if ( mypair.first == s )
+        {
+            s = mypair.second;
+            break;
+        }
+    }
 }
 
 bool ContainsNonASCII(string_view const s) noexcept
@@ -204,7 +233,6 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
     {
         string s(sv);
         TrimWhitespace(s);
-        if ( "Alex" == s ) s = "Alex Waffl3x";
         if ( IsNotName(s) ) continue;
         EscapeNonAscii(s, true);
         ReplaceInPlace(s, "a\\u0301", "\\u00E1");  // á
@@ -242,6 +270,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
         ReplaceInPlace(s, "Joseph S. Berr\\uDBF3", "Joseph S. Berr\\u00edos");
         Erase(s, "(h2 AT fsfe.org)");
         Erase(s, " et al.");
+        Erase(s, " (EIDOS)");
         if ( !s.empty() && ('.' == s.back()) ) s.pop_back();
         if ( ContainsNonASCII(s) )
         {
@@ -253,6 +282,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
             cout << endl;
         }
         if ( s.empty() ) continue;
+        IrregularNameReplacement(s);
         names[s].emplace_back(doc);
     }
 }
