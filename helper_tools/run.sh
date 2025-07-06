@@ -39,7 +39,7 @@ tokenizer()
 
 crawl()
 {
-    ./crawl > names.txt
+    ./crawl
 }
 
 equivalent_names()

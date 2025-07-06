@@ -30,6 +30,8 @@
 #include "view_portal.hpp"
 #include "Auto.h"
 
+#include "AUTO_GENERATED_names.hpp"
+
 using std::string, std::string_view;
 
 Dialog_Main *g_p_dlgmain = nullptr;

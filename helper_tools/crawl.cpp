@@ -15,6 +15,7 @@
 #include "common.hpp"
 #include "../main_program/hash.hpp"
 #include "../main_program/paper.hpp"
+#include "NameManager.hpp"
 
 using std::size_t, std::string, std::string_view, std::cout, std::cerr, std::endl;
 
@@ -337,6 +338,9 @@ int main(void)
 
     std::cerr << "==================== " << names.size() << " unique names ==================\n";
 
+    std::vector<string> names2;
+    for ( auto const &mypair : names ) names2.emplace_back( mypair.first );
+    NameManager().WriteHeaders( names2.cbegin(), names2.cend(), "../main_program/AUTO_GENERATED_names.hpp" );
     std::ofstream fnames("names.txt");
     if ( fnames.is_open() )
     {

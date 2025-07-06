@@ -1,0 +1,427 @@
+#ifndef HEADER_INCLUSION_GUARD_8A2B4C1D_7E3F_4B2A_9C1D_5F6E7A8B9C0D
+#define HEADER_INCLUSION_GUARD_8A2B4C1D_7E3F_4B2A_9C1D_5F6E7A8B9C0D
+
+// C standard library headers
+#include <cstddef>                  // size_t
+#include <cstdint>                  // uint_fast64_t
+
+// C++ standard library headers
+#include <algorithm>                // sort, ranges::lower_bound, ranges::equal_range
+#include <map>                      // map
+#include <string>                   // string
+#include <string_view>              // string_view
+#include <unordered_map>            // unordered_map
+#include <utility>                  // move
+#include <vector>                   // vector
+#include <ranges>                   // ranges
+#include <concepts>                 // input_iterator
+#include <fstream>                  // ofstream
+
+class NameManager {
+public:
+    using string = std::string;
+    using string_view = std::string_view;
+    template<typename... Ts> using vector = std::vector<Ts...>;
+    template<typename... Ts> using map = std::map<Ts...>;
+    template<typename... Ts> using unordered_map = std::unordered_map<Ts...>;
+    using size_t = std::size_t;
+
+private:
+    vector<string> m_name_storage;
+    vector<string_view> m_names;
+    mutable vector<size_t> m_parent;
+    mutable map<string_view, string_view> m_map_clusters;
+    mutable bool m_map_clusters_dirty = true;
+
+public:
+    template<std::input_iterator Iterator>
+    void AddNames(Iterator it_begin, Iterator it_end)
+    {
+        vector<string_view> new_names;
+        for (auto it = it_begin; it != it_end; ++it)
+            new_names.push_back(*it);
+
+        size_t const old_size = m_names.size();
+        m_names.insert(m_names.end(), new_names.begin(), new_names.end());
+
+        m_parent.resize(m_names.size());
+        for (size_t i = old_size; i < m_parent.size(); ++i)
+            m_parent[i] = i;
+
+        for (size_t i = 0u; i < m_names.size(); ++i)
+            for (size_t j = i + 1u; j < m_names.size(); ++j)
+                if (IsSamePerson(m_names[i], m_names[j]))
+                    Unite(i, j);
+
+        m_map_clusters_dirty = true;
+    }
+
+    string_view GetPrimaryName(string_view const alt) const
+    {
+        size_t idx = m_names.size();
+        for (size_t i = 0u; i < m_names.size(); ++i)
+            if (m_names[i] == alt) {
+                idx = i;
+                break;
+            }
+        if (idx == m_names.size())
+            return alt;
+
+        size_t root = Find(idx);
+        vector<size_t> cluster_indices;
+        for (size_t i = 0u; i < m_names.size(); ++i)
+            if (Find(i) == root)
+                cluster_indices.push_back(i);
+
+        std::ranges::sort(cluster_indices, [this](size_t a, size_t b) {
+            auto tokensA = SplitTokens(m_names[a]);
+            auto tokensB = SplitTokens(m_names[b]);
+            if (tokensA.size() != tokensB.size())
+                return tokensA.size() > tokensB.size();
+            return m_names[a].size() > m_names[b].size();
+        });
+
+        return m_names[cluster_indices.front()];
+    }
+
+    map<string_view, string_view> const &GetMap(void) const
+    {
+        if (m_map_clusters_dirty) {
+            m_map_clusters.clear();
+            vector<bool> visited(m_names.size(), false);
+            for (size_t i = 0u; i < m_names.size(); ++i) {
+                size_t root = Find(i);
+                if (visited[root]) continue;
+                vector<size_t> cluster_indices;
+                for (size_t j = 0u; j < m_names.size(); ++j)
+                    if (Find(j) == root)
+                        cluster_indices.push_back(j);
+
+                std::ranges::sort(cluster_indices, [this](size_t a, size_t b) {
+                    auto tokensA = SplitTokens(m_names[a]);
+                    auto tokensB = SplitTokens(m_names[b]);
+                    if (tokensA.size() != tokensB.size())
+                        return tokensA.size() > tokensB.size();
+                    return m_names[a].size() > m_names[b].size();
+                });
+
+                string_view const &primary = m_names[cluster_indices.front()];
+                for (size_t idx : cluster_indices)
+                    if (m_names[idx] != primary)
+                        m_map_clusters[m_names[idx]] = primary;
+
+                visited[root] = true;
+            }
+            m_map_clusters_dirty = false;
+        }
+        return m_map_clusters;
+    }
+
+    map<string_view, vector<string_view>> GetPrimaryToAlternativesMap(void) const
+    {
+        map<string_view, vector<string_view>> result;
+        vector<bool> visited(m_names.size(), false);
+        for (size_t i = 0u; i < m_names.size(); ++i) {
+            size_t root = Find(i);
+            if (visited[root]) continue;
+            vector<size_t> cluster_indices;
+            for (size_t j = 0u; j < m_names.size(); ++j)
+                if (Find(j) == root)
+                    cluster_indices.push_back(j);
+
+            std::ranges::sort(cluster_indices, [this](size_t a, size_t b) {
+                auto tokensA = SplitTokens(m_names[a]);
+                auto tokensB = SplitTokens(m_names[b]);
+                if (tokensA.size() != tokensB.size())
+                    return tokensA.size() > tokensB.size();
+                return m_names[a].size() > m_names[b].size();
+            });
+
+            string_view const &primary = m_names[cluster_indices.front()];
+            vector<string_view> alternatives;
+            for (size_t idx : cluster_indices)
+                if (m_names[idx] != primary)
+                    alternatives.push_back(m_names[idx]);
+            if (!alternatives.empty())
+                result[primary] = std::move(alternatives);
+
+            visited[root] = true;
+        }
+        return result;
+    }
+
+    static constexpr size_t pad_len = 35u;
+
+    // WriteHeaders: generates a header file with padded columns and sorted arrays
+    template<typename Iterator>
+    void WriteHeaders(Iterator const itBegin, Iterator const itEnd, char const *const output_file) const
+    {
+        auto escape_for_hash = [](const std::string& s) {
+            std::string out;
+            out.reserve(s.size());
+            for (char c : s) {
+                if (c == '\\') out += "\\\\";
+                else out += c;
+            }
+            return out;
+        };
+
+        auto pad_spaces = [](size_t s, size_t width = pad_len) -> std::string {
+            return (s < width) ? std::string(width - s, ' ') : std::string();
+        };
+
+        using std::string;
+        using std::vector;
+        using std::set;
+        using std::uint_fast64_t;
+
+        NameManager nm;
+        nm.AddNames(itBegin, itEnd);
+
+        auto groups = nm.GetPrimaryToAlternativesMap();
+
+        set<string> all_primaries;
+        for (const auto& [primary, alts] : groups) all_primaries.insert(std::string(primary));
+        for ( Iterator it = itBegin; it != itEnd; ++it )
+        {
+            auto const &name = *it;
+            auto p = nm.GetPrimaryName(name);
+            if (p == name && groups.find(p) == groups.end()) all_primaries.insert(std::string(p));
+        }
+
+        struct PrimaryEntry {
+            std::string name;
+            std::uint_fast64_t hash;
+        };
+        vector<PrimaryEntry> primary_entries;
+        for (const auto& pname : all_primaries) {
+            auto hash = Hash(pname);
+            primary_entries.push_back({pname, hash});
+        }
+        std::sort(primary_entries.begin(), primary_entries.end(),
+            [](const PrimaryEntry& a, const PrimaryEntry& b) { return a.hash < b.hash; });
+
+        struct AltEntry {
+            std::string alt_name;
+            std::string primary_name;
+            std::uint_fast64_t alt_hash;
+            std::uint_fast64_t primary_hash;
+        };
+        vector<AltEntry> alt_entries;
+        for (const auto& [primary, alts] : groups) {
+            auto primary_hash = Hash(std::string(primary));
+            for (const auto& alt : alts) {
+                auto alt_hash = Hash(std::string(alt));
+                alt_entries.push_back({std::string(alt), std::string(primary), alt_hash, primary_hash});
+            }
+        }
+        std::sort(alt_entries.begin(), alt_entries.end(),
+            [](const AltEntry& a, const AltEntry& b) { return a.alt_hash < b.alt_hash; });
+
+        std::ofstream out(output_file);
+        out << "#pragma once\n";
+        out << "#include <cstdint>            // uint_fast64_t\n";
+        out << "#include <utility>            // pair\n";
+        out << "#include <vector>             // vector\n";
+        out << "#include <wx/string.h>        // wxS, wxStringCharType\n";
+        out << "#include <algorithm>          // std::ranges::lower_bound, std::ranges::equal_range\n";
+        out << "#include \"hash.hpp\"           // Hash\n\n";
+
+        out << "// Sorted by hash; can be searched with std::lower_bound (constexpr)\n";
+        out << "inline constexpr std::pair< std::uint_fast64_t, wxStringCharType const * > g_primary_names[] = {\n";
+        for ( size_t i = 0; i < primary_entries.size(); ++i )
+        {
+            auto const &e = primary_entries[i];
+            auto hash_str = escape_for_hash(e.name);
+            out << "    { Hash(\"" << hash_str << "\"" << pad_spaces(hash_str.size()) << ")"
+                << ", wxS(\"" << e.name << "\"" << pad_spaces(e.name.size()) << ") }";
+            if ( i+1 != primary_entries.size() ) out << ",";
+            out << "\n";
+        }
+        out << "};\n\n";
+
+        out << "struct AlternativeNameEntry {\n"
+            << "    std::uint_fast64_t hash;\n"
+            << "    wxStringCharType const *name;\n"
+            << "    std::uint_fast64_t primary_hash;\n"
+            << "};\n"
+            << "\n";
+        out << "// Sorted by hash; can be searched with std::lower_bound (constexpr)\n";
+        out << "inline constexpr AlternativeNameEntry g_alternative_names[] = {\n";
+        for (size_t i = 0; i < alt_entries.size(); ++i)
+        {
+            auto const &e = alt_entries[i];
+            auto alt_hash_str = escape_for_hash(e.alt_name);
+            auto alt_name_str = e.alt_name;
+            auto primary_hash_str = escape_for_hash(e.primary_name);
+            out << "    { Hash(\"" << alt_hash_str << "\"" << pad_spaces(alt_hash_str.size()) << ")"
+                << ", wxS(\"" << alt_name_str << "\"" << pad_spaces(alt_name_str.size()) << ")"
+                << ", Hash(\"" << primary_hash_str << "\"" << pad_spaces(primary_hash_str.size()) << ") }";
+            if ( i+1 != alt_entries.size() ) out << ",";
+            out << "\n";
+        }
+        out << "};\n\n";
+
+        // Modern C++: use std::ranges::lower_bound and equal_range for binary search
+        out << "inline constexpr std::uint_fast64_t PrimaryHash(wxStringCharType const *const name)\n"
+            << "{\n"
+            << "    std::uint_fast64_t const h = Hash(name);\n"
+            << "    auto const it = std::ranges::lower_bound( g_alternative_names, h, {}, &AlternativeNameEntry::hash );\n"
+            << "    if ( (it != std::end(g_alternative_names)) && (it->hash == h) ) return it->primary_hash;\n"
+            << "    auto const it2 = std::ranges::lower_bound( g_primary_names, h, {}, [](auto const &e) { return e.first; } );\n"
+            << "    if ( (it2 != std::end(g_primary_names)) && (it2->first == h) ) return it2->first;\n"
+            << "    return 0u;\n"
+            << "}\n\n";
+
+        out << "inline constexpr wxStringCharType const *Primary(wxStringCharType const *const name)\n"
+            << "{\n"
+            << "    std::uint_fast64_t const h = PrimaryHash(name);\n"
+            << "    auto const it = std::ranges::lower_bound( g_primary_names, h, {}, [](auto const &e){ return e.first; } );\n"
+            << "    if ( (it != std::end(g_primary_names)) && (it->first == h) ) return it->second;\n"
+            << "    return nullptr;\n"
+            << "}\n\n";
+
+        out << "inline std::vector<wxStringCharType const*> GetAllAlternatives(std::uint_fast64_t const primary_hash)\n"
+            << "{\n"
+            << "    std::vector<wxStringCharType const*> result;\n"
+            << "    auto const myrange = std::ranges::equal_range( g_alternative_names, primary_hash, {}, &AlternativeNameEntry::primary_hash );\n"
+            << "    for ( auto it = myrange.begin(); it != myrange.end(); ++it ) result.emplace_back( it->name );\n"
+            << "    return result;\n"
+            << "}\n";
+    }
+
+private:
+    static void ToLowerAndRemovePunct(string &s)
+    {
+        string result;
+        for (char c : s) {
+            if (std::isalnum(static_cast<unsigned char>(c)) || c == ' ')
+                result += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+            else if (c == '.' || c == '-')
+                result += ' ';
+        }
+        s = std::move(result);
+    }
+
+    static vector<string> SplitTokens(string_view s)
+    {
+        vector<string> tokens;
+        size_t pos = 0u;
+        while (pos < s.size()) {
+            while (pos < s.size() && s[pos] == ' ') ++pos;
+            size_t start = pos;
+            while (pos < s.size() && s[pos] != ' ') ++pos;
+            if (start < pos) tokens.emplace_back(s.substr(start, pos - start));
+        }
+        return tokens;
+    }
+
+    static string GetSurname(const vector<string> &tokens)
+    {
+        if (tokens.empty()) return "";
+        return tokens.back();
+    }
+
+    static vector<string> GetGivenNames(const vector<string> &tokens)
+    {
+        if (tokens.size() <= 1u) return {};
+        return vector<string>(tokens.begin(), tokens.end() - 1);
+    }
+
+    static string ExtractInitials(const vector<string> &tokens)
+    {
+        string initials;
+        for (const auto &t : tokens)
+            if (!t.empty()) initials += t[0];
+        return initials;
+    }
+
+    static bool IsSubsequence(string_view shorter, string_view longer)
+    {
+        size_t i = 0u, j = 0u;
+        while (i < shorter.size() && j < longer.size()) {
+            if (shorter[i] == longer[j]) ++i;
+            ++j;
+        }
+        return i == shorter.size();
+    }
+
+    // Returns true if a and b differ by exactly one character (edit distance 1)
+    static bool IsOneTypoApart(string_view a, string_view b)
+    {
+        size_t len_a = a.size(), len_b = b.size();
+        if (len_a == len_b) {
+            int diff = 0;
+            for (size_t i = 0u; i < len_a; ++i)
+                if (a[i] != b[i]) ++diff;
+            return diff == 1;
+        }
+        if (len_a + 1 == len_b) {
+            for (size_t i = 0u, j = 0u; i < len_a && j < len_b; ) {
+                if (a[i] != b[j]) {
+                    if (i != j) return false;
+                    ++j;
+                } else {
+                    ++i; ++j;
+                }
+            }
+            return true;
+        }
+        if (len_b + 1 == len_a) {
+            for (size_t i = 0u, j = 0u; i < len_a && j < len_b; ) {
+                if (a[i] != b[j]) {
+                    if (i != j) return false;
+                    ++i;
+                } else {
+                    ++i; ++j;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    static bool IsSamePerson(string_view a, string_view b)
+    {
+        string sa(a), sb(b);
+        ToLowerAndRemovePunct(sa);
+        ToLowerAndRemovePunct(sb);
+
+        auto tokensA = SplitTokens(sa);
+        auto tokensB = SplitTokens(sb);
+
+        if (tokensA.empty() || tokensB.empty()) return false;
+
+        auto surnameA = GetSurname(tokensA);
+        auto surnameB = GetSurname(tokensB);
+
+        // Allow for a single-character typo in the surname
+        if (surnameA != surnameB && !IsOneTypoApart(surnameA, surnameB)) return false;
+
+        auto givenA = GetGivenNames(tokensA);
+        auto givenB = GetGivenNames(tokensB);
+
+        string initialsA = ExtractInitials(givenA);
+        string initialsB = ExtractInitials(givenB);
+
+        return IsSubsequence(initialsA, initialsB) || IsSubsequence(initialsB, initialsA)
+            || IsOneTypoApart(sa, sb);
+    }
+
+    size_t Find(size_t x) const
+    {
+        while (m_parent[x] != x)
+            x = m_parent[x] = m_parent[m_parent[x]];
+        return x;
+    }
+
+    void Unite(size_t a, size_t b)
+    {
+        size_t pa = Find(a);
+        size_t pb = Find(b);
+        if (pa != pb) m_parent[pa] = pb;
+    }
+};
+
+#endif // HEADER_INCLUSION_GUARD_8A2B4C1D_7E3F_4B2A_9C1D_5F6E7A8B9C0D
+
