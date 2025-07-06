@@ -8,7 +8,7 @@ inline constexpr std::uint_fast64_t Hash(std::string_view const input) noexcept
 {
     std::uint_fast64_t h = 0xcbf29ce484222325;
 
-    constexpr char letters[] = "abcdefghijklmnopqrstuvwxyz";
+    constexpr char letters[] = "abcdefghijklmnopqrstuvwxyz\\0123456789";
 
     for ( char const cX : input )
     {
@@ -37,7 +37,7 @@ inline constexpr std::uint_fast64_t Hash(std::wstring_view const input) noexcept
 {
     std::uint_fast64_t h = 0xcbf29ce484222325;
 
-    constexpr wchar_t letters[] = L"abcdefghijklmnopqrstuvwxyz";
+    constexpr wchar_t letters[] = L"abcdefghijklmnopqrstuvwxyz\\0123456789";
 
     for ( wchar_t const cX : input )
     {
