@@ -2,20 +2,21 @@
 #define HEADER_INCLUSION_GUARD_8A2B4C1D_7E3F_4B2A_9C1D_5F6E7A8B9C0D
 
 // C standard library headers
+#include <cctype>                   // isalnum, tolower
 #include <cstddef>                  // size_t
 #include <cstdint>                  // uint_fast64_t
 
 // C++ standard library headers
-#include <algorithm>                // sort, ranges::lower_bound, ranges::equal_range
+#include <algorithm>                // ranges::sort, ranges::lower_bound, ranges::equal_range
+#include <concepts>                 // input_iterator
+#include <fstream>                  // ofstream
 #include <map>                      // map
+#include <ranges>                   // ranges
 #include <string>                   // string
 #include <string_view>              // string_view
 #include <unordered_map>            // unordered_map
 #include <utility>                  // move
 #include <vector>                   // vector
-#include <ranges>                   // ranges
-#include <concepts>                 // input_iterator
-#include <fstream>                  // ofstream
 
 class NameManager {
 public:
@@ -335,8 +336,9 @@ private:
     static void ToLowerAndRemovePunct(string &s)
     {
         string result;
-        for (char c : s) {
-            if (std::isalnum(static_cast<unsigned char>(c)) || c == ' ')
+        for ( char c : s )
+        {
+            if ( std::isalnum(static_cast<unsigned char>(c)) || (c == ' ') )
                 result += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
             else if (c == '.' || c == '-')
                 result += ' ';
@@ -344,76 +346,85 @@ private:
         s = std::move(result);
     }
 
-    static vector<string> SplitTokens(string_view s)
+    static vector<string> SplitTokens(string_view const s)
     {
         vector<string> tokens;
         size_t pos = 0u;
-        while (pos < s.size()) {
-            while (pos < s.size() && s[pos] == ' ') ++pos;
-            size_t start = pos;
-            while (pos < s.size() && s[pos] != ' ') ++pos;
-            if (start < pos) tokens.emplace_back(s.substr(start, pos - start));
+        while ( pos < s.size() )
+        {
+            while ( pos < s.size() && s[pos] == ' ' ) ++pos;
+            size_t const start = pos;
+            while ( pos < s.size() && s[pos] != ' ' ) ++pos;
+            if ( start < pos ) tokens.emplace_back(  s.substr(start, pos - start)  );
         }
         return tokens;
     }
 
-    static string GetSurname(const vector<string> &tokens)
+    static string GetSurname( vector<string> const &tokens )
     {
-        if (tokens.empty()) return "";
+        if ( tokens.empty() ) return {};
         return tokens.back();
     }
 
-    static vector<string> GetGivenNames(const vector<string> &tokens)
+    static vector<string> GetGivenNames( vector<string> const &tokens )
     {
-        if (tokens.size() <= 1u) return {};
-        return vector<string>(tokens.begin(), tokens.end() - 1);
+        if ( tokens.size() <= 1u ) return {};
+        return vector<string>( tokens.begin(), tokens.end() - 1 );
     }
 
-    static string ExtractInitials(const vector<string> &tokens)
+    static string ExtractInitials( vector<string> const &tokens )
     {
         string initials;
-        for (const auto &t : tokens)
-            if (!t.empty()) initials += t[0];
+        for ( auto const &t : tokens ) if ( !t.empty() ) initials += t[0];
         return initials;
     }
 
-    static bool IsSubsequence(string_view shorter, string_view longer)
+    static bool IsSubsequence(string_view const shorter, string_view const longer)
     {
         size_t i = 0u, j = 0u;
-        while (i < shorter.size() && j < longer.size()) {
-            if (shorter[i] == longer[j]) ++i;
+        while ( (i < shorter.size()) && (j < longer.size()) )
+        {
+            if ( shorter[i] == longer[j] ) ++i;
             ++j;
         }
         return i == shorter.size();
     }
 
     // Returns true if a and b differ by exactly one character (edit distance 1)
-    static bool IsOneTypoApart(string_view a, string_view b)
+    static bool IsOneTypoApart(string_view const a, string_view const b)
     {
         size_t len_a = a.size(), len_b = b.size();
-        if (len_a == len_b) {
-            int diff = 0;
-            for (size_t i = 0u; i < len_a; ++i)
-                if (a[i] != b[i]) ++diff;
-            return diff == 1;
+        if ( len_a == len_b )
+        {
+            unsigned diff = 0u;
+            for ( size_t i = 0u; i < len_a; ++i ) if ( a[i] != b[i] ) ++diff;
+            return diff == 1u;
         }
-        if (len_a + 1 == len_b) {
-            for (size_t i = 0u, j = 0u; i < len_a && j < len_b; ) {
-                if (a[i] != b[j]) {
-                    if (i != j) return false;
+        if ( (len_a + 1u) == len_b)
+        {
+            for (size_t i = 0u, j = 0u; (i < len_a) && (j < len_b); )
+            {
+                if ( a[i] != b[j] )
+                {
+                    if ( i != j ) return false;
                     ++j;
-                } else {
+                } else
+                {
                     ++i; ++j;
                 }
             }
             return true;
         }
-        if (len_b + 1 == len_a) {
-            for (size_t i = 0u, j = 0u; i < len_a && j < len_b; ) {
-                if (a[i] != b[j]) {
-                    if (i != j) return false;
+        if ( (len_b + 1u) == len_a )
+        {
+            for ( size_t i = 0u, j = 0u; i < len_a && j < len_b; )
+            {
+                if ( a[i] != b[j] )
+                {
+                    if ( i != j ) return false;
                     ++i;
-                } else {
+                } else
+                {
                     ++i; ++j;
                 }
             }
@@ -428,41 +439,38 @@ private:
         ToLowerAndRemovePunct(sa);
         ToLowerAndRemovePunct(sb);
 
-        auto tokensA = SplitTokens(sa);
-        auto tokensB = SplitTokens(sb);
+        auto const tokensA = SplitTokens(sa);
+        auto const tokensB = SplitTokens(sb);
 
-        if (tokensA.empty() || tokensB.empty()) return false;
+        if ( tokensA.empty() || tokensB.empty() ) return false;
 
-        auto surnameA = GetSurname(tokensA);
-        auto surnameB = GetSurname(tokensB);
+        auto const surnameA = GetSurname(tokensA);
+        auto const surnameB = GetSurname(tokensB);
 
         // Allow for a single-character typo in the surname
-        if (surnameA != surnameB && !IsOneTypoApart(surnameA, surnameB)) return false;
+        if ( (surnameA != surnameB) && (false == IsOneTypoApart(surnameA, surnameB)) ) return false;
 
-        auto givenA = GetGivenNames(tokensA);
-        auto givenB = GetGivenNames(tokensB);
+        auto const givenA = GetGivenNames(tokensA);
+        auto const givenB = GetGivenNames(tokensB);
 
-        string initialsA = ExtractInitials(givenA);
-        string initialsB = ExtractInitials(givenB);
+        string const initialsA = ExtractInitials(givenA);
+        string const initialsB = ExtractInitials(givenB);
 
-        return IsSubsequence(initialsA, initialsB) || IsSubsequence(initialsB, initialsA)
-            || IsOneTypoApart(sa, sb);
+        return IsSubsequence(initialsA, initialsB) || IsSubsequence(initialsB, initialsA) || IsOneTypoApart(sa, sb);
     }
 
     size_t Find(size_t x) const
     {
-        while (m_parent[x] != x)
-            x = m_parent[x] = m_parent[m_parent[x]];
+        while ( m_parent[x] != x ) x = m_parent[x] = m_parent[m_parent[x]];
         return x;
     }
 
-    void Unite(size_t a, size_t b)
+    void Unite(size_t const a, size_t const b)
     {
-        size_t pa = Find(a);
-        size_t pb = Find(b);
-        if (pa != pb) m_parent[pa] = pb;
+        size_t const pa = Find(a);
+        size_t const pb = Find(b);
+        if ( pa != pb ) m_parent[pa] = pb;
     }
 };
 
 #endif // HEADER_INCLUSION_GUARD_8A2B4C1D_7E3F_4B2A_9C1D_5F6E7A8B9C0D
-
