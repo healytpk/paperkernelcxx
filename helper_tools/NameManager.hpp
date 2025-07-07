@@ -19,38 +19,37 @@
 
 class NameManager {
 public:
+    using size_t = std::size_t;
+    using uint_fast64_t = std::uint_fast64_t;
     using string = std::string;
     using string_view = std::string_view;
-    template<typename... Ts> using vector = std::vector<Ts...>;
     template<typename... Ts> using map = std::map<Ts...>;
+    template<typename... Ts> using set = std::set<Ts...>;
     template<typename... Ts> using unordered_map = std::unordered_map<Ts...>;
-    using size_t = std::size_t;
-
+    template<typename... Ts> using vector = std::vector<Ts...>;
 private:
-    vector<string> m_name_storage;
-    vector<string_view> m_names;
-    mutable vector<size_t> m_parent;
-    mutable map<string_view, string_view> m_map_clusters;
-    mutable bool m_map_clusters_dirty = true;
+    vector<string     >         m_name_storage;
+    vector<string_view>         m_names;
+    vector<size_t     > mutable m_parent;
 
+    map<string_view, string_view> mutable m_map_clusters;
+    bool mutable m_map_clusters_dirty = true;
 public:
     template<std::input_iterator Iterator>
     void AddNames(Iterator it_begin, Iterator it_end)
     {
         vector<string_view> new_names;
-        for (auto it = it_begin; it != it_end; ++it)
-            new_names.push_back(*it);
+        for ( auto it = it_begin; it != it_end; ++it ) new_names.emplace_back(*it);
 
         size_t const old_size = m_names.size();
-        m_names.insert(m_names.end(), new_names.begin(), new_names.end());
+        m_names.insert( m_names.end(), new_names.begin(), new_names.end() );
 
-        m_parent.resize(m_names.size());
-        for (size_t i = old_size; i < m_parent.size(); ++i)
-            m_parent[i] = i;
+        m_parent.resize( m_names.size() );
+        for ( size_t i = old_size; i < m_parent.size(); ++i ) m_parent[i] = i;
 
-        for (size_t i = 0u; i < m_names.size(); ++i)
-            for (size_t j = i + 1u; j < m_names.size(); ++j)
-                if (IsSamePerson(m_names[i], m_names[j]))
+        for ( size_t i = 0u; i < m_names.size(); ++i )
+            for (size_t j = i + 1u; j < m_names.size(); ++j )
+                if ( IsSamePerson(m_names[i], m_names[j]) )
                     Unite(i, j);
 
         m_map_clusters_dirty = true;
@@ -59,91 +58,100 @@ public:
     string_view GetPrimaryName(string_view const alt) const
     {
         size_t idx = m_names.size();
-        for (size_t i = 0u; i < m_names.size(); ++i)
-            if (m_names[i] == alt) {
+        for ( size_t i = 0u; i < m_names.size(); ++i )
+        {
+            if ( alt == m_names[i] )
+            {
                 idx = i;
                 break;
             }
-        if (idx == m_names.size())
-            return alt;
+        }
 
-        size_t root = Find(idx);
+        if ( idx == m_names.size() ) return alt;
+
+        size_t const root = Find(idx);
         vector<size_t> cluster_indices;
-        for (size_t i = 0u; i < m_names.size(); ++i)
-            if (Find(i) == root)
+        for ( size_t i = 0u; i < m_names.size(); ++i )
+            if ( root == Find(i) )
                 cluster_indices.push_back(i);
 
-        std::ranges::sort(cluster_indices, [this](size_t a, size_t b) {
-            auto tokensA = SplitTokens(m_names[a]);
-            auto tokensB = SplitTokens(m_names[b]);
-            if (tokensA.size() != tokensB.size())
-                return tokensA.size() > tokensB.size();
+        std::ranges::sort(cluster_indices,
+          [this](size_t a, size_t b)
+          {
+            auto const tokensA = SplitTokens(m_names[a]);
+            auto const tokensB = SplitTokens(m_names[b]);
+            if ( tokensA.size() != tokensB.size() ) return tokensA.size() > tokensB.size();
             return m_names[a].size() > m_names[b].size();
-        });
+          });
 
-        return m_names[cluster_indices.front()];
+        return m_names[ cluster_indices.front() ];
     }
 
     map<string_view, string_view> const &GetMap(void) const
     {
-        if (m_map_clusters_dirty) {
-            m_map_clusters.clear();
-            vector<bool> visited(m_names.size(), false);
-            for (size_t i = 0u; i < m_names.size(); ++i) {
-                size_t root = Find(i);
-                if (visited[root]) continue;
-                vector<size_t> cluster_indices;
-                for (size_t j = 0u; j < m_names.size(); ++j)
-                    if (Find(j) == root)
-                        cluster_indices.push_back(j);
+        if ( false == m_map_clusters_dirty ) return m_map_clusters;
+        
+        m_map_clusters.clear();
+        vector<bool> visited(m_names.size(), false);
+        for ( size_t i = 0u; i < m_names.size(); ++i )
+        {
+            size_t const root = Find(i);
+            if ( visited[root] ) continue;
+            vector<size_t> cluster_indices;
+            for ( size_t j = 0u; j < m_names.size(); ++j )
+                if ( root == Find(j) )
+                    cluster_indices.push_back(j);
 
-                std::ranges::sort(cluster_indices, [this](size_t a, size_t b) {
-                    auto tokensA = SplitTokens(m_names[a]);
-                    auto tokensB = SplitTokens(m_names[b]);
-                    if (tokensA.size() != tokensB.size())
-                        return tokensA.size() > tokensB.size();
-                    return m_names[a].size() > m_names[b].size();
-                });
+            std::ranges::sort(cluster_indices,
+              [this](size_t a, size_t b)
+              {
+                auto const tokensA = SplitTokens(m_names[a]);
+                auto const tokensB = SplitTokens(m_names[b]);
+                if ( tokensA.size() != tokensB.size() ) return tokensA.size() > tokensB.size();
+                return m_names[a].size() > m_names[b].size();
+              });
 
-                string_view const &primary = m_names[cluster_indices.front()];
-                for (size_t idx : cluster_indices)
-                    if (m_names[idx] != primary)
-                        m_map_clusters[m_names[idx]] = primary;
+            string_view const primary = m_names[ cluster_indices.front() ];
+            for ( size_t idx : cluster_indices )
+                if ( primary != m_names[idx] )
+                    m_map_clusters[ m_names[idx] ] = primary;
 
-                visited[root] = true;
-            }
-            m_map_clusters_dirty = false;
+            visited[root] = true;
         }
+
+        m_map_clusters_dirty = false;
         return m_map_clusters;
     }
 
-    map<string_view, vector<string_view>> GetPrimaryToAlternativesMap(void) const
+    map< string_view, vector<string_view> > GetPrimaryToAlternativesMap(void) const
     {
-        map<string_view, vector<string_view>> result;
-        vector<bool> visited(m_names.size(), false);
-        for (size_t i = 0u; i < m_names.size(); ++i) {
-            size_t root = Find(i);
-            if (visited[root]) continue;
+        map< string_view, vector<string_view> > result;
+        vector<bool> visited( m_names.size(), false );
+        for ( size_t i = 0u; i < m_names.size(); ++i )
+        {
+            size_t const root = Find(i);
+            if ( visited[root] ) continue;
             vector<size_t> cluster_indices;
-            for (size_t j = 0u; j < m_names.size(); ++j)
-                if (Find(j) == root)
+            for ( size_t j = 0u; j < m_names.size(); ++j )
+                if ( root == Find(j) )
                     cluster_indices.push_back(j);
 
-            std::ranges::sort(cluster_indices, [this](size_t a, size_t b) {
-                auto tokensA = SplitTokens(m_names[a]);
-                auto tokensB = SplitTokens(m_names[b]);
-                if (tokensA.size() != tokensB.size())
-                    return tokensA.size() > tokensB.size();
+            std::ranges::sort(cluster_indices,
+              [this](size_t a, size_t b)
+              {
+                auto const tokensA = SplitTokens(m_names[a]);
+                auto const tokensB = SplitTokens(m_names[b]);
+                if (tokensA.size() != tokensB.size()) return tokensA.size() > tokensB.size();
                 return m_names[a].size() > m_names[b].size();
-            });
+              });
 
-            string_view const &primary = m_names[cluster_indices.front()];
+            string_view const primary = m_names[ cluster_indices.front() ];
             vector<string_view> alternatives;
-            for (size_t idx : cluster_indices)
-                if (m_names[idx] != primary)
+            for ( size_t idx : cluster_indices )
+                if ( primary != m_names[idx] )
                     alternatives.push_back(m_names[idx]);
-            if (!alternatives.empty())
-                result[primary] = std::move(alternatives);
+
+            if ( false == alternatives.empty() ) result[primary] = std::move(alternatives);
 
             visited[root] = true;
         }
@@ -152,75 +160,68 @@ public:
 
     static constexpr size_t pad_len = 35u;
 
-    template<typename Iterator>
+    template<std::input_iterator Iterator>
     void WriteHeaders(Iterator const itBegin, Iterator const itEnd, char const *const output_file) const
     {
-        auto escape_for_hash = [](const std::string& s)
+        constexpr auto escape_for_hash = [](string_view const s) -> string
           {
-            std::string out;
-            out.reserve(s.size());
+            string out;
+            out.reserve( s.size() );
             for ( char const c : s )
             {
-                if (c == '\\') out += "\\\\";
-                else out += c;
+                out += c;
+                if ( '\\' == c ) out += c;
             }
             return out;
           };
 
-        auto pad_spaces = [](size_t s, size_t width = pad_len) -> std::string
+        constexpr auto pad_spaces = [](size_t const s, size_t const width = pad_len) -> string
           {
-            return (s < width) ? std::string(width - s, ' ') : std::string();
+            return (s < width) ? string(width - s, ' ') : string();
           };
-
-        using std::string;
-        using std::vector;
-        using std::set;
-        using std::uint_fast64_t;
 
         NameManager nm;
         nm.AddNames(itBegin, itEnd);
 
-        auto groups = nm.GetPrimaryToAlternativesMap();
+        auto const groups = nm.GetPrimaryToAlternativesMap();
 
         set<string> all_primaries;
-        for (const auto& [primary, alts] : groups) all_primaries.insert(std::string(primary));
+        for ( auto const & [primary, alts] : groups ) all_primaries.insert( string(primary) );
         for ( Iterator it = itBegin; it != itEnd; ++it )
         {
             auto const &name = *it;
-            auto p = nm.GetPrimaryName(name);
-            if (p == name && groups.find(p) == groups.end()) all_primaries.insert(std::string(p));
+            auto const p = nm.GetPrimaryName(name);
+            if ( (p == name) && (groups.find(p) == groups.end()) ) all_primaries.insert( string(p) );
         }
 
         struct PrimaryEntry {
-            std::string name;
-            std::uint_fast64_t hash;
+            string name;
+            uint_fast64_t hash;
         };
         vector<PrimaryEntry> primary_entries;
-        for (const auto& pname : all_primaries)
+        for ( auto const &pname : all_primaries )
         {
-            auto hash = Hash(pname);
-            primary_entries.push_back({pname, hash});
+            auto const hash = Hash(pname);
+            primary_entries.emplace_back( pname, hash );
         }
-        // For unsorted array, do not sort here
 
         struct AltEntry {
-            std::string alt_name;
-            std::string primary_name;
-            std::uint_fast64_t alt_hash;
-            std::uint_fast64_t primary_hash;
+            string alt_name;
+            string primary_name;
+            uint_fast64_t alt_hash;
+            uint_fast64_t primary_hash;
         };
         vector<AltEntry> alt_entries;
-        for (const auto& [primary, alts] : groups)
+        for ( auto const & [primary, alts] : groups)
         {
-            auto primary_hash = Hash(std::string(primary));
-            for (const auto& alt : alts)
+            auto const primary_hash = Hash(std::string(primary));
+            for ( auto const & alt : alts )
             {
-                auto alt_hash = Hash(std::string(alt));
-                alt_entries.push_back({std::string(alt), std::string(primary), alt_hash, primary_hash});
+                auto const alt_hash = Hash( string(alt) );
+                alt_entries.push_back( {string(alt), string(primary), alt_hash, primary_hash} );
             }
         }
-        // For unsorted array, do not sort here
-
+ 
         std::ofstream out(output_file);
         out << "#pragma once\n";
         out << "#include <cstdint>            // uint_fast64_t\n";
@@ -232,12 +233,12 @@ public:
         out << "#include <wx/string.h>        // wxS, wxStringCharType\n";
         out << "#include \"hash.hpp\"           // Hash\n\n";
 
-        // Primary names unsorted
+        // Primary names sorted alphabetically (not by hash)
         out << "inline constexpr std::pair< std::uint_fast64_t, wxStringCharType const * > g_primary_names_unsorted[] = {\n";
-        for ( size_t i = 0; i < primary_entries.size(); ++i )
+        for ( size_t i = 0u; i < primary_entries.size(); ++i )
         {
             auto const &e = primary_entries[i];
-            auto hash_str = escape_for_hash(e.name);
+            auto const hash_str = escape_for_hash(e.name);
             out << "    { Hash(\"" << hash_str << "\"" << pad_spaces(hash_str.size()) << ")"
                 << ", wxS(\"" << e.name << "\"" << pad_spaces(e.name.size()) << ") }";
             if ( i+1 != primary_entries.size() ) out << ",";
@@ -245,18 +246,18 @@ public:
         }
         out << "};\n\n";
 
-        // Alternative names unsorted
+        // Alternative names sorted alphabetically (not by hash)
         out << "inline constexpr std::tuple<std::uint_fast64_t,wxStringCharType const *,std::uint_fast64_t> g_alternative_names_unsorted[] = {\n";
-        for (size_t i = 0; i < alt_entries.size(); ++i)
+        for ( size_t i = 0u; i < alt_entries.size(); ++i )
         {
             auto const &e = alt_entries[i];
-            auto alt_hash_str = escape_for_hash(e.alt_name);
-            auto alt_name_str = e.alt_name;
-            auto primary_hash_str = escape_for_hash(e.primary_name);
+            auto const alt_hash_str = escape_for_hash(e.alt_name);
+            auto const alt_name_str = e.alt_name;
+            auto const primary_hash_str = escape_for_hash(e.primary_name);
             out << "    { Hash(\"" << alt_hash_str << "\"" << pad_spaces(alt_hash_str.size()) << ")"
                 << ", wxS(\"" << alt_name_str << "\"" << pad_spaces(alt_name_str.size()) << ")"
                 << ", Hash(\"" << primary_hash_str << "\"" << pad_spaces(primary_hash_str.size()) << ") }";
-            if ( i+1 != alt_entries.size() ) out << ",";
+            if ( (i+1u) != alt_entries.size() ) out << ",";
             out << "\n";
         }
         out << "};\n\n";
@@ -279,10 +280,12 @@ public:
         out << "    }\n";
         out << "    return retval;\n";
         out << "}\n\n";
-        // Sorted arrays
+
+        // Arrays sorted by hash
         out << "inline constexpr auto g_primary_names     = container_sorted_by_first(g_primary_names_unsorted    );\n";
         out << "inline constexpr auto g_alternative_names = container_sorted_by_first(g_alternative_names_unsorted);\n\n";
 
+        // Four helper functions
         out << "inline constexpr std::uint_fast64_t PrimaryHash(wxStringCharType const *const name)\n";
         out << "{\n";
         out << "    std::uint_fast64_t const h = Hash(name);\n";
