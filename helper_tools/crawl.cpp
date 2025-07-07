@@ -58,36 +58,6 @@ bool IsNotName(string_view const s) noexcept
     return false;
 }
 
-void IrregularNameReplacement(string &s)
-{
-    static constexpr std::pair<char const *, char const *> names[] = {
-        { "Alex"                                                   , "Alex Waffl3x"                                 },
-        { "Hana Dusikova"                                          , "Hana Dus\\u00EDkov\\u00E1"                    },
-        { "Andrzej Krzemienski"                                    , "Andrzej Krzemie\\u0144ski"                    },
-        { "Bengt Gustafsonn"                                       , "Bengt Gustafsson"                             },
-        { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
-        { "Daniel Krugler"                                         , "Daniel Kr\\u00FCgler"                         },
-        { "Dietmar Kuhl"                                           , "Dietmar K\\u00FChl"                           },
-        { "Dietmar Kuehl"                                          , "Dietmar K\\u00FChl"                           },
-        { "Domagoj Saric"                                          , "Domagoj \\u0160ari\\u0107"                    },
-        { "Gonzalo Brito"                                          , "Gonzalo Brito Gadeschi"                       },
-        { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
-        { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
-        { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
-        { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
-        { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
-    };
-
-    for ( auto const &mypair : names )
-    {
-        if ( mypair.first == s )
-        {
-            s = mypair.second;
-            break;
-        }
-    }
-}
-
 bool ContainsNonASCII(string_view const s) noexcept
 {
     for ( char unsigned const c : s )
@@ -282,7 +252,6 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
             cout << endl;
         }
         if ( s.empty() ) continue;
-        IrregularNameReplacement(s);
         names[s].emplace_back(doc);
     }
 }
@@ -448,16 +417,6 @@ int main(void)
     }
 
     std::cerr << "==================== " << names.size() << " unique names ==================\n";
-
-    std::ofstream fnames("names.txt");
-    if ( fnames.is_open() )
-    {
-        for ( std::size_t i = 0u; i < names.size(); ++i )
-        {
-            string const &s = std::next(std::cbegin(names), i)->first;
-            fnames << s << endl;
-        }
-    }
 
     std::ofstream fnames_papers("../main_program/AUTO_GENERATED_tree_contents_author.hpp");
     if ( fnames_papers.is_open() )

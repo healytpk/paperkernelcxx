@@ -27,6 +27,28 @@ public:
     template<typename... Ts> using vector = std::vector<Ts...>;
 
 private:
+    static map<string_view, string_view> const &ExceptionMap(void)
+    {
+        static const map<string_view, string_view> exceptions = {
+            { "Alex"                                                   , "Alex Waffl3x"                                 },
+            { "Hana Dusikova"                                          , "Hana Dus\\u00EDkov\\u00E1"                    },
+            { "Andrzej Krzemienski"                                    , "Andrzej Krzemie\\u0144ski"                    },
+            { "Bengt Gustafsonn"                                       , "Bengt Gustafsson"                             },
+            { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
+            { "Daniel Krugler"                                         , "Daniel Kr\\u00FCgler"                         },
+            { "Dietmar Kuehl"                                          , "Dietmar K\\u00FChl"                           },
+            { "Dietmar Kuhl"                                           , "Dietmar K\\u00FChl"                           },
+            { "Domagoj Saric"                                          , "Domagoj \\u0160ari\\u0107"                    },
+            { "Gonzalo Brito"                                          , "Gonzalo Brito Gadeschi"                       },
+            { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
+            { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
+            { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
+            { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
+            { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
+        };
+        return exceptions;
+    }
+
     vector<string     >         m_name_storage;
     vector<string_view>         m_names;
     vector<size_t     > mutable m_parent;
@@ -190,7 +212,7 @@ public:
     void AddNames(Iterator it_begin, Iterator it_end)
     {
         vector<string_view> new_names;
-        for ( auto it = it_begin; it != it_end; ++it ) new_names.emplace_back(*it);
+        for ( auto it = it_begin; it != it_end; ++it ) if ( ExceptionMap().find(*it) == ExceptionMap().end() ) new_names.emplace_back(*it);
 
         size_t const old_size = m_names.size();
         m_names.insert( m_names.end(), new_names.begin(), new_names.end() );
@@ -208,6 +230,10 @@ public:
 
     string_view GetPrimaryName(string_view const alt) const
     {
+        // Check hardcoded exceptions first
+        auto it = ExceptionMap().find(alt);
+        if ( it != ExceptionMap().end() ) return it->second;
+
         size_t idx = m_names.size();
         for ( size_t i = 0u; i < m_names.size(); ++i )
         {
@@ -236,6 +262,8 @@ public:
         if ( false == m_map_clusters_dirty ) return m_map_clusters;
         
         m_map_clusters.clear();
+        for ( auto const & [alt, primary] : ExceptionMap() ) m_map_clusters[alt] = primary;
+
         vector<bool> visited(m_names.size(), false);
         for ( size_t i = 0u; i < m_names.size(); ++i )
         {
@@ -285,6 +313,9 @@ public:
 
             visited[root] = true;
         }
+
+        // Add hardcoded exceptions
+        for ( auto const & [alt, primary] : ExceptionMap() ) result[primary].push_back(alt);
         return result;
     }
 
@@ -313,13 +344,25 @@ public:
 
         auto const groups = nm.GetPrimaryToAlternativesMap();
 
+        // --- Minimal fix: Build set of all alternatives (including exceptions) ---
+        set<string> all_alternatives;
+        for (const auto& [primary, alts] : groups)
+            for (const auto& alt : alts)
+                all_alternatives.insert(string(alt));
+        for (const auto& [alt, primary] : ExceptionMap())
+            all_alternatives.insert(string(alt));
+        // ------------------------------------------------------------------------
+
         set<string> all_primaries;
-        for ( auto const & [primary, alts] : groups ) all_primaries.insert( string(primary) );
+        for ( auto const & [primary, alts] : groups )
+            if (all_alternatives.find(string(primary)) == all_alternatives.end())
+                all_primaries.insert( string(primary) );
         for ( Iterator it = itBegin; it != itEnd; ++it )
         {
             auto const &name = *it;
             auto const p = nm.GetPrimaryName(name);
-            if ( (p == name) && (groups.find(p) == groups.end()) ) all_primaries.insert( string(p) );
+            if ( (p == name) && (groups.find(p) == groups.end()) && (all_alternatives.find(string(p)) == all_alternatives.end()) )
+                all_primaries.insert( string(p) );
         }
 
         struct PrimaryEntry {
@@ -460,4 +503,4 @@ public:
     }
 };
 
-#endif    // ifndef HEADER_INCLUSION_GUARD
+#endif    // ifndef HEADER_INCLUSION_GUARD_8A2B4C1D_7E3F_4B2A_9C1D_5F6E7A8B9C0D
