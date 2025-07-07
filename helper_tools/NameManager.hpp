@@ -1,12 +1,9 @@
 #ifndef HEADER_INCLUSION_GUARD_8A2B4C1D_7E3F_4B2A_9C1D_5F6E7A8B9C0D
 #define HEADER_INCLUSION_GUARD_8A2B4C1D_7E3F_4B2A_9C1D_5F6E7A8B9C0D
 
-// C standard library headers
 #include <cctype>                   // isalnum, tolower
 #include <cstddef>                  // size_t
 #include <cstdint>                  // uint_fast64_t
-
-// C++ standard library headers
 #include <algorithm>                // ranges::sort, ranges::lower_bound, ranges::equal_range
 #include <concepts>                 // input_iterator
 #include <fstream>                  // ofstream
@@ -28,6 +25,7 @@ public:
     template<typename... Ts> using set = std::set<Ts...>;
     template<typename... Ts> using unordered_map = std::unordered_map<Ts...>;
     template<typename... Ts> using vector = std::vector<Ts...>;
+
 private:
     vector<string     >         m_name_storage;
     vector<string_view>         m_names;
@@ -35,7 +33,159 @@ private:
 
     map<string_view, string_view> mutable m_map_clusters;
     bool mutable m_map_clusters_dirty = true;
+
+    static void ToLowerAndRemovePunct(string &s)
+    {
+        string result;
+        for ( char const c : s )
+        {
+            if ( std::isalnum(static_cast<unsigned char>(c)) || (c == ' ') )
+                result += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+            else if ( c == '.' || c == '-' )
+                result += ' ';
+        }
+        s = std::move(result);
+    }
+
+    static vector<string> SplitTokens(string_view const s)
+    {
+        vector<string> tokens;
+        size_t pos = 0u;
+        while ( pos < s.size() )
+        {
+            while ( pos < s.size() && s[pos] == ' ' ) ++pos;
+            size_t const start = pos;
+            while ( pos < s.size() && s[pos] != ' ' ) ++pos;
+            if ( start < pos ) tokens.emplace_back(  s.substr(start, pos - start)  );
+        }
+        return tokens;
+    }
+
+    static string GetSurname( vector<string> const &tokens )
+    {
+        if ( tokens.empty() ) return {};
+        return tokens.back();
+    }
+
+    static vector<string> GetGivenNames( vector<string> const &tokens )
+    {
+        if ( tokens.size() <= 1u ) return {};
+        return vector<string>( tokens.begin(), tokens.end() - 1 );
+    }
+
+    static string ExtractInitials( vector<string> const &tokens )
+    {
+        string initials;
+        for ( auto const &t : tokens ) if ( !t.empty() ) initials += t[0];
+        return initials;
+    }
+
+    static bool IsSubsequence(string_view const shorter, string_view const longer)
+    {
+        size_t i = 0u, j = 0u;
+        while ( (i < shorter.size()) && (j < longer.size()) )
+        {
+            if ( shorter[i] == longer[j] ) ++i;
+            ++j;
+        }
+        return i == shorter.size();
+    }
+
+    static bool IsOneTypoApart(string_view const a, string_view const b)
+    {
+        size_t len_a = a.size(), len_b = b.size();
+        if ( len_a == len_b )
+        {
+            unsigned diff = 0u;
+            for ( size_t i = 0u; i < len_a; ++i ) if ( a[i] != b[i] ) ++diff;
+            return diff == 1u;
+        }
+        if ( (len_a + 1u) == len_b)
+        {
+            for (size_t i = 0u, j = 0u; (i < len_a) && (j < len_b); )
+            {
+                if ( a[i] != b[j] )
+                {
+                    if ( i != j ) return false;
+                    ++j;
+                } else
+                {
+                    ++i; ++j;
+                }
+            }
+            return true;
+        }
+        if ( (len_b + 1u) == len_a )
+        {
+            for ( size_t i = 0u, j = 0u; i < len_a && j < len_b; )
+            {
+                if ( a[i] != b[j] )
+                {
+                    if ( i != j ) return false;
+                    ++i;
+                } else
+                {
+                    ++i; ++j;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    static bool IsSamePerson(string_view a, string_view b)
+    {
+        string sa(a), sb(b);
+        ToLowerAndRemovePunct(sa);
+        ToLowerAndRemovePunct(sb);
+
+        auto const tokensA = SplitTokens(sa);
+        auto const tokensB = SplitTokens(sb);
+
+        if ( tokensA.empty() || tokensB.empty() ) return false;
+
+        auto const surnameA = GetSurname(tokensA);
+        auto const surnameB = GetSurname(tokensB);
+
+        if ( (surnameA != surnameB) && (false == IsOneTypoApart(surnameA, surnameB)) ) return false;
+
+        auto const givenA = GetGivenNames(tokensA);
+        auto const givenB = GetGivenNames(tokensB);
+
+        string const initialsA = ExtractInitials(givenA);
+        string const initialsB = ExtractInitials(givenB);
+
+        return IsSubsequence(initialsA, initialsB) || IsSubsequence(initialsB, initialsA) || IsOneTypoApart(sa, sb);
+    }
+
+    size_t Find(size_t x) const
+    {
+        while ( m_parent[x] != x ) x = m_parent[x] = m_parent[m_parent[x]];
+        return x;
+    }
+
+    void Unite(size_t const a, size_t const b)
+    {
+        size_t const pa = Find(a);
+        size_t const pb = Find(b);
+        if ( pa != pb ) m_parent[pa] = pb;
+    }
+
+    void SortClusterIndices(vector<size_t>& cluster_indices) const
+    {
+        std::ranges::sort(cluster_indices,
+            [this](size_t a, size_t b)
+            {
+                auto const tokensA = SplitTokens(m_names[a]);
+                auto const tokensB = SplitTokens(m_names[b]);
+                if (tokensA.size() != tokensB.size()) return tokensA.size() > tokensB.size();
+                return m_names[a].size() > m_names[b].size();
+            });
+    }
+
 public:
+    static constexpr size_t pad_len = 35u;
+
     template<std::input_iterator Iterator>
     void AddNames(Iterator it_begin, Iterator it_end)
     {
@@ -76,14 +226,7 @@ public:
             if ( root == Find(i) )
                 cluster_indices.push_back(i);
 
-        std::ranges::sort(cluster_indices,
-          [this](size_t a, size_t b)
-          {
-            auto const tokensA = SplitTokens(m_names[a]);
-            auto const tokensB = SplitTokens(m_names[b]);
-            if ( tokensA.size() != tokensB.size() ) return tokensA.size() > tokensB.size();
-            return m_names[a].size() > m_names[b].size();
-          });
+        SortClusterIndices(cluster_indices);
 
         return m_names[ cluster_indices.front() ];
     }
@@ -103,14 +246,7 @@ public:
                 if ( root == Find(j) )
                     cluster_indices.push_back(j);
 
-            std::ranges::sort(cluster_indices,
-              [this](size_t a, size_t b)
-              {
-                auto const tokensA = SplitTokens(m_names[a]);
-                auto const tokensB = SplitTokens(m_names[b]);
-                if ( tokensA.size() != tokensB.size() ) return tokensA.size() > tokensB.size();
-                return m_names[a].size() > m_names[b].size();
-              });
+            SortClusterIndices(cluster_indices);
 
             string_view const primary = m_names[ cluster_indices.front() ];
             for ( size_t idx : cluster_indices )
@@ -137,14 +273,7 @@ public:
                 if ( root == Find(j) )
                     cluster_indices.push_back(j);
 
-            std::ranges::sort(cluster_indices,
-              [this](size_t a, size_t b)
-              {
-                auto const tokensA = SplitTokens(m_names[a]);
-                auto const tokensB = SplitTokens(m_names[b]);
-                if (tokensA.size() != tokensB.size()) return tokensA.size() > tokensB.size();
-                return m_names[a].size() > m_names[b].size();
-              });
+            SortClusterIndices(cluster_indices);
 
             string_view const primary = m_names[ cluster_indices.front() ];
             vector<string_view> alternatives;
@@ -158,8 +287,6 @@ public:
         }
         return result;
     }
-
-    static constexpr size_t pad_len = 35u;
 
     template<std::input_iterator Iterator>
     void WriteHeaders(Iterator const itBegin, Iterator const itEnd, char const *const output_file) const
@@ -331,146 +458,6 @@ public:
         out << "    return result;\n";
         out << "}\n";
     }
-
-private:
-    static void ToLowerAndRemovePunct(string &s)
-    {
-        string result;
-        for ( char c : s )
-        {
-            if ( std::isalnum(static_cast<unsigned char>(c)) || (c == ' ') )
-                result += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
-            else if (c == '.' || c == '-')
-                result += ' ';
-        }
-        s = std::move(result);
-    }
-
-    static vector<string> SplitTokens(string_view const s)
-    {
-        vector<string> tokens;
-        size_t pos = 0u;
-        while ( pos < s.size() )
-        {
-            while ( pos < s.size() && s[pos] == ' ' ) ++pos;
-            size_t const start = pos;
-            while ( pos < s.size() && s[pos] != ' ' ) ++pos;
-            if ( start < pos ) tokens.emplace_back(  s.substr(start, pos - start)  );
-        }
-        return tokens;
-    }
-
-    static string GetSurname( vector<string> const &tokens )
-    {
-        if ( tokens.empty() ) return {};
-        return tokens.back();
-    }
-
-    static vector<string> GetGivenNames( vector<string> const &tokens )
-    {
-        if ( tokens.size() <= 1u ) return {};
-        return vector<string>( tokens.begin(), tokens.end() - 1 );
-    }
-
-    static string ExtractInitials( vector<string> const &tokens )
-    {
-        string initials;
-        for ( auto const &t : tokens ) if ( !t.empty() ) initials += t[0];
-        return initials;
-    }
-
-    static bool IsSubsequence(string_view const shorter, string_view const longer)
-    {
-        size_t i = 0u, j = 0u;
-        while ( (i < shorter.size()) && (j < longer.size()) )
-        {
-            if ( shorter[i] == longer[j] ) ++i;
-            ++j;
-        }
-        return i == shorter.size();
-    }
-
-    // Returns true if a and b differ by exactly one character (edit distance 1)
-    static bool IsOneTypoApart(string_view const a, string_view const b)
-    {
-        size_t len_a = a.size(), len_b = b.size();
-        if ( len_a == len_b )
-        {
-            unsigned diff = 0u;
-            for ( size_t i = 0u; i < len_a; ++i ) if ( a[i] != b[i] ) ++diff;
-            return diff == 1u;
-        }
-        if ( (len_a + 1u) == len_b)
-        {
-            for (size_t i = 0u, j = 0u; (i < len_a) && (j < len_b); )
-            {
-                if ( a[i] != b[j] )
-                {
-                    if ( i != j ) return false;
-                    ++j;
-                } else
-                {
-                    ++i; ++j;
-                }
-            }
-            return true;
-        }
-        if ( (len_b + 1u) == len_a )
-        {
-            for ( size_t i = 0u, j = 0u; i < len_a && j < len_b; )
-            {
-                if ( a[i] != b[j] )
-                {
-                    if ( i != j ) return false;
-                    ++i;
-                } else
-                {
-                    ++i; ++j;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-    static bool IsSamePerson(string_view a, string_view b)
-    {
-        string sa(a), sb(b);
-        ToLowerAndRemovePunct(sa);
-        ToLowerAndRemovePunct(sb);
-
-        auto const tokensA = SplitTokens(sa);
-        auto const tokensB = SplitTokens(sb);
-
-        if ( tokensA.empty() || tokensB.empty() ) return false;
-
-        auto const surnameA = GetSurname(tokensA);
-        auto const surnameB = GetSurname(tokensB);
-
-        // Allow for a single-character typo in the surname
-        if ( (surnameA != surnameB) && (false == IsOneTypoApart(surnameA, surnameB)) ) return false;
-
-        auto const givenA = GetGivenNames(tokensA);
-        auto const givenB = GetGivenNames(tokensB);
-
-        string const initialsA = ExtractInitials(givenA);
-        string const initialsB = ExtractInitials(givenB);
-
-        return IsSubsequence(initialsA, initialsB) || IsSubsequence(initialsB, initialsA) || IsOneTypoApart(sa, sb);
-    }
-
-    size_t Find(size_t x) const
-    {
-        while ( m_parent[x] != x ) x = m_parent[x] = m_parent[m_parent[x]];
-        return x;
-    }
-
-    void Unite(size_t const a, size_t const b)
-    {
-        size_t const pa = Find(a);
-        size_t const pb = Find(b);
-        if ( pa != pb ) m_parent[pa] = pb;
-    }
 };
 
-#endif // HEADER_INCLUSION_GUARD_8A2B4C1D_7E3F_4B2A_9C1D_5F6E7A8B9C0D
+#endif    // ifndef HEADER_INCLUSION_GUARD
