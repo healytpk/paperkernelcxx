@@ -293,8 +293,8 @@ void ParseYearTable(string_view const html, unsigned const year, unsigned const 
                 ProcessAuthorSquareFromTable(author, wg21_number);
                 break;
             case 2u:
-                auto &map = papers[ paper.PaperNameWithoutRevision() ];
-                map[ paper.c_str() ] = { author, title };
+                auto &mymap = papers[ paper.PaperNameWithoutRevision() ];
+                mymap[ paper.c_str() ] = { author, title };
                 break;
             }
         }
@@ -472,6 +472,18 @@ int main(void)
         // Don't uncomment the next line -- don't put a null terminator at the end of the papers array
         // fpapers << "    { Paper::Terminator(), RevList< Rev< 0u, Arr64< 0u >(), wxS(\"\") > >() },\n";
         fpapers << "};\n";
+    }
+
+    std::ofstream fpaperlist("./complete_paper_list.txt");
+    if ( fpaperlist.is_open() )
+    {
+        for ( auto const &mymap : papers )
+        {
+            for ( auto const &mypair : mymap.second )
+            {
+                fpaperlist << mypair.first << endl;
+            }
+        }
     }
 
     return EXIT_SUCCESS;
