@@ -31,6 +31,7 @@ protected:
     void btnXapianUnloadPapers_OnButtonClick(wxCommandEvent&) override;
     void btnXapianSearch_OnButtonClick(wxCommandEvent&) override;
     void listAuthors_OnListItemSelected(wxListEvent&) override;
+    void listAuthors_OnListItemRightClick(wxListEvent&) override;
     void listXapianResults_OnListItemActivated(wxListEvent&) override;
     void AI_btnWhittleDownPapers_OnButtonClick(wxCommandEvent&) override;
     void PaperTree_OnSelChanged(wxDataViewEvent&);
@@ -45,8 +46,13 @@ protected:
     void treeAuthorPapers_OnDataViewCtrlItemActivated(wxDataViewEvent&) override;
     bool SelectPaperInPaperTree(Paper);
     bool is_viewportal_loaded = false;
+    bool already_showing_debug_tab = false;
 public:
     Dialog_Main(wxWindow *parent);
+    ~Dialog_Main(void) noexcept
+    {
+        if ( false == this->already_showing_debug_tab ) this->panelDebug->Destroy();
+    }
 };
 
 extern Dialog_Main *g_p_dlgmain;

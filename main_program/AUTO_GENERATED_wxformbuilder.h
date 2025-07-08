@@ -86,6 +86,7 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnTool_ShowPaperTree( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTool_ShowViewPortal( wxCommandEvent& event ) { event.Skip(); }
+		virtual void listAuthors_OnListItemRightClick( wxListEvent& event ) { event.Skip(); }
 		virtual void listAuthors_OnListItemSelected( wxListEvent& event ) { event.Skip(); }
 		virtual void treeAuthorPapers_OnDataViewCtrlItemActivated( wxDataViewEvent& event ) { event.Skip(); }
 		virtual void btnXapianLoadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }

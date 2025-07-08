@@ -319,20 +319,22 @@ void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
-    this->listAuthors->InsertColumn(0, "Name");
-    this->listAuthors->InsertColumn(1, "Authored");
-    this->listAuthors->InsertItem(0, "Thomas Patrick Kevin Healy III Esquire ZZZ");
-    this->listAuthors->SetItem(0, 1, "AuthoredZZZ");
+    this->m_notebook1->RemovePage(4u);    // Remove the Debug tab
+
+    this->listAuthors->InsertColumn(0, wxS("Name"));
+    this->listAuthors->InsertColumn(1, wxS("Authored"));
+    this->listAuthors->InsertItem(0, wxS("Thomas Patrick Kevin Healy III Esquire ZZZ"));
+    this->listAuthors->SetItem(0, 1, wxS("AuthoredZZZ"));
     this->listAuthors->SetColumnWidth(0, wxLIST_AUTOSIZE);
     this->listAuthors->SetColumnWidth(1, wxLIST_AUTOSIZE);
     this->listAuthors->DeleteItem(0);
 
-    this->listXapianResults->InsertColumn(0, "Paper" );
-    this->listXapianResults->InsertColumn(1, "Title" );
-    this->listXapianResults->InsertColumn(2, "Author");
-    this->listXapianResults->InsertItem(0, "P1234R56ZZZ");
-    this->listXapianResults->SetItem(0,1, "This is the title of the paper and it's a little long, what do you thinkZZZ" );
-    this->listXapianResults->SetItem(0,2, "Thomas PK Healy, Thomas PK Healy, Thomas PK Healy, Thomas PK Healy, Thomas PK Healy" );
+    this->listXapianResults->InsertColumn(0, wxS("Paper"));
+    this->listXapianResults->InsertColumn(1, wxS("Title"));
+    this->listXapianResults->InsertColumn(2, wxS("Author"));
+    this->listXapianResults->InsertItem(0, wxS("P1234R56ZZZ"));
+    this->listXapianResults->SetItem(0,1, wxS("This is the title of the paper and it's a little long, what do you thinkZZZ"));
+    this->listXapianResults->SetItem(0,2, wxS("Thomas PK Healy, Thomas PK Healy, Thomas PK Healy, Thomas PK Healy, Thomas PK Healy"));
     this->listXapianResults->SetColumnWidth(0,wxLIST_AUTOSIZE);
     this->listXapianResults->SetColumnWidth(1,wxLIST_AUTOSIZE);
     this->listXapianResults->SetColumnWidth(2,wxLIST_AUTOSIZE);
@@ -406,9 +408,9 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // ================ Create the wxDataViewCtrl widget ===============
     this->treeAllPapers = new std::remove_reference_t<decltype(*this->treeAllPapers)>(this->splitter, wxID_ANY);
     assert( nullptr != this->treeAllPapers );
-    wxDataViewColumn *const pcol = this->treeAllPapers->AppendTextColumn("Paper" , 0);
-    this->treeAllPapers->AppendTextColumn("Title" , 1, wxDATAVIEW_CELL_INERT, 200);
-    this->treeAllPapers->AppendTextColumn("Author", 2);
+    wxDataViewColumn *const pcol = this->treeAllPapers->AppendTextColumn(wxS("Paper") , 0);
+    this->treeAllPapers->AppendTextColumn(wxS("Title") , 1, wxDATAVIEW_CELL_INERT, 200);
+    this->treeAllPapers->AppendTextColumn(wxS("Author") , 2);
     this->treeAllPapers->SetExpanderColumn(pcol);
     this->treeAllPapers->AssociateModel(this->treeStore);
     assert( 2u == this->treeStore->GetRefCount() );
@@ -447,8 +449,8 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     this->panelBrowse->Layout();
 
     this->authorPaperStore = new std::remove_reference_t<decltype(*this->authorPaperStore)>;
-    wxDataViewColumn *const pcolAuthor = this->treeAuthorPapers->AppendTextColumn("Paper" , 0);
-    this->treeAuthorPapers->AppendTextColumn("Title" , 1, wxDATAVIEW_CELL_INERT, 200);
+    wxDataViewColumn *const pcolAuthor = this->treeAuthorPapers->AppendTextColumn(wxS("Paper") , 0);
+    this->treeAuthorPapers->AppendTextColumn(wxS("Title") , 1, wxDATAVIEW_CELL_INERT, 200);
     this->treeAuthorPapers->SetExpanderColumn(pcolAuthor);
 
     this->Layout();
@@ -461,7 +463,7 @@ void Dialog_Main::OnClose(wxCloseEvent&)
 
 void Dialog_Main::AI_btnLoadModel_OnButtonClick(wxCommandEvent&)
 {
-    Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, "Loading the artificial intelligence model. . .");
+    Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, wxS("Loading the artificial intelligence model. . ."));
     dlg.m_gauge->SetRange(100u);
     dlg.m_gauge->Hide();
 
@@ -489,7 +491,7 @@ void Dialog_Main::AI_btnUnloadModel_OnButtonClick(wxCommandEvent&)
 
 void Dialog_Main::AI_btnLoadPapers_OnButtonClick(wxCommandEvent&)
 {
-    Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, "Loading the thousands of C++ papers. . .");
+    Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, wxS("Loading the thousands of C++ papers. . ."));
     dlg.m_gauge->SetRange(100u);
     dlg.m_gauge->Hide();
 
@@ -520,7 +522,7 @@ void Dialog_Main::AI_btnUnloadPapers_OnButtonClick(wxCommandEvent&)
 
 void Dialog_Main::AI_btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
 {
-    Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, "Whittling down the list of papers. . .");
+    Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, wxS("Whittling down the list of papers. . ."));
     dlg.m_gauge->SetRange( g_paperman.size() );
     //dlg.m_gauge->Hide();
 
@@ -547,12 +549,12 @@ void Dialog_Main::AI_btnWhittleDownPapers_OnButtonClick(wxCommandEvent&)
 
 void Dialog_Main::btnXapianUnloadPapers_OnButtonClick(wxCommandEvent&)
 {
-    wxMessageBox("I haven't coded this yet", "paperkernelcxx", wxOK|wxCENTRE, this);
+    wxMessageBox(wxS("I haven't coded this yet"), wxS("paperkernelcxx"), wxOK|wxCENTRE, this);
 }
 
 void Dialog_Main::btnXapianLoadPapers_OnButtonClick(wxCommandEvent&)
 {
-    Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, "Loading Papers. . .");
+    Dialog_Waiting &dlg = *new Dialog_Waiting(nullptr, wxS("Loading Papers. . ."));
     dlg.m_gauge->SetRange(100);
     //dlg.m_gauge->Hide();
 
@@ -584,7 +586,7 @@ void Dialog_Main::btnXapianLoadPapers_OnButtonClick(wxCommandEvent&)
 
     dlg.ShowModal();
 
-    if ( false == is_loaded ) wxMessageBox("Failed to load Xapian database file", "Paper Kernel C++", wxICON_ERROR|wxCENTRE, this);
+    if ( false == is_loaded ) wxMessageBox(wxS("Failed to load Xapian database file"), wxS("Paper Kernel C++"), wxICON_ERROR|wxCENTRE, this);
 
     this->btnXapianLoadPapers  ->Enable( ! is_loaded );
     this->btnXapianUnloadPapers->Enable(   is_loaded );
@@ -685,6 +687,15 @@ bool Dialog_Main::SelectPaperInPaperTree(Paper const paper_selected)
     return true;
 }
 
+void Dialog_Main::listAuthors_OnListItemRightClick(wxListEvent &event)
+{
+    assert( wxIsMainThread() );
+    if ( this->already_showing_debug_tab ) return;
+    if ( false == event.GetText().Contains(wxS("Ed Catmur")) ) return;
+    this->m_notebook1->AddPage( this->panelDebug, wxS("Debug") );
+    this->already_showing_debug_tab = true;
+}
+
 void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
 {
     assert( 1u == this->authorPaperStore->GetRefCount() );
@@ -724,7 +735,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
         wxDataViewItem const item_rev =
             this->authorPaperStore->AppendItemWithColumns(
             item_papernum,
-            { std::move(paper_str) + "r" << p->rev }
+            { std::move(paper_str) + wxS("r") << p->rev }
         );
         (void)item_rev;
       //this->authorPaperStore->ItemAdded(item_papernum, item_rev);  --  not associated
@@ -752,7 +763,7 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
     auto print_size = [&s]<typename T>(wxStringCharType const *const name, unsigned const len = 14u)
       {
         s << wxS("sizeof(");
-        for ( unsigned i = 0u; i < (len - wxstring_view(name).size()); ++i ) s << " ";
+        for ( unsigned i = 0u; i < (len - wxstring_view(name).size()); ++i ) s << wxS(" ");
         s << name << wxS(") == ") << sizeof(T) << wxS(" bytes == ") << (sizeof(T) * CHAR_BIT) << wxS("-Bit\n");
       };
 
@@ -766,9 +777,11 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
     s << wxS("This process has ") << GetChildProcessCount() << wxS(" child processes") << endl;
     s << wxS("Compression for embedded archive: ");
 #   ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
-       s << wxS("Individual files compressed in an uncompressed archive (all_cxx_papers_individual_zst.tar).\n");
+       s << wxS("Individual files compressed in an\n")
+         << wxS("uncompressed archive (all_cxx_papers_individual_zst.tar).\n");
 #   else
-       s << wxS("Uncompressed files in a compressed archive (all_cxx_papers.tar.zst).\n");
+       s << wxS("Uncompressed files in a compressed\n")
+         << wxS("archive (all_cxx_papers.tar.zst).\n");
 #    endif
      s << endl;
 
