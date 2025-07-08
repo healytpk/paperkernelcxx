@@ -815,3 +815,14 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
     this->labelDebug_Info->Update();
     wxGetApp().SafeYield(nullptr, false);
 }
+
+void Dialog_Main::m_notebook1_OnNotebookPageChanged(wxNotebookEvent &event)
+{
+    switch ( event.GetSelection() )
+    {
+    case 4u:
+        wxCommandEvent dummy;
+        this->btnDebug_Refresh_OnButtonClick(dummy);
+        break;
+    }
+}
