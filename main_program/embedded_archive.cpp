@@ -6,6 +6,9 @@
 #include <string>                              // string
 #include <archive.h>                           // struct archive
 #include <archive_entry.h>                     // struct archive_entry
+#ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
+#    include <zstd.h>                          // ZSTD_decompress, ZSTD_getFrameContentSize
+#endif
 #include "incbin.h"                            // INCBIN
 #include "Auto.h"                              // The 'Auto' macro
 
@@ -35,9 +38,17 @@ static void LoadEmbeddedArchiveFromExectuableResources(void) noexcept
 }
 
 #elif __APPLE__
-    INCBIN(_archive, "../../all_cxx_papers.tar.zst");
+#   ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
+       INCBIN(_archive, "../../all_cxx_papers_individual_zst.tar");
+#   else
+       INCBIN(_archive, "../../all_cxx_papers.tar.zst");
+#   endif
 #else
-    INCBIN(_archive, "../../../all_cxx_papers.tar.zst");
+#   ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
+       INCBIN(_archive, "../../../all_cxx_papers_individual_zst.tar");
+#   else
+       INCBIN(_archive, "../../../all_cxx_papers.tar.zst");
+#   endif
 #endif
 
 using std::runtime_error, std::string;
@@ -60,15 +71,16 @@ string ArchiveGetFile(char const *const arg_filename) noexcept
         if ( nullptr == a ) return {};
         Auto( archive_read_free(a) );
 
+#ifndef PAPERKERNEL_INDIVIDUAL_COMPRESSION
       //archive_read_support_filter_xz (a);   // Enable XZ  decompression
       //archive_read_support_filter_lz4(a);   // Enable LZ4 decompression
         archive_read_support_filter_zstd(a);  // Enable Zstd decompression
+#endif
+
         archive_read_support_format_tar(a);   // Enable TAR format
         if ( ARCHIVE_OK != archive_read_open_memory(a, g_archiveData, g_archiveSize) ) return {};
 
-      //string filename("./");
-        string filename;
-        filename += arg_filename;
+        string filename(arg_filename);
         struct archive_entry *entry = nullptr;
         for ( ; ARCHIVE_OK == archive_read_next_header(a, &entry); archive_read_data_skip(a) )
         {
@@ -80,7 +92,17 @@ string ArchiveGetFile(char const *const arg_filename) noexcept
             if ( entry_size <= 0 ) return {};
             string buffer(entry_size, '\0');
             if ( archive_read_data(a, buffer.data(), entry_size) < 0 ) return {};
+#ifndef PAPERKERNEL_INDIVIDUAL_COMPRESSION
             return buffer;
+#else
+            // Decompress using zstd
+            auto const decompressed_size = ZSTD_getFrameContentSize( buffer.data(), buffer.size() );
+            if ( (decompressed_size==ZSTD_CONTENTSIZE_ERROR) || (decompressed_size==ZSTD_CONTENTSIZE_UNKNOWN) ) return {};
+            string decompressed(decompressed_size, '\0');
+            auto const res = ZSTD_decompress(decompressed.data(), decompressed.size(), buffer.data(), buffer.size());
+            if ( ZSTD_isError(res) ) return {};
+            return decompressed;
+#endif
         }
     }
     catch(...){}

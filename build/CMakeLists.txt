@@ -2,14 +2,12 @@ cmake_minimum_required(VERSION 3.22.0)
 
 cmake_policy(SET CMP0026 OLD)
 
-set(CMAKE_CXX_STANDARD 20)
-#set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")   ---  Doesn't work --- link unresolved basic_streambuf
+set(CMAKE_CXX_STANDARD 23)
 
-if(LINUX)
-	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
-	set(ENV{ASAN_OPTIONS} "detect_invalid_pointer_pairs=2")
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb3 -pedantic -Wall -Wextra -rdynamic -funwind-tables -fno-omit-frame-pointer -fno-common -pthread -fsanitize=address,leak,undefined,pointer-compare,pointer-subtract,float-divide-by-zero,float-cast-overflow -fsanitize-address-use-after-scope -fcf-protection=full -fstack-protector-all -fstack-clash-protection -fvtv-debug -fvtv-counts -finstrument-functions -D_GLIBC_DEBUG -D_GLIBC_DEBUG_PEDANTIC -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC")
-endif(LINUX)
+if(UNIX AND NOT APPLE)
+	set(LINUX ON)
+	set(LIB_SUFFIX /${CMAKE_BUILD_TYPE}) # On Linux, execute CMake twice for Debug and Release
+endif(UNIX AND NOT APPLE)
 
 # We will generate both Debug and Release project files at the same time
 # for Windows and OS X
@@ -17,21 +15,6 @@ if(WIN32 OR APPLE)
 	set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 	set(LIB_SUFFIX "") 
 endif(WIN32 OR APPLE)
-
-# For Linux we will need to execute CMake twice in order to generate
-# Debug and Release versions of Makefiles
-if(UNIX AND NOT APPLE)
-	set(LINUX ON)
-	set(LIB_SUFFIX /${CMAKE_BUILD_TYPE}) 
-endif(UNIX AND NOT APPLE)
-
-set(PROJECT_NAME paperkernelcxx)
-project(${PROJECT_NAME})
-
-# If there are any additional CMake modules (e.g. module which searches 
-# for OpenCV or for DirectShow libs), then CMake should start searching 
-# for them in current folder
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 
 if(APPLE)
 	set(OS_BASE_NAME Mac)
@@ -46,6 +29,39 @@ endif(LINUX)
 if(WIN32)
 	set(OS_BASE_NAME Win)
 endif(WIN32)
+
+if(LINUX)
+	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
+	set(ENV{ASAN_OPTIONS} "detect_invalid_pointer_pairs=2")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb3 -pedantic -Wall -Wextra -rdynamic -funwind-tables -fno-omit-frame-pointer -fno-common -pthread -fsanitize=address,leak,undefined,pointer-compare,pointer-subtract,float-divide-by-zero,float-cast-overflow -fsanitize-address-use-after-scope -fcf-protection=full -fstack-protector-all -fstack-clash-protection -fvtv-debug -fvtv-counts -finstrument-functions -D_GLIBC_DEBUG -D_GLIBC_DEBUG_PEDANTIC -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC")
+endif(LINUX)
+
+file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/preprocessor_defines.txt" DEFINE_LINES)
+foreach(DEF ${DEFINE_LINES})
+    # Skip empty lines and comments
+    if(DEF STREQUAL "" OR DEF MATCHES "^#")
+        continue()
+    endif()
+    # Check for platform prefix and extract the rest
+    if(APPLE AND DEF MATCHES "^APPLE[ ]")
+        string(SUBSTRING "${DEF}" 6 -1 DEF_TRIMMED)
+        add_compile_definitions(${DEF_TRIMMED})
+    elseif(LINUX AND DEF MATCHES "^LINUX[ ]")
+        string(SUBSTRING "${DEF}" 6 -1 DEF_TRIMMED)
+        add_compile_definitions(${DEF_TRIMMED})
+    elseif(WIN32 AND DEF MATCHES "^MSWIN[ ]")
+        string(SUBSTRING "${DEF}" 6 -1 DEF_TRIMMED)
+        add_compile_definitions(${DEF_TRIMMED})
+    endif()
+endforeach()
+
+set(PROJECT_NAME paperkernelcxx)
+project(${PROJECT_NAME})
+
+# If there are any additional CMake modules (e.g. module which searches 
+# for OpenCV or for DirectShow libs), then CMake should start searching 
+# for them in current folder
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 
 # Variable which points to root folder of our source code
 set(PROJECT_ROOT_DIR ${PROJECT_SOURCE_DIR}/..)
@@ -77,7 +93,6 @@ set(BUILD_SHARED_LIBS OFF)
 # directory where wxWidgets source code is placed.
 # wxWidgets libs MUST be compiled for both Debug and Release versions
 find_package(wxWidgets REQUIRED)
-
 
 # For some reason CMake generates wrong list of definitions.
 # Each item should start with /D but it does not.

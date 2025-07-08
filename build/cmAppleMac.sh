@@ -1,11 +1,19 @@
 #!/bin/bash
 
-if [ -e "../all_cxx_papers.tar.zst" ]; then
-    echo Compressed tar archive of all C++ papers already exists
+if grep -q "^APPLE PAPERKERNEL_INDIVIDUAL_COMPRESSION$" preprocessor_defines.txt; then
+    ARCHIVE="all_cxx_papers_individual_zst.tar"
+    URL="http://www.virjacode.com/downloads/all_cxx_papers_individual_zst.tar"
 else
-    echo Downloading compressed tar archive of all C++ papers from virjacode.com
-    curl http://www.virjacode.com/downloads/all_cxx_papers.tar.zst -o ../all_cxx_papers.tar.zst
-    if [ ! -e "../all_cxx_papers.tar.zst" ]; then
+    ARCHIVE="all_cxx_papers.tar.zst"
+    URL="http://www.virjacode.com/downloads/all_cxx_papers.tar.zst"
+fi
+
+if [ -e "../$ARCHIVE" ]; then
+    echo "Tar archive of all C++ papers already exists"
+else
+    echo "Downloading tar archive of all C++ papers from virjacode.com"
+    curl "$URL" -o "../$ARCHIVE"
+    if [ ! -e "../$ARCHIVE" ]; then
         echo "Failed to retrieve all C++ papers from the internet."
         exit 1
     fi

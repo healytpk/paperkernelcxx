@@ -763,7 +763,14 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
 
     s << wxS("Total resident memory in use by this process: ") << GetResidentMemory() / 1024u / 1024u << wxS(" MiB") << endl;
     s << wxS("This process has ") << GetThreadCount() << wxS(" threads") << endl;
-    s << wxS("This process has ") << GetChildProcessCount() << wxS(" child processes") << endl << endl;
+    s << wxS("This process has ") << GetChildProcessCount() << wxS(" child processes") << endl;
+    s << wxS("Compression for embedded archive: ");
+#   ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
+       s << wxS("Individual files compressed in an uncompressed archive (all_cxx_papers_individual_zst.tar).\n");
+#   else
+       s << wxS("Uncompressed files in a compressed archive (all_cxx_papers.tar.zst).\n");
+#    endif
+     s << endl;
 
     s << wxS("CHAR_BIT == ") << CHAR_BIT << endl << endl;
     PRINT_TYPE_LEN(wxStringCharType, 16u);
