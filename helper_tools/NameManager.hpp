@@ -31,7 +31,6 @@ private:
     {
         static const map<string_view, string_view> exceptions = {
             { "Alex"                                                   , "Alex Waffl3x"                                 },
-            { "Hana Dusikova"                                          , "Hana Dus\\u00EDkov\\u00E1"                    },
             { "Andrzej Krzemienski"                                    , "Andrzej Krzemie\\u0144ski"                    },
             { "Bengt Gustafsonn"                                       , "Bengt Gustafsson"                             },
             { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
@@ -39,12 +38,13 @@ private:
             { "Dietmar Kuehl"                                          , "Dietmar K\\u00FChl"                           },
             { "Dietmar Kuhl"                                           , "Dietmar K\\u00FChl"                           },
             { "Domagoj Saric"                                          , "Domagoj \\u0160ari\\u0107"                    },
+            { "Ed Catmur"                                              , "Edward Catmur (1982 – 2024)"                  },
             { "Gonzalo Brito"                                          , "Gonzalo Brito Gadeschi"                       },
-            { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
-            { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
-            { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
-            { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
+            { "Hana Dusikova"                                          , "Hana Dus\\u00EDkov\\u00E1"                    },
             { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
+            { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
+            { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
+            { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
         };
         return exceptions;
     }
