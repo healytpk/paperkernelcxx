@@ -109,7 +109,9 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		virtual void AI_btnUnloadPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void AI_btnWhittleDownPapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void AI_btnAnalysePapers_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void panelDebug_Notebook_OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void btnDebug_Refresh_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void panelDebug_panelNames_listPrimary_OnListBox( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

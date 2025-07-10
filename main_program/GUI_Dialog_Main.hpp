@@ -34,6 +34,8 @@ protected:
     void listAuthors_OnListItemRightClick(wxListEvent&) override;
     void listXapianResults_OnListItemActivated(wxListEvent&) override;
     void m_notebook1_OnNotebookPageChanged(wxNotebookEvent&) override;
+    void panelDebug_Notebook_OnPageChanged(wxNotebookEvent&) override;
+    void panelDebug_panelNames_listPrimary_OnListBox(wxCommandEvent&) override;
     void AI_btnWhittleDownPapers_OnButtonClick(wxCommandEvent&) override;
     void PaperTree_OnSelChanged(wxDataViewEvent&);
     wxString GetPaperTreeItemText(wxDataViewCtrl*,wxDataViewItem) const;

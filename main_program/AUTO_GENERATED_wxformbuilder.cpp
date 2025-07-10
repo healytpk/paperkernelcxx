@@ -275,7 +275,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	m_staticText9->Wrap( -1 );
 	bSizer17->Add( m_staticText9, 0, wxALL, 5 );
 
-	panelDebug_panelNames_listctrlMappings = new wxListCtrl( panelDebug_panelNames, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_ICON );
+	panelDebug_panelNames_listctrlMappings = new wxListCtrl( panelDebug_panelNames, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL );
 	bSizer17->Add( panelDebug_panelNames_listctrlMappings, 1, wxALL|wxEXPAND, 5 );
 
 
@@ -318,7 +318,9 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	AI_btnUnloadPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnUnloadPapers_OnButtonClick ), NULL, this );
 	AI_btnWhittleDownPapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnWhittleDownPapers_OnButtonClick ), NULL, this );
 	AI_btnAnalysePapers->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::AI_btnAnalysePapers_OnButtonClick ), NULL, this );
+	panelDebug_Notebook->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( Dialog_Main__Auto_Base_Class::panelDebug_Notebook_OnPageChanged ), NULL, this );
 	btnDebug_Refresh->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnDebug_Refresh_OnButtonClick ), NULL, this );
+	panelDebug_panelNames_listPrimary->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::panelDebug_panelNames_listPrimary_OnListBox ), NULL, this );
 }
 
 Dialog_Main__Auto_Base_Class::~Dialog_Main__Auto_Base_Class()
