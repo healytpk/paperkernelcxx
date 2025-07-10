@@ -691,7 +691,7 @@ void Dialog_Main::listAuthors_OnListItemRightClick(wxListEvent &event)
 {
     assert( wxIsMainThread() );
     if ( this->already_showing_debug_tab ) return;
-    if ( wxS("Edward Catmur (1982 – 2024)") != event.GetText() ) return;
+    if ( wxS("Edward Catmur (1982 \u002D 2024)") != event.GetText() ) return;
     this->m_notebook1->AddPage( this->panelDebug, wxS("Debug") );
     this->already_showing_debug_tab = true;
 }
