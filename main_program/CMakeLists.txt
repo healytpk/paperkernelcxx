@@ -4,6 +4,7 @@ set(SRCS
 	debug.cpp
 	embedded_archive.cpp
 	GUI_Dialog_Main.cpp
+	GUI_Dialog_Debug_Tab.cpp
 	MySortableListCtrl.cpp
 	paper.cpp
 	paperman.cpp
@@ -21,6 +22,7 @@ set(HEADERS
 	debug.hpp
 	embedded_archive.hpp
 	GUI_Dialog_Main.hpp
+	GUI_Dialog_Debug_Tab.hpp
 	GUI_Dialog_Waiting.hpp
 	hash.hpp
 	incbin.h
