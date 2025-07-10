@@ -225,12 +225,66 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	wxBoxSizer* bSizer151;
 	bSizer151 = new wxBoxSizer( wxVERTICAL );
 
-	labelDebug_Info = new wxStaticText( panelDebug, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	labelDebug_Info->Wrap( -1 );
-	bSizer151->Add( labelDebug_Info, 1, wxALL|wxEXPAND, 5 );
+	panelDebug_Notebook = new wxNotebook( panelDebug, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	panelDebug_panelInfo = new wxPanel( panelDebug_Notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer161;
+	bSizer161 = new wxBoxSizer( wxVERTICAL );
 
-	btnDebug_Refresh = new wxButton( panelDebug, wxID_ANY, wxT("Refresh"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer151->Add( btnDebug_Refresh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	labelDebug_Info = new wxStaticText( panelDebug_panelInfo, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	labelDebug_Info->Wrap( -1 );
+	bSizer161->Add( labelDebug_Info, 1, wxALL|wxEXPAND, 5 );
+
+	btnDebug_Refresh = new wxButton( panelDebug_panelInfo, wxID_ANY, wxT("Refresh"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer161->Add( btnDebug_Refresh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	panelDebug_panelInfo->SetSizer( bSizer161 );
+	panelDebug_panelInfo->Layout();
+	bSizer161->Fit( panelDebug_panelInfo );
+	panelDebug_Notebook->AddPage( panelDebug_panelInfo, wxT("Information"), true );
+	panelDebug_panelNames = new wxPanel( panelDebug_Notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer17;
+	bSizer17 = new wxBoxSizer( wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer1;
+	fgSizer1 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer1->AddGrowableCol( 0 );
+	fgSizer1->AddGrowableCol( 1 );
+	fgSizer1->AddGrowableRow( 1 );
+	fgSizer1->SetFlexibleDirection( wxVERTICAL );
+	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
+
+	m_staticText7 = new wxStaticText( panelDebug_panelNames, wxID_ANY, wxT("Primary Name:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7->Wrap( -1 );
+	fgSizer1->Add( m_staticText7, 0, wxALL, 5 );
+
+	m_staticText8 = new wxStaticText( panelDebug_panelNames, wxID_ANY, wxT("All alternative forms for selected primary name:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText8->Wrap( -1 );
+	fgSizer1->Add( m_staticText8, 0, wxALL, 5 );
+
+	panelDebug_panelNames_listPrimary = new wxListBox( panelDebug_panelNames, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	fgSizer1->Add( panelDebug_panelNames_listPrimary, 1, wxALL|wxEXPAND, 5 );
+
+	panelDebug_panelNames_listAlternative = new wxListBox( panelDebug_panelNames, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	fgSizer1->Add( panelDebug_panelNames_listAlternative, 1, wxALL|wxEXPAND, 5 );
+
+
+	bSizer17->Add( fgSizer1, 1, wxEXPAND, 5 );
+
+	m_staticText9 = new wxStaticText( panelDebug_panelNames, wxID_ANY, wxT("Mappings of alternatives to primaries:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText9->Wrap( -1 );
+	bSizer17->Add( m_staticText9, 0, wxALL, 5 );
+
+	panelDebug_panelNames_listctrlMappings = new wxListCtrl( panelDebug_panelNames, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_ICON );
+	bSizer17->Add( panelDebug_panelNames_listctrlMappings, 1, wxALL|wxEXPAND, 5 );
+
+
+	panelDebug_panelNames->SetSizer( bSizer17 );
+	panelDebug_panelNames->Layout();
+	bSizer17->Fit( panelDebug_panelNames );
+	panelDebug_Notebook->AddPage( panelDebug_panelNames, wxT("Names"), false );
+
+	bSizer151->Add( panelDebug_Notebook, 1, wxEXPAND | wxALL, 5 );
 
 
 	panelDebug->SetSizer( bSizer151 );
