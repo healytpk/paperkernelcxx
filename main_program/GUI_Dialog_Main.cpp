@@ -14,14 +14,12 @@
 #include <thread>                                    // jthread
 #include <type_traits>                               // is_same, remove_cvref
 #include <utility>                                   // move
-#include <wx/app.h>                                  // wxApp
-#include <wx/image.h>                                // wxImage::AddHandler, wxICOHandler
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include <wx/dataview.h>                             // wxDataViewCtrl
 #include <wx/splitter.h>                             // wxSplitterWindow
+#include "wxApp.hpp"
 #include "GUI_Dialog_Waiting.hpp"
 #include "ai.hpp"
-#include "debug.hpp"
 #include "embedded_archive.hpp"
 #include "paperman.hpp"
 #include "semantic.hpp"
@@ -39,57 +37,6 @@ Dialog_Main *g_p_dlgmain = nullptr;
 AImanager g_aimanager;
 PaperManager g_paperman("./paperfiles/papers/");
 SemanticSearcher g_seman;
-
-class App_CxxPapers : public wxApp {
-public:
-
-    bool OnInit(void) override
-    {
-        wxThread::SetConcurrency(2u);
-
-        wxImage::AddHandler(new wxICOHandler);
-
-        RecreateGUI();
-
-        return true;
-    }
-
-    int OnExit(void) override
-    {
-        return 0;
-    }
-
-    void RecreateGUI(void)
-    {
-        //wxMessageBox( wxT("Recreating GUI") );
-
-        wxWindow *const topwindow = this->GetTopWindow();
-
-        if ( topwindow )
-        {
-            this->SetTopWindow(nullptr);
-            topwindow->Destroy();
-        }
-
-        g_p_dlgmain = new Dialog_Main(nullptr);
-
-        g_p_dlgmain->Show();   /* Just let this throw if it fails */
-
-#if 0
-        GtkWidget *const gtkWidget = static_cast<GtkWidget*>(   g_p_dlgmain->GetHandle()   );
-        if ( gtkWidget )
-        {
-            GdkWindow *const gdk_window = gtk_widget_get_window(gtkWidget);
-            if ( gdk_window )
-            {
-                gdk_window_set_decorations(gdk_window, static_cast<GdkWMDecoration>(GDK_DECOR_BORDER | GDK_DECOR_TITLE | GDK_DECOR_MENU | GDK_DECOR_MINIMIZE | GDK_DECOR_MAXIMIZE));
-            }
-        }
-#endif
-    }
-};
-
-//DECLARE_APP(App_CxxPapers);  -  Not needed
 
 IMPLEMENT_APP(App_CxxPapers);  // This creates the "main" function
 
@@ -687,15 +634,6 @@ bool Dialog_Main::SelectPaperInPaperTree(Paper const paper_selected)
     return true;
 }
 
-void Dialog_Main::listAuthors_OnListItemRightClick(wxListEvent &event)
-{
-    assert( wxIsMainThread() );
-    if ( this->already_showing_debug_tab ) return;
-    if ( wxS("Edward Catmur (1982 \u002D 2024)") != event.GetText() ) return;
-    this->m_notebook1->AddPage( this->panelDebug, wxS("Debug") );
-    this->already_showing_debug_tab = true;
-}
-
 void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
 {
     assert( 1u == this->authorPaperStore->GetRefCount() );
@@ -746,83 +684,4 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
     assert( 2u == this->authorPaperStore->GetRefCount() );
     this->authorPaperStore->DecRef();
     assert( 1u == this->authorPaperStore->GetRefCount() );
-}
-
-void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
-{
-    assert( wxIsMainThread() );
-    static bool already_done = false;
-    if ( false == already_done )
-    {
-        already_done = true;
-        this->labelDebug_Info->SetFont( wxFont(12, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL) );
-    }
-
-    wxString s;
-
-    auto print_size = [&s]<typename T>(wxStringCharType const *const name, unsigned const len = 14u)
-      {
-        s << wxS("sizeof(");
-        for ( unsigned i = 0u; i < (len - wxstring_view(name).size()); ++i ) s << wxS(" ");
-        s << name << wxS(") == ") << sizeof(T) << wxS(" bytes == ") << (sizeof(T) * CHAR_BIT) << wxS("-Bit\n");
-      };
-
-    #define PRINT_TYPE(type) print_size.operator()<type>( wxS( #type ) )
-    #define PRINT_TYPE_LEN(type, len) print_size.operator()<type>( wxS( #type ), len )
-
-    constexpr wxStringCharType endl[] = wxS("\n");
-
-    s << wxS("Total resident memory in use by this process: ") << GetResidentMemory() / 1024u / 1024u << wxS(" MiB") << endl;
-    s << wxS("This process has ") << GetThreadCount() << wxS(" threads") << endl;
-    s << wxS("This process has ") << GetChildProcessCount() << wxS(" child processes") << endl;
-    s << wxS("Compression for embedded archive: ");
-#   ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
-       s << wxS("Individual files compressed in an\n")
-         << wxS("uncompressed archive (all_cxx_papers_individual_zst.tar).\n");
-#   else
-       s << wxS("Uncompressed files in a compressed\n")
-         << wxS("archive (all_cxx_papers.tar.zst).\n");
-#    endif
-     s << endl;
-
-    s << wxS("CHAR_BIT == ") << CHAR_BIT << endl << endl;
-    PRINT_TYPE_LEN(wxStringCharType, 16u);
-    PRINT_TYPE_LEN(char, 16u);
-    PRINT_TYPE_LEN(wchar_t, 16u);
-    s << wxS("is_same_v<wxStringCharType,  char  >  == ") << (std::is_same_v<wxStringCharType,  char  > ? wxS("true") : wxS("false")) << endl;
-    s << wxS("is_same_v<wxStringCharType, wchar_t>  == ") << (std::is_same_v<wxStringCharType, wchar_t> ? wxS("true") : wxS("false")) << endl;
-    s << wxS("is_signed_v<            char>  == ") << (std::is_signed_v<            char> ? wxS("true") : wxS("false")) << endl;
-    s << wxS("is_signed_v<         wchar_t>  == ") << (std::is_signed_v<         wchar_t> ? wxS("true") : wxS("false")) << endl;
-    s << wxS("is_signed_v<wxStringCharType>  == ") << (std::is_signed_v<wxStringCharType> ? wxS("true") : wxS("false")) << endl << endl;
-
-    PRINT_TYPE(bool);
-    PRINT_TYPE(char);
-    PRINT_TYPE(short);
-    PRINT_TYPE(int);
-    PRINT_TYPE(long);
-    PRINT_TYPE(long long);
-    using std::uint_least32_t, std::uint_least64_t, std::uint_fast32_t, std::uint_fast64_t;
-    PRINT_TYPE(uint_least32_t);
-    PRINT_TYPE(uint_fast32_t);
-    PRINT_TYPE(uint_least64_t);
-    PRINT_TYPE(uint_fast64_t);
-
-    wxGetApp().SafeYield(nullptr, false);
-    this->labelDebug_Info->SetLabel(s);
-    wxGetApp().SafeYield(nullptr, false);
-    this->labelDebug_Info->Refresh();
-    wxGetApp().SafeYield(nullptr, false);
-    this->labelDebug_Info->Update();
-    wxGetApp().SafeYield(nullptr, false);
-}
-
-void Dialog_Main::m_notebook1_OnNotebookPageChanged(wxNotebookEvent &event)
-{
-    switch ( event.GetSelection() )
-    {
-    case 4u:
-        wxCommandEvent dummy;
-        this->btnDebug_Refresh_OnButtonClick(dummy);
-        break;
-    }
 }
