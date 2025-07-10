@@ -37,7 +37,8 @@ set(HEADERS
 	stringcraft.hpp
 	tree_author.hpp
 	tree_paper.hpp
-	view_portal.hpp)
+	view_portal.hpp
+	wxApp.hpp)
 
 if(WIN32)
 add_compile_options(/constexpr:steps99999999)

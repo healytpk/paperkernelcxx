@@ -8,10 +8,11 @@ inline constexpr std::uint_fast64_t Hash(std::string_view const input) noexcept
 {
     std::uint_fast64_t h = 0xcbf29ce484222325;
 
-    constexpr char letters[] = "abcdefghijklmnopqrstuvwxyz\\0123456789";
+    //constexpr char letters[] = "abcdefghijklmnopqrstuvwxyz\\0123456789 . -";
 
     for ( char const cX : input )
     {
+        /*
         char const c = cctype_constexpr::tolower(cX);
         bool is_letter = false;
 
@@ -25,8 +26,9 @@ inline constexpr std::uint_fast64_t Hash(std::string_view const input) noexcept
         }
 
         if ( false == is_letter ) continue;
+        */
 
-        h ^= static_cast<std::uint_fast64_t>(c);
+        h ^= static_cast<std::uint_fast64_t>(cX);
         h *= 0x100000001B3;
     }
 
@@ -37,10 +39,11 @@ inline constexpr std::uint_fast64_t Hash(std::wstring_view const input) noexcept
 {
     std::uint_fast64_t h = 0xcbf29ce484222325;
 
-    constexpr wchar_t letters[] = L"abcdefghijklmnopqrstuvwxyz\\0123456789";
+    //constexpr wchar_t letters[] = L"abcdefghijklmnopqrstuvwxyz\\0123456789";
 
     for ( wchar_t const cX : input )
     {
+        /*
         wchar_t const c = cctype_constexpr::tolower(cX);
         bool is_letter = false;
 
@@ -54,13 +57,14 @@ inline constexpr std::uint_fast64_t Hash(std::wstring_view const input) noexcept
         }
 
         if ( false == is_letter ) continue;
+        */
 
-        h ^= static_cast<std::uint_fast64_t>(c);
+        h ^= static_cast<std::uint_fast64_t>(cX);
         h *= 0x100000001B3;
     }
 
     return h;
 }
 
-static_assert( Hash( "Thomas PK Healy") == Hash( "thomas p. k. healy") );
-static_assert( Hash(L"Thomas PK Healy") == Hash(L"thomas p. k. healy") );
+static_assert( Hash( "Thomas PK Healy") != Hash( "thomas p. k. healy") );
+static_assert( Hash(L"Thomas PK Healy") != Hash(L"thomas p. k. healy") );
