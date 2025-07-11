@@ -90,6 +90,14 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		wxListBox* panelDebug_panelNames_listAlternative;
 		wxStaticText* m_staticText9;
 		wxListCtrl* panelDebug_panelNames_listctrlMappings;
+		wxPanel* panelDebug_panelHash;
+		wxStaticText* m_staticText10;
+		wxTextCtrl* panelDebug_panelHash_txtInputHash;
+		wxStaticText* m_staticText11;
+		wxStaticText* m_staticText12;
+		wxTextCtrl* panelDebug_panelHash_txtOutputHash;
+		wxButton* panelDebug_panelHash_btnCheckForCollisions;
+		wxTextCtrl* panelDebug_panelHash_txtSummary;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
@@ -112,6 +120,8 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 		virtual void panelDebug_Notebook_OnPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void btnDebug_Refresh_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void panelDebug_panelNames_listPrimary_OnListBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void panelDebug_panelHash_txtInputHash_OnText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void panelDebug_panelHash_btnCheckForCollisions_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

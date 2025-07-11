@@ -283,6 +283,45 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	panelDebug_panelNames->Layout();
 	bSizer17->Fit( panelDebug_panelNames );
 	panelDebug_Notebook->AddPage( panelDebug_panelNames, wxT("Names"), false );
+	panelDebug_panelHash = new wxPanel( panelDebug_Notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer18;
+	bSizer18 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText10 = new wxStaticText( panelDebug_panelHash, wxID_ANY, wxT("Enter string to hash:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText10->Wrap( -1 );
+	bSizer18->Add( m_staticText10, 0, wxALL, 5 );
+
+	panelDebug_panelHash_txtInputHash = new wxTextCtrl( panelDebug_panelHash, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer18->Add( panelDebug_panelHash_txtInputHash, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText11 = new wxStaticText( panelDebug_panelHash, wxID_ANY, wxT("(non-ASCII characters must be escaped as Unicode,\n  e.g. 'Tomás' should be  'Tom\\u00e1s')"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText11->Wrap( -1 );
+	bSizer18->Add( m_staticText11, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	wxBoxSizer* bSizer19;
+	bSizer19 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_staticText12 = new wxStaticText( panelDebug_panelHash, wxID_ANY, wxT("Computed 64-Bit hash digest:    0x"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12->Wrap( -1 );
+	bSizer19->Add( m_staticText12, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	panelDebug_panelHash_txtOutputHash = new wxTextCtrl( panelDebug_panelHash, wxID_ANY, wxT("0000000000000000"), wxDefaultPosition, wxSize( 200,-1 ), wxTE_READONLY );
+	bSizer19->Add( panelDebug_panelHash_txtOutputHash, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	bSizer18->Add( bSizer19, 0, wxEXPAND, 5 );
+
+	panelDebug_panelHash_btnCheckForCollisions = new wxButton( panelDebug_panelHash, wxID_ANY, wxT("Check for Collisions"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer18->Add( panelDebug_panelHash_btnCheckForCollisions, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	panelDebug_panelHash_txtSummary = new wxTextCtrl( panelDebug_panelHash, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY );
+	bSizer18->Add( panelDebug_panelHash_txtSummary, 1, wxALL|wxEXPAND, 5 );
+
+
+	panelDebug_panelHash->SetSizer( bSizer18 );
+	panelDebug_panelHash->Layout();
+	bSizer18->Fit( panelDebug_panelHash );
+	panelDebug_Notebook->AddPage( panelDebug_panelHash, wxT("Hash"), false );
 
 	bSizer151->Add( panelDebug_Notebook, 1, wxEXPAND | wxALL, 5 );
 
@@ -321,6 +360,8 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	panelDebug_Notebook->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( Dialog_Main__Auto_Base_Class::panelDebug_Notebook_OnPageChanged ), NULL, this );
 	btnDebug_Refresh->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::btnDebug_Refresh_OnButtonClick ), NULL, this );
 	panelDebug_panelNames_listPrimary->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::panelDebug_panelNames_listPrimary_OnListBox ), NULL, this );
+	panelDebug_panelHash_txtInputHash->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::panelDebug_panelHash_txtInputHash_OnText ), NULL, this );
+	panelDebug_panelHash_btnCheckForCollisions->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::panelDebug_panelHash_btnCheckForCollisions_OnButtonClick ), NULL, this );
 }
 
 Dialog_Main__Auto_Base_Class::~Dialog_Main__Auto_Base_Class()
