@@ -3,6 +3,7 @@
 
 #include "AUTO_GENERATED_wxformbuilder.h"
 #include "MySortableListCtrl.hpp"
+#include "local_http_server.hpp"
 
 class wxDataViewCtrl;
 class wxDataViewEvent;
@@ -53,6 +54,7 @@ protected:
     bool SelectPaperInPaperTree(Paper);
     bool is_viewportal_loaded = false;
     bool already_showing_debug_tab = false;
+    LocalHttpServer local_http_server;
 public:
     Dialog_Main(wxWindow *parent);
     ~Dialog_Main(void) noexcept

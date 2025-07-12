@@ -1,18 +1,47 @@
 #include "view_portal.hpp"
+#include <cstdio>                    // fprintf, stderr
 #include "local_http_server.hpp"
 
-wxWindow *ViewPortal_Create(wxWindow *const parent) noexcept(false)
+using std::uint16_t;
+
+static LocalHttpServer *g_p_local_http_server = nullptr;
+
+wxWindow *ViewPortal_Create(wxWindow *const parent, LocalHttpServer &server) noexcept
 {
-#ifdef __WXMSW__
-    //return wxWebView::New(parent, wxID_ANY, wxWebViewDefaultURLStr, wxDefaultPosition, wxDefaultSize, wxWebViewBackendEdge);
+    g_p_local_http_server = &server;
+
+try
+{
+#if defined(_WIN32) && defined(wxUSE_WEBVIEW_EDGE)
+#   if wxUSE_WEBVIEW_EDGE
+      if ( wxWebView::IsBackendAvailable(wxWebViewBackendEdge) )
+      {
+        return wxWebView::New(parent, wxID_ANY, wxWebViewDefaultURLStr, wxDefaultPosition, wxDefaultSize, wxWebViewBackendEdge);
+      }
+#   endif
 #endif
 
     return wxWebView::New(parent, wxID_ANY);
+} catch(...){}
+
+    return nullptr;
 }
 
-void ViewPortal_Set(wxWindow *const arg, wxString const &data) noexcept(false)
+void ViewPortal_Set(wxWindow *const arg, wxString const &paper_name) noexcept
 {
-    wxWebView *const p = dynamic_cast<wxWebView*>(arg);
-    if ( nullptr == p ) return;
-    p->SetPage(data, wxEmptyString);
+    try
+    {
+        assert( nullptr != g_p_local_http_server );
+        uint16_t const port = g_p_local_http_server->GetListeningPort();
+        assert( (0u != port) && (-1 != port) );
+        wxString url( wxS("http://localhost:") );
+        url << port << wxS("/") << paper_name;
+        wxWebView *const pwv = dynamic_cast<wxWebView*>(arg);
+        assert( nullptr != pwv );
+        pwv->LoadURL(url);
+    }
+    catch (std::exception const &e)
+    {
+        std::fprintf(  stderr, "ViewPortal_Set exception thrown: %s\n", e.what()  );
+    }
 }

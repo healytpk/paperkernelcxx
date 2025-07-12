@@ -181,30 +181,13 @@ void Dialog_Main::PresentPaperInViewPortal(Paper const paper)
 {
     assert( nullptr != this->view_portal );
     this->is_viewportal_loaded = false;
-    ::ViewPortal_Set(this->view_portal, "<html><body><h1>Loading. . .</h1></body></html>");
+    //::ViewPortal_Set(this->view_portal, "<html><body><h1>Loading. . .</h1></body></html>");
     //do wxGetApp().SafeYield(nullptr, false); while ( false == this->is_viewportal_loaded );   -- This locks up and freezes
     this->is_viewportal_loaded = false;
     this->view_portal->Refresh();
     this->view_portal->Update();
     wxGetApp().SafeYield(nullptr, false);
-
-    string const htmlPath = paper.c_str() + string(".html");
-    std::cout << "htmlPath = " << htmlPath << " --------------------\n";
-    std::cout << "About to call 'GetFile'\n";
-    string html = ArchiveGetFile( htmlPath.c_str() );
-    std::cout << "Returned from 'GetFile'\n";
-
-    std::cout << "Length of string returned from GetFile: " << html.size() << std::endl;
-
-    std::cout << "(when searching for '" << htmlPath << "')\n";
-
-    if ( html.empty() )
-    {
-        html = "<html><body><h1>Error</h1>"
-               "<p>Failed to display the paper in the view portal.</p></body></html>";
-    }
-
-    ::ViewPortal_Set( this->view_portal, html );
+    ::ViewPortal_Set( this->view_portal, paper.GetPaper() );
 }
 
 Paper DecodeTreeItem(wxDataViewItem const arg) noexcept
@@ -268,15 +251,18 @@ void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
+    this->local_http_server.StartServer();
+
+    // =========================== Set up the Ctrl + Alt + D hotkey ========================
     wxAcceleratorEntry entry;
     entry.Set( wxACCEL_CTRL|wxACCEL_ALT, (int)'D', wxID_HIGHEST + 1 );
     wxAcceleratorTable accel(1, &entry);
     this->SetAcceleratorTable(accel);
-
     this->Bind(wxEVT_MENU, [this](wxCommandEvent&)
       {
         this->ShowDebugTab();
       }, wxID_HIGHEST + 1);
+    // =====================================================================================
 
     this->m_notebook1->RemovePage(4u);    // Remove the Debug tab
 
@@ -379,7 +365,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // =================================================================
 
     // ====================== View Portal ==============================
-    this->view_portal = ::ViewPortal_Create(this->splitter);
+    this->view_portal = ::ViewPortal_Create(this->splitter, this->local_http_server);
     assert( nullptr != this->view_portal );
     ::ViewPortal_BindFinishedLoading( this->view_portal, &Dialog_Main::OnViewPortalLoaded, this );
     // =================================================================

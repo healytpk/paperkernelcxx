@@ -3,10 +3,11 @@
 #include <wx/string.h>                          // wxString
 #include <wx/window.h>                          // wxWindow
 #include <wx/webview.h>                         // wxWebView
+#include "local_http_server.hpp"                // LocalHttpServer
 
-wxWindow *ViewPortal_Create(wxWindow *parent) noexcept(false);
+wxWindow *ViewPortal_Create(wxWindow *parent, LocalHttpServer &server) noexcept;
 
-void ViewPortal_Set(wxWindow*, wxString const &) noexcept(false);
+void ViewPortal_Set(wxWindow*, wxString const &paper_name) noexcept;
 
 template<class T>
 void ViewPortal_BindFinishedLoading( wxWindow *const pw, void (T::*const mfp)(wxEvent&), T *const pdlg ) noexcept(false)

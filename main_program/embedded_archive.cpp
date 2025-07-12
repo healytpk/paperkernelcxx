@@ -23,7 +23,7 @@
 char unsigned const *g_archiveData = nullptr;
 std::size_t g_archiveSize = 0u;
 
-static void LoadEmbeddedArchiveFromExectuableResources(void) noexcept
+static void LoadEmbeddedArchiveFromExecutableResources(void) noexcept
 {
     HMODULE const hModule = GetModuleHandle(nullptr);
 
@@ -51,18 +51,20 @@ static void LoadEmbeddedArchiveFromExectuableResources(void) noexcept
 #   endif
 #endif
 
-using std::runtime_error, std::string;
+using std::runtime_error, std::string, std::string_view;
 
-string ArchiveGetFile(char const *const arg_filename) noexcept
+string ArchiveGetFile(std::string_view const arg_filename, std::string &extension, bool const prefix_only) noexcept
 {
+    extension.clear();
+
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-    static int const n = ( LoadEmbeddedArchiveFromExectuableResources(), 666 );
+    static int const n = ( LoadEmbeddedArchiveFromExecutableResources(), 666 );
     assert(      0u != g_archiveSize );
     assert( nullptr != g_archiveData );
     if ( 0u == g_archiveSize ) std::abort();    // if NDEBUG
 #endif
 
-    assert( nullptr != arg_filename );
+    assert( false == arg_filename.empty() );
 
     try
     {
@@ -80,13 +82,26 @@ string ArchiveGetFile(char const *const arg_filename) noexcept
         archive_read_support_format_tar(a);   // Enable TAR format
         if ( ARCHIVE_OK != archive_read_open_memory(a, g_archiveData, g_archiveSize) ) return {};
 
-        string filename(arg_filename);
         struct archive_entry *entry = nullptr;
         for ( ; ARCHIVE_OK == archive_read_next_header(a, &entry); archive_read_data_skip(a) )
         {
-            char const *const archive_filename = archive_entry_pathname(entry);
+            string_view const archive_filename = archive_entry_pathname(entry);
             std::cout << " ---------- " << archive_filename << std::endl;
-            if ( 0 != std::strcmp(archive_filename, filename.c_str()) ) continue;
+            if ( prefix_only )
+            {
+                // If prefix_only is true, we only check the beginning of the filename
+                if ( false == archive_filename.starts_with(arg_filename) ) continue;
+                size_t const dot_pos = archive_filename.find('.');
+                if ( (-1 != dot_pos) && ( (dot_pos + 1u) < archive_filename.size() ) )
+                {
+                    extension = std::string( archive_filename.substr(dot_pos + 1u) );
+                }
+            }
+            else
+            {
+                // If prefix_only is false, we check the full filename
+                if ( archive_filename != arg_filename ) continue;
+            }
             auto const entry_size = archive_entry_size(entry);
             std::cout << "Archive entry size: " << entry_size << std::endl;
             if ( entry_size <= 0 ) return {};

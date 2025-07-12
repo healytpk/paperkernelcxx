@@ -5,6 +5,7 @@ set(SRCS
 	embedded_archive.cpp
 	GUI_Dialog_Main.cpp
 	GUI_Dialog_Main_Debug_Tab.cpp
+	local_http_server.cpp
 	MySortableListCtrl.cpp
 	paper.cpp
 	paperman.cpp
