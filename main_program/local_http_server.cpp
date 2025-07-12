@@ -28,12 +28,24 @@ void LocalHttpServer::ThreadEntryPoint(void) noexcept
     try
     {
         net::io_context ioc{ 1 };
-        tcp::endpoint endpoint( tcp::v6(), 0 );          // Create an IPv6 endpoint on any address, port 0 (let OS choose)
         tcp::acceptor acceptor{ ioc };
-        acceptor.open( endpoint.protocol() );            // Open the acceptor with IPv6 protocol
-        acceptor.set_option( net::ip::v6_only(false) );  // Allow both IPv4 and IPv6 (dual-stack) if supported
-        acceptor.bind(endpoint);                         // Bind to the endpoint
-        acceptor.listen();                               // Start listening for connections
+        try
+        {
+            // Try IPv4 first
+            tcp::endpoint endpoint4(tcp::v4(), 0);
+            acceptor.open(endpoint4.protocol());
+            acceptor.bind(endpoint4);
+        }
+        catch(...)
+        {
+            // Fallback to IPv6
+            tcp::endpoint endpoint6(tcp::v6(), 0);
+            acceptor.open(endpoint6.protocol());
+            acceptor.set_option(net::ip::v6_only(false));
+            acceptor.bind(endpoint6);
+            this->use_ipv6 = true;
+        }
+        acceptor.listen();
         this->port = acceptor.local_endpoint().port();   // Get the port actually assigned
         if ( (0 == this->port.load()) || (0xFFFF == this->port.load()) ) throw std::runtime_error("invalid TCP port number");
         this->port.notify_one();
@@ -47,7 +59,8 @@ void LocalHttpServer::ThreadEntryPoint(void) noexcept
             http::request<http::string_body> req;
             http::read(socket, buffer, req);
 
-            std::string_view sv = req.target();
+            std::string s = string(  req.target()  ) + '.';
+            std::string_view sv = s;
             try
             {
 				if ( sv.empty() ) throw - 1;

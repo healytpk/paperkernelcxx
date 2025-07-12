@@ -252,6 +252,7 @@ void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
     this->local_http_server.StartServer();
+    std::cout << "HTTP Server listening port == " << (unsigned)this->local_http_server.GetListeningPort() << std::endl;
 
     // =========================== Set up the Ctrl + Alt + D hotkey ========================
     wxAcceleratorEntry entry;

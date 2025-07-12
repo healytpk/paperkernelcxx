@@ -34,7 +34,9 @@ void ViewPortal_Set(wxWindow *const arg, wxString const &paper_name) noexcept
         assert( nullptr != g_p_local_http_server );
         uint16_t const port = g_p_local_http_server->GetListeningPort();
         assert( (0u != port) && (-1 != port) );
-        wxString url( wxS("http://localhost:") );
+        wxString url;
+        if ( g_p_local_http_server->IsUsingIPv6() ) url = wxS("http://[::1]:");
+        /************************************/ else url = wxS("http://127.0.0.1:");
         url << port << wxS("/") << paper_name;
         wxWebView *const pwv = dynamic_cast<wxWebView*>(arg);
         assert( nullptr != pwv );
