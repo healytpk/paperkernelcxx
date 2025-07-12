@@ -1,4 +1,5 @@
 #include "view_portal.hpp"
+#include "local_http_server.hpp"
 
 wxWindow *ViewPortal_Create(wxWindow *const parent) noexcept(false)
 {

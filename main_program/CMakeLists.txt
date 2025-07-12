@@ -26,6 +26,7 @@ set(HEADERS
 	GUI_Dialog_Waiting.hpp
 	hash.hpp
 	incbin.h
+	local_http_server.hpp
 	MySortableListCtrl.hpp
 	paper.hpp
 	paperman.hpp
