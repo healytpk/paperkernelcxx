@@ -35,7 +35,7 @@ void LocalHttpServer::ThreadEntryPoint(void) noexcept
         acceptor.bind(endpoint);                         // Bind to the endpoint
         acceptor.listen();                               // Start listening for connections
         this->port = acceptor.local_endpoint().port();   // Get the port actually assigned
-        if ( (0 == this->port) || (-1 == this->port) ) throw std::runtime_error("invalid TCP port number");
+        if ( (0 == this->port.load()) || (0xFFFF == this->port.load()) ) throw std::runtime_error("invalid TCP port number");
         this->port.notify_one();
 
         for (; /* ever */;)
@@ -72,7 +72,7 @@ void LocalHttpServer::ThreadEntryPoint(void) noexcept
                 res.body() = file_binary_contents;
                 res.prepare_payload();
                 http::write(socket, res);
-				continue;  //sSuccessfully handled the request
+				continue;  //  successfully handled the request
             }
             catch (std::exception const &e)
             {
@@ -103,6 +103,6 @@ std::uint16_t LocalHttpServer::StartServer(void) noexcept
     if ( this->server_thread.joinable() ) return port;
     this->server_thread = std::jthread( [this]{ this->ThreadEntryPoint(); } );
     this->port.wait(0u);
-    if ( -1 == this->port ) this->port = 0u;
+    if ( 0xFFFF == this->port.load() ) this->port = 0u;
     return port;
 }
