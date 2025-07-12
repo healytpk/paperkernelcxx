@@ -5,6 +5,10 @@
 #include <map>                                                 // map
 #include <type_traits>                                         // is_signed
 #include <utility>                                             // pair
+#include <wx/webview.h>                                        // wxWebView
+#ifdef wxUSE_WEBVIEW_CHROMIUM
+#    include <wx/webview_chromium.h>                           // wxWebViewChromium
+#endif
 #include "wxApp.hpp"                                           // wxApp
 #include "AUTO_GENERATED_names.hpp"                            // g_primary_names_unsorted, g_alternative_names_unsorted
 #include "debug.hpp"                                           // GetResidentMemory, GetThreadCount, GetChildProcessCount
@@ -17,6 +21,7 @@ void Dialog_Main::ShowDebugTab(void)
     if ( this->already_showing_debug_tab ) return;
     this->m_notebook1->AddPage( this->panelDebug, wxS("Debug") );
     this->already_showing_debug_tab = true;
+    this->m_notebook1->SetSelection(4u);  // Select the Debug tab
 }
 void Dialog_Main::listAuthors_OnListItemRightClick(wxListEvent &event)
 {
@@ -70,6 +75,32 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
     s << wxS("Uncompressed files in a compressed\n")
       << wxS("archive (all_cxx_papers.tar.zst).\n");
 #endif
+    s << endl;
+
+    s << wxS("wxUSE_WEBVIEW             == ") << (int)wxUSE_WEBVIEW             << endl;
+#ifdef wxUSE_WEBVIEW_CHROMIUM
+    s << wxS("wxUSE_WEBVIEW_CHROMIUM    == ") << (int)wxUSE_WEBVIEW_CHROMIUM    << endl;
+#else
+    s << wxS("wxUSE_WEBVIEW_CHROMIUM    == undefined\n");
+#endif
+    s << wxS("wxUSE_WEBVIEW_IE          == ") << (int)wxUSE_WEBVIEW_IE          << endl;
+    s << wxS("wxUSE_WEBVIEW_EDGE        == ") << (int)wxUSE_WEBVIEW_EDGE        << endl;
+    s << wxS("wxUSE_WEBVIEW_EDGE_STATIC == ") << (int)wxUSE_WEBVIEW_EDGE_STATIC << endl;
+    s << wxS("wxUSE_WEBVIEW_WEBKIT      == ") << (int)wxUSE_WEBVIEW_WEBKIT      << endl;
+    s << wxS("wxUSE_WEBVIEW_WEBKIT2     == ") << (int)wxUSE_WEBVIEW_WEBKIT2     << endl;
+    s << wxS("IsBackendAvailable(wxWebViewBackendIE      ) == ") << (int)wxWebView::IsBackendAvailable(wxWebViewBackendIE      ) << endl;
+    s << wxS("IsBackendAvailable(wxWebViewBackendEdge    ) == ") << (int)wxWebView::IsBackendAvailable(wxWebViewBackendEdge    ) << endl;
+    s << wxS("IsBackendAvailable(wxWebViewBackendWebKit  ) == ") << (int)wxWebView::IsBackendAvailable(wxWebViewBackendWebKit  ) << endl;
+#if defined(wxUSE_WEBVIEW) && defined(wxUSE_WEBVIEW_CHROMIUM)
+#   if wxUSE_WEBVIEW && wxUSE_WEBVIEW_CHROMIUM
+        s << wxS("IsBackendAvailable(wxWebViewBackendChromium) == ") << (int)wxWebView::IsBackendAvailable(wxWebViewBackendChromium) << endl;
+#   else
+        s << wxS("IsBackendAvailable(wxWebViewBackendChromium) == undefined\n");
+#   endif
+#else
+    s << wxS("IsBackendAvailable(wxWebViewBackendChromium) == undefined\n");
+#endif
+
     s << endl;
 
     s << wxS("CHAR_BIT == ") << CHAR_BIT << endl << endl;
