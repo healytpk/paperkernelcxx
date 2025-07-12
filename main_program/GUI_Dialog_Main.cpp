@@ -14,6 +14,8 @@
 #include <thread>                                    // jthread
 #include <type_traits>                               // is_same, remove_cvref
 #include <utility>                                   // move
+#include <wx/accel.h>                                // wxAcceleratorEntry, wxAcceleratorTable
+#include <wx/event.h>                                // wxEVT_MENU and event binding
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include <wx/dataview.h>                             // wxDataViewCtrl
 #include <wx/splitter.h>                             // wxSplitterWindow
@@ -266,6 +268,16 @@ void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
+    wxAcceleratorEntry entry;
+    entry.Set( wxACCEL_CTRL|wxACCEL_ALT, (int)'D', wxID_HIGHEST + 1 );
+    wxAcceleratorTable accel(1, &entry);
+    this->SetAcceleratorTable(accel);
+
+    this->Bind(wxEVT_MENU, [this](wxCommandEvent&)
+      {
+        this->ShowDebugTab();
+      }, wxID_HIGHEST + 1);
+
     this->m_notebook1->RemovePage(4u);    // Remove the Debug tab
 
     this->listAuthors->InsertColumn(0, wxS("Name"));

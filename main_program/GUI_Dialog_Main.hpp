@@ -49,6 +49,7 @@ protected:
     void PresentPaperInViewPortal(Paper);
     Paper GetPaperFromDataViewEvent(wxDataViewEvent&);
     void treeAuthorPapers_OnDataViewCtrlItemActivated(wxDataViewEvent&) override;
+    void ShowDebugTab(void);
     bool SelectPaperInPaperTree(Paper);
     bool is_viewportal_loaded = false;
     bool already_showing_debug_tab = false;

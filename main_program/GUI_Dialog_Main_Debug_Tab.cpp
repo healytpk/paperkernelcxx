@@ -11,13 +11,17 @@
 #include "GUI_Dialog_Main.hpp"                                 // Dialog_Main
 #include "stringcraft.hpp"                                     // wxstring_view
 
-void Dialog_Main::listAuthors_OnListItemRightClick(wxListEvent &event)
+void Dialog_Main::ShowDebugTab(void)
 {
     assert( wxIsMainThread() );
     if ( this->already_showing_debug_tab ) return;
-    if ( wxS("Edward Catmur (1982 \u002D 2024)") != event.GetText() ) return;
     this->m_notebook1->AddPage( this->panelDebug, wxS("Debug") );
     this->already_showing_debug_tab = true;
+}
+void Dialog_Main::listAuthors_OnListItemRightClick(wxListEvent &event)
+{
+    if ( wxS("Edward Catmur (1982 \u002D 2024)") != event.GetText() ) return;
+    this->ShowDebugTab();
 }
 
 void Dialog_Main::m_notebook1_OnNotebookPageChanged(wxNotebookEvent &event)
