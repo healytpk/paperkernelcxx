@@ -16,7 +16,7 @@ protected:
     std::optional<boost::asio::ip::tcp::acceptor> opt_acceptor;
     void ThreadEntryPoint_NotEternal(void) noexcept(false);
     void ThreadEntryPoint(void) noexcept;
-    public:
+public:
     bool IsListening(void) const noexcept { return this->is_listening; }
     bool IsUsingIPv6(void) const noexcept { return this->use_ipv6; }
     std::uint16_t StartAccepting(void) noexcept;
