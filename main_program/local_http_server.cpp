@@ -4,11 +4,8 @@
 #include <stdexcept>                 // runtime_error
 #include <string>                    // string
 #include <string_view>               // string_view
-#include <boost/asio.hpp>            // io_context, ip::tcp::acceptor, ip::tcp::socket
 #include <boost/beast.hpp>           // flat_buffer, http::request, http::response, http::read, http::write
 #include "embedded_archive.hpp"      // ArchiveGetFile
-
-using std::string, std::string_view;
 
 static constexpr std::pair<char const*, char const*> g_content_types[] = {
     { "html", "text/html"       },
@@ -18,17 +15,20 @@ static constexpr std::pair<char const*, char const*> g_content_types[] = {
     { "md"  , "text/markdown"   },
 };
 
-void LocalHttpServer::ThreadEntryPoint(void) noexcept
-{
-    namespace beast = boost::beast;
-    namespace http = beast::http;
-    namespace net = boost::asio;
-    using tcp = net::ip::tcp;
+using std::string, std::string_view;
+namespace beast = boost::beast;
+namespace http = beast::http;
+namespace net = boost::asio;
+using tcp = net::ip::tcp;
 
+LocalHttpServer::LocalHttpServer(void) noexcept
+{
     try
     {
-        net::io_context ioc{ 1 };
-        tcp::acceptor acceptor{ ioc };
+        this->opt_ioc.emplace(1);
+        auto &ioc = this->opt_ioc.value();
+        this->opt_acceptor.emplace(ioc);
+        auto &acceptor = this->opt_acceptor.value();
         try
         {
             // Try IPv4 first
@@ -47,75 +47,107 @@ void LocalHttpServer::ThreadEntryPoint(void) noexcept
         }
         acceptor.listen();
         this->port = acceptor.local_endpoint().port();   // Get the port actually assigned
-        if ( (0 == this->port.load()) || (0xFFFF == this->port.load()) ) throw std::runtime_error("invalid TCP port number");
-        this->port.notify_one();
+        if ( 0xFFFF == this->port ) this->port = 0u;
+        if ( 0u == this->port ) throw std::runtime_error("invalid TCP listening port number");
+        this->is_listening = true;
+    }
+    catch(std::exception const &e)
+    {
+        std::fprintf( stderr, "LocalHttpServer constructor caught exception: %s\n", e.what() );
+    }
+    catch(...)
+    {
+        std::fprintf( stderr, "LocalHttpServer constructor caught unknown exception\n" );
+    }
+}
 
-        for (; /* ever */;)
+void LocalHttpServer::ThreadEntryPoint_NotEternal(void) noexcept(false)
+{
+    struct invalid_url_t {};
+
+    assert( this->is_listening             );
+    assert( this->opt_ioc.has_value()      );
+    assert( this->opt_acceptor.has_value() );
+    auto &ioc      = this->opt_ioc.value();
+    auto &acceptor = this->opt_acceptor.value();
+
+    while ( false == this->death_warrant )
+    {
+        tcp::socket socket{ ioc };
+        acceptor.accept(socket);
+        beast::flat_buffer buffer;
+        http::request<http::string_body> req;
+        http::read(socket, buffer, req);
+        try
         {
-            tcp::socket socket{ ioc };
-            acceptor.accept(socket);
-
-            beast::flat_buffer buffer;
-            http::request<http::string_body> req;
-            http::read(socket, buffer, req);
-
-            std::string s = string(  req.target()  ) + '.';
+            std::string s = string( req.target() ) + '.';
             std::string_view sv = s;
-            try
+            if ( sv.empty() ) throw invalid_url_t();
+            if ( false == sv.starts_with('/') ) throw invalid_url_t();
+            sv.remove_prefix(1u);  // remove leading forward slash
+            if ( sv.empty() ) throw invalid_url_t();
+            string extension;
+            string const file_binary_contents = ArchiveGetFile(sv, extension, true);
+            if ( extension.empty() || file_binary_contents.empty() ) throw invalid_url_t();
+            http::response< http::string_body > res{ http::status::ok, req.version() };
+            res.set(http::field::server, "PaperKernelCxx.Boost.Beast");
+            char const *content_type = "text/plain";
+            for ( auto const &ct : g_content_types )
             {
-				if ( sv.empty() ) throw - 1;
-                if ( false == sv.starts_with('/') ) throw -1;
-				sv.remove_prefix(1u);  // remove leading forward slash
-                if ( sv.empty() ) throw - 1;
-                string extension;
-                string const file_binary_contents = ArchiveGetFile( sv, extension, true );
-                if ( extension.empty() || file_binary_contents.empty() ) throw -1;
-                http::response< http::string_body > res{ http::status::ok, req.version() };
-                res.set(http::field::server, "PaperKernelCxx.Boost.Beast");
-                char const *content_type = "text/plain";
-                for ( auto const &ct : g_content_types )
+                if ( ct.first == extension )
                 {
-                    if ( ct.first == extension )
-                    {
-						content_type = ct.second;
-                        break;
-                    }
-				}
-                res.set(http::field::content_type, content_type);
-                res.body() = file_binary_contents;
-                res.prepare_payload();
-                http::write(socket, res);
-				continue;  //  successfully handled the request
+                    content_type = ct.second;
+                    break;
+                }
             }
-            catch (std::exception const &e)
-            {
-                std::fprintf(stderr, "LocalHttpServer exception thrown: %s\n", e.what());
-            }
-            catch (...) {}
-
-            http::response<http::string_body> res{ http::status::not_found, req.version() };
+            res.set(http::field::content_type, content_type);
+            res.body() = file_binary_contents;
+            res.prepare_payload();
+            http::write(socket, res);
+        }
+        catch(invalid_url_t const&)
+        {
+            http::response<http::string_body> res{ http::status::bad_request, 11 };
             res.set(http::field::server, "PaperKernelCxx.Boost.Beast");
             res.set(http::field::content_type, "text/plain");
-            res.body() = "Paper not found";
+            res.body() = "Unable to load paper";
             res.prepare_payload();
             http::write(socket, res);
         }
     }
-    catch (std::exception const &e)
-    {
-        std::fprintf(stderr, "LocalHttpServer exception thrown: %s\n", e.what() );
-    }
-    catch (...) {}
-
-    this->port = -1;
-    this->port.notify_one();
 }
 
-std::uint16_t LocalHttpServer::StartServer(void) noexcept
+void LocalHttpServer::ThreadEntryPoint(void) noexcept
 {
-    if ( this->server_thread.joinable() ) return port;
+    while ( false == this->death_warrant )
+    {
+        try
+        {
+            this->ThreadEntryPoint_NotEternal();
+        }
+        catch (std::exception const &e)
+        {
+            std::fprintf( stderr, "LocalHttpServer caught exception: %s\n", e.what() );
+        }
+        catch(...)
+        {
+            std::fprintf( stderr, "LocalHttpServer caught unknown exception\n" );
+        }
+    }
+}
+
+std::uint16_t LocalHttpServer::StartAccepting(void) noexcept
+{
+    if ( (false==this->is_listening) || death_warrant ) return 0u;
+    if ( this->server_thread.joinable() ) return this->port;
     this->server_thread = std::jthread( [this]{ this->ThreadEntryPoint(); } );
-    this->port.wait(0u);
-    if ( 0xFFFF == this->port.load() ) this->port = 0u;
-    return port;
+    return this->port;
+}
+
+LocalHttpServer::~LocalHttpServer(void) noexcept
+{
+    this->death_warrant = true;
+    if ( this->opt_acceptor.has_value() ) this->opt_acceptor->close();
+    if ( this->opt_ioc.has_value()      ) this->opt_ioc->stop();
+    if ( server_thread.joinable()       ) server_thread.join();
 }

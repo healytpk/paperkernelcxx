@@ -40,8 +40,13 @@ void ViewPortal_Set(wxWindow *const arg, wxString const &paper_name) noexcept
     try
     {
         assert( nullptr != g_p_local_http_server );
-        uint16_t const port = g_p_local_http_server->GetListeningPort();
-        assert( (0u != port) && (-1 != port) );
+        if ( false == g_p_local_http_server->IsListening() )
+        {
+            std::fprintf(stderr, "Local HTTP server is not listening\n");
+            return;
+        }
+        uint16_t const port = g_p_local_http_server->StartAccepting();
+        assert( (0u != port) && (0xFFFF != port) );
         wxString url;
         if ( g_p_local_http_server->IsUsingIPv6() ) url = wxS("http://[::1]:");
         /************************************/ else url = wxS("http://127.0.0.1:");
@@ -52,6 +57,6 @@ void ViewPortal_Set(wxWindow *const arg, wxString const &paper_name) noexcept
     }
     catch (std::exception const &e)
     {
-        std::fprintf(  stderr, "ViewPortal_Set exception thrown: %s\n", e.what()  );
+        std::fprintf( stderr, "ViewPortal_Set exception thrown: %s\n", e.what() );
     }
 }
