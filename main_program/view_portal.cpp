@@ -2,12 +2,20 @@
 #include <cstdio>                    // fprintf, stderr
 #include "local_http_server.hpp"
 
+#ifdef __WXGTK__
+#   include <stdlib.h>               // setenv
+#endif
+
 using std::uint16_t;
 
 static LocalHttpServer *g_p_local_http_server = nullptr;
 
 wxWindow *ViewPortal_Create(wxWindow *const parent, LocalHttpServer &server) noexcept
 {
+#ifdef __WXGTK__
+    setenv("WEBKIT_DISABLE_COMPOSITING_MODE", "1", 1);
+#endif
+
     g_p_local_http_server = &server;
 
 try
