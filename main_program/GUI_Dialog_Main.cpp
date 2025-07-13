@@ -14,6 +14,7 @@
 #include <thread>                                    // jthread
 #include <type_traits>                               // is_same, remove_cvref
 #include <utility>                                   // move
+#include <wx/aboutdlg.h>                             // wxAboutDialogInfo, wxAboutBox
 #include <wx/accel.h>                                // wxAcceleratorEntry, wxAcceleratorTable
 #include <wx/event.h>                                // wxEVT_MENU and event binding
 #include <wx/msgdlg.h>                               // wxMessageBox
@@ -41,6 +42,29 @@ PaperManager g_paperman("./paperfiles/papers/");
 SemanticSearcher g_seman;
 
 IMPLEMENT_APP(App_CxxPapers);  // This creates the "main" function
+
+void ShowAboutDialog(wxWindow *const parent)
+{
+    wxAboutDialogInfo info;
+    info.SetName("Paper Kernel C++");
+    info.SetVersion("1.0.0");
+    info.SetDescription("A tool for managing and perusing C++ proposal papers");
+    info.SetCopyright("(c) 2025 Thomas P. K. Healy");
+    info.SetLicence(
+        "This program is licensed under the GNU GPL v2.0.\n"
+        "It uses the following libraries:\n"
+        "  - wxWidgets (wxWidgets Library License)\n"
+        "  - Boost (Boost Software License 1.0)\n"
+        "  - Xapian (GPL v2.0+)\n"
+        "  - libarchive (BSD 2-Clause/3-Clause)\n"
+        "  - zstd (BSD 3-Clause)\n"
+        "  - zlib (zlib License)\n\n"
+        "See the 'licenses' subdirectory for full license texts."
+    );
+    info.SetWebSite("https://virjacode.com/projects/paperkernelcxx");
+    info.AddDeveloper("Thomas P. K. Healy");
+    wxAboutBox(info, parent);
+}
 
 wxDataViewItem EncodeStringAsTreeItem(wxstring_view const wsv) noexcept
 {
@@ -254,14 +278,19 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     std::cout << "HTTP Server listening port == " << (unsigned)this->local_http_server.GetListeningPort() << std::endl;
 
     // =========================== Set up the Ctrl + Alt + D hotkey ========================
-    wxAcceleratorEntry entry;
-    entry.Set( wxACCEL_CTRL|wxACCEL_ALT, (int)'D', wxID_HIGHEST + 1 );
-    wxAcceleratorTable accel(1, &entry);
+    wxAcceleratorEntry entries[2u];
+    entries[0].Set(wxACCEL_CTRL | wxACCEL_SHIFT, (int)'D', wxID_HIGHEST + 1);
+    entries[1].Set(wxACCEL_CTRL | wxACCEL_SHIFT, (int)'A', wxID_HIGHEST + 2);
+    wxAcceleratorTable accel(2, entries);
     this->SetAcceleratorTable(accel);
     this->Bind(wxEVT_MENU, [this](wxCommandEvent&)
       {
         this->ShowDebugTab();
       }, wxID_HIGHEST + 1);
+    this->Bind(wxEVT_MENU, [this](wxCommandEvent&)
+      {
+        ShowAboutDialog(this);
+      }, wxID_HIGHEST + 2);
     // =====================================================================================
 
     this->m_notebook1->RemovePage(4u);    // Remove the Debug tab
