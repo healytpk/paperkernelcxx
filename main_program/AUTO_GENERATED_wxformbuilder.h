@@ -29,14 +29,14 @@
 #include <wx/statline.h>
 #include <wx/listbox.h>
 #include <wx/notebook.h>
-#include <wx/dialog.h>
+#include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class Dialog_Main__Auto_Base_Class
 ///////////////////////////////////////////////////////////////////////////////
-class Dialog_Main__Auto_Base_Class : public wxDialog
+class Dialog_Main__Auto_Base_Class : public wxFrame
 {
 	private:
 
@@ -126,7 +126,7 @@ class Dialog_Main__Auto_Base_Class : public wxDialog
 
 	public:
 
-		Dialog_Main__Auto_Base_Class( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Paper Kernel C++"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 815,794 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER );
+		Dialog_Main__Auto_Base_Class( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Paper Kernel C++"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 815,794 ), long style = wxDEFAULT_FRAME_STYLE );
 
 		~Dialog_Main__Auto_Base_Class();
 
