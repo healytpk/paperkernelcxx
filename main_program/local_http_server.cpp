@@ -1,5 +1,6 @@
 #include "local_http_server.hpp"
 #include <cstdio>                    // fprintf, stderr
+#include <cstdlib>                   // _Exit
 #include <iostream>                  // cerr, endl
 #include <stdexcept>                 // runtime_error
 #include <string>                    // string
@@ -75,6 +76,7 @@ void LocalHttpServer::ThreadEntryPoint_NotEternal(void) noexcept(false)
     {
         tcp::socket socket{ ioc };
         acceptor.accept(socket);
+        if ( this->death_warrant ) return;
         beast::flat_buffer buffer;
         http::request<http::string_body> req;
         http::read(socket, buffer, req);
@@ -134,6 +136,8 @@ void LocalHttpServer::ThreadEntryPoint(void) noexcept
             std::fprintf( stderr, "LocalHttpServer caught unknown exception\n" );
         }
     }
+
+    this->death_warrant = false;
 }
 
 std::uint16_t LocalHttpServer::StartAccepting(void) noexcept
@@ -146,8 +150,26 @@ std::uint16_t LocalHttpServer::StartAccepting(void) noexcept
 
 LocalHttpServer::~LocalHttpServer(void) noexcept
 {
+    std::puts("First line in destructor of LocalHttpServer");
     this->death_warrant = true;
-    if ( this->opt_acceptor.has_value() ) this->opt_acceptor->close();
-    if ( this->opt_ioc.has_value()      ) this->opt_ioc->stop();
-    if ( server_thread.joinable()       ) server_thread.join();
+    if ( (false == this->is_listening) || (0u == this->port) ) return;
+    try
+    {
+        using namespace boost::asio;
+        io_context ioc;
+        ip::tcp::endpoint ep(this->use_ipv6 ? ip::tcp::v6() : ip::tcp::v4(), this->port);
+        ip::tcp::socket sock(ioc);
+        sock.connect(ep); // Attempt to connect to the listening socket to unblock accept()
+    }
+    catch(...){}
+    for ( unsigned i = 0u; i < 10u; ++i )
+    {
+        if ( this->death_warrant ) std::this_thread::sleep_for(std::chrono::milliseconds(100u));
+    }
+    if ( this->death_warrant )
+    {
+        std::puts("LocalHttpServer thread didn't end within a second -- killing the process now");
+        std::_Exit(EXIT_FAILURE);
+    }
+    std::puts("Last line in destructor of LocalHttpServer");
 }
