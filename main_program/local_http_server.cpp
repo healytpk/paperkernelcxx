@@ -152,14 +152,15 @@ LocalHttpServer::~LocalHttpServer(void) noexcept
 {
     std::puts("First line in destructor of LocalHttpServer");
     this->death_warrant = true;
-    if ( (false == this->is_listening) || (0u == this->port) ) return;
+    if ( (false == this->is_listening) || (0u == this->port) || (0xFFFF == this->port) || (false == this->server_thread.joinable()) ) return;
     try
     {
+        // Connect to the listening socket to unblock the 'accept()' invocation
         using namespace boost::asio;
         io_context ioc;
         ip::tcp::endpoint ep(this->use_ipv6 ? ip::tcp::v6() : ip::tcp::v4(), this->port);
         ip::tcp::socket sock(ioc);
-        sock.connect(ep); // Attempt to connect to the listening socket to unblock accept()
+        sock.connect(ep);
     }
     catch(...){}
     for ( unsigned i = 0u; i < 10u; ++i )
