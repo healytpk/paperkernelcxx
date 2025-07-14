@@ -14,13 +14,13 @@
 #include <thread>                                    // jthread
 #include <type_traits>                               // is_same, remove_cvref
 #include <utility>                                   // move
-#include <wx/aboutdlg.h>                             // wxAboutDialogInfo, wxAboutBox
 #include <wx/accel.h>                                // wxAcceleratorEntry, wxAcceleratorTable
 #include <wx/event.h>                                // wxEVT_MENU and event binding
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include <wx/dataview.h>                             // wxDataViewCtrl
 #include <wx/splitter.h>                             // wxSplitterWindow
 #include "wxApp.hpp"
+#include "GUI_Dialog_About.hpp"
 #include "GUI_Dialog_Waiting.hpp"
 #include "ai.hpp"
 #include "embedded_archive.hpp"
@@ -42,29 +42,6 @@ PaperManager g_paperman("./paperfiles/papers/");
 SemanticSearcher g_seman;
 
 IMPLEMENT_APP(App_CxxPapers);  // This creates the "main" function
-
-void ShowAboutDialog(wxWindow *const parent)
-{
-    wxAboutDialogInfo info;
-    info.SetName("Paper Kernel C++");
-    info.SetVersion("1.0.0");
-    info.SetDescription("A tool for managing and perusing C++ proposal papers");
-    info.SetCopyright("(c) 2025 Thomas P. K. Healy");
-    info.SetLicence(
-        "This program is licensed under the GNU GPL v2.0.\n"
-        "It uses the following libraries:\n"
-        "  - wxWidgets (wxWidgets Library License)\n"
-        "  - Boost (Boost Software License 1.0)\n"
-        "  - Xapian (GPL v2.0+)\n"
-        "  - libarchive (BSD 2-Clause/3-Clause)\n"
-        "  - zstd (BSD 3-Clause)\n"
-        "  - zlib (zlib License)\n\n"
-        "See the 'licenses' subdirectory for full license texts."
-    );
-    info.SetWebSite("https://virjacode.com/projects/paperkernelcxx");
-    info.AddDeveloper("Thomas P. K. Healy");
-    wxAboutBox(info, parent);
-}
 
 wxDataViewItem EncodeStringAsTreeItem(wxstring_view const wsv) noexcept
 {
@@ -289,7 +266,8 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
       }, wxID_HIGHEST + 1);
     this->Bind(wxEVT_MENU, [this](wxCommandEvent&)
       {
-        ShowAboutDialog(this);
+        try { (new Dialog_About(this))->ShowModal(); }
+        catch(...){}
       }, wxID_HIGHEST + 2);
     // =====================================================================================
 

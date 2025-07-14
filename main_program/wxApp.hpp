@@ -14,6 +14,7 @@ public:
         wxThread::SetConcurrency(2u);
 
         wxImage::AddHandler(new wxICOHandler);
+        wxImage::AddHandler(new wxJPEGHandler);
 
         RecreateGUI();
 

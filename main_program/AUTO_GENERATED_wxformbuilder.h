@@ -30,6 +30,8 @@
 #include <wx/listbox.h>
 #include <wx/notebook.h>
 #include <wx/frame.h>
+#include <wx/statbmp.h>
+#include <wx/dialog.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -135,6 +137,35 @@ class Dialog_Main__Auto_Base_Class : public wxFrame
 			m_splitter2->SetSashPosition( 0 );
 			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( Dialog_Main__Auto_Base_Class::m_splitter2OnIdle ), NULL, this );
 		}
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class Dialog_About__Auto_Base_Class
+///////////////////////////////////////////////////////////////////////////////
+class Dialog_About__Auto_Base_Class : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticBitmap* m_bitmap3;
+		wxStaticText* m_staticText13;
+		wxStaticText* m_staticText14;
+		wxStaticText* m_staticText15;
+		wxStaticText* m_staticText26;
+		wxStaticText* m_staticText16;
+		wxButton* dlgAbout_btnClose;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void dlgAbout_OnClose( wxCloseEvent& event ) { event.Skip(); }
+		virtual void dlgAbout_btnClose_OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		Dialog_About__Auto_Base_Class( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("About Paper Kernel C++"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 580,369 ), long style = wxDEFAULT_DIALOG_STYLE );
+
+		~Dialog_About__Auto_Base_Class();
 
 };
 

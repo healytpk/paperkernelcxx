@@ -8,6 +8,7 @@
 #include "AUTO_GENERATED_wxformbuilder.h"
 
 #include "../pictures/left_pane.ico.h"
+#include "../pictures/mugshot.jpg.h"
 #include "../pictures/right_pane.ico.h"
 
 ///////////////////////////////////////////////////////////////////////////
@@ -365,5 +366,61 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 }
 
 Dialog_Main__Auto_Base_Class::~Dialog_Main__Auto_Base_Class()
+{
+}
+
+Dialog_About__Auto_Base_Class::Dialog_About__Auto_Base_Class( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* bSizer20;
+	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_bitmap3 = new wxStaticBitmap( this, wxID_ANY, mugshot_jpg_to_wx_bitmap(), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer20->Add( m_bitmap3, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	wxBoxSizer* bSizer21;
+	bSizer21 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText13 = new wxStaticText( this, wxID_ANY, wxT("Paper Kernel C++"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	m_staticText13->SetFont( wxFont( 22, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+
+	bSizer21->Add( m_staticText13, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	m_staticText14 = new wxStaticText( this, wxID_ANY, wxT("Version 1.0.0\n(c) 2025 Thomas P. K. Healy"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL );
+	m_staticText14->Wrap( -1 );
+	bSizer21->Add( m_staticText14, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	m_staticText15 = new wxStaticText( this, wxID_ANY, wxT("This program is free and open-source, and is\nlicensed under the GNU GPL v2.0."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15->Wrap( -1 );
+	bSizer21->Add( m_staticText15, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText26 = new wxStaticText( this, wxID_ANY, wxT("This program links directly with:\n  - wxWidgets (wxWindows Library Licence v3.1)\n  - Boost (Boost Software License v1.0)\n  - Xapian (GPL v2.0)\n  - libarchive (BSD 2-Clause and 3-Clause)\n  - zstd (BSD 3-Clause)\n  - zlib (zlib License)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText26->Wrap( -1 );
+	bSizer21->Add( m_staticText26, 0, wxALL, 5 );
+
+	m_staticText16 = new wxStaticText( this, wxID_ANY, wxT("License text files are distributed with this program."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText16->Wrap( -1 );
+	bSizer21->Add( m_staticText16, 0, wxALL, 5 );
+
+	dlgAbout_btnClose = new wxButton( this, wxID_ANY, wxT("Close"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer21->Add( dlgAbout_btnClose, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	bSizer20->Add( bSizer21, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer20 );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+
+	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( Dialog_About__Auto_Base_Class::dlgAbout_OnClose ) );
+	dlgAbout_btnClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Dialog_About__Auto_Base_Class::dlgAbout_btnClose_OnButtonClick ), NULL, this );
+}
+
+Dialog_About__Auto_Base_Class::~Dialog_About__Auto_Base_Class()
 {
 }

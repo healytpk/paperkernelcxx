@@ -22,6 +22,7 @@ set(HEADERS
 	cctype_constexpr.hpp
 	debug.hpp
 	embedded_archive.hpp
+	GUI_Dialog_About.hpp
 	GUI_Dialog_Main.hpp
 	GUI_Dialog_Main_Debug_Tab.hpp
 	GUI_Dialog_Waiting.hpp
