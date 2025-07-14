@@ -45,6 +45,7 @@ private:
             { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
             { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
             { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
+            { "Lo\\uF8E0Joly"                                          , "Loic Joly"                                    },
             { "Lois Goldwaithe"                                        , "Lois Goldthwaite"                             },
             { "Marhsall Clow"                                          , "Marshall Clow"                                },
             { "Marshal Clow"                                           , "Marshall Clow"                                },
