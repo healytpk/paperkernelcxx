@@ -255,6 +255,10 @@ private:
         input = std::move(output);
     }
 
+    static constexpr std::string_view hardcoded_primaries[] = {
+        "Yihe Li",
+    };
+
     static map<string_view, string_view> const &ExceptionMap(void)
     {
         static const map<string_view, string_view> exceptions = {
@@ -284,6 +288,7 @@ private:
             { "Thomas Koeppe"                                          , "Thomas K\\u00F6ppe"                           },
             { "V.  Escriba"                                            , "Vicente J. Botet Escrib\\u00E1"               },
             { "V. Escriba"                                             , "Vicente J. Botet Escrib\\u00E1"               },
+            { "Yihe Le"                                                , "Yihe Li"                                      },
         };
         return exceptions;
     }
@@ -515,6 +520,8 @@ public:
 
     string_view GetPrimaryName(string_view const alt) const
     {
+        if ( std::cend(hardcoded_primaries) != std::find( std::cbegin(hardcoded_primaries), std::cend(hardcoded_primaries), alt ) ) return alt;
+
         // Check hardcoded exceptions first
         auto it = ExceptionMap().find(alt);
         if ( it != ExceptionMap().end() ) return it->second;
@@ -649,6 +656,9 @@ public:
             if ( (p == name) && (groups.find(p) == groups.end()) && (all_alternatives.find(string(p)) == all_alternatives.end()) )
                 all_primaries.insert( string(p) );
         }
+
+        // Ensure all hardcoded primaries are present
+        for ( auto const sv : hardcoded_primaries ) all_primaries.insert( string(sv) );
 
         struct PrimaryEntry {
             string name;

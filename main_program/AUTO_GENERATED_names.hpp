@@ -876,6 +876,7 @@ inline constexpr std::pair< std::uint_fast64_t, wxStringCharType const * > g_pri
     { Hash("Yegor Derevenets"                   ), wxS("Yegor Derevenets"                   ) },
     { Hash("Yehezkel Bernart"                   ), wxS("Yehezkel Bernart"                   ) },
     { Hash("Yeoul Na"                           ), wxS("Yeoul Na"                           ) },
+    { Hash("Yihe Li"                            ), wxS("Yihe Li"                            ) },
     { Hash("Yoaodan Zhang"                      ), wxS("Yoaodan Zhang"                      ) },
     { Hash("Yonggang Li"                        ), wxS("Yonggang Li"                        ) },
     { Hash("Yuriy Chernyshov"                   ), wxS("Yuriy Chernyshov"                   ) },
@@ -1198,8 +1199,8 @@ inline constexpr std::tuple<std::uint_fast64_t,wxStringCharType const *,std::uin
     { Hash("W. Miller"                          ), wxS("W. Miller"                          ), Hash("William M. (Mike) Miller"           ) },
     { Hash("Yehezkel Bernat"                    ), wxS("Yehezkel Bernat"                    ), Hash("Yehezkel Bernart"                   ) },
     { Hash("Yehuda Bernat"                      ), wxS("Yehuda Bernat"                      ), Hash("Yehezkel Bernart"                   ) },
+    { Hash("Yihe Le"                            ), wxS("Yihe Le"                            ), Hash("Yihe Li"                            ) },
     { Hash("Younan Zhang"                       ), wxS("Younan Zhang"                       ), Hash("Yoaodan Zhang"                      ) },
-    { Hash("Yihe Le"                            ), wxS("Yihe Le"                            ), Hash("Yonggang Li"                        ) },
     { Hash("Yihe Li"                            ), wxS("Yihe Li"                            ), Hash("Yonggang Li"                        ) }
 };
 
