@@ -5,8 +5,8 @@ cmake_policy(SET CMP0026 OLD)
 set(CMAKE_CXX_STANDARD 23)
 
 if(APPLE)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libstdc++")
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libstdc++")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lc++ -lc++abi")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lc++ -lc++abi")
 endif()
 
 if(UNIX AND NOT APPLE)
