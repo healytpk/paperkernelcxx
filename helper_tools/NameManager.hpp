@@ -47,6 +47,7 @@ private:
             { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
             { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
             { "Johel Guerrero"                                         , "Johel Ernesto Guerrero Pe\\u00F1a"            },
+            { "Jonathan Mueller"                                       , "Jonathan M\\u00FCller"                        },
             { "Lo\\uF8E0Joly"                                          , "Loic Joly"                                    },
             { "Lois Goldwaithe"                                        , "Lois Goldthwaite"                             },
             { "Marhsall Clow"                                          , "Marshall Clow"                                },
