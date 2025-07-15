@@ -33,6 +33,8 @@ private:
             { "Alex"                                                   , "Alex Waffl3x"                                 },
             { "Bengt Gustafsonn"                                       , "Bengt Gustafsson"                             },
             { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
+            { "C. Kaeser"                                              , "Christian K\\u00E4ser"                        },
+            { "Christian Kaeser"                                       , "Christian K\\u00E4ser"                        },
             { "Domagoj Saric"                                          , "Domagoj \\u0160ari\\u0107"                    },
             { "Ed Catmur"                                              , "Edward Catmur (1982 \\u002D 2024)"            },
             { "Gonzalo Brito"                                          , "Gonzalo Brito Gadeschi"                       },

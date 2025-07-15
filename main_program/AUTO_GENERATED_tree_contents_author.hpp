@@ -153,7 +153,7 @@
     { Hash("Chris Szalwinski"), PaperList< "p0799r0" >() },
     { Hash("Chris Tapp"), PaperList< "p1706r2", "p1706r3" >() },
     { Hash("Christian Eltzschig"), PaperList< "p3297r0", "p3297r1" >() },
-    { Hash("Christian Kaeser"), PaperList< "n4428", "n4027", "n4113" >() },
+    { Hash("Christian K\\u00E4ser"), PaperList< "n4027", "n4113", "n4428" >() },
     { Hash("Christian Mazakas"), PaperList< "p3390r0" >() },
     { Hash("Christian Trott"), PaperList< "p0009r0", "p0018r0", "p0018r1", "p0009r1", "p0018r2", "p0018r3", "p0009r2", "p0331r0", "p0332r0", "p0009r3", "p0009r4", "p0332r1", "p0009r5", "p0332r2", "p0856r0", "p0860r0", "p0009r6", "p0860r1", "p0009r7", "p0009r8", "p0009r9", "p1673r0", "p1674r0", "p1684r0", "p1673r1", "p1891r0", "p1673r2", "p0009r10", "p2128r0", "p2137r0", "p2128r1", "p2128r2", "p2128r3", "p1673r3", "p2128r4", "p2128r5", "p0009r11", "p0009r12", "p1673r4", "p2128r6", "p0009r13", "p1673r5", "p0009r14", "p1673r6", "p0009r15", "p2553r0", "p2554r0", "p0009r16", "p1684r1", "p2553r1", "p1673r7", "p1674r1", "p1684r2", "p1673r8", "p1674r2", "p0009r17", "p1673r9", "p2604r0", "p0009r18", "p1684r3", "p2630r0", "p2642r0", "p1673r10", "p2630r1", "p2642r1", "p2689r0", "p1673r11", "p1684r4", "p2630r2", "p2642r2", "p2689r1", "p2763r0", "p2763r1", "p2798r0", "p2812r0", "p1673r12", "p2630r3", "p1684r5", "p2689r2", "p2897r0", "p2901r0", "p2630r4", "p2642r3", "p2689r2", "p2642r4", "p2897r1", "p1673r13", "p2642r5", "p3242r0", "p2689r3", "p3308r0", "p2642r6", "p2897r2", "p2897r3", "p2897r4", "p2897r5", "p2897r6", "p2897r7", "p3242r1" >() },
     { Hash("Christoph Hofer"), PaperList< "p2819r0", "p2819r1", "p2819r2" >() },
