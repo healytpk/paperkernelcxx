@@ -41,6 +41,7 @@ private:
             { "Ed Catmur"                                              , "Edward Catmur (1982 \\u002D 2024)"            },
             { "Gonzalo Brito"                                          , "Gonzalo Brito Gadeschi"                       },
             { "Hana Dusikova"                                          , "Hana Dus\\u00EDkov\\u00E1"                    },
+            { "Herv\\00e9 Br\\u00f6nnimann" /* 'u' is missing */       , "Herv\\u00e9 Br\\u00f6nnimann"                 },
             { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
             { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
             { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
