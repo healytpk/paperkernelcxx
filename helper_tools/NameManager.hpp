@@ -174,6 +174,10 @@ private:
         ToLowerAndRemovePunct(sa);
         ToLowerAndRemovePunct(sb);
 
+        // The next line mostly accommodates Spanish names,
+        // where the second surname is sometimes ommitted.
+        if ( sa.starts_with(sb) || sb.starts_with(sa) ) return true;
+
         auto const tokensA = SplitTokens(sa);
         auto const tokensB = SplitTokens(sb);
 

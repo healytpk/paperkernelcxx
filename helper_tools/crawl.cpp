@@ -173,6 +173,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
     ReplaceInPlace(author, "Berg&eacute "                                           , "Berg&eacute;"                                           );
     ReplaceInPlace(author, "Pablo Halpern Ville Voutilainen"                        , "Pablo Halpern\nVille Voutilainen"                       );
     ReplaceInPlace(author, "Alicia KlinvexLi-Ta Lo"                                 , "Alicia Klinvex\nLi-Ta Lo"                               );
+    ReplaceInPlace(author, "Jared Hoberock Lee Howes"                               , "Jared Hoberock\nLee Howes"                              );
 // ===================================================
 
     ReplaceInPlace(author,  "\u00A0", " ");  // Non-breaking space (just one backslash)
