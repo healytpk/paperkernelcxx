@@ -51,6 +51,7 @@ private:
             { "Marshal Clow"                                           , "Marshall Clow"                                },
             { "Michael Dominiak"                                       , "Micha\\u0142 Dominiak"                        },
             { "Michal Dominiak"                                        , "Micha\\u0142 Dominiak"                        },
+            { "P. Talbot"                                              , "Pierre Talbot"                                },
             { "Rene Rivera"                                            , "Ren\\u00E9 Rivera"                            },
             { "Rene Riviera"                                           , "Ren\\u00E9 Rivera"                            },
             { "R. Rivera"                                              , "Ren\\u00E9 Rivera"                            },
