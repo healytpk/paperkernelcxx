@@ -71,6 +71,8 @@ private:
     map<string_view, string_view> mutable m_map_clusters;
     bool mutable m_map_clusters_dirty = true;
 
+    static constexpr char wildchar = '_';
+
     static void ReplaceNonAscii(std::string &input)
     {
         std::string output;
@@ -79,21 +81,21 @@ private:
             // Look for \uXXXX or \\uXXXX
             if ( (input[i] == '\\') && (i + 5 < input.size()) && (input[i + 1] == 'u') )
             {
-                // Replace \uXXXX with 'Z'
-                output += 'Z';
+                // Replace \uXXXX with wildchar
+                output += wildchar;
                 i += 6;
             }
             else if ( (input[i] == '\\') && (i + 6 < input.size()) && (input[i + 1] == '\\') && (input[i + 2] == 'u'))
             {
-                // Replace \\uXXXX with 'Z'
-                output += 'Z';
+                // Replace \\uXXXX with wildchar
+                output += wildchar;
                 i += 7;
             }
             else if ( static_cast<unsigned char>(input[i]) > 0x7F )
             {
                 std::abort();
-                // Replace any other non-ASCII character with 'Z'
-                output += 'Z';
+                // Replace any other non-ASCII character with wildchar
+                output += wildchar;
                 ++i;
             }
             else
