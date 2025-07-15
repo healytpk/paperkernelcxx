@@ -264,6 +264,7 @@ private:
             { "C. Kaeser"                                              , "Christian K\\u00E4ser"                        },
             { "C. K\\u00E4ser"                                         , "Christian K\\u00E4ser"                        },
             { "Christian Kaeser"                                       , "Christian K\\u00E4ser"                        },
+            { "Daniel Sundernland"                                     , "Daniel Sunderland"                            },
             { "Ed Catmur"                                              , "Edward Catmur (1982 \\u002D 2024)"            },
             { "Herv\\00e9 Br\\u00f6nnimann" /* 'u' is missing */       , "Herv\\u00e9 Br\\u00f6nnimann"                 },
             { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
