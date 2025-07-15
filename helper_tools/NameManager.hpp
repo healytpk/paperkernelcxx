@@ -59,6 +59,7 @@ private:
             { "Ren\\u00E9 Rivera"                                      , "Ren\\u00E9 Ferdinand Rivera Morell"           },
             { "Rene Riviera"                                           , "Ren\\u00E9 Ferdinand Rivera Morell"           },
             { "Rene Rivera"                                            , "Ren\\u00E9 Ferdinand Rivera Morell"           },
+            { "Thomas Koeppe"                                          , "Thomas K\\u00F6ppe"                           },
             { "Tomasz Kaminski"                                        , "Tomasz Kami\\u0144ski"                        },
             { "V.  Escriba"                                            , "Vicente J. Botet Escrib\\u00E1"               },
             { "V. Escriba"                                             , "Vicente J. Botet Escrib\\u00E1"               },
