@@ -95,7 +95,7 @@ bool DownloadPage(char const *const arg_url, string &outContent)
     if ( false == filename.empty() )
     {
         // Try reading from local cache if filename is known
-        std::ifstream cached(filename);
+        std::ifstream cached( "downloaded/" + filename );
         if ( cached.is_open() )
         {
             std::cerr << "Reading cached file: " << filename << "\n";

@@ -1,0 +1,4326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
+<TITLE>
+ISO/IEC JTC1/SC22/WG21
+- Papers 2025
+</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Language" CONTENT="en">
+</head>
+<body>
+<h1>
+<img align=top src="/pics/iso44.gif" alt="ISO/">
+<img align=top src="/pics/iec44.gif" alt="IEC">
+JTC1/SC22/WG21
+- Papers 2025
+<br>
+</h1>
+
+    <table border="1" summary="See previous paragraph.">
+        <tr>
+            <th>WG21 Number</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Document Date</th>
+            <th>Mailing Date</th>
+            <th>Previous Version</th>
+            <th>Subgroup</th>
+            <th>Disposition</th>
+        </tr>
+        <tr>
+            <td><a hRef="../2025/sd-1.htm">SD-1</a></td>
+            <td>2025 PL22.16/WG21 document list</td>
+            <td>Nevin Liber</td>
+            <td>2025-05-19</td>
+            <td>2025-05</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+<!-- begin 2025-01 pre-Hagenberg -->
+<h1>
+	<a name="mailing2025-01">mailing2025-01 pre-Hagenberg</a>
+</h1>
+<table border="1" summary="See previous paragraph.">
+	<tr>
+		<th>WG21 Number</th>
+		<th>Title</th>
+		<th>Author</th>
+		<th>Document Date</th>
+		<th>Mailing Date</th>
+		<th>Previous Version</th>
+		<th>Subgroup</th>
+		<th>Disposition<th>
+        <tr>
+            <th colspan="8">2025-01 pre-Hagenberg</th>
+        </tr>
+
+	  <tr > 
+	 	 <td > <a href="../2025/p0149r1.pdf">P0149R1</a> </td>
+	 	 <td > Generalised member pointers </td>
+	 	 <td > Jeff Snyder </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2016/p0149r0.pdf">P0149R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p0260r14.html">P0260R14</a> </td>
+	 	 <td > C++ Concurrent Queues </td>
+	 	 <td > Detlef Vollmann, Lawrence Crowl, Chris Mysen, Gor Nishanov </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p0260r13.html">P0260R13</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p0876r19.pdf">P0876R19</a> </td>
+	 	 <td > fiber_context - fibers without scheduler </td>
+	 	 <td > Oliver Kowalke, Nat Goodspeed </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p0876r18.pdf">P0876R18</a> </td>
+	 	 <td > EWG Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p1030r8.pdf">P1030R8</a> </td>
+	 	 <td > std::filesystem::path_view </td>
+	 	 <td > Niall Douglas </td>
+	 	 <td > 2024-12-21 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p1030r7.pdf">P1030R7</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p1839r7.html">P1839R7</a> </td>
+	 	 <td > Accessing object representations </td>
+	 	 <td > Brian Bi, Krystian Stasiowski, Timur Doumler </td>
+	 	 <td > 2025-01-11 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p1839r6.html">P1839R6</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2079r6.html">P2079R6</a> </td>
+	 	 <td > System execution context </td>
+	 	 <td > Lucian Radu Teodorescu, Ruslan Arutyunyan, Lee Howes, Michael Voss </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2079r5.html">P2079R5</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2414r5.pdf">P2414R5</a> </td>
+	 	 <td > Pointer lifetime-end zap proposed solutions </td>
+	 	 <td > Paul E. McKenney, Maged Michael, Jens Maurer, Peter Sewell, Martin Uecker, Hans Boehm, Hubert Tong, Niall Douglas, Thomas Rodgers, Will Deacon, Michael Wong, David Goldblatt, Kostya Serebryany, Anthony Williams,  Tom Scogland, and JF Bastien </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2414r4.pdf">P2414R4</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2434r3.html">P2434R3</a> </td>
+	 	 <td > Nondeterministic pointer provenance </td>
+	 	 <td > S. Davis Herring </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2434r2.html">P2434R2</a> </td>
+	 	 <td > SG22 Compatibility,EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2654r1.pdf">P2654R1</a> </td>
+	 	 <td > Modules and Macros </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2023/p2654r0.pdf">P2654R0</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2663r6.html">P2663R6</a> </td>
+	 	 <td > Proposal to support interleaved complex values in std::simd </td>
+	 	 <td > Daniel Towner, Ruslan Arutyunyan </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2023/p2663r5.html">P2663R5</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2664r9.html">P2664R9</a> </td>
+	 	 <td > Proposal to extend std::simd with permutation API </td>
+	 	 <td > Daniel Towner, Ruslan Arutyunyan </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2664r8.html">P2664R8</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2688r5.html">P2688R5</a> </td>
+	 	 <td > Pattern Matching: `match` Expression </td>
+	 	 <td > Michael Park </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2688r4.html">P2688R4</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2719r2.html">P2719R2</a> </td>
+	 	 <td > Type-aware allocation and deallocation functions </td>
+	 	 <td > Louis Dionne, Oliver Hunt </td>
+	 	 <td > 2025-01-06 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2719r1.html">P2719R1</a> </td>
+	 	 <td > EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2719r3.html">P2719R3</a> </td>
+	 	 <td > Type-aware allocation and deallocation functions </td>
+	 	 <td > Louis Dionne, Oliver Hunt </td>
+	 	 <td > 2025-01-08 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2025/p2719r2.html">P2719R2</a> </td>
+	 	 <td > EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2746r7.pdf">P2746R7</a> </td>
+	 	 <td > Deprecate and Replace Fenv Rounding Modes </td>
+	 	 <td > Hans Boehm </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2746r6.pdf">P2746R6</a> </td>
+	 	 <td > SG6 Numerics,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2758r4.html">P2758R4</a> </td>
+	 	 <td > Emitting messages at compile time </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-01-07 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2758r3.html">P2758R3</a> </td>
+	 	 <td > LEWG Library Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2806r3.html">P2806R3</a> </td>
+	 	 <td > do expressions </td>
+	 	 <td > Barry Revzin, Bruno Cardoso Lopez, Zach Laine, Michael Park </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2023/p2806r2.html">P2806R2</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2825r4.html">P2825R4</a> </td>
+	 	 <td > Overload resolution hook: declcall( unevaluated-call-expression ) </td>
+	 	 <td > Ga&#353;per A&#382;man </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2825r3.html">P2825R3</a> </td>
+	 	 <td > EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2830r8.html">P2830R8</a> </td>
+	 	 <td > Standardized Constexpr Type Ordering </td>
+	 	 <td > Ga&#353;per A&#382;man, Nathan Nichols </td>
+	 	 <td > 2025-01-09 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2830r7.html">P2830R7</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2830r9.html">P2830R9</a> </td>
+	 	 <td > Standardized Constexpr Type Ordering </td>
+	 	 <td > Ga&#353;per A&#382;man, Nathan Nichols </td>
+	 	 <td > 2025-01-10 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2025/p2830r8.html">P2830R8</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2841r6.pdf">P2841R6</a> </td>
+	 	 <td > Concept and variable-template template-parameters </td>
+	 	 <td > Corentin Jabot, Ga&#353;per A&#382;man, James Touton, Hubert Tong </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2841r5.pdf">P2841R5</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2843r1.pdf">P2843R1</a> </td>
+	 	 <td > Preprocessing is never undefined </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2023/p2843r0.pdf">P2843R0</a> </td>
+	 	 <td > SG22 Compatibility,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2883r1.pdf">P2883R1</a> </td>
+	 	 <td > `offsetof` Should Be A Keyword In C++26 </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-01-10 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2023/p2883r0.pdf">P2883R0</a> </td>
+	 	 <td > EWGI SG17: EWG Incubator,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2899r0.pdf">P2899R0</a> </td>
+	 	 <td > Contracts for C++ - Rationale </td>
+	 	 <td > Timur Doumler, Joshua Berne, Andrzej Krzemie&#324;ski, Rostislav Khlebnikov </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2900r13.pdf">P2900R13</a> </td>
+	 	 <td > Contracts for C++ </td>
+	 	 <td > Joshua Berne, Timur Doumler, Andrzej Krzemie&#324;ski </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2900r12.pdf">P2900R12</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2933r3.html">P2933R3</a> </td>
+	 	 <td > Extend &lt;bit&gt; header function with overloads for std::simd </td>
+	 	 <td > Daniel Towner, Ruslan Arutyunyan </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2933r2.html">P2933R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2952r2.html">P2952R2</a> </td>
+	 	 <td > auto&amp; operator=(X&amp;&amp;) = default </td>
+	 	 <td > Arthur O'Dwyer, Matthew Taylor </td>
+	 	 <td > 2025-01-08 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2023/p2952r1.html">P2952R1</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2953r1.html">P2953R1</a> </td>
+	 	 <td > Forbid defaulting operator=(X&amp;&amp;) &amp;&amp; </td>
+	 	 <td > Arthur O'Dwyer </td>
+	 	 <td > 2025-01-08 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2023/p2953r0.html">P2953R0</a> </td>
+	 	 <td > EWGI SG17: EWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2971r3.pdf">P2971R3</a> </td>
+	 	 <td > Implication for C++ </td>
+	 	 <td > Walter E Brown </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2971r2.pdf">P2971R2</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2988r9.pdf">P2988R9</a> </td>
+	 	 <td > std::optional&lt;T&amp;&gt; </td>
+	 	 <td > Steve Downey, Peter Sommerlad </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2988r8.pdf">P2988R8</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2996r9.html">P2996R9</a> </td>
+	 	 <td > Reflection for C++26 </td>
+	 	 <td > Barry Revzin, Wyatt Childers, Peter Dimov, Andrew Sutton, Faisal Vali, Daveed Vandevoorde, Dan Katz </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p2996r8.html">P2996R8</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3019r12.pdf">P3019R12</a> </td>
+	 	 <td > Vocabulary Types for Composite Class Design </td>
+	 	 <td > Jonathan Coe, Antony Peacock, Sean Parent </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3019r11.pdf">P3019R11</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3045r5.html">P3045R5</a> </td>
+	 	 <td > Quantities and units library </td>
+	 	 <td > Mateusz Pusz, Dominik Berner, Johel Ernesto Guerrero Pe&#241;a, Charles Hogg, Nicolas Holthaus, Roth Michaels, Vincent Reverdy </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3045r4.html">P3045R4</a> </td>
+	 	 <td > SG6 Numerics,SG16 Unicode,LEWGI SG18: LEWG Incubator,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3070r2.html">P3070R2</a> </td>
+	 	 <td > Formatting enums </td>
+	 	 <td > Victor Zverovich </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3070r1.html">P3070R1</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3081r1.pdf">P3081R1</a> </td>
+	 	 <td > Core safety profiles for C++26 </td>
+	 	 <td > Herb Sutter </td>
+	 	 <td > 2025-01-06 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3081r0.pdf">P3081R0</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3086r3.pdf">P3086R3</a> </td>
+	 	 <td > Proxy: A Pointer-Semantics-Based Polymorphism Library </td>
+	 	 <td > Mingxin Wang </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3086r2.pdf">P3086R2</a> </td>
+	 	 <td > LEWGI SG18: LEWG Incubator,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3094r6.html">P3094R6</a> </td>
+	 	 <td > std::basic_fixed_string </td>
+	 	 <td > Mateusz Pusz </td>
+	 	 <td > 2025-01-10 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3094r5.html">P3094R5</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3111r3.html">P3111R3</a> </td>
+	 	 <td > Atomic Reduction Operations </td>
+	 	 <td > Gonzalo Brito Gadeschi, Simon Cooksey, Daniel Lustig </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3111r2.html">P3111R2</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3125r3.html">P3125R3</a> </td>
+	 	 <td > constexpr pointer tagging </td>
+	 	 <td > Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3125r2.html">P3125R2</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3139r1.html">P3139R1</a> </td>
+	 	 <td > Pointer cast for unique_ptr </td>
+	 	 <td > Zhihao Yuan, Jordan Saxonberg </td>
+	 	 <td > 2024-12-27 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3139r0.html">P3139R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3148r1.pdf">P3148R1</a> </td>
+	 	 <td > Formatting of chrono Time Values </td>
+	 	 <td > Alan Talbot </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3148r0.pdf">P3148R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3164r3.html">P3164R3</a> </td>
+	 	 <td > Early Diagnostics for Sender Expressions </td>
+	 	 <td > Eric Niebler </td>
+	 	 <td > 2025-01-10 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3164r2.html">P3164R2</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3176r1.html">P3176R1</a> </td>
+	 	 <td > The Oxford variadic comma </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2024-12-18 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3176r0.html">P3176R0</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td > Adopted 2024-11 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3179r5.html">P3179R5</a> </td>
+	 	 <td > C++ parallel range algorithms </td>
+	 	 <td > Ruslan Arutyunyan, Alexey Kukanov, Bryce Adelstein Lelbach </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3179r4.html">P3179R4</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3206r0.pdf">P3206R0</a> </td>
+	 	 <td > A sender query for completion behaviour </td>
+	 	 <td > Maikel Nadolski </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG1 Concurrency and Parallelism </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3229r0.pdf">P3229R0</a> </td>
+	 	 <td > Making erroneous behaviour compatible with Contracts </td>
+	 	 <td > Timur Doumler, Joshua Berne, Ga&#353;per A&#382;man </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3289r1.html">P3289R1</a> </td>
+	 	 <td > Consteval blocks </td>
+	 	 <td > Daveed Vandevoorde, Wyatt Childers, Dan Katz, Barry Revzin </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3289r0.html">P3289R0</a> </td>
+	 	 <td > EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3347r1.pdf">P3347R1</a> </td>
+	 	 <td > Invalid/Prospective Pointer Operations </td>
+	 	 <td > Paul E. McKenney, Maged Michael, Jens Maurer, Peter Sewell, Martin Uecker, Hans Boehm, Hubert Tong, Niall Douglas, Thomas Rodgers, Will Deacon, Michael Wong, David Goldblatt, Kostya Serebryany, Anthony Williams,  Tom Scogland, and JF Bastien </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3347r0.pdf">P3347R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3348r2.pdf">P3348R2</a> </td>
+	 	 <td > C++26 should refer to C23 not C17 </td>
+	 	 <td > Jonathan Wakely </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3348r1.pdf">P3348R1</a> </td>
+	 	 <td > SG6 Numerics,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3351r2.html">P3351R2</a> </td>
+	 	 <td > views::scan </td>
+	 	 <td > Yihe Li </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3351r1.html">P3351R1</a> </td>
+	 	 <td > SG9 Ranges </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3367r3.html">P3367R3</a> </td>
+	 	 <td > constexpr coroutines </td>
+	 	 <td > Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-01-06 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3367r2.html">P3367R2</a> </td>
+	 	 <td > EWG Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3373r1.pdf">P3373R1</a> </td>
+	 	 <td > Of Operation States and Their Lifetimes </td>
+	 	 <td > Robert Leahy </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3373r0.pdf">P3373R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3374r1.html">P3374R1</a> </td>
+	 	 <td > Adding formatter for fpos </td>
+	 	 <td > Liang Jiaming </td>
+	 	 <td > 2025-01-08 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3374r0.html">P3374R0</a> </td>
+	 	 <td > LEWGI SG18: LEWG Incubator,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3375r2.html">P3375R2</a> </td>
+	 	 <td > Reproducible floating-point results </td>
+	 	 <td > Guy Davidson </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3375r1.html">P3375R1</a> </td>
+	 	 <td > SG6 Numerics,EWGI SG17: EWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3385r3.html">P3385R3</a> </td>
+	 	 <td > Attributes reflection </td>
+	 	 <td > Aurelien Cassagnes, Roman Khoroshikh, Anders Johansson </td>
+	 	 <td > 2025-01-07 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3385r2.html">P3385R2</a> </td>
+	 	 <td > SG7 Reflection </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3388r1.pdf">P3388R1</a> </td>
+	 	 <td > When Do You Know connect Doesn't Throw? </td>
+	 	 <td > Robert Leahy </td>
+	 	 <td > 2025-01-11 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3388r0.pdf">P3388R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3394r1.html">P3394R1</a> </td>
+	 	 <td > Annotations for Reflection </td>
+	 	 <td > Daveed Vandevoorde, Wyatt Childers, Dan Katz, Barry Revzin </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3394r0.html">P3394R0</a> </td>
+	 	 <td > SG7 Reflection,LEWG Library Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3395r0.html">P3395R0</a> </td>
+	 	 <td > Formatting of std::error_code </td>
+	 	 <td > Victor Zverovich </td>
+	 	 <td > 2024-12-22 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG16 Unicode </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3400r0.pdf">P3400R0</a> </td>
+	 	 <td > Specifying Contract Assertion Properties with Labels </td>
+	 	 <td > Joshua Berne </td>
+	 	 <td > 2025-01-09 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3402r2.html">P3402R2</a> </td>
+	 	 <td > A Safety Profile Verifying Initialization </td>
+	 	 <td > Marc-Andr&#233; Laverdi&#232;re, Christopher Lapkowski, Charles-Henri Gros </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3402r1.html">P3402R1</a> </td>
+	 	 <td > SG23 Safety and Security </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3407r1.html">P3407R1</a> </td>
+	 	 <td > Make idiomatic usage of `offsetof` well-defined </td>
+	 	 <td > Brian Bi </td>
+	 	 <td > 2025-01-11 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3407r0.html">P3407R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3411r1.html">P3411R1</a> </td>
+	 	 <td > `any_view` </td>
+	 	 <td > Hui Xie, S. Levent Yilmaz, Louis Dionne </td>
+	 	 <td > 2025-01-11 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3411r0.html">P3411R0</a> </td>
+	 	 <td > SG9 Ranges,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3412r1.pdf">P3412R1</a> </td>
+	 	 <td > String interpolation </td>
+	 	 <td > Bengt Gustafsson, Victor Zverovich </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3412r0.pdf">P3412R0</a> </td>
+	 	 <td > EWGI SG17: EWG Incubator,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3420r1.html">P3420R1</a> </td>
+	 	 <td > Reflection of Templates </td>
+	 	 <td > Andrei Alexandrescu, Barry Revzin, Daveed Vandevoorde, Michael Garland </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3420r0.html">P3420R0</a> </td>
+	 	 <td > SG7 Reflection </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3423r1.html">P3423R1</a> </td>
+	 	 <td > Extending User-Generated Diagnostic Messages </td>
+	 	 <td > Yihe Li </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3423r0.html">P3423R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3425r1.html">P3425R1</a> </td>
+	 	 <td > Reducing operation-state sizes for subobject child operations </td>
+	 	 <td > Lewis Baker </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3425r0.html">P3425R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3430r2.pdf">P3430R2</a> </td>
+	 	 <td > simd issues: explicit, unsequenced, identity-element position, and members of disabled simd </td>
+	 	 <td > Matthias Kretz </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3430r1.pdf">P3430R1</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3431r0.html">P3431R0</a> </td>
+	 	 <td > Deprecate const-qualifier on begin/end of views </td>
+	 	 <td > Jonathan M&#252;ller </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG9 Ranges </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3439r1.pdf">P3439R1</a> </td>
+	 	 <td > Chained comparisons: Safe, correct, efficient </td>
+	 	 <td > Herb Sutter </td>
+	 	 <td > 2025-01-06 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3439r0.pdf">P3439R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3475r1.pdf">P3475R1</a> </td>
+	 	 <td > Defang and deprecate memory_order::consume </td>
+	 	 <td > Hans Boehm </td>
+	 	 <td > 2025-01-11 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3475r0.pdf">P3475R0</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,EWG Evolution,LEWG Library Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3477r2.html">P3477R2</a> </td>
+	 	 <td > There are exactly 8 bits in a byte </td>
+	 	 <td > JF Bastien </td>
+	 	 <td > 2025-01-11 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3477r1.html">P3477R1</a> </td>
+	 	 <td > LEWG Library Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3480r3.pdf">P3480R3</a> </td>
+	 	 <td > std::simd is a range </td>
+	 	 <td > Matthias Kretz </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3480r2.pdf">P3480R2</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3481r1.html">P3481R1</a> </td>
+	 	 <td > std::execution::bulk() issues </td>
+	 	 <td > Lucian Radu Teodorescu, Ruslan Arutyunyan, Lewis Baker </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3481r0.pdf">P3481R0</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3491r1.html">P3491R1</a> </td>
+	 	 <td > define_static_{string,object,array} </td>
+	 	 <td > Barry Revzin, Wyatt Childers, Peter Dimov, Daveed Vandevoorde </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3491r0.html">P3491R0</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3496r0.html">P3496R0</a> </td>
+	 	 <td > Immediate-Escalating Expressions </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-01-06 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3499r0.pdf">P3499R0</a> </td>
+	 	 <td > Exploring strict contract predicates </td>
+	 	 <td > Lisa Lippincott, Timur Doumler, Joshua Berne </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3500r0.pdf">P3500R0</a> </td>
+	 	 <td > Are Contracts "safe"? </td>
+	 	 <td > Timur Doumler, Ga&#353;per A&#382;man, Joshua Berne </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3501r0.html">P3501R0</a> </td>
+	 	 <td > The ad-dressing of cats </td>
+	 	 <td > S. Davis Herring </td>
+	 	 <td > 2025-01-10 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3506r0.pdf">P3506R0</a> </td>
+	 	 <td > P2900 Is Still not Ready for C++26 </td>
+	 	 <td > Gabriel Dos Reis </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3516r0.html">P3516R0</a> </td>
+	 	 <td > Uninitialized algorithms for relocation </td>
+	 	 <td > Louis Dionne, Giuseppe D&#8217;Angelo </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3527r1.html">P3527R1</a> </td>
+	 	 <td > Pattern Matching: *variant-like* and `std::expected` </td>
+	 	 <td > Michael Park, Zach Laine </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3527r0.html">P3527R0</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3533r1.html">P3533R1</a> </td>
+	 	 <td > constexpr virtual inheritance </td>
+	 	 <td > Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-01-10 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3533r0.html">P3533R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3534r0.pdf">P3534R0</a> </td>
+	 	 <td > Avoid UB When Compiling Code That Violates Library Specification </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3541r1.html">P3541R1</a> </td>
+	 	 <td > Violation handlers vs `noexcept` </td>
+	 	 <td > Andrzej Krzemie&#324;ski </td>
+	 	 <td > 2025-01-07 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td > <a href="../2024/p3541r0.html">P3541R0</a> </td>
+	 	 <td > SG21 Contracts,SG23 Safety and Security,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3546r0.pdf">P3546R0</a> </td>
+	 	 <td > Explicit return type deduction for std::numeric_limits and numbers </td>
+	 	 <td > Thomas Mejstrik </td>
+	 	 <td > 2024-12-19 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWGI SG18: LEWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3547r0.html">P3547R0</a> </td>
+	 	 <td > Modeling Access Control With Reflection </td>
+	 	 <td > Dan Katz, Ville Voutilainen </td>
+	 	 <td > 2025-01-09 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG7 Reflection,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3548r0.pdf">P3548R0</a> </td>
+	 	 <td > P1030 `std::filesystem::path_view` forward progress options </td>
+	 	 <td > Niall Douglas </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3549r0.html">P3549R0</a> </td>
+	 	 <td > Diverging expressions </td>
+	 	 <td > Barry Revzin, Michael Park, Zach Laine, Bruno Cardoso Lopes </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3550r0.pdf">P3550R0</a> </td>
+	 	 <td > Imports cannot ... </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWGI SG17: EWG Incubator,LEWGI SG18: LEWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3552r0.pdf">P3552R0</a> </td>
+	 	 <td > Add a Coroutine Lazy Type </td>
+	 	 <td > Dietmar K&#252;hl, Maikel Nadolski </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3554r0.html">P3554R0</a> </td>
+	 	 <td > Non-transient allocation with vector and basic_string </td>
+	 	 <td > Barry Revzin, Peter Dimov </td>
+	 	 <td > 2025-01-06 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3555r0.html">P3555R0</a> </td>
+	 	 <td > An infinite range concept </td>
+	 	 <td > Jonathan M&#252;ller </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG9 Ranges </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3557r0.html">P3557R0</a> </td>
+	 	 <td > High-Quality Sender Diagnostics with Constexpr Exceptions </td>
+	 	 <td > Eric Niebler </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3558r0.pdf">P3558R0</a> </td>
+	 	 <td > Core Language Contracts By Default </td>
+	 	 <td > Joshua Berne, John Lakos </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,SG23 Safety and Security </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3559r0.html">P3559R0</a> </td>
+	 	 <td > Trivial relocation: One trait or two? </td>
+	 	 <td > Arthur O'Dwyer </td>
+	 	 <td > 2025-01-08 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3560r0.html">P3560R0</a> </td>
+	 	 <td > Error Handling in Reflection </td>
+	 	 <td > Barry Revzin, Peter Dimov </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3561r0.pdf">P3561R0</a> </td>
+	 	 <td > Index based coproduct operations on variant, and library wording </td>
+	 	 <td > Esa Pulkkinen </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWGI SG18: LEWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3564r0.html">P3564R0</a> </td>
+	 	 <td > Make the concurrent forward progress guarantee usable in `bulk` </td>
+	 	 <td > Mark Hoemmen, Bryce Adelstein Lelbach,Michael Garland </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG1 Concurrency and Parallelism </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3565r0.html">P3565R0</a> </td>
+	 	 <td > Virtual floating-point values </td>
+	 	 <td > S. Davis Herring </td>
+	 	 <td > 2025-01-10 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG6 Numerics </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3566r0.pdf">P3566R0</a> </td>
+	 	 <td > You shall not pass `char*` - Safety concerns working with unbounded null-terminated strings </td>
+	 	 <td > Marco Foco </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG23 Safety and Security,LEWG Library Evolution,LWG Library,ARG ABI Review Group </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3567r0.html">P3567R0</a> </td>
+	 	 <td > `flat_meow` Fixes </td>
+	 	 <td > Hui Xie, Louis Dionne, Arthur O'Dwyer </td>
+	 	 <td > 2025-01-11 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3568r0.html">P3568R0</a> </td>
+	 	 <td > break label; and continue label; </td>
+	 	 <td > Jan Schultke, Sarah Qui&#241;ones </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWGI SG17: EWG Incubator,SG22 Compatibility </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3569r0.pdf">P3569R0</a> </td>
+	 	 <td > Split define_aggregate from Reflection </td>
+	 	 <td > Shafik Yaghmour, Aaron Ballman, Erich Keane, Corentin Jabot, Vlad Serebrennikov </td>
+	 	 <td > 2025-01-11 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3572r0.pdf">P3572R0</a> </td>
+	 	 <td > Pattern matching </td>
+	 	 <td > Bjarne Stroustrup </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3573r0.pdf">P3573R0</a> </td>
+	 	 <td > Contract concerns </td>
+	 	 <td > Bjarne Stroustrup, Michael Hava, J. Daniel Garcia Sanchez,  Ran Regev, Gabriel Dos Reis, John Spicer, J.C. van Winkel, David Vandevoorde, Ville Voutilainen </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3574r0.pdf">P3574R0</a> </td>
+	 	 <td > Constexpr Callables </td>
+	 	 <td > Steve Downey </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3575r0.pdf">P3575R0</a> </td>
+	 	 <td > SG14: Low Latency/Games/Embedded/Financial Trading virtual Meeting Minutes 2024/11/13 </td>
+	 	 <td > Michael Wong </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG14 Low Latency </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3576r0.pdf">P3576R0</a> </td>
+	 	 <td > SG19: Machine Learning virtual Meeting Minutes to 2024/11/14-2024/12/12 </td>
+	 	 <td > Michael Wong </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG19 Machine Learning </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3577r0.pdf">P3577R0</a> </td>
+	 	 <td > Require a non-throwing default contract-violation handler </td>
+	 	 <td > John Lakos </td>
+	 	 <td > 2025-01-12 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3578r0.pdf">P3578R0</a> </td>
+	 	 <td > Language Safety and Grandma Safety </td>
+	 	 <td > Ryan McDougall </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,SG23 Safety and Security,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3579r0.html">P3579R0</a> </td>
+	 	 <td > Fix matching of non-type template parameters when matching template template parameters </td>
+	 	 <td > Matheus Izvekov </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3580r0.pdf">P3580R0</a> </td>
+	 	 <td > The Naming of Things </td>
+	 	 <td > Alan Talbot </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3581r0.pdf">P3581R0</a> </td>
+	 	 <td > No, inplace_vector shouldn't have an Allocator </td>
+	 	 <td > Nevin Liber </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3582r0.html">P3582R0</a> </td>
+	 	 <td > Observed a contract violation? Skip subsequent assertions! </td>
+	 	 <td > Andrzej Krzemie&#324;ski </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3583r0.pdf">P3583R0</a> </td>
+	 	 <td > Contracts, Types &amp; Functions </td>
+	 	 <td > Jonas Persson </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3584r0.pdf">P3584R0</a> </td>
+	 	 <td > Enrich Facade Creation Facilities for the Pointer-Semantics-Based Polymorphism Library - Proxy </td>
+	 	 <td > Mingxin Wang </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWGI SG18: LEWG Incubator,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3585r0.html">P3585R0</a> </td>
+	 	 <td > allocator_traits::is_internally_relocatable </td>
+	 	 <td > Pablo Halpern </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > LEWGI SG18: LEWG Incubator,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3586r0.html">P3586R0</a> </td>
+	 	 <td > The Plethora of Problems With Profiles </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3587r0.html">P3587R0</a> </td>
+	 	 <td > Reconsider reflection access for C++26 </td>
+	 	 <td > Lauri Vasama </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > SG7 Reflection,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3588r0.html">P3588R0</a> </td>
+	 	 <td > Allow static data members in local and unnamed classes </td>
+	 	 <td > Brian Bi </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3589r0.pdf">P3589R0</a> </td>
+	 	 <td > C++ Profiles: The Framework </td>
+	 	 <td > Gabriel Dos Reis </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3590r0.pdf">P3590R0</a> </td>
+	 	 <td > Constexpr Coroutines Burdens </td>
+	 	 <td > Daveed Vandevoorde </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-01 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+</table>
+<!-- end 2025-01 pre-Hagenberg -->
+<!-- begin 2025-03 post-Hagenberg -->
+<h1>
+	<a name="mailing2025-03">mailing2025-03 post-Hagenberg</a>
+</h1>
+<table border="1" summary="See previous paragraph.">
+	<tr>
+		<th>WG21 Number</th>
+		<th>Title</th>
+		<th>Author</th>
+		<th>Document Date</th>
+		<th>Mailing Date</th>
+		<th>Previous Version</th>
+		<th>Subgroup</th>
+		<th>Disposition<th>
+        <tr>
+            <th colspan="8">2025-03 post-Hagenberg</th>
+        </tr>
+
+	 <tr > 
+	 	 <td > <a href="../2025/n5004.pdf">N5004</a> </td>
+	 	 <td > 2025 Sofia Meeting Invitation and Information </td>
+	 	 <td > Vassil Vassilev, Vassil Keremidchiev, Maya Traykova </td>
+	 	 <td > 2025-01-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/n4991.pdf">N4991</a> </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/n5005.pdf">N5005</a> </td>
+	 	 <td > WG21 2025-01 Hagenberg Admin telecon minutes </td>
+	 	 <td > Nina Ranns </td>
+	 	 <td > 2025-01-31 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/n5006.pdf">N5006</a> </td>
+	 	 <td > 2025 WG21 admin telecon meetings (revised 2025-02-20) </td>
+	 	 <td > Herb Sutter </td>
+	 	 <td > 2025-03-03 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/n5007.pdf">N5007</a> </td>
+	 	 <td > WG21 02/2025 Hagenberg Minutes of Meeting </td>
+	 	 <td > Nina Ranns </td>
+	 	 <td > 2025-03-03 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/n5008.pdf">N5008</a> </td>
+	 	 <td > Working Draft, Programming Languages -- C++ </td>
+	 	 <td > Thomas K&#246;ppe </td>
+	 	 <td > 2025-03-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/n5001.pdf">N5001</a> </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/n5009.html">N5009</a> </td>
+	 	 <td > Editors' Report, Programming Languages -- C++ </td>
+	 	 <td > Thomas K&#246;ppe </td>
+	 	 <td > 2025-03-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+
+	 <tr > 
+	 	 <td > <a href="../2025/p0260r15.html">P0260R15</a> </td>
+	 	 <td > C++ Concurrent Queues </td>
+	 	 <td > Detlef Vollmann, Lawrence Crowl, Chris Mysen, Gor Nishanov </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p0260r14.html">P0260R14</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p0260r16.html">P0260R16</a> </td>
+	 	 <td > C++ Concurrent Queues </td>
+	 	 <td > Detlef Vollmann, Lawrence Crowl, Chris Mysen, Gor Nishanov </td>
+	 	 <td > 2025-02-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p0260r15.html">P0260R15</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p0876r20.pdf">P0876R20</a> </td>
+	 	 <td > fiber_context - fibers without scheduler </td>
+	 	 <td > Oliver Kowalke, Nat Goodspeed </td>
+	 	 <td > 2025-02-28 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p0876r19.pdf">P0876R19</a> </td>
+	 	 <td > EWG Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p1494r5.html">P1494R5</a> </td>
+	 	 <td > Partial program correctness </td>
+	 	 <td > S. Davis Herring </td>
+	 	 <td > 2025-03-04 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p1494r4.html">P1494R4</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p1967r14.html">P1967R14</a> </td>
+	 	 <td > #embed - a simple, scannable preprocessor-based resource acquisition method </td>
+	 	 <td > JeanHeyd Meneide </td>
+	 	 <td > 2025-02-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p1967r13.html">P1967R13</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2079r7.html">P2079R7</a> </td>
+	 	 <td > System execution context </td>
+	 	 <td > Lucian Radu Teodorescu, Ruslan Arutyunyan, Lee Howes, Michael Voss </td>
+	 	 <td > 2025-02-12 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2079r6.html">P2079R6</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2287r4.html">P2287R4</a> </td>
+	 	 <td > Designated-initializers for base classes </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-03-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p2287r3.html">P2287R3</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2414r6.pdf">P2414R6</a> </td>
+	 	 <td > Pointer lifetime-end zap proposed solutions </td>
+	 	 <td > Paul E. McKenney, Maged Michael, Jens Maurer, Peter Sewell, Martin Uecker, Hans Boehm, Hubert Tong, Niall Douglas, Thomas Rodgers, Will Deacon, Michael Wong, David Goldblatt, Kostya Serebryany, Anthony Williams,  Tom Scogland, and JF Bastien </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2414r5.pdf">P2414R5</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2663r7.html">P2663R7</a> </td>
+	 	 <td > Proposal to support interleaved complex values in std::simd </td>
+	 	 <td > Daniel Towner, Ruslan Arutyunyan </td>
+	 	 <td > 2025-02-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2663r6.html">P2663R6</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2719r4.html">P2719R4</a> </td>
+	 	 <td > Type-aware allocation and deallocation functions </td>
+	 	 <td > Louis Dionne, Oliver Hunt </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2719r3.html">P2719R3</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2758r5.html">P2758R5</a> </td>
+	 	 <td > Emitting messages at compile time </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-03-16 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2758r4.html">P2758R4</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2781r6.html">P2781R6</a> </td>
+	 	 <td > std::constexpr_wrapper </td>
+	 	 <td > Zach Laine, Matthias Kretz, Hana Dusi&#769;kova&#769; </td>
+	 	 <td > 2025-02-16 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p2781r5.html">P2781R5</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2781r7.html">P2781R7</a> </td>
+	 	 <td > std::constexpr_wrapper </td>
+	 	 <td > Zach Laine, Matthias Kretz, Hana Dusi&#769;kova&#769; </td>
+	 	 <td > 2025-03-09 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2781r6.html">P2781R6</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2781r8.html">P2781R8</a> </td>
+	 	 <td > std::constexpr_wrapper </td>
+	 	 <td > Zach Laine, Matthias Kretz, Hana Dusi&#769;kova&#769; </td>
+	 	 <td > 2025-03-16 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2781r7.html">P2781R7</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2786r12.html">P2786R12</a> </td>
+	 	 <td > Trivial Relocatability For C++26 </td>
+	 	 <td > Pablo Halpern, Joshua Berne, Corentin Jabot, Pablo Halpern, Lori Hughes </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p2786r11.html">P2786R11</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2786r13.html">P2786R13</a> </td>
+	 	 <td > Trivial Relocatability For C++26 </td>
+	 	 <td > Pablo Halpern, Joshua Berne, Corentin Jabot, Pablo Halpern, Lori Hughes </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2786r12.html">P2786R12</a> </td>
+	 	 <td > All of WG21 </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2825r5.html">P2825R5</a> </td>
+	 	 <td > Overload resolution hook: declcall( unevaluated-call-expression ) </td>
+	 	 <td > Ga&#353;per A&#382;man </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2825r4.html">P2825R4</a> </td>
+	 	 <td > EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2830r10.html">P2830R10</a> </td>
+	 	 <td > Standardized Constexpr Type Ordering </td>
+	 	 <td > Ga&#353;per A&#382;man, Nathan Nichols </td>
+	 	 <td > 2025-03-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2830r9.html">P2830R9</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2841r7.pdf">P2841R7</a> </td>
+	 	 <td > Concept and variable-template template-parameters </td>
+	 	 <td > Corentin Jabot, Ga&#353;per A&#382;man, James Touton, Hubert Tong </td>
+	 	 <td > 2025-02-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2841r6.pdf">P2841R6</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2843r2.pdf">P2843R2</a> </td>
+	 	 <td > Preprocessing is never undefined </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2843r1.pdf">P2843R1</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2846r6.pdf">P2846R6</a> </td>
+	 	 <td > reserve_hint: Eagerly reserving memory for not-quite-sized lazy ranges </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-02-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p2846r5.pdf">P2846R5</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2863r9.html">P2863R9</a> </td>
+	 	 <td > Review Annex D for C++26 </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-03-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p2863r8.html">P2863R8</a> </td>
+	 	 <td > EWG Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2873r3.pdf">P2873R3</a> </td>
+	 	 <td > Remove Deprecated locale category facets for Unicode from C++26 </td>
+	 	 <td > Alisdair Meredith, Tom Honermann </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p2873r2.pdf">P2873R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2876r2.html">P2876R2</a> </td>
+	 	 <td > Proposal to extend std::simd with more constructors and accessors </td>
+	 	 <td > Daniel Towner, Matthias Kretz, Ruslan Arutyunyan </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p2876r1.html">P2876R1</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2899r1.pdf">P2899R1</a> </td>
+	 	 <td > Contracts for C++ - Rationale </td>
+	 	 <td > Timur Doumler, Joshua Berne, Andrzej Krzemie&#324;ski, Rostislav Khlebnikov </td>
+	 	 <td > 2025-03-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2899r0.pdf">P2899R0</a> </td>
+	 	 <td > SG21 Contracts,EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2900r14.pdf">P2900R14</a> </td>
+	 	 <td > Contracts for C++ </td>
+	 	 <td > Joshua Berne, Timur Doumler, Andrzej Krzemie&#324;ski </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2900r13.pdf">P2900R13</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2933r4.html">P2933R4</a> </td>
+	 	 <td > Extend &lt;bit&gt; header function with overloads for std::simd </td>
+	 	 <td > Daniel Towner, Ruslan Arutyunyan </td>
+	 	 <td > 2025-02-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2933r3.html">P2933R3</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2988r10.pdf">P2988R10</a> </td>
+	 	 <td > std::optional&lt;T&amp;&gt; </td>
+	 	 <td > Steve Downey, Peter Sommerlad </td>
+	 	 <td > 2025-02-18 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2988r9.pdf">P2988R9</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2988r11.pdf">P2988R11</a> </td>
+	 	 <td > std::optional&lt;T&amp;&gt; </td>
+	 	 <td > Steve Downey, Peter Sommerlad </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2988r10.pdf">P2988R10</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2996r10.html">P2996R10</a> </td>
+	 	 <td > Reflection for C++26 </td>
+	 	 <td > Barry Revzin, Wyatt Childers, Peter Dimov, Andrew Sutton, Faisal Vali, Daveed Vandevoorde, Dan Katz </td>
+	 	 <td > 2025-02-27 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p2996r9.html">P2996R9</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3008r4.html">P3008R4</a> </td>
+	 	 <td > Atomic floating-point min/max </td>
+	 	 <td > Gonzalo Brito Gadeschi, David Sankel </td>
+	 	 <td > 2025-02-20 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3008r3.html">P3008R3</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3016r6.html">P3016R6</a> </td>
+	 	 <td > Resolve inconsistencies in begin/end for valarray and braced initializer lists </td>
+	 	 <td > Arthur O'Dwyer </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3016r5.html">P3016R5</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3019r13.html">P3019R13</a> </td>
+	 	 <td > Vocabulary Types for Composite Class Design </td>
+	 	 <td > Jonathan Coe, Antony Peacock, Sean Parent </td>
+	 	 <td > 2025-02-09 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3019r12.pdf">P3019R12</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3019r14.pdf">P3019R14</a> </td>
+	 	 <td > Vocabulary Types for Composite Class Design </td>
+	 	 <td > Jonathan Coe, Antony Peacock, Sean Parent </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3019r13.html">P3019R13</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3060r2.html">P3060R2</a> </td>
+	 	 <td > Add std::views::indices(n) </td>
+	 	 <td > Weile Wei, Zhihao Yuan </td>
+	 	 <td > 2025-02-21 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3060r1.html">P3060R1</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3070r3.html">P3070R3</a> </td>
+	 	 <td > Formatting enums </td>
+	 	 <td > Victor Zverovich </td>
+	 	 <td > 2025-02-16 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3070r2.html">P3070R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3074r6.html">P3074R6</a> </td>
+	 	 <td > trivial unions (was std::uninitialized&lt;T&gt;) </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3074r5.html">P3074R5</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3074r7.html">P3074R7</a> </td>
+	 	 <td > trivial unions (was std::uninitialized&lt;T&gt;) </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3074r6.html">P3074R6</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3081r2.pdf">P3081R2</a> </td>
+	 	 <td > Core safety profiles for C++26 </td>
+	 	 <td > Herb Sutter </td>
+	 	 <td > 2025-02-03 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3081r1.pdf">P3081R1</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3096r6.pdf">P3096R6</a> </td>
+	 	 <td > Function Parameter Reflection in Reflection for C++26 </td>
+	 	 <td > Adam Lach, Walter Genovese </td>
+	 	 <td > 2025-02-07 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3096r5.pdf">P3096R5</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3096r7.pdf">P3096R7</a> </td>
+	 	 <td > Function Parameter Reflection in Reflection for C++26 </td>
+	 	 <td > Adam Lach, Walter Genovese </td>
+	 	 <td > 2025-03-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3096r6.pdf">P3096R6</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3104r3.html">P3104R3</a> </td>
+	 	 <td > Bit permutations </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3104r2.html">P3104R2</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3111r4.html">P3111R4</a> </td>
+	 	 <td > Atomic Reduction Operations </td>
+	 	 <td > Gonzalo Brito Gadeschi, Simon Cooksey, Daniel Lustig </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3111r3.html">P3111R3</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3111r5.html">P3111R5</a> </td>
+	 	 <td > Atomic Reduction Operations </td>
+	 	 <td > Gonzalo Brito Gadeschi, Simon Cooksey, Daniel Lustig </td>
+	 	 <td > 2025-02-20 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3111r4.html">P3111R4</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3137r3.html">P3137R3</a> </td>
+	 	 <td > views::to_input </td>
+	 	 <td > Tim Song </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3137r2.html">P3137R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3149r9.html">P3149R9</a> </td>
+	 	 <td > async_scope -- Creating scopes for non-sequential concurrency </td>
+	 	 <td > Ian Petersen, Jessica Wong; Dietmar K&#252;hl; J&#225;n Ondru&#353;ek; Kirk Shoop; Lee Howes; Lucian Radu Teodorescu; Ruslan Arutyunyan; </td>
+	 	 <td > 2025-02-18 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3149r8.html">P3149R8</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3161r3.html">P3161R3</a> </td>
+	 	 <td > Unified integer overflow arithmetic </td>
+	 	 <td > Tiago Freire </td>
+	 	 <td > 2025-01-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3161r2.html">P3161R2</a> </td>
+	 	 <td > SG6 Numerics </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3179r6.html">P3179R6</a> </td>
+	 	 <td > C++ parallel range algorithms </td>
+	 	 <td > Ruslan Arutyunyan, Alexey Kukanov, Bryce Adelstein Lelbach </td>
+	 	 <td > 2025-02-07 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3179r5.html">P3179R5</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3179r7.html">P3179R7</a> </td>
+	 	 <td > C++ parallel range algorithms </td>
+	 	 <td > Ruslan Arutyunyan, Alexey Kukanov, Bryce Adelstein Lelbach </td>
+	 	 <td > 2025-02-28 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3179r6.html">P3179R6</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3229r1.pdf">P3229R1</a> </td>
+	 	 <td > Making erroneous behaviour compatible with Contracts </td>
+	 	 <td > Timur Doumler, Joshua Berne, Ga&#353;per A&#382;man </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3229r0.pdf">P3229R0</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3230r2.html">P3230R2</a> </td>
+	 	 <td > views::unchecked_(take|drop) </td>
+	 	 <td > Hewill Kang </td>
+	 	 <td > 2025-02-27 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3230r1.html">P3230R1</a> </td>
+	 	 <td > SG9 Ranges,LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3242r1.html">P3242R1</a> </td>
+	 	 <td > Copy and fill for mdspan </td>
+	 	 <td > Nicolas Morales, Christian Trott, Mark Hoemmen, Damien Lebrun-Grandie </td>
+	 	 <td > 2025-03-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3242r0.html">P3242R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3248r3.html">P3248R3</a> </td>
+	 	 <td > Require [u]intptr_t </td>
+	 	 <td > Gonzalo Brito Gadeschi </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3248r2.html">P3248R2</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3284r3.html">P3284R3</a> </td>
+	 	 <td > `write_env` and `unstoppable` Sender Adaptors </td>
+	 	 <td > Eric Niebler </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3284r2.html">P3284R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3287r3.pdf">P3287R3</a> </td>
+	 	 <td > Exploration of namespaces for std::simd </td>
+	 	 <td > Matthias Kretz </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3287r2.pdf">P3287R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3296r4.html">P3296R4</a> </td>
+	 	 <td > let_async_scope </td>
+	 	 <td > Anthony Williams </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3296r3.html">P3296R3</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3319r3.pdf">P3319R3</a> </td>
+	 	 <td > Add an iota object for simd (and more) </td>
+	 	 <td > Matthias Kretz </td>
+	 	 <td > 2025-02-03 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3319r2.pdf">P3319R2</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3319r4.pdf">P3319R4</a> </td>
+	 	 <td > Add an iota object for simd (and more) </td>
+	 	 <td > Matthias Kretz </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3319r3.pdf">P3319R3</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3319r5.pdf">P3319R5</a> </td>
+	 	 <td > Add an iota object for simd (and more) </td>
+	 	 <td > Matthias Kretz </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3319r4.pdf">P3319R4</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3331r1.pdf">P3331R1</a> </td>
+	 	 <td > Accessing The First and Last Elements in Associative Containers </td>
+	 	 <td > Nikita Sakharin </td>
+	 	 <td > 2025-02-06 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3331r0.pdf">P3331R0</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3349r1.html">P3349R1</a> </td>
+	 	 <td > Converting contiguous iterators to pointers </td>
+	 	 <td > Jonathan Wakely </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3349r0.html">P3349R0</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3365r1.pdf">P3365R1</a> </td>
+	 	 <td > Remove the Deprecated iterator Class Template from C++26 </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-03-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3365r0.pdf">P3365R0</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3366r1.pdf">P3366R1</a> </td>
+	 	 <td > Remove Deprecated Atomic Initialization API from C++26 </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-03-16 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3366r0.pdf">P3366R0</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3367r4.html">P3367R4</a> </td>
+	 	 <td > constexpr coroutines </td>
+	 	 <td > Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-02-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3367r3.html">P3367R3</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3372r3.html">P3372R3</a> </td>
+	 	 <td > constexpr containers and adapters </td>
+	 	 <td > Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3372r2.html">P3372R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3378r2.html">P3378R2</a> </td>
+	 	 <td > constexpr exception types </td>
+	 	 <td > Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3378r1.html">P3378R1</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3383r2.html">P3383R2</a> </td>
+	 	 <td > mdspan.at() </td>
+	 	 <td > Stephan Lachnit, Xavier Bonaventura </td>
+	 	 <td > 2025-02-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3383r1.html">P3383R1</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3385r4.html">P3385R4</a> </td>
+	 	 <td > Attributes reflection </td>
+	 	 <td > Aurelien Cassagnes </td>
+	 	 <td > 2025-03-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3385r3.html">P3385R3</a> </td>
+	 	 <td > SG7 Reflection,EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3394r2.html">P3394R2</a> </td>
+	 	 <td > Annotations for Reflection </td>
+	 	 <td > Daveed Vandevoorde, Wyatt Childers, Dan Katz, Barry Revzin </td>
+	 	 <td > 2025-03-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3394r1.html">P3394R1</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3395r1.html">P3395R1</a> </td>
+	 	 <td > Fix encoding issues and add a formatter for std::error_code </td>
+	 	 <td > Victor Zverovich </td>
+	 	 <td > 2025-03-12 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3395r0.html">P3395R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3395r2.html">P3395R2</a> </td>
+	 	 <td > Fix encoding issues and add a formatter for std::error_code </td>
+	 	 <td > Victor Zverovich </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3395r1.html">P3395R1</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3400r1.pdf">P3400R1</a> </td>
+	 	 <td > Specifying Contract Assertion Properties with Labels </td>
+	 	 <td > Joshua Berne </td>
+	 	 <td > 2025-02-28 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3400r0.pdf">P3400R0</a> </td>
+	 	 <td > SG21 Contracts,All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3417r1.pdf">P3417R1</a> </td>
+	 	 <td > Handling exceptions thrown from contract predicates </td>
+	 	 <td > Ga&#353;per A&#382;man, Timur Doumler </td>
+	 	 <td > 2025-03-05 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3417r0.pdf">P3417R0</a> </td>
+	 	 <td > SG21 Contracts,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3430r3.pdf">P3430R3</a> </td>
+	 	 <td > simd issues: explicit, unsequenced, identity-element position, and members of disabled simd </td>
+	 	 <td > Matthias Kretz </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3430r2.pdf">P3430R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3441r1.html">P3441R1</a> </td>
+	 	 <td > Rename simd_split to simd_chunk </td>
+	 	 <td > Daniel Towner, Ruslan Arutyunyan </td>
+	 	 <td > 2025-01-29 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3441r0.html">P3441R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3441r2.html">P3441R2</a> </td>
+	 	 <td > Rename simd_split to simd_chunk </td>
+	 	 <td > Daniel Towner, Ruslan Arutyunyan </td>
+	 	 <td > 2025-01-30 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3441r1.html">P3441R1</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3442r1.pdf">P3442R1</a> </td>
+	 	 <td > [[invalidate_dereferencing]] attribute </td>
+	 	 <td > Patrice Roy, Nicolas Fleury </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3442r0.pdf">P3442R0</a> </td>
+	 	 <td > SG14 Low Latency,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3471r3.html">P3471R3</a> </td>
+	 	 <td > Standard Library Hardening </td>
+	 	 <td > Konstantin Varlamov, Louis Dionne </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3471r2.html">P3471R2</a> </td>
+	 	 <td > SG23 Safety and Security,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3471r4.html">P3471R4</a> </td>
+	 	 <td > Standard Library Hardening </td>
+	 	 <td > Konstantin Varlamov, Louis Dionne </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3471r3.html">P3471R3</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3472r1.html">P3472R1</a> </td>
+	 	 <td > Make fiber_context::can_resume() const </td>
+	 	 <td > Andrzej Krzemie&#324;ski </td>
+	 	 <td > 2025-01-28 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3472r0.html">P3472R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3475r2.pdf">P3475R2</a> </td>
+	 	 <td > Defang and deprecate memory_order::consume </td>
+	 	 <td > Hans Boehm </td>
+	 	 <td > 2025-02-26 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3475r1.pdf">P3475R1</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,EWG Evolution,LEWG Library Evolution,CWG Core,LWG Library </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3477r3.html">P3477R3</a> </td>
+	 	 <td > There are exactly 8 bits in a byte </td>
+	 	 <td > JF Bastien </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3477r2.html">P3477R2</a> </td>
+	 	 <td > LEWG Library Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3477r4.html">P3477R4</a> </td>
+	 	 <td > There are exactly 8 bits in a byte </td>
+	 	 <td > JF Bastien </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3477r3.html">P3477R3</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3477r5.html">P3477R5</a> </td>
+	 	 <td > There are exactly 8 bits in a byte </td>
+	 	 <td > JF Bastien </td>
+	 	 <td > 2025-03-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3477r4.html">P3477R4</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3480r4.pdf">P3480R4</a> </td>
+	 	 <td > std::simd is a range </td>
+	 	 <td > Matthias Kretz </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3480r3.pdf">P3480R3</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3481r2.html">P3481R2</a> </td>
+	 	 <td > std::execution::bulk() issues </td>
+	 	 <td > Lucian Radu Teodorescu, Ruslan Arutyunyan, Lewis Baker </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3481r1.html">P3481R1</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3482r1.html">P3482R1</a> </td>
+	 	 <td > Design for C++ networking based on IETF TAPS </td>
+	 	 <td > Thomas Rodgers, Woven By Toyota, thomas.rodgers@woven-planet.global, Dietmar K&#252;hl, Bloomberg, dkuhl@bloomberg.net </td>
+	 	 <td > 2025-01-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3482r0.html">P3482R0</a> </td>
+	 	 <td > SG4 Networking </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3491r2.html">P3491R2</a> </td>
+	 	 <td > define_static_{string,object,array} </td>
+	 	 <td > Barry Revzin, Wyatt Childers, Peter Dimov, Daveed Vandevoorde </td>
+	 	 <td > 2025-03-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3491r1.html">P3491R1</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3492r1.html">P3492R1</a> </td>
+	 	 <td > Sized deallocation for placement new </td>
+	 	 <td > Lauri Vasama </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3492r0.html">P3492R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3492r2.html">P3492R2</a> </td>
+	 	 <td > Sized deallocation for placement new </td>
+	 	 <td > Lauri Vasama </td>
+	 	 <td > 2025-02-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3492r1.html">P3492R1</a> </td>
+	 	 <td > EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3499r1.pdf">P3499R1</a> </td>
+	 	 <td > Exploring strict contract predicates </td>
+	 	 <td > Timur Doumler, Lisa Lippincott, Joshua Berne </td>
+	 	 <td > 2025-02-09 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3499r0.pdf">P3499R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3500r1.pdf">P3500R1</a> </td>
+	 	 <td > Are Contracts "safe"? </td>
+	 	 <td > Timur Doumler, Ga&#353;per A&#382;man, Joshua Berne, Ryan McDougall </td>
+	 	 <td > 2025-02-09 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3500r0.pdf">P3500R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3503r1.html">P3503R1</a> </td>
+	 	 <td > Make type-erased allocator use in promise and packaged_task consistent </td>
+	 	 <td > Nicolas Morales, Jonathan Wakely </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3503r0.html">P3503R0</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3503r2.html">P3503R2</a> </td>
+	 	 <td > Make type-erased allocator use in promise and packaged_task consistent </td>
+	 	 <td > Nicolas Morales, Jonathan Wakely </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3503r1.html">P3503R1</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3505r0.html">P3505R0</a> </td>
+	 	 <td > Fix the default floating-point representation in std::format </td>
+	 	 <td > Victor Zverovich, Junekey Jeon </td>
+	 	 <td > 2025-03-16 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3516r1.html">P3516R1</a> </td>
+	 	 <td > Uninitialized algorithms for relocation </td>
+	 	 <td > Louis Dionne, Giuseppe D&#8217;Angelo </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3516r0.html">P3516R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3526r0.html">P3526R0</a> </td>
+	 	 <td > Container truncation </td>
+	 	 <td > Peter Bindels, Eric Fiselier </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3533r2.html">P3533R2</a> </td>
+	 	 <td > constexpr virtual inheritance </td>
+	 	 <td > Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-02-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3533r1.html">P3533R1</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3537r1.pdf">P3537R1</a> </td>
+	 	 <td > Presentation on Concurrent Queue API </td>
+	 	 <td > Detlef Vollmann </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3537r0.pdf">P3537R0</a> </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3540r1.html">P3540R1</a> </td>
+	 	 <td > #embed Parameter offset </td>
+	 	 <td > JeanHeyd Meneide </td>
+	 	 <td > 2025-02-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2024/p3540r0.html">P3540R0</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3544r0.html">P3544R0</a> </td>
+	 	 <td > ranges::to view </td>
+	 	 <td > Hewill Kang </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG9 Ranges </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3547r1.html">P3547R1</a> </td>
+	 	 <td > Modeling Access Control With Reflection </td>
+	 	 <td > Dan Katz, Ville Voutilainen </td>
+	 	 <td > 2025-02-09 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3547r0.html">P3547R0</a> </td>
+	 	 <td > SG7 Reflection,EWG Evolution,LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3552r1.pdf">P3552R1</a> </td>
+	 	 <td > Add a Coroutine Task Type </td>
+	 	 <td > Dietmar K&#252;hl, Maikel Nadolski </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3552r0.pdf">P3552R0</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3556r0.pdf">P3556R0</a> </td>
+	 	 <td > Input files are source files </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3557r1.html">P3557R1</a> </td>
+	 	 <td > High-Quality Sender Diagnostics with Constexpr Exceptions </td>
+	 	 <td > Eric Niebler </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3557r0.html">P3557R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3558r1.pdf">P3558R1</a> </td>
+	 	 <td > Core Language Contracts By Default </td>
+	 	 <td > Joshua Berne, John Lakos </td>
+	 	 <td > 2025-02-03 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3558r0.pdf">P3558R0</a> </td>
+	 	 <td > SG21 Contracts,SG23 Safety and Security </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3561r1.pdf">P3561R1</a> </td>
+	 	 <td > Index based coproduct operations on variant, and library wording </td>
+	 	 <td > Esa Pulkkinen </td>
+	 	 <td > 2025-01-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3561r0.pdf">P3561R0</a> </td>
+	 	 <td > LEWGI SG18: LEWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3568r1.html">P3568R1</a> </td>
+	 	 <td > break label; and continue label; </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-03-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3568r0.html">P3568R0</a> </td>
+	 	 <td > SG22 Compatibility,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3570r0.html">P3570R0</a> </td>
+	 	 <td > optional variants in sender/receiver </td>
+	 	 <td > Fabio Fracassi </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3579r1.html">P3579R1</a> </td>
+	 	 <td > Fix matching of non-type template parameters when matching template template parameters </td>
+	 	 <td > Matheus Izvekov </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3579r0.html">P3579R0</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3589r1.pdf">P3589R1</a> </td>
+	 	 <td > C++ Profiles: The Framework </td>
+	 	 <td > Gabriel Dos Reis </td>
+	 	 <td > 2025-02-03 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3589r0.pdf">P3589R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3591r0.pdf">P3591R0</a> </td>
+	 	 <td > Contextualizing Contracts Concerns </td>
+	 	 <td > Joshua Berne, Timur Doumler </td>
+	 	 <td > 2025-02-03 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3592r0.pdf">P3592R0</a> </td>
+	 	 <td > Resolving Concerns with const-ification </td>
+	 	 <td > Joshua Berne, Timur Doumler </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3599r0.pdf">P3599R0</a> </td>
+	 	 <td > Initial Implicit Contract Assertions </td>
+	 	 <td > Joshua Berne, Timur Doumler </td>
+	 	 <td > 2025-02-03 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,SG23 Safety and Security,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3603r0.html">P3603R0</a> </td>
+	 	 <td > Consteval-only Values and Consteval Variables </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-03-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3605r0.pdf">P3605R0</a> </td>
+	 	 <td > isqrt: A function to calculate integer square root of the nonnegative integer </td>
+	 	 <td > Nikita Sakharin </td>
+	 	 <td > 2025-02-06 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWGI SG18: LEWG Incubator,LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3606r0.html">P3606R0</a> </td>
+	 	 <td > On Overload Resolution, Exact Matches and Clever Implementations </td>
+	 	 <td > Corentin Jabot, Younan Zhang </td>
+	 	 <td > 2025-01-27 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3608r0.html">P3608R0</a> </td>
+	 	 <td > Contracts and profiles: what can we reasonably ship in C++26 </td>
+	 	 <td > Ville Voutilainen </td>
+	 	 <td > 2025-02-01 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3611r0.pdf">P3611R0</a> </td>
+	 	 <td > Dealing with pointer errors: Separating static and dynamic checking </td>
+	 	 <td > Bjarne Stroustrup </td>
+	 	 <td > 2025-02-04 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG23 Safety and Security,EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3613r0.html">P3613R0</a> </td>
+	 	 <td > On the beating of horses, and other matters </td>
+	 	 <td > Tim Song </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG9 Ranges </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3614r0.html">P3614R0</a> </td>
+	 	 <td > Do not remove nor postpone access_context::unchecked </td>
+	 	 <td > Ville Voutilainen </td>
+	 	 <td > 2025-02-06 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3615r0.html">P3615R0</a> </td>
+	 	 <td > C++ Standard Library Ready Issues to be moved in Hagenberg, Feb. 2025 </td>
+	 	 <td > Jonathan Wakely </td>
+	 	 <td > 2025-02-07 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3616r0.html">P3616R0</a> </td>
+	 	 <td > Remove contracts on virtual functions for now </td>
+	 	 <td > Ville Voutilainen </td>
+	 	 <td > 2025-02-08 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3618r0.html">P3618R0</a> </td>
+	 	 <td > Allow attaching main to the global module </td>
+	 	 <td > Michael Spencer </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3619r0.pdf">P3619R0</a> </td>
+	 	 <td > Counter-examples for <a href="../2025/p2688r5.html">P2688R5</a> </td>
+	 	 <td > Vlad Serebrennikov, Tymofii Kutlov, Sergey Anisimov </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3619r1.pdf">P3619R1</a> </td>
+	 	 <td > Counter-examples for <a href="../2025/p2688r5.html">P2688R5</a> </td>
+	 	 <td > Vlad Serebrennikov, Tymofii Kutlov, Sergey Anisimov </td>
+	 	 <td > 2025-02-12 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3619r0.pdf">P3619R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3620r0.pdf">P3620R0</a> </td>
+	 	 <td > Concerns with the proposed addition of fibers to C++ 26 </td>
+	 	 <td > David Chisnall, Matthew Taylor </td>
+	 	 <td > 2025-02-10 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3623r0.html">P3623R0</a> </td>
+	 	 <td > Add noexcept to [iterator.range] (LWG 3537) </td>
+	 	 <td > Arthur O'Dwyer </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3625r0.pdf">P3625R0</a> </td>
+	 	 <td > either neither </td>
+	 	 <td > Michael Florian Hava </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3626r0.pdf">P3626R0</a> </td>
+	 	 <td > Make predicate exceptions propagate by default </td>
+	 	 <td > Timur Doumler </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3627r0.pdf">P3627R0</a> </td>
+	 	 <td > Easy-to-adopt security profiles for preventing RCE (remote code execution) in existing C++ code </td>
+	 	 <td > Ulfar Erlingsson </td>
+	 	 <td > 2025-02-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG23 Safety and Security </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3628r0.html">P3628R0</a> </td>
+	 	 <td > break label; and continue label;, tl; dr </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-02-12 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWGI SG17: EWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3630r0.pdf">P3630R0</a> </td>
+	 	 <td > Slides for <a href="../2025/p3568r0.html">P3568R0</a> </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-02-12 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3632r0.pdf">P3632R0</a> </td>
+	 	 <td > <a href="../2025/p3564r0.html">P3564R0</a>: Make the concurrent forward progress guarantee usable in bulk </td>
+	 	 <td > Mark Hoemmen </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG1 Concurrency and Parallelism </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3632r1.pdf">P3632R1</a> </td>
+	 	 <td > <a href="../2025/p3564r0.html">P3564R0</a>: Make the concurrent forward progress guarantee usable in bulk </td>
+	 	 <td > Mark Hoemmen </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td > <a href="../2025/p3632r0.pdf">P3632R0</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3633r0.pdf">P3633R0</a> </td>
+	 	 <td > A Byte is a Byte </td>
+	 	 <td > Murat Can Cagri </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3635r0.pdf">P3635R0</a> </td>
+	 	 <td > We shouldn't rush to require either CHAR_BIT==8 or (u)intNN_t </td>
+	 	 <td > Nevin Liber </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3636r0.pdf">P3636R0</a> </td>
+	 	 <td > LEWG Hagenberg presentation for P3581 No, inplace_vector shouldn't have an Allocator </td>
+	 	 <td > Nevin Liber </td>
+	 	 <td > 2025-02-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3637r0.pdf">P3637R0</a> </td>
+	 	 <td > Inherit std::meta::exception from std::exception </td>
+	 	 <td > Victor Zverovich, Nevin Liber, Michael Hava </td>
+	 	 <td > 2025-03-08 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3638r0.html">P3638R0</a> </td>
+	 	 <td > Core Language Working Group "ready" Issues for the February, 2025 meeting </td>
+	 	 <td > Jens Maurer </td>
+	 	 <td > 2025-02-14 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > CWG Core </td>
+	 	 <td > Adopted 2025-02 </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3639r0.html">P3639R0</a> </td>
+	 	 <td > The _BitInt Debate </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-02-20 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG6 Numerics,EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3640r0.pdf">P3640R0</a> </td>
+	 	 <td > Make contracts reliable by default </td>
+	 	 <td > Jonas Persson </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,SG23 Safety and Security,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3641r0.html">P3641R0</a> </td>
+	 	 <td > Rename std::observable to std::observable_checkpoint, and add a feature-test macro </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-03-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3642r0.html">P3642R0</a> </td>
+	 	 <td > Carry-less product: std::clmul </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-03-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG6 Numerics,LEWGI SG18: LEWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3643r0.html">P3643R0</a> </td>
+	 	 <td > std::to_signed and std::to_unsigned </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-03-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3650r0.pdf">P3650R0</a> </td>
+	 	 <td > 21st Century C++ </td>
+	 	 <td > Bjarne Stroustrup </td>
+	 	 <td > 2025-03-05 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3651r0.pdf">P3651R0</a> </td>
+	 	 <td > Note to the C++ standards committee members </td>
+	 	 <td > Bjarne Stroustrup </td>
+	 	 <td > 2025-03-06 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3652r0.html">P3652R0</a> </td>
+	 	 <td > Constexpr floating-point &lt;charconv&gt; functions </td>
+	 	 <td > L&#233;n&#225;rd Szolnoki </td>
+	 	 <td > 2025-03-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWGI SG18: LEWG Incubator,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3654r0.pdf">P3654R0</a> </td>
+	 	 <td > Slides for P3516 </td>
+	 	 <td > Giuseppe D'Angelo, Louis Dionne </td>
+	 	 <td > 2025-03-09 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3655r0.html">P3655R0</a> </td>
+	 	 <td > zstring_view </td>
+	 	 <td > Peter Bindels, Hana Dusikova, Jeremy Rifkin </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3656r0.pdf">P3656R0</a> </td>
+	 	 <td > Initial draft proposal for core language UB white paper: Process and major work items </td>
+	 	 <td > Herb Sutter, Ga&#353;per A&#382;man </td>
+	 	 <td > 2025-03-11 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3657r0.pdf">P3657R0</a> </td>
+	 	 <td > A Grammar for Whitespace Characters </td>
+	 	 <td > Alisdair Meredith </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3658r0.pdf">P3658R0</a> </td>
+	 	 <td > Adjust identifier following new Unicode recommendations </td>
+	 	 <td > Robin Leroy </td>
+	 	 <td > 2025-03-13 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG16 Unicode </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3660r0.html">P3660R0</a> </td>
+	 	 <td > Improve `reference_wrapper` Ergonomics </td>
+	 	 <td > Jeremy Rifkin </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWGI SG18: LEWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3661r0.html">P3661R0</a> </td>
+	 	 <td > Attributes, annotations, labels </td>
+	 	 <td > Andrzej Krzemie&#324;ski </td>
+	 	 <td > 2025-03-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3662r0.html">P3662R0</a> </td>
+	 	 <td > Improve Increment and Decrement Operator Syntax </td>
+	 	 <td > Jeremy Rifkin </td>
+	 	 <td > 2025-03-17 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > EWGI SG17: EWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3663r0.html">P3663R0</a> </td>
+	 	 <td > Future-proof `submdspan-mapping`? </td>
+	 	 <td > Mark Hoemmen </td>
+	 	 <td > 2025-03-15 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3664r0.html">P3664R0</a> </td>
+	 	 <td > Make variant_size SFINAE friendly </td>
+	 	 <td > Zach Laine </td>
+	 	 <td > 2025-03-16 </td>
+	 	 <td > 2025-03 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+
+	  </table>
+<!-- end 2025-03 post-Hagenberg -->
+<!-- begin 2025-04 -->
+<h1>
+	<a name="mailing2025-04">mailing2025-04</a>
+</h1>
+<table border="1" summary="See previous paragraph.">
+	<tr>
+		<th>WG21 Number</th>
+		<th>Title</th>
+		<th>Author</th>
+		<th>Document Date</th>
+		<th>Mailing Date</th>
+		<th>Previous Version</th>
+		<th>Subgroup</th>
+		<th>Disposition<th>
+        <tr>
+            <th colspan="8">2025-04</th>
+        </tr>
+
+	 <tr > 
+	 	 <td > <a href="../2025/p0260r17.html">P0260R17</a> </td>
+	 	 <td > C++ Concurrent Queues </td>
+	 	 <td > Detlef Vollmann, Lawrence Crowl, Chris Mysen, Gor Nishanov </td>
+	 	 <td > 2025-04-15 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p0260r16.html">P0260R16</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p1789r1.pdf">P1789R1</a> </td>
+	 	 <td > Library Support for Expansion Statements </td>
+	 	 <td > Alisdair Meredith, Jeremy Rifkin, Matthias Wippich </td>
+	 	 <td > 2025-04-15 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2019/p1789r0.html">P1789R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2019r8.pdf">P2019R8</a> </td>
+	 	 <td > Thread attributes </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-03-18 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p2019r7.pdf">P2019R7</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2902r1.pdf">P2902R1</a> </td>
+	 	 <td > constexpr 'Parallel' Algorithms </td>
+	 	 <td > Oliver Rosten </td>
+	 	 <td > 2025-04-15 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2023/p2902r0.pdf">P2902R0</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2988r12.pdf">P2988R12</a> </td>
+	 	 <td > std::optional&lt;T&amp;&gt; </td>
+	 	 <td > Steve Downey, Peter Sommerlad </td>
+	 	 <td > 2025-04-04 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p2988r11.pdf">P2988R11</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2996r11.html">P2996R11</a> </td>
+	 	 <td > Reflection for C++26 </td>
+	 	 <td > Barry Revzin, Wyatt Childers, Peter Dimov, Andrew Sutton, Faisal Vali, Daveed Vandevoorde, Dan Katz </td>
+	 	 <td > 2025-04-16 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p2996r10.html">P2996R10</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3037r5.pdf">P3037R5</a> </td>
+	 	 <td > constexpr std::shared_ptr and friends </td>
+	 	 <td > Paul Keir, Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-03-27 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3037r4.pdf">P3037R4</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3096r8.pdf">P3096R8</a> </td>
+	 	 <td > Function Parameter Reflection in Reflection for C++26 </td>
+	 	 <td > Adam Lach, Walter Genovese </td>
+	 	 <td > 2025-04-14 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3096r7.pdf">P3096R7</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3126r3.pdf">P3126R3</a> </td>
+	 	 <td > Graph Library: Overview </td>
+	 	 <td > Phil Ratzloff, Andrew Lumsdaine </td>
+	 	 <td > 2025-04-13 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3126r2.pdf">P3126R2</a> </td>
+	 	 <td > SG14 Low Latency,SG19 Machine Learning </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3127r1.pdf">P3127R1</a> </td>
+	 	 <td > Graph Library: Background and Terminology </td>
+	 	 <td > Phil Ratzloff, Andrew Lumsdaine </td>
+	 	 <td > 2025-04-13 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3127r0.pdf">P3127R0</a> </td>
+	 	 <td > SG14 Low Latency,SG19 Machine Learning </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3128r3.pdf">P3128R3</a> </td>
+	 	 <td > Graph Library: Algorithms </td>
+	 	 <td > Phil Ratzloff, Andrew Lumsdaine </td>
+	 	 <td > 2025-04-13 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3128r2.pdf">P3128R2</a> </td>
+	 	 <td > SG14 Low Latency,SG19 Machine Learning </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3129r1.pdf">P3129R1</a> </td>
+	 	 <td > Graph Library: Views </td>
+	 	 <td > Phil Ratzloff, Andrew Lumsdaine </td>
+	 	 <td > 2025-04-13 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3129r0.pdf">P3129R0</a> </td>
+	 	 <td > SG14 Low Latency,SG19 Machine Learning </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3130r3.pdf">P3130R3</a> </td>
+	 	 <td > Graph Library: Graph Container Interface </td>
+	 	 <td > Phil Ratzloff, Andrew Lumsdaine </td>
+	 	 <td > 2025-04-13 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3130r2.pdf">P3130R2</a> </td>
+	 	 <td > SG14 Low Latency,SG19 Machine Learning </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3131r3.pdf">P3131R3</a> </td>
+	 	 <td > Graph Library: Graph Containers </td>
+	 	 <td > Phil Ratzloff, Andrew Lumsdaine </td>
+	 	 <td > 2025-04-13 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3131r2.pdf">P3131R2</a> </td>
+	 	 <td > SG14 Low Latency,SG19 Machine Learning </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3161r4.html">P3161R4</a> </td>
+	 	 <td > Unified integer overflow arithmetic </td>
+	 	 <td > Tiago Freire </td>
+	 	 <td > 2025-03-26 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3161r3.html">P3161R3</a> </td>
+	 	 <td > SG6 Numerics,LEWGI SG18: LEWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3295r3.html">P3295R3</a> </td>
+	 	 <td > Freestanding constexpr containers and constexpr exception types </td>
+	 	 <td > Ben Craig </td>
+	 	 <td > 2025-03-26 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3295r2.html">P3295R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3312r1.pdf">P3312R1</a> </td>
+	 	 <td > Overload Set Types </td>
+	 	 <td > Bengt Gustafsson </td>
+	 	 <td > 2025-04-16 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3312r0.pdf">P3312R0</a> </td>
+	 	 <td > EWGI SG17: EWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3348r3.pdf">P3348R3</a> </td>
+	 	 <td > C++26 should refer to C23 not C17 </td>
+	 	 <td > Jonathan Wakely </td>
+	 	 <td > 2025-03-21 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3348r2.pdf">P3348R2</a> </td>
+	 	 <td > SG6 Numerics,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3371r4.html">P3371R4</a> </td>
+	 	 <td > Fix C++26 by making the rank-1, rank-2, rank-k, and rank-2k updates consistent with the BLAS </td>
+	 	 <td > Mark Hoemmen, Ilya Burylov </td>
+	 	 <td > 2025-04-07 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3371r3.html">P3371R3</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3388r2.pdf">P3388R2</a> </td>
+	 	 <td > When Do You Know connect Doesn't Throw? </td>
+	 	 <td > Robert Leahy </td>
+	 	 <td > 2025-04-01 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3388r1.pdf">P3388R1</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3391r1.html">P3391R1</a> </td>
+	 	 <td > constexpr std::format </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-04-15 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2024/p3391r0.html">P3391R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3395r3.html">P3395R3</a> </td>
+	 	 <td > Fix encoding issues and add a formatter for std::error_code </td>
+	 	 <td > Victor Zverovich </td>
+	 	 <td > 2025-03-22 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3395r2.html">P3395R2</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3395r3.html">P3395R3</a> </td>
+	 	 <td > Fix encoding issues and add a formatter for std::error_code </td>
+	 	 <td > Victor Zverovich </td>
+	 	 <td > 2025-03-22 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3395r2.html">P3395R2</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3481r3.html">P3481R3</a> </td>
+	 	 <td > std::execution::bulk() issues </td>
+	 	 <td > Lucian Radu Teodorescu, Ruslan Arutyunyan, Lewis Baker, Mark Hoemmen </td>
+	 	 <td > 2025-04-16 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3481r2.html">P3481R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3514r0.html">P3514R0</a> </td>
+	 	 <td > "RFC 3514: The Security Flag" for C++ </td>
+	 	 <td > Steve Downey </td>
+	 	 <td > 2025-04-07 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td >  </td>
+	 	 <td > LEWGI SG18: LEWG Incubator,All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3561r2.pdf">P3561R2</a> </td>
+	 	 <td > Index based coproduct operations on variant, and library wording </td>
+	 	 <td > Esa Pulkkinen </td>
+	 	 <td > 2025-04-06 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3561r1.pdf">P3561R1</a> </td>
+	 	 <td > LEWGI SG18: LEWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3652r1.html">P3652R1</a> </td>
+	 	 <td > Constexpr floating-point &lt;charconv&gt; functions </td>
+	 	 <td > L&#233;n&#225;rd Szolnoki </td>
+	 	 <td > 2025-04-16 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3652r0.html">P3652R0</a> </td>
+	 	 <td > LEWGI SG18: LEWG Incubator,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3656r1.pdf">P3656R1</a> </td>
+	 	 <td > Initial draft proposal for core language UB white paper: Process and major work items </td>
+	 	 <td > Herb Sutter, Ga&#353;per A&#382;man </td>
+	 	 <td > 2025-03-25 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td > <a href="../2025/p3656r0.pdf">P3656R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3665r0.html">P3665R0</a> </td>
+	 	 <td > Vertical Text Processing </td>
+	 	 <td > Jeremy Rifkin, Levi de koning </td>
+	 	 <td > 2025-04-01 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3667r0.pdf">P3667R0</a> </td>
+	 	 <td > Extending range-for loop with an expression statement </td>
+	 	 <td > Jose Daniel Garcia </td>
+	 	 <td > 2025-04-10 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td >  </td>
+	 	 <td > EWGI SG17: EWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3668r0.html">P3668R0</a> </td>
+	 	 <td > Defaulting Postfix Increment and Decrement Operations </td>
+	 	 <td > Matthew Taylor, Alex </td>
+	 	 <td > 2025-04-15 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td >  </td>
+	 	 <td > EWGI SG17: EWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3669r0.html">P3669R0</a> </td>
+	 	 <td > Non-Blocking Support for `std::execution` </td>
+	 	 <td > Detlef Vollmann </td>
+	 	 <td > 2025-04-15 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td >  </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3670r0.pdf">P3670R0</a> </td>
+	 	 <td > Pack Indexing for Template Names </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-04-16 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3671r0.pdf">P3671R0</a> </td>
+	 	 <td > Clarifying the interaction of the literal and execution encodings </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-04-16 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td >  </td>
+	 	 <td > SG16 Unicode </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3672r0.pdf">P3672R0</a> </td>
+	 	 <td > On Windows, Systems APIs, Text Encodings, and Pragmatism </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-04-16 </td>
+	 	 <td > 2025-04 </td>
+	 	 <td >  </td>
+	 	 <td > SG16 Unicode </td>
+	 	 <td >  </td>
+	 </tr>
+</table>
+<!-- end 2025-04 -->
+<!-- begin 2025-05 pre-Sofia -->
+<h1>
+	<a name="mailing2025-05">mailing2025-05 pre-Sofia</a>
+</h1>
+<table border="1" summary="See previous paragraph.">
+	<tr>
+		<th>WG21 Number</th>
+		<th>Title</th>
+		<th>Author</th>
+		<th>Document Date</th>
+		<th>Mailing Date</th>
+		<th>Previous Version</th>
+		<th>Subgroup</th>
+		<th>Disposition<th>
+        <tr>
+            <th colspan="8">2025-05 pre-Sofia</th>
+        </tr>
+
+	 <tr > 
+	 	 <td > <a href="../2025/n5010.html">N5010</a> </td>
+	 	 <td > WG21 agenda: 16-21 June 2025, Sofia Bulgaria </td>
+	 	 <td > John Spicer </td>
+	 	 <td > 2025-05-04 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td > </td>
+	 </tr>
+
+	 <tr > 
+	 	 <td > <a href="../2025/p0085r1.html">P0085R1</a> </td>
+	 	 <td > Oo... adding a coherent character sequence to begin octal-literals </td>
+	 	 <td > Axel Naumann, Jolly Chen, Michael Jonker </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2015/p0085r0.html">P0085R0</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p0149r2.pdf">P0149R2</a> </td>
+	 	 <td > Generalised member pointers </td>
+	 	 <td > Jeff Snyder </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p0149r1.pdf">P0149R1</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p0149r3.pdf">P0149R3</a> </td>
+	 	 <td > Generalised member pointers </td>
+	 	 <td > Jeff Snyder </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p0149r2.pdf">P0149R2</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p1144r13.html">P1144R13</a> </td>
+	 	 <td > std::is_trivially_relocatable </td>
+	 	 <td > Arthur O'Dwyer, Artur Ba&#263;, Daniel Liam Anderson, Enrico Mauro, Jody Hagins, Michael Steffens, St&#233;phane Janel, Vinnie Falco, Walter E. Brown, Will Wray </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2024/p1144r12.html">P1144R12</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p1306r4.html">P1306R4</a> </td>
+	 	 <td > Expansion statements </td>
+	 	 <td > Dan Katz, Barry Revzin, Andrew Sutton, Sam Goodrick, Daveed Vandevoorde </td>
+	 	 <td > 2025-05-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2024/p1306r3.pdf">P1306R3</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2079r8.html">P2079R8</a> </td>
+	 	 <td > Parallel Scheduler </td>
+	 	 <td > Lucian Radu Teodorescu, Ruslan Arutyunyan, Lee Howes, Michael Voss </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p2079r7.html">P2079R7</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2287r5.html">P2287R5</a> </td>
+	 	 <td > Designated-initializers for base classes </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-05-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p2287r4.html">P2287R4</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2414r7.pdf">P2414R7</a> </td>
+	 	 <td > Pointer lifetime-end zap proposed solutions </td>
+	 	 <td > Paul E. McKenney, Maged Michael, Jens Maurer, Peter Sewell, Martin Uecker, Hans Boehm, Hubert Tong, Niall Douglas, Thomas Rodgers, Will Deacon, Michael Wong, David Goldblatt, Kostya Serebryany, Anthony Williams,  Tom Scogland, and JF Bastien </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p2414r6.pdf">P2414R6</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2434r4.html">P2434R4</a> </td>
+	 	 <td > Nondeterministic pointer provenance </td>
+	 	 <td > S. Davis Herring </td>
+	 	 <td > 2025-05-09 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p2434r3.html">P2434R3</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,SG22 Compatibility,EWG Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2509r1.html">P2509R1</a> </td>
+	 	 <td > A proposal for a type trait to detect value-preserving conversions </td>
+	 	 <td > Giuseppe D'Angelo </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2021/p2509r0.html">P2509R0</a> </td>
+	 	 <td > SG6 Numerics,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2664r10.html">P2664R10</a> </td>
+	 	 <td > Proposal to extend std::simd with permutation API </td>
+	 	 <td > Daniel Towner, Ruslan Arutyunyan </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p2664r9.html">P2664R9</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2719r5.html">P2719R5</a> </td>
+	 	 <td > Type-aware allocation and deallocation functions </td>
+	 	 <td > Louis Dionne, Oliver Hunt </td>
+	 	 <td > 2025-05-12 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p2719r4.html">P2719R4</a> </td>
+	 	 <td > CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2902r2.pdf">P2902R2</a> </td>
+	 	 <td > constexpr 'Parallel' Algorithms </td>
+	 	 <td > Oliver Rosten </td>
+	 	 <td > 2025-05-12 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p2902r1.pdf">P2902R1</a> </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2927r3.html">P2927R3</a> </td>
+	 	 <td > Observing exceptions stored in exception_ptr </td>
+	 	 <td > Gor Nishanov, Arthur O'Dwyer </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2024/p2927r2.html">P2927R2</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2956r1.html">P2956R1</a> </td>
+	 	 <td > Add saturating library support to std::simd </td>
+	 	 <td > Daniel Towner, Ruslan Arutyunyan </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2023/p2956r0.html">P2956R0</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2970r0.pdf">P2970R0</a> </td>
+	 	 <td > Partial application of concepts in template arguments </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p2996r12.html">P2996R12</a> </td>
+	 	 <td > Reflection for C++26 </td>
+	 	 <td > Barry Revzin, Wyatt Childers, Peter Dimov, Andrew Sutton, Faisal Vali, Daveed Vandevoorde, Dan Katz </td>
+	 	 <td > 2025-05-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p2996r11.html">P2996R11</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3008r5.html">P3008R5</a> </td>
+	 	 <td > Atomic floating-point min/max </td>
+	 	 <td > Gonzalo Brito Gadeschi, David Sankel </td>
+	 	 <td > 2025-04-29 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3008r4.html">P3008R4</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3008r5.html">P3008R5</a> </td>
+	 	 <td > Atomic floating-point min/max </td>
+	 	 <td > Gonzalo Brito Gadeschi, David Sankel </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3008r4.html">P3008R4</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3037r6.pdf">P3037R6</a> </td>
+	 	 <td > constexpr std::shared_ptr and friends </td>
+	 	 <td > Paul Keir, Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-05-03 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3037r5.pdf">P3037R5</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3086r4.pdf">P3086R4</a> </td>
+	 	 <td > Proxy: A Pointer-Semantics-Based Polymorphism Library </td>
+	 	 <td > Mingxin Wang </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3086r3.pdf">P3086R3</a> </td>
+	 	 <td > LEWGI SG18: LEWG Incubator,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3096r9.pdf">P3096R9</a> </td>
+	 	 <td > Function Parameter Reflection in Reflection for C++26 </td>
+	 	 <td > Adam Lach, Walter Genovese </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3096r8.pdf">P3096R8</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3100r2.pdf">P3100R2</a> </td>
+	 	 <td > Implicit contract assertions </td>
+	 	 <td > Timur Doumler, Joshua Berne </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2024/p3100r1.pdf">P3100R1</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3111r6.html">P3111R6</a> </td>
+	 	 <td > Atomic Reduction Operations </td>
+	 	 <td > Gonzalo Brito Gadeschi, Simon Cooksey, Daniel Lustig </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3111r5.html">P3111R5</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3125r4.html">P3125R4</a> </td>
+	 	 <td > constexpr pointer tagging </td>
+	 	 <td > Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3125r3.html">P3125R3</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3149r10.html">P3149R10</a> </td>
+	 	 <td > async_scope -- Creating scopes for non-sequential concurrency </td>
+	 	 <td > Ian Petersen, Jessica Wong; Dietmar K&#252;hl; J&#225;n Ondru&#353;ek; Kirk Shoop; Lee Howes; Lucian Radu Teodorescu; Ruslan Arutyunyan; </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3149r9.html">P3149R9</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3164r4.html">P3164R4</a> </td>
+	 	 <td > Early Diagnostics for Sender Expressions </td>
+	 	 <td > Eric Niebler </td>
+	 	 <td > 2025-04-28 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3164r3.html">P3164R3</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3179r8.html">P3179R8</a> </td>
+	 	 <td > C++ parallel range algorithms </td>
+	 	 <td > Ruslan Arutyunyan, Alexey Kukanov, Bryce Adelstein Lelbach </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3179r7.html">P3179R7</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3284r4.html">P3284R4</a> </td>
+	 	 <td > `write_env` and `unstoppable` Sender Adaptors </td>
+	 	 <td > Eric Niebler </td>
+	 	 <td > 2025-05-16 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3284r3.html">P3284R3</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3293r2.html">P3293R2</a> </td>
+	 	 <td > Splicing a base class subobject </td>
+	 	 <td > Barry Revzin, Peter Dimov, Dan Katz, Daveed Vandevoorde </td>
+	 	 <td > 2025-05-11 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2024/p3293r1.html">P3293R1</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3310r6.html">P3310R6</a> </td>
+	 	 <td > Solving issues introduced by relaxed template template parameter matching </td>
+	 	 <td > Matheus Izvekov, James Touton </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2024/p3310r5.html">P3310R5</a> </td>
+	 	 <td > EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3347r2.pdf">P3347R2</a> </td>
+	 	 <td > Invalid/Prospective Pointer Operations </td>
+	 	 <td > Paul E. McKenney, Maged Michael, Jens Maurer, Peter Sewell, Martin Uecker, Hans Boehm, Hubert Tong, Niall Douglas, Thomas Rodgers, Will Deacon, Michael Wong, David Goldblatt, Kostya Serebryany, Anthony Williams,  Tom Scogland, and JF Bastien </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3347r1.pdf">P3347R1</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3375r3.html">P3375R3</a> </td>
+	 	 <td > Reproducible floating-point results </td>
+	 	 <td > Guy Davidson </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3375r2.html">P3375R2</a> </td>
+	 	 <td > SG6 Numerics,SG14 Low Latency,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3385r5.html">P3385R5</a> </td>
+	 	 <td > Attributes reflection </td>
+	 	 <td > Aurelien Cassagnes </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3385r4.html">P3385R4</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3394r3.html">P3394R3</a> </td>
+	 	 <td > Annotations for Reflection </td>
+	 	 <td > Daveed Vandevoorde, Wyatt Childers, Dan Katz, Barry Revzin </td>
+	 	 <td > 2025-05-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3394r2.html">P3394R2</a> </td>
+	 	 <td > CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3395r4.html">P3395R4</a> </td>
+	 	 <td > Fix encoding issues and add a formatter for std::error_code </td>
+	 	 <td > Victor Zverovich </td>
+	 	 <td > 2025-04-27 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3395r3.html">P3395R3</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3402r3.html">P3402R3</a> </td>
+	 	 <td > A Safety Profile Verifying Initialization </td>
+	 	 <td > Marc-Andr&#233; Laverdi&#232;re, Christopher Lapkowski, Charles-Henri Gros </td>
+	 	 <td > 2025-05-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3402r2.html">P3402R2</a> </td>
+	 	 <td > SG23 Safety and Security,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3411r2.html">P3411R2</a> </td>
+	 	 <td > `any_view` </td>
+	 	 <td > Hui Xie, S. Levent Yilmaz, Louis Dionne, Patrick Roberts </td>
+	 	 <td > 2025-05-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3411r1.html">P3411R1</a> </td>
+	 	 <td > SG9 Ranges,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3412r2.pdf">P3412R2</a> </td>
+	 	 <td > String interpolation </td>
+	 	 <td > Bengt Gustafsson, Victor Zverovich </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3412r1.pdf">P3412R1</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3439r2.pdf">P3439R2</a> </td>
+	 	 <td > Chained comparisons: Safe, correct, efficient </td>
+	 	 <td > Herb Sutter </td>
+	 	 <td > 2025-05-10 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3439r1.pdf">P3439R1</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3442r2.pdf">P3442R2</a> </td>
+	 	 <td > [[invalidate_dereferencing]] attribute </td>
+	 	 <td > Patrice Roy, Nicolas Fleury </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3442r1.pdf">P3442R1</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3480r5.pdf">P3480R5</a> </td>
+	 	 <td > std::simd is a range </td>
+	 	 <td > Matthias Kretz </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3480r4.pdf">P3480R4</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3516r2.html">P3516R2</a> </td>
+	 	 <td > Uninitialized algorithms for relocation </td>
+	 	 <td > Louis Dionne, Giuseppe D&#8217;Angelo </td>
+	 	 <td > 2025-05-16 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3516r1.html">P3516R1</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3552r2.pdf">P3552R2</a> </td>
+	 	 <td > Add a Coroutine Task Type </td>
+	 	 <td > Dietmar K&#252;hl, Maikel Nadolski </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3552r1.pdf">P3552R1</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3556r1.pdf">P3556R1</a> </td>
+	 	 <td > Input files are source files </td>
+	 	 <td > Alisdair Meredith, Lori Hughes </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3556r0.pdf">P3556R0</a> </td>
+	 	 <td > SG16 Unicode,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3557r2.html">P3557R2</a> </td>
+	 	 <td > High-Quality Sender Diagnostics with Constexpr Exceptions </td>
+	 	 <td > Eric Niebler </td>
+	 	 <td > 2025-05-16 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3557r1.html">P3557R1</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3560r1.html">P3560R1</a> </td>
+	 	 <td > Error Handling in Reflection </td>
+	 	 <td > Barry Revzin, Peter Dimov </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3560r0.html">P3560R0</a> </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3565r1.html">P3565R1</a> </td>
+	 	 <td > Virtual floating-point values </td>
+	 	 <td > S. Davis Herring </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3565r0.html">P3565R0</a> </td>
+	 	 <td > SG6 Numerics </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3566r1.pdf">P3566R1</a> </td>
+	 	 <td > You shall not pass `char*` - Safety concerns working with unbounded null-terminated strings </td>
+	 	 <td > Marco Foco </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3566r0.pdf">P3566R0</a> </td>
+	 	 <td > SG23 Safety and Security,LEWG Library Evolution,LWG Library,ARG ABI Review Group </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3570r1.html">P3570R1</a> </td>
+	 	 <td > optional variants in sender/receiver </td>
+	 	 <td > Fabio Fracassi </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3570r0.html">P3570R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3588r1.html">P3588R1</a> </td>
+	 	 <td > Allow static data members in local and unnamed classes </td>
+	 	 <td > Brian Bi </td>
+	 	 <td > 2025-05-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3588r0.html">P3588R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3589r2.pdf">P3589R2</a> </td>
+	 	 <td > C++ Profiles: The Framework </td>
+	 	 <td > Gabriel Dos Reis </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3589r1.pdf">P3589R1</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3617r0.html">P3617R0</a> </td>
+	 	 <td > std::meta::reflect_constant_{array,string} </td>
+	 	 <td > Barry Revzin </td>
+	 	 <td > 2025-05-16 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3631r0.html">P3631R0</a> </td>
+	 	 <td > Cleaning up the trivial relocation APIs in C++26 </td>
+	 	 <td > Louis Dionne, Giuseppe D&#8217;Angelo </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3649r0.html">P3649R0</a> </td>
+	 	 <td > A principled approach to safety profiles </td>
+	 	 <td > Jonathan M&#252;ller </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG23 Safety and Security </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3655r1.html">P3655R1</a> </td>
+	 	 <td > zstring_view </td>
+	 	 <td > Peter Bindels, Hana Dusikova, Jeremy Rifkin </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3655r0.html">P3655R0</a> </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3658r1.pdf">P3658R1</a> </td>
+	 	 <td > Adjust identifier following new Unicode recommendations </td>
+	 	 <td > Robin Leroy </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3658r0.pdf">P3658R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3663r1.html">P3663R1</a> </td>
+	 	 <td > Future-proof `submdspan-mapping` </td>
+	 	 <td > Mark Hoemmen </td>
+	 	 <td > 2025-05-16 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3663r0.html">P3663R0</a> </td>
+	 	 <td > LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3668r1.html">P3668R1</a> </td>
+	 	 <td > Defaulting Postfix Increment and Decrement Operations </td>
+	 	 <td > Matthew Taylor, Alex </td>
+	 	 <td > 2025-05-16 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3668r0.html">P3668R0</a> </td>
+	 	 <td > EWGI SG17: EWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3669r1.html">P3669R1</a> </td>
+	 	 <td > Non-Blocking Support for `std::execution` </td>
+	 	 <td > Detlef Vollmann </td>
+	 	 <td > 2025-05-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3669r0.html">P3669R0</a> </td>
+	 	 <td > SG1 Concurrency and Parallelism,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3670r1.pdf">P3670R1</a> </td>
+	 	 <td > Pack Indexing for Template Names </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-05-03 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td > <a href="../2025/p3670r0.pdf">P3670R0</a> </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3676r0.pdf">P3676R0</a> </td>
+	 	 <td > Enhanced inline Keyword with Configurable Inlining Levels </td>
+	 	 <td > Stephen Berry, Khalil Estell </td>
+	 	 <td > 2025-04-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG14 Low Latency,EWGI SG17: EWG Incubator,LEWGI SG18: LEWG Incubator,EWG Evolution,LEWG Library Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3677r0.pdf">P3677R0</a> </td>
+	 	 <td > Preserving LC_CTYPE at program start for UTF-8 locales </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-05-03 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG16 Unicode,SG22 Compatibility </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3678r0.html">P3678R0</a> </td>
+	 	 <td > Arbitrary attributes in define_aggregate </td>
+	 	 <td > Aurelien Cassagnes </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG7 Reflection </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3679r0.html">P3679R0</a> </td>
+	 	 <td > SFINAEable constexpr exceptions </td>
+	 	 <td > Hana Dus&#237;kov&#225; </td>
+	 	 <td > 2025-05-16 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3681r0.pdf">P3681R0</a> </td>
+	 	 <td > char_traits: Stop the bleeding </td>
+	 	 <td > Corentin Jabot </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG16 Unicode </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3682r0.pdf">P3682R0</a> </td>
+	 	 <td > Remove std::execution::split </td>
+	 	 <td > Robert Leahy </td>
+	 	 <td > 2025-05-06 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3685r0.pdf">P3685R0</a> </td>
+	 	 <td > Rename async_scope_token </td>
+	 	 <td > Robert Leahy </td>
+	 	 <td > 2025-05-07 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3686r0.html">P3686R0</a> </td>
+	 	 <td > Allow named modules to export macros </td>
+	 	 <td > Chuanqi Xu </td>
+	 	 <td > 2025-05-08 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3687r0.html">P3687R0</a> </td>
+	 	 <td > Final Adjustments to C++26 Reflection </td>
+	 	 <td > Dan Katz, Wyatt Childers, Daveed Vandevoorde, Ville Voutilainen </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > EWG Evolution,LEWG Library Evolution,CWG Core,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3688r0.html">P3688R0</a> </td>
+	 	 <td > ASCII character utilities </td>
+	 	 <td > Jan Schultke, Corentin Jabot </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG16 Unicode,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3689r0.pdf">P3689R0</a> </td>
+	 	 <td > Convenience functions for Random number generation </td>
+	 	 <td > Thomas Mejstrik </td>
+	 	 <td > 2025-05-11 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWGI SG18: LEWG Incubator </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3690r0.pdf">P3690R0</a> </td>
+	 	 <td > Consistency fix: Make simd reductions SIMD-generic </td>
+	 	 <td > Olaf Krzikalla, Matthias Kretz </td>
+	 	 <td > 2025-05-13 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3691r0.pdf">P3691R0</a> </td>
+	 	 <td > Reconsider naming of the namespace for &#8220;std::simd&#8221; </td>
+	 	 <td > Matthias Kretz, Abhilash Majumder, Bryce Adelstein Lelbach, Daniel Towner, Ilya Burylov, Mark Hoemmen, Ruslan Arutyunyan </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3692r0.pdf">P3692R0</a> </td>
+	 	 <td > How to Avoid OOTA Without Really Trying </td>
+	 	 <td > Paul E. McKenney, Alan Stern, Michael Wong, and Maged Michael </td>
+	 	 <td > 2025-05-13 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG1 Concurrency and Parallelism </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3693r0.pdf">P3693R0</a> </td>
+	 	 <td > SG14: Low Latency/Games/Embedded/Financial Trading virtual Meeting Minutes 2025/04/09-2025/05/07 </td>
+	 	 <td > Michael Wong </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG14 Low Latency </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3694r0.pdf">P3694R0</a> </td>
+	 	 <td > SG19: Machine Learning virtual Meeting Minutes to 2025/03/13-2025/05/08 </td>
+	 	 <td > Michael Wong </td>
+	 	 <td > 2025-05-15 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG19 Machine Learning </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3695r0.html">P3695R0</a> </td>
+	 	 <td > Deprecate implicit conversions between Unicode character types </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG16 Unicode,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3696r0.html">P3696R0</a> </td>
+	 	 <td > Discovering Header Units via Module Maps </td>
+	 	 <td > Michael Spencer </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG15 Tooling </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3697r0.html">P3697R0</a> </td>
+	 	 <td > Minor additions to C++26 standard library hardening </td>
+	 	 <td > Konstantin Varlamov, Louis Dionne, Alisdair Meredith </td>
+	 	 <td > 2025-05-16 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution,LWG Library </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3698r0.html">P3698R0</a> </td>
+	 	 <td > Cross-capacity comparisons for inplace_vector </td>
+	 	 <td > Charles Hussong </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3699r0.html">P3699R0</a> </td>
+	 	 <td > Rename `conqueue_errc` </td>
+	 	 <td > Detlef Vollmann </td>
+	 	 <td > 2025-05-17 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3700r0.html">P3700R0</a> </td>
+	 	 <td > Making Safe C++ happen </td>
+	 	 <td > Peter Bindels </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG21 Contracts,SG23 Safety and Security,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3701r0.html">P3701R0</a> </td>
+	 	 <td > Concepts for integer types, not integral types </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3702r0.html">P3702R0</a> </td>
+	 	 <td > Stricter requirements for document submissions (SD-7) </td>
+	 	 <td > Jan Schultke </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3703r0.pdf">P3703R0</a> </td>
+	 	 <td > Constness and Locking </td>
+	 	 <td > Yoaodan Zhang, Alec Cepeda, Alexander Buzanis, Charlie Sabino, Cory Turnbaugh, Guanduo Mu, Hongli Zhao, Joneskim Kimo, Matthias Zajdela, Mitch Verhelle, Pierr-Yves Sojic, Steven Arellana, Roshan Surabhi, Wei Cai, Mike Spertus </td>
+	 	 <td > 2025-05-18 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG1 Concurrency and Parallelism </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3704r0.pdf">P3704R0</a> </td>
+	 	 <td > What are profiles? </td>
+	 	 <td > Bjarne Stroustrup </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG20 Education,SG23 Safety and Security,EWG Evolution,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3705r0.html">P3705R0</a> </td>
+	 	 <td > A Sentinel for Null-Terminated Strings </td>
+	 	 <td > Eddie Nolan </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG9 Ranges,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3706r0.html">P3706R0</a> </td>
+	 	 <td > Rename join and nest in async_scope proposal </td>
+	 	 <td > Ruslan Arutyunyan, Ville Voutilainen </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3707r0.pdf">P3707R0</a> </td>
+	 	 <td > A std::is_always_exhaustive trait </td>
+	 	 <td > Patrice Roy, Gregoire Angerand </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG14 Low Latency,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3709r0.html">P3709R0</a> </td>
+	 	 <td > Reconsider parallel ranges::rotate_copy and ranges::reverse_copy </td>
+	 	 <td > Ruslan Arutyunyan, Alexey Kukanov </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3710r0.pdf">P3710R0</a> </td>
+	 	 <td > zstring_view: a string_view with guaranteed null termination </td>
+	 	 <td > Alexey Shevlyakov, Marco Foco, Joshua Krieghauser </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG23 Safety and Security,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3711r0.pdf">P3711R0</a> </td>
+	 	 <td > Safer StringViewLike Functions for Replacing char* strings </td>
+	 	 <td > Marco Foco, Alexey Shevlyakov, Joshua Kriegshauser </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG23 Safety and Security,LEWG Library Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3712r0.html">P3712R0</a> </td>
+	 	 <td > 2025-05 Library Evolution Polls </td>
+	 	 <td > Inbal Levi, Fabio Fracassi, Andreas Weis, Billy Baker, Nevin Liber, Corentin Jabot </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > All of WG21 </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3714r0.pdf">P3714R0</a> </td>
+	 	 <td > Virtual values have Virtual Value </td>
+	 	 <td > Joshua Cranmer </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG6 Numerics </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3715r0.html">P3715R0</a> </td>
+	 	 <td > Tightening floating-point semantics for C++ </td>
+	 	 <td > Joshua Cranmer </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG6 Numerics,SG22 Compatibility </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3716r0.html">P3716R0</a> </td>
+	 	 <td > Subsetting </td>
+	 	 <td > Peter Bindels </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG23 Safety and Security,EWG Evolution </td>
+	 	 <td >  </td>
+	 </tr>
+	 <tr > 
+	 	 <td > <a href="../2025/p3717r0.pdf">P3717R0</a> </td>
+	 	 <td > Update Annex E onto Unicode 16 </td>
+	 	 <td > Steve Downey </td>
+	 	 <td > 2025-05-19 </td>
+	 	 <td > 2025-05 </td>
+	 	 <td >  </td>
+	 	 <td > SG16 Unicode,EWG Evolution,CWG Core </td>
+	 	 <td >  </td>
+	 </tr>
+</table>
+<!-- end 2025-05 pre-Sofia -->
+</body>
+</html>
