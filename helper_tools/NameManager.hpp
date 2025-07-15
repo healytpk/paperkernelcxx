@@ -259,39 +259,35 @@ private:
         "Yihe Li",
     };
 
-    static map<string_view, string_view> const &ExceptionMap(void)
-    {
-        static const map<string_view, string_view> exceptions = {
-            { "Alex"                                                   , "Alex Waffl3x"                                 },
-            { "Bengt Gustafsonn"                                       , "Bengt Gustafsson"                             },
-            { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
-            { "C. Kaeser"                                              , "Christian K\\u00E4ser"                        },
-            { "C. K\\u00E4ser"                                         , "Christian K\\u00E4ser"                        },
-            { "Christian Kaeser"                                       , "Christian K\\u00E4ser"                        },
-            { "Daniel Sundernland"                                     , "Daniel Sunderland"                            },
-            { "Ed Catmur"                                              , "Edward Catmur (1982 \\u002D 2024)"            },
-            { "Herv\\00e9 Br\\u00f6nnimann" /* 'u' is missing */       , "Herv\\u00e9 Br\\u00f6nnimann"                 },
-            { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
-            { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
-            { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
-            { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
-            { "Johel Guerrero"                                         , "Johel Ernesto Guerrero Pe\\u00F1a"            },
-            { "Jonathan Mueller"                                       , "Jonathan M\\u00FCller"                        },
-            { "Lo\\uF8E0Joly"                                          , "Loic Joly"                                    },
-            { "Lois Goldwaithe"                                        , "Lois Goldthwaite"                             },
-            { "Marhsall Clow"                                          , "Marshall Clow"                                },
-            { "P. Talbot"                                              , "Pierre Talbot"                                },
-            { "R. Rivera"                                              , "Ren\\u00E9 Ferdinand Rivera Morell"           },
-            { "Ren\\u00E9 Rivera"                                      , "Ren\\u00E9 Ferdinand Rivera Morell"           },
-            { "Rene Riviera"                                           , "Ren\\u00E9 Ferdinand Rivera Morell"           },
-            { "Rene Rivera"                                            , "Ren\\u00E9 Ferdinand Rivera Morell"           },
-            { "Thomas Koeppe"                                          , "Thomas K\\u00F6ppe"                           },
-            { "V.  Escriba"                                            , "Vicente J. Botet Escrib\\u00E1"               },
-            { "V. Escriba"                                             , "Vicente J. Botet Escrib\\u00E1"               },
-            { "Yihe Le"                                                , "Yihe Li"                                      },
-        };
-        return exceptions;
-    }
+    inline static std::map<string_view, string_view> const hardcoded_alternatives = {
+        { "Alex"                                                   , "Alex Waffl3x"                                 },
+        { "Bengt Gustafsonn"                                       , "Bengt Gustafsson"                             },
+        { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
+        { "C. Kaeser"                                              , "Christian K\\u00E4ser"                        },
+        { "C. K\\u00E4ser"                                         , "Christian K\\u00E4ser"                        },
+        { "Christian Kaeser"                                       , "Christian K\\u00E4ser"                        },
+        { "Daniel Sundernland"                                     , "Daniel Sunderland"                            },
+        { "Ed Catmur"                                              , "Edward Catmur (1982 \\u002D 2024)"            },
+        { "Herv\\00e9 Br\\u00f6nnimann" /* 'u' is missing */       , "Herv\\u00e9 Br\\u00f6nnimann"                 },
+        { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
+        { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
+        { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
+        { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
+        { "Johel Guerrero"                                         , "Johel Ernesto Guerrero Pe\\u00F1a"            },
+        { "Jonathan Mueller"                                       , "Jonathan M\\u00FCller"                        },
+        { "Lo\\uF8E0Joly"                                          , "Loic Joly"                                    },
+        { "Lois Goldwaithe"                                        , "Lois Goldthwaite"                             },
+        { "Marhsall Clow"                                          , "Marshall Clow"                                },
+        { "P. Talbot"                                              , "Pierre Talbot"                                },
+        { "R. Rivera"                                              , "Ren\\u00E9 Ferdinand Rivera Morell"           },
+        { "Ren\\u00E9 Rivera"                                      , "Ren\\u00E9 Ferdinand Rivera Morell"           },
+        { "Rene Riviera"                                           , "Ren\\u00E9 Ferdinand Rivera Morell"           },
+        { "Rene Rivera"                                            , "Ren\\u00E9 Ferdinand Rivera Morell"           },
+        { "Thomas Koeppe"                                          , "Thomas K\\u00F6ppe"                           },
+        { "V.  Escriba"                                            , "Vicente J. Botet Escrib\\u00E1"               },
+        { "V. Escriba"                                             , "Vicente J. Botet Escrib\\u00E1"               },
+        { "Yihe Le"                                                , "Yihe Li"                                      },
+    };
 
     vector<string     >         m_name_storage;
     vector<string_view>         m_names;
@@ -502,7 +498,7 @@ public:
     void AddNames(Iterator it_begin, Iterator it_end)
     {
         vector<string_view> new_names;
-        for ( auto it = it_begin; it != it_end; ++it ) if ( ExceptionMap().find(*it) == ExceptionMap().end() ) new_names.emplace_back(*it);
+        for ( auto it = it_begin; it != it_end; ++it ) if ( hardcoded_alternatives.find(*it) == hardcoded_alternatives.end() ) new_names.emplace_back(*it);
 
         size_t const old_size = m_names.size();
         m_names.insert( m_names.end(), new_names.begin(), new_names.end() );
@@ -523,8 +519,8 @@ public:
         if ( std::cend(hardcoded_primaries) != std::find( std::cbegin(hardcoded_primaries), std::cend(hardcoded_primaries), alt ) ) return alt;
 
         // Check hardcoded exceptions first
-        auto it = ExceptionMap().find(alt);
-        if ( it != ExceptionMap().end() ) return it->second;
+        auto it = hardcoded_alternatives.find(alt);
+        if ( it != hardcoded_alternatives.end() ) return it->second;
 
         size_t idx = m_names.size();
         for ( size_t i = 0u; i < m_names.size(); ++i )
@@ -554,7 +550,7 @@ public:
         if ( false == m_map_clusters_dirty ) return m_map_clusters;
         
         m_map_clusters.clear();
-        for ( auto const & [alt, primary] : ExceptionMap() ) m_map_clusters[alt] = primary;
+        for ( auto const & [alt, primary] : hardcoded_alternatives ) m_map_clusters[alt] = primary;
 
         vector<bool> visited(m_names.size(), false);
         for ( size_t i = 0u; i < m_names.size(); ++i )
@@ -607,7 +603,7 @@ public:
         }
 
         // Add hardcoded exceptions
-        for ( auto const & [alt, primary] : ExceptionMap() ) result[primary].push_back(alt);
+        for ( auto const & [alt, primary] : hardcoded_alternatives ) result[primary].push_back(alt);
         return result;
     }
 
@@ -641,7 +637,7 @@ public:
         for (const auto& [primary, alts] : groups)
             for (const auto& alt : alts)
                 all_alternatives.insert(string(alt));
-        for (const auto& [alt, primary] : ExceptionMap())
+        for (const auto& [alt, primary] : hardcoded_alternatives)
             all_alternatives.insert(string(alt));
         // ------------------------------------------------------------------------
 
