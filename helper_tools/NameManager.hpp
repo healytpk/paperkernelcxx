@@ -4,9 +4,10 @@
 #include <cctype>                   // isalnum, tolower
 #include <cstddef>                  // size_t
 #include <cstdint>                  // uint_fast64_t
-#include <algorithm>                // ranges::sort, ranges::lower_bound, ranges::equal_range
+#include <algorithm>                // find, ranges::sort, ranges::lower_bound, ranges::equal_range
 #include <concepts>                 // input_iterator
 #include <fstream>                  // ofstream
+#include <iterator>                 // cbegin, cend
 #include <map>                      // map
 #include <ranges>                   // ranges
 #include <string>                   // string
@@ -27,6 +28,233 @@ public:
     template<typename... Ts> using vector = std::vector<Ts...>;
 
 private:
+    static constexpr std::pair<unsigned, char> unicode_to_ascii[] = {
+        // Lowercase vowels with diacritics
+        {0x00E0, 'a'}, // a
+        {0x00E1, 'a'}, // a
+        {0x00E2, 'a'}, // a
+        {0x00E3, 'a'}, // a
+        {0x00E4, 'a'}, // a
+        {0x00E5, 'a'}, // a
+        {0x0101, 'a'}, // a
+        {0x0103, 'a'}, // a
+        {0x0105, 'a'}, // a
+
+        {0x00E8, 'e'}, // e
+        {0x00E9, 'e'}, // e
+        {0x00EA, 'e'}, // e
+        {0x00EB, 'e'}, // e
+        {0x0113, 'e'}, // e
+        {0x0115, 'e'}, // e
+        {0x0117, 'e'}, // e
+        {0x0119, 'e'}, // e
+        {0x011B, 'e'}, // e
+
+        {0x00EC, 'i'}, // i
+        {0x00ED, 'i'}, // i
+        {0x00EE, 'i'}, // i
+        {0x00EF, 'i'}, // i
+        {0x0129, 'i'}, // i
+        {0x012B, 'i'}, // i
+        {0x012D, 'i'}, // i
+        {0x012F, 'i'}, // i
+        {0x0131, 'i'}, // i
+
+        {0x00F2, 'o'}, // o
+        {0x00F3, 'o'}, // o
+        {0x00F4, 'o'}, // o
+        {0x00F5, 'o'}, // o
+        {0x00F6, 'o'}, // o
+        {0x00F8, 'o'}, // o
+        {0x014D, 'o'}, // o
+        {0x014F, 'o'}, // o
+        {0x0151, 'o'}, // o
+
+        {0x00F9, 'u'}, // u
+        {0x00FA, 'u'}, // u
+        {0x00FB, 'u'}, // u
+        {0x00FC, 'u'}, // u
+        {0x0169, 'u'}, // u
+        {0x016B, 'u'}, // u
+        {0x016D, 'u'}, // u
+        {0x016F, 'u'}, // u
+        {0x0171, 'u'}, // u
+        {0x0173, 'u'}, // u
+
+        {0x00FD, 'y'}, // y
+        {0x00FF, 'y'}, // y
+        {0x0177, 'y'}, // y
+
+        // Uppercase vowels with diacritics
+        {0x00C0, 'A'}, // A
+        {0x00C1, 'A'}, // A
+        {0x00C2, 'A'}, // A
+        {0x00C3, 'A'}, // A
+        {0x00C4, 'A'}, // A
+        {0x00C5, 'A'}, // A
+        {0x0100, 'A'}, // A
+        {0x0102, 'A'}, // A
+        {0x0104, 'A'}, // A
+
+        {0x00C8, 'E'}, // E
+        {0x00C9, 'E'}, // E
+        {0x00CA, 'E'}, // E
+        {0x00CB, 'E'}, // E
+        {0x0112, 'E'}, // E
+        {0x0114, 'E'}, // E
+        {0x0116, 'E'}, // E
+        {0x0118, 'E'}, // E
+        {0x011A, 'E'}, // E
+
+        {0x00CC, 'I'}, // I
+        {0x00CD, 'I'}, // I
+        {0x00CE, 'I'}, // I
+        {0x00CF, 'I'}, // I
+        {0x0128, 'I'}, // I
+        {0x012A, 'I'}, // I
+        {0x012C, 'I'}, // I
+        {0x012E, 'I'}, // I
+        {0x0130, 'I'}, // I
+
+        {0x00D2, 'O'}, // O
+        {0x00D3, 'O'}, // O
+        {0x00D4, 'O'}, // O
+        {0x00D5, 'O'}, // O
+        {0x00D6, 'O'}, // O
+        {0x00D8, 'O'}, // O
+        {0x014C, 'O'}, // O
+        {0x014E, 'O'}, // O
+        {0x0150, 'O'}, // O
+
+        {0x00D9, 'U'}, // U
+        {0x00DA, 'U'}, // U
+        {0x00DB, 'U'}, // U
+        {0x00DC, 'U'}, // U
+        {0x0168, 'U'}, // U
+        {0x016A, 'U'}, // U
+        {0x016C, 'U'}, // U
+        {0x016E, 'U'}, // U
+        {0x0170, 'U'}, // U
+        {0x0172, 'U'}, // U
+
+        {0x00DD, 'Y'}, // Y
+        {0x0176, 'Y'}, // Y
+        {0x0178, 'Y'}, // Y
+
+        // Consonants with diacritics
+        {0x00E7, 'c'}, // c
+        {0x0107, 'c'}, // c
+        {0x0109, 'c'}, // c
+        {0x010B, 'c'}, // c
+        {0x010D, 'c'}, // c
+
+        {0x00C7, 'C'}, // C
+        {0x0106, 'C'}, // C
+        {0x0108, 'C'}, // C
+        {0x010A, 'C'}, // C
+        {0x010C, 'C'}, // C
+
+        {0x011F, 'g'}, // g
+        {0x0121, 'g'}, // g
+        {0x0123, 'g'}, // g
+        {0x011E, 'G'}, // G
+        {0x0120, 'G'}, // G
+        {0x0122, 'G'}, // G
+
+        {0x0144, 'n'}, // n
+        {0x0146, 'n'}, // n
+        {0x0148, 'n'}, // n
+        {0x0149, 'n'}, // n
+        {0x00F1, 'n'}, // n
+        {0x0143, 'N'}, // N
+        {0x0145, 'N'}, // N
+        {0x0147, 'N'}, // N
+        {0x00D1, 'N'}, // N
+
+        {0x0155, 'r'}, // r
+        {0x0157, 'r'}, // r
+        {0x0159, 'r'}, // r
+        {0x0154, 'R'}, // R
+        {0x0156, 'R'}, // R
+        {0x0158, 'R'}, // R
+
+        {0x015B, 's'}, // s
+        {0x015D, 's'}, // s
+        {0x015F, 's'}, // s
+        {0x0161, 's'}, // s
+        {0x015A, 'S'}, // S
+        {0x015C, 'S'}, // S
+        {0x015E, 'S'}, // S
+        {0x0160, 'S'}, // S
+
+        {0x0163, 't'}, // t
+        {0x0165, 't'}, // t
+        {0x0162, 'T'}, // T
+        {0x0164, 'T'}, // T
+
+        {0x017A, 'z'}, // z
+        {0x017C, 'z'}, // z
+        {0x017E, 'z'}, // z
+        {0x0179, 'Z'}, // Z
+        {0x017B, 'Z'}, // Z
+        {0x017D, 'Z'}, // Z
+
+        {0x013A, 'l'}, // l
+        {0x013C, 'l'}, // l
+        {0x013E, 'l'}, // l
+        {0x0142, 'l'}, // l
+        {0x0139, 'L'}, // L
+        {0x013B, 'L'}, // L
+        {0x013D, 'L'}, // L
+        {0x0141, 'L'}, // L
+
+        // Special cases
+        {0x00DF, 's'}, // sharp s
+        {0x0153, 'o'}, // oe ligature
+        {0x0152, 'O'}, // OE ligature
+        {0x0131, 'i'}, // dotless i
+        {0x00F8, 'o'}, // o stroke
+        {0x00D8, 'O'}, // O stroke
+        // Add more as needed
+    };
+
+    static void ReplaceUnicodeEscapesWithAscii(std::string &input)
+    {
+        std::string output;
+        for ( size_t i = 0u; i < input.size(); )
+        {
+            // Handle \uXXXX or \\uXXXX
+            if ( input[i] == '\\' && i + 5 < input.size() && input[i+1] == 'u' )
+            {
+                // \uXXXX
+                std::istringstream iss(input.substr(i+2, 4));
+                long code = 0;
+                iss >> std::hex >> code;
+                auto it = std::find_if(std::cbegin(unicode_to_ascii),std::cend(unicode_to_ascii),[code](auto &&arg){ return arg.first == code; });
+                if ( it != std::cend(unicode_to_ascii) ) output += it->second;
+                else output += '_';
+                i += 6;
+            }
+            else if ( input[i] == '\\' && i + 6 < input.size() && input[i+1] == '\\' && input[i+2] == 'u' )
+            {
+                // \\uXXXX
+                std::istringstream iss(input.substr(i+3, 4));
+                long code = 0;
+                iss >> std::hex >> code;
+                auto it = std::find_if(std::cbegin(unicode_to_ascii),std::cend(unicode_to_ascii),[code](auto &&arg){ return arg.first == code; });
+                if ( it != std::cend(unicode_to_ascii) ) output += it->second;
+                else output += '_';
+                i += 7;
+            }
+            else
+            {
+                output += input[i];
+                ++i;
+            }
+        }
+        input = std::move(output);
+    }
+
     static map<string_view, string_view> const &ExceptionMap(void)
     {
         static const map<string_view, string_view> exceptions = {
@@ -34,11 +262,10 @@ private:
             { "Bengt Gustafsonn"                                       , "Bengt Gustafsson"                             },
             { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
             { "C. Kaeser"                                              , "Christian K\\u00E4ser"                        },
+            { "C. K\\u00E4ser"                                         , "Christian K\\u00E4ser"                        },
             { "Christian Kaeser"                                       , "Christian K\\u00E4ser"                        },
-            { "Domagoj Saric"                                          , "Domagoj \\u0160ari\\u0107"                    },
             { "Ed Catmur"                                              , "Edward Catmur (1982 \\u002D 2024)"            },
             { "Gonzalo Brito"                                          , "Gonzalo Brito Gadeschi"                       },
-            { "Hana Dusikova"                                          , "Hana Dus\\u00EDkov\\u00E1"                    },
             { "Herv\\00e9 Br\\u00f6nnimann" /* 'u' is missing */       , "Herv\\u00e9 Br\\u00f6nnimann"                 },
             { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
             { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
@@ -49,19 +276,14 @@ private:
             { "Lo\\uF8E0Joly"                                          , "Loic Joly"                                    },
             { "Lois Goldwaithe"                                        , "Lois Goldthwaite"                             },
             { "Marhsall Clow"                                          , "Marshall Clow"                                },
-            { "Marshal Clow"                                           , "Marshall Clow"                                },
-            { "Michael Dominiak"                                       , "Micha\\u0142 Dominiak"                        },
-            { "Michal Dominiak"                                        , "Micha\\u0142 Dominiak"                        },
             { "P. Talbot"                                              , "Pierre Talbot"                                },
             { "R. Rivera"                                              , "Ren\\u00E9 Ferdinand Rivera Morell"           },
             { "Ren\\u00E9 Rivera"                                      , "Ren\\u00E9 Ferdinand Rivera Morell"           },
             { "Rene Riviera"                                           , "Ren\\u00E9 Ferdinand Rivera Morell"           },
             { "Rene Rivera"                                            , "Ren\\u00E9 Ferdinand Rivera Morell"           },
             { "Thomas Koeppe"                                          , "Thomas K\\u00F6ppe"                           },
-            { "Tomasz Kaminski"                                        , "Tomasz Kami\\u0144ski"                        },
             { "V.  Escriba"                                            , "Vicente J. Botet Escrib\\u00E1"               },
             { "V. Escriba"                                             , "Vicente J. Botet Escrib\\u00E1"               },
-            { "Vicente J. Botet Escriba"                               , "Vicente J. Botet Escrib\\u00E1"               },
         };
         return exceptions;
     }
@@ -213,6 +435,9 @@ private:
         string sa(a), sb(b);
         ToLowerAndRemovePunct(sa);
         ToLowerAndRemovePunct(sb);
+
+        ReplaceUnicodeEscapesWithAscii(sa);
+        ReplaceUnicodeEscapesWithAscii(sb);
 
         ReplaceNonAscii(sa);
         ReplaceNonAscii(sb);
