@@ -31,12 +31,8 @@ private:
     {
         static const map<string_view, string_view> exceptions = {
             { "Alex"                                                   , "Alex Waffl3x"                                 },
-            { "Andrzej Krzemienski"                                    , "Andrzej Krzemie\\u0144ski"                    },
             { "Bengt Gustafsonn"                                       , "Bengt Gustafsson"                             },
             { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
-            { "Daniel Krugler"                                         , "Daniel Kr\\u00FCgler"                         },
-            { "Dietmar Kuehl"                                          , "Dietmar K\\u00FChl"                           },
-            { "Dietmar Kuhl"                                           , "Dietmar K\\u00FChl"                           },
             { "Domagoj Saric"                                          , "Domagoj \\u0160ari\\u0107"                    },
             { "Ed Catmur"                                              , "Edward Catmur (1982 \\u002D 2024)"            },
             { "Gonzalo Brito"                                          , "Gonzalo Brito Gadeschi"                       },
@@ -75,12 +71,46 @@ private:
     map<string_view, string_view> mutable m_map_clusters;
     bool mutable m_map_clusters_dirty = true;
 
+    static void ReplaceNonAscii(std::string &input)
+    {
+        std::string output;
+        for ( size_t i = 0u; i < input.size(); )
+        {
+            // Look for \uXXXX or \\uXXXX
+            if ( (input[i] == '\\') && (i + 5 < input.size()) && (input[i + 1] == 'u') )
+            {
+                // Replace \uXXXX with 'Z'
+                output += 'Z';
+                i += 6;
+            }
+            else if ( (input[i] == '\\') && (i + 6 < input.size()) && (input[i + 1] == '\\') && (input[i + 2] == 'u'))
+            {
+                // Replace \\uXXXX with 'Z'
+                output += 'Z';
+                i += 7;
+            }
+            else if ( static_cast<unsigned char>(input[i]) > 0x7F )
+            {
+                std::abort();
+                // Replace any other non-ASCII character with 'Z'
+                output += 'Z';
+                ++i;
+            }
+            else
+            {
+                output += input[i];
+                ++i;
+            }
+        }
+        input = std::move(output);
+    }
+
     static void ToLowerAndRemovePunct(string &s)
     {
         string result;
         for ( char const c : s )
         {
-            if ( std::isalnum(static_cast<unsigned char>(c)) || (c == ' ') )
+            if ( std::isalnum(static_cast<unsigned char>(c)) || (c == ' ') || (c == '\\') )
                 result += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
             else if ( c == '.' || c == '-' )
                 result += ' ';
@@ -179,6 +209,9 @@ private:
         string sa(a), sb(b);
         ToLowerAndRemovePunct(sa);
         ToLowerAndRemovePunct(sb);
+
+        ReplaceNonAscii(sa);
+        ReplaceNonAscii(sb);
 
         // The next line mostly accommodates Spanish names,
         // where the second surname is sometimes ommitted.
