@@ -82,27 +82,32 @@ bool DownloadPage(char const *const arg_url, string &outContent)
     std::string_view url(arg_url);
 
     // Generate a filename from the URL
-    string filename;
+    string filename = "downloaded/";
 
     // Extract the last non-empty path segment (e.g., "2024/")
     std::regex regex_filename_from_url(R"(/(\d{4})/?)");
     std::match_results< std::string_view::const_iterator > match;
     if ( std::regex_search( url.cbegin(), url.cend(), match, regex_filename_from_url ) )
     {
-        filename = match[1].str() + ".html";
+        filename += match[1].str() + ".html";
+    }
+    else
+    {
+        filename += "index.html";
     }
 
-    if ( false == filename.empty() )
+    // Try reading from local cache if filename is known
+    std::ifstream cached( filename );
+    if ( cached.is_open() )
     {
-        // Try reading from local cache if filename is known
-        std::ifstream cached( "downloaded/" + filename );
-        if ( cached.is_open() )
-        {
-            std::cerr << "Reading cached file: " << filename << "\n";
-            outContent.assign(std::istreambuf_iterator<char>(cached),
-                              std::istreambuf_iterator<char>());
-            return true;
-        }
+        std::cerr << "Reading cached file: " << filename << "\n";
+        outContent.assign(std::istreambuf_iterator<char>(cached),
+                          std::istreambuf_iterator<char>());
+        return true;
+    }
+    else
+    {
+        std::cerr << "Cached file not found for " << filename << ", must download from internet.\n";
     }
 
     // No cache or cache file not found — proceed with download
@@ -127,12 +132,8 @@ bool DownloadPage(char const *const arg_url, string &outContent)
         return false;
     }
 
-    if ( false == filename.empty() )
-    {
-        // Write to cache file
-        std::ofstream out(filename);
-        if ( out.is_open() ) out << outContent;
-    }
+    std::ofstream out(filename);
+    if ( out.is_open() ) out << outContent;
 
     return true;
 }
