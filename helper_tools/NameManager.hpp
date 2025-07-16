@@ -256,10 +256,11 @@ private:
     }
 
     static constexpr std::string_view hardcoded_primaries[] = {
-        "Yihe Li",
-        "Richard Smith",
-        "Mingxin Wang",
+        "Detlef Vollmann",
         "Hong Hong",
+        "Mingxin Wang",
+        "Richard Smith",
+        "Yihe Li",
     };
 
     inline static std::map<string_view, string_view> const hardcoded_alternatives = {
@@ -271,6 +272,8 @@ private:
         { "C. Walker"                                              , "Chris Walker"                                 },
         { "Christian Kaeser"                                       , "Christian K\\u00E4ser"                        },
         { "Daniel Sundernland"                                     , "Daniel Sunderland"                            },
+        { "D. Vollmann"                                            , "Detlef Vollmann"                              },
+        { "Detlef Vollman"                                         , "Detlef Vollmann"                              },
         { "D. Miller"                                              , "David Miller"                                 },
         { "D. Walker"                                              , "Daniel Walker"  /* not David */               },
         { "Ed Catmur"                                              , "Edward Catmur (1982 \\u002D 2024)"            },
