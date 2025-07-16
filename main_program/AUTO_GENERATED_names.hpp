@@ -883,7 +883,8 @@ inline constexpr std::pair< std::uint_fast64_t, wxStringCharType const * > g_pri
     { Hash("Y. Solodkyy"                        ), wxS("Y. Solodkyy"                        ) },
     { Hash("Yaodan Zhang"                       ), wxS("Yaodan Zhang"                       ) },
     { Hash("Yegor Derevenets"                   ), wxS("Yegor Derevenets"                   ) },
-    { Hash("Yehezkel Bernart"                   ), wxS("Yehezkel Bernart"                   ) },
+    { Hash("Yehezkel Bernat"                    ), wxS("Yehezkel Bernat"                    ) },
+    { Hash("Yehuda Bernat"                      ), wxS("Yehuda Bernat"                      ) },
     { Hash("Yeoul Na"                           ), wxS("Yeoul Na"                           ) },
     { Hash("Yihe Li"                            ), wxS("Yihe Li"                            ) },
     { Hash("Yonggang Li"                        ), wxS("Yonggang Li"                        ) },
@@ -1203,8 +1204,7 @@ inline constexpr std::tuple<std::uint_fast64_t,wxStringCharType const *,std::uin
     { Hash("W. M. Miller"                       ), wxS("W. M. Miller"                       ), Hash("William M. (Mike) Miller"           ) },
     { Hash("W. Miller"                          ), wxS("W. Miller"                          ), Hash("William M. (Mike) Miller"           ) },
     { Hash("Yoaodan Zhang"                      ), wxS("Yoaodan Zhang"                      ), Hash("Yaodan Zhang"                       ) },
-    { Hash("Yehezkel Bernat"                    ), wxS("Yehezkel Bernat"                    ), Hash("Yehezkel Bernart"                   ) },
-    { Hash("Yehuda Bernat"                      ), wxS("Yehuda Bernat"                      ), Hash("Yehezkel Bernart"                   ) },
+    { Hash("Yehezkel Bernart"                   ), wxS("Yehezkel Bernart"                   ), Hash("Yehezkel Bernat"                    ) },
     { Hash("Yihe Le"                            ), wxS("Yihe Le"                            ), Hash("Yihe Li"                            ) }
 };
 

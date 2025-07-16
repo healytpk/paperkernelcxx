@@ -261,6 +261,7 @@ private:
         "Mingxin Wang",
         "Richard Smith",
         "Yihe Li",
+        "Yehezkel Bernat",
     };
 
     inline static std::map<string_view, string_view> const hardcoded_alternatives = {
@@ -299,6 +300,7 @@ private:
         { "Thomas Koeppe"                                          , "Thomas K\\u00F6ppe"                           },
         { "V.  Escriba"                                            , "Vicente J. Botet Escrib\\u00E1"               },
         { "V. Escriba"                                             , "Vicente J. Botet Escrib\\u00E1"               },
+        { "Yehezkel Bernart"                                       , "Yehezkel Bernat"                              },
         { "Yoaodan Zhang"                                          , "Yaodan Zhang"                                 },
         { "Yihe Le"                                                , "Yihe Li"                                      },
     };
