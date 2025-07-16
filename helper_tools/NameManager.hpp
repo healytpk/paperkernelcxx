@@ -268,6 +268,7 @@ private:
         { "Billy O'Neal"                                           , "Billy Robert O'Neal III"                      },
         { "C. Kaeser"                                              , "Christian K\\u00E4ser"                        },
         { "C. K\\u00E4ser"                                         , "Christian K\\u00E4ser"                        },
+        { "C. Walker"                                              , "Chris Walker"                                 },
         { "Christian Kaeser"                                       , "Christian K\\u00E4ser"                        },
         { "Daniel Sundernland"                                     , "Daniel Sunderland"                            },
         { "D. Miller"                                              , "David Miller"                                 },
