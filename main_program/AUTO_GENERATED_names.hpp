@@ -873,12 +873,13 @@ inline constexpr std::pair< std::uint_fast64_t, wxStringCharType const * > g_pri
     { Hash("Xavier Bonaventura"                 ), wxS("Xavier Bonaventura"                 ) },
     { Hash("Xiao Shi"                           ), wxS("Xiao Shi"                           ) },
     { Hash("Y. Solodkyy"                        ), wxS("Y. Solodkyy"                        ) },
+    { Hash("Yaodan Zhang"                       ), wxS("Yaodan Zhang"                       ) },
     { Hash("Yegor Derevenets"                   ), wxS("Yegor Derevenets"                   ) },
     { Hash("Yehezkel Bernart"                   ), wxS("Yehezkel Bernart"                   ) },
     { Hash("Yeoul Na"                           ), wxS("Yeoul Na"                           ) },
     { Hash("Yihe Li"                            ), wxS("Yihe Li"                            ) },
-    { Hash("Yoaodan Zhang"                      ), wxS("Yoaodan Zhang"                      ) },
     { Hash("Yonggang Li"                        ), wxS("Yonggang Li"                        ) },
+    { Hash("Younan Zhang"                       ), wxS("Younan Zhang"                       ) },
     { Hash("Yuriy Chernyshov"                   ), wxS("Yuriy Chernyshov"                   ) },
     { Hash("Zach Laine"                         ), wxS("Zach Laine"                         ) },
     { Hash("Zachary Henkel"                     ), wxS("Zachary Henkel"                     ) },
@@ -1196,11 +1197,10 @@ inline constexpr std::tuple<std::uint_fast64_t,wxStringCharType const *,std::uin
     { Hash("David Miller"                       ), wxS("David Miller"                       ), Hash("William M. (Mike) Miller"           ) },
     { Hash("D. Miller"                          ), wxS("D. Miller"                          ), Hash("William M. (Mike) Miller"           ) },
     { Hash("W. Miller"                          ), wxS("W. Miller"                          ), Hash("William M. (Mike) Miller"           ) },
+    { Hash("Yoaodan Zhang"                      ), wxS("Yoaodan Zhang"                      ), Hash("Yaodan Zhang"                       ) },
     { Hash("Yehezkel Bernat"                    ), wxS("Yehezkel Bernat"                    ), Hash("Yehezkel Bernart"                   ) },
     { Hash("Yehuda Bernat"                      ), wxS("Yehuda Bernat"                      ), Hash("Yehezkel Bernart"                   ) },
-    { Hash("Yihe Le"                            ), wxS("Yihe Le"                            ), Hash("Yihe Li"                            ) },
-    { Hash("Younan Zhang"                       ), wxS("Younan Zhang"                       ), Hash("Yoaodan Zhang"                      ) },
-    { Hash("Yihe Li"                            ), wxS("Yihe Li"                            ), Hash("Yonggang Li"                        ) }
+    { Hash("Yihe Le"                            ), wxS("Yihe Le"                            ), Hash("Yihe Li"                            ) }
 };
 
 template<typename T, std::size_t N>

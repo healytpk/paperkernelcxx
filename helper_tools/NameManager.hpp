@@ -286,6 +286,7 @@ private:
         { "Thomas Koeppe"                                          , "Thomas K\\u00F6ppe"                           },
         { "V.  Escriba"                                            , "Vicente J. Botet Escrib\\u00E1"               },
         { "V. Escriba"                                             , "Vicente J. Botet Escrib\\u00E1"               },
+        { "Yoaodan Zhang"                                          , "Yaodan Zhang"                                 },
         { "Yihe Le"                                                , "Yihe Li"                                      },
     };
 
@@ -433,6 +434,13 @@ private:
 
     static bool IsSamePerson(string_view a, string_view b)
     {
+        constexpr auto IsHardcodedPrimary = [](string_view const x) -> bool
+          {
+            return std::cend(hardcoded_primaries) != std::find(std::cbegin(hardcoded_primaries), std::cend(hardcoded_primaries), x);
+          };
+
+        if ( IsHardcodedPrimary(a) || IsHardcodedPrimary(b) )  return a == b;
+
         string sa(a), sb(b);
         ToLowerAndRemovePunct(sa);
         ToLowerAndRemovePunct(sb);
