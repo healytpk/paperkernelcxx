@@ -256,6 +256,7 @@ private:
     }
 
     static constexpr std::string_view hardcoded_primaries[] = {
+        "D. S. Hollman",
         "Detlef Vollmann",
         "Hong Hong",
         "Mingxin Wang",
@@ -274,6 +275,13 @@ private:
         { "Christian Kaeser"                                       , "Christian K\\u00E4ser"                        },
         { "Daniel Sundernland"                                     , "Daniel Sunderland"                            },
         { "D. Diaz"                                                , "Diego Diaz"                                   },
+
+        { "D.S. Hollman"                                           , "D. S. Hollman"                                },
+        { "Daisy Hollman"                                          , "D. S. Hollman"                                },
+        { "Daisy S. Hollman"                                       , "D. S. Hollman"                                },
+        { "David Hollman"                                          , "D. S. Hollman"                                },
+        { "David S. Hollman"                                       , "D. S. Hollman"                                },
+
         { "D. Vollmann"                                            , "Detlef Vollmann"                              },
         { "Detlef Vollman"                                         , "Detlef Vollmann"                              },
         { "D. Miller"                                              , "David Miller"                                 },
