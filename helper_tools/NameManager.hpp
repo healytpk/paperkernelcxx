@@ -487,6 +487,20 @@ private:
         if ( pa != pb ) m_parent[pa] = pb;
     }
 
+    static bool HasLowercaseParticle(vector<string> const &tokens)
+    {
+        static constexpr std::string_view particles[] = { "van", "de", "von", "der", "den", "ter", "ten", "op", "af", "di", "da" };
+        // Check all but the first and last token (usually the surname is last)
+        for ( size_t i = 1; i + 1 < tokens.size(); ++i )
+        {
+            for ( auto const &p : particles )
+            {
+                if ( tokens[i] == p ) return true;
+            }
+        }
+        return false;
+    }
+
     void SortClusterIndices(vector<size_t>& cluster_indices) const
     {
         std::ranges::sort(cluster_indices,
@@ -494,6 +508,10 @@ private:
             {
                 auto const tokensA = SplitTokens(m_names[a]);
                 auto const tokensB = SplitTokens(m_names[b]);
+                // Prefer names with lowercase particles
+                bool a_has = HasLowercaseParticle(tokensA);
+                bool b_has = HasLowercaseParticle(tokensB);
+                if (a_has != b_has) return a_has; // true sorts before false
                 if (tokensA.size() != tokensB.size()) return tokensA.size() > tokensB.size();
                 return m_names[a].size() > m_names[b].size();
             });
