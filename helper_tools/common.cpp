@@ -417,22 +417,22 @@ void ReplaceInPlace(std::string &text, std::string_view const target, std::strin
 
 void TrimWhitespace(std::string &s)
 {
-    const std::string whitespace = " \t\n\r\f\v";
+    std::string const whitespace = " \t\n\r\f\v";
 
-    size_t start = s.find_first_not_of(whitespace);
-    if (start == std::string::npos)
+    size_t const start = s.find_first_not_of(whitespace);
+    if ( -1 == start )
     {
         s.clear();
         return;
     }
 
+    s.erase(0, start); // Erase leading whitespace
+
     size_t end = s.find_last_not_of(whitespace);
-
-    // Erase leading whitespace first
-    s.erase(0, start);
-
-    // Erase trailing whitespace after adjusting for leading erase
-    s.erase(end - start + 1);
+    assert( -1 != end );   // This is impossible -- just a sanity check
+    ++end;
+    if ( end == s.size() ) return;
+    s.erase(end);
 }
 
 std::vector<std::string_view> SplitByNewLines(std::string_view const sv)

@@ -244,7 +244,9 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
         Erase(s, "(h2 AT fsfe.org)");
         Erase(s, " et al.");
         Erase(s, " (EIDOS)");
+        TrimWhitespace(s);
         if ( !s.empty() && ('.' == s.back()) ) s.pop_back();
+        if ( s.empty() ) continue;
         if ( ContainsNonASCII(s) )
         {
             cout << "----- " << doc << " --- " << s << " --- ";
@@ -253,6 +255,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
                 cout << std::hex << std::setfill('0') << std::setw(2u) << (unsigned)(char unsigned)c << " ";
             }
             cout << endl;
+            std::abort();
         }
         if ( s.empty() ) continue;
         names[s].emplace_back(doc);
