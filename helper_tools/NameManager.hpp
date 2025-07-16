@@ -259,6 +259,7 @@ private:
         "Yihe Li",
         "Richard Smith",
         "Mingxin Wang",
+        "Hong Hong",
     };
 
     inline static std::map<string_view, string_view> const hardcoded_alternatives = {
