@@ -490,7 +490,7 @@ private:
 
     static bool HasLowercaseParticle(vector<string> const &tokens)
     {
-        static constexpr std::string_view particles[] = { "van", "de", "von", "der", "den", "ter", "ten", "op", "af", "di", "da" };
+        static constexpr std::string_view particles[] = { "van", "de", "von", "der", "den", "ter", "ten", "op", "af", "di", "da", "du" };
         // Check all but the first and last token (usually the surname is last)
         for ( size_t i = 1; i + 1 < tokens.size(); ++i )
         {
