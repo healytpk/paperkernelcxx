@@ -277,6 +277,8 @@ private:
         { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
         { "Johel Guerrero"                                         , "Johel Ernesto Guerrero Pe\\u00F1a"            },
         { "Jonathan Mueller"                                       , "Jonathan M\\u00FCller"                        },
+        { "K. Kloepper"                                            , "Kyle Kl\\u00F6pper"                           },
+        { "Kyle Kloepper"                                          , "Kyle Kl\\u00F6pper"                           },
         { "Lo\\uF8E0Joly"                                          , "Loic Joly"                                    },
         { "Lois Goldwaithe"                                        , "Lois Goldthwaite"                             },
         { "Marhsall Clow"                                          , "Marshall Clow"                                },

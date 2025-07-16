@@ -470,7 +470,7 @@
     { Hash("Konstantin Varlamov"), PaperList< "p3191r0", "p3471r0", "p3471r1", "p3471r2", "p3471r3", "p3471r4", "p3697r0" >() },
     { Hash("Kostya Serebryany"), PaperList< "p1726r4", "p1726r5", "p2414r0", "p2414r1", "p2414r2", "p2414r3", "p2414r4", "p3347r0", "p2414r5", "p3347r1", "p2414r6", "p2414r7", "p3347r2" >() },
     { Hash("Krystian Stasiowski"), PaperList< "p1839r0", "p1839r1", "p1839r2", "p1997r0", "p1945r0", "p1997r1", "p1839r3", "p1839r4", "p1839r5", "p3236r0", "p3236r1", "p1839r6", "p1839r7" >() },
-    { Hash("Kyle Kloepper"), PaperList< "n3300", "n3316", "n3379", "n3380", "n3381", "n3453", "n3454", "n3455", "n3620", "n3621", "n3622", "n3623", "n3647", "n3767", "n3768", "n3769", "n3901", "n3902", "n3374" >() },
+    { Hash("Kyle Kl\\u00F6pper"), PaperList< "n3374", "n3300", "n3316", "n3379", "n3380", "n3381", "n3453", "n3454", "n3455", "n3620", "n3621", "n3622", "n3623", "n3647", "n3767", "n3768", "n3769", "n3901", "n3902" >() },
     { Hash("L. Deniau"), PaperList< "n4188" >() },
     { Hash("L. Singh"), PaperList< "n3410" >() },
     { Hash("L\\u00E9n\\u00E1rd Szolnoki"), PaperList< "p2413r0", "p2413r1", "p3652r0", "p3652r1" >() },
