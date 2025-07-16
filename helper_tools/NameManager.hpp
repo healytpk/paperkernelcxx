@@ -257,6 +257,7 @@ private:
 
     static constexpr std::string_view hardcoded_primaries[] = {
         "Yihe Li",
+        "Richard Smith",
     };
 
     inline static std::map<string_view, string_view> const hardcoded_alternatives = {
