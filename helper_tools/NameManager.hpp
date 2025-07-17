@@ -300,6 +300,7 @@ private:
         { "Lois Goldwaithe"                                        , "Lois Goldthwaite"                             },
         { "M. Diaz"                                                , "Marcos Diaz"                                  },
         { "Marhsall Clow"                                          , "Marshall Clow"                                },
+        { "Mingo Gill"                                             , "Mungo Gill"                                   },
         { "P. Talbot"                                              , "Pierre Talbot"                                },
         { "R. Rivera"                                              , "Ren\\u00E9 Ferdinand Rivera Morell"           },
         { "Ren\\u00E9 Rivera"                                      , "Ren\\u00E9 Ferdinand Rivera Morell"           },
