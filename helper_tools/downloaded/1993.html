@@ -1,164 +1,542 @@
-<TITLE>
-C++ Standards Committee Papers, 1993
-</TITLE>
-<H1>C++ Standards Committee Papers, 1993</H1>
-<HR>
-<UL>
-<LI>X3J16/93-0012R2 WG21/N0220R2 <a href=N0220R2.asc>[ASCII]</a><BR>
-	<B>A Proposal for Two Bitset Classes</B><BR>
-	<I>Chuck Allison</I>
-<LI>X3J16/93-0014 WG21/N0222 <a href=N0222.ps>[PS]</a> <a href=N0222.pdf>[PDF]</a><BR>
-	<B>Case-study: Casting in C++</B><BR>
-	<I>Dag Br&uuml;ck</I>
-<LI>X3J16/93-0015 WG21/N0223 <a href=N0223.asc>[ASCII]</a><BR>
-	<B>Resolved Issues of Name Lookup</B><BR>
-	<I>Prescott K. Turner, Jr.</I>
-<LI>X3J16/93-0032 WG21/N0239 <a href=N0239.asc>[ASCII]</a><BR>
-	<B>Core issues 159 thru 250</B><BR>
-	<I>Thomas Plum</I>
-<LI>X3J16/93-0046 WG21/N0253 <a href=N0253.ps>[PS]</a> <a href=N0253.pdf>[PDF]</a><BR>
-	<B>Conformance of Freestanding Implementations</B><BR>
-	<I>Neal M Gafter</I>
-<LI>X3J16/93-0047 WG21/N0254 <a href=N0254.ps>[PS]</a> <a href=N0254.pdf>[PDF]</a><BR>
-	<B>Form-Feed and Vertical-Tab in // Comments</B><BR>
-	<I>Neal M Gafter</I>
-<LI>X3J16/93-0051 WG21/N0258 <a href=N0258.asc>[ASCII]</a><BR>
-	<B>Array of unknown bound</B><BR>
-	<I>Thomas Plum</I>
-<LI>X3J16/93-0052 WG21/N0259 <a href=N0259.ps>[PS]</a> <a href=N0259.pdf>[PDF]</a><BR>
-	<B>A Proposal to allow Binary Literals, and some other small changes to Chapter 2: Lexical Conventions</B><BR>
-	<I>John Max Skaller</I>
-<LI>X3J16/93-0053 WG21/N0260 <a href=N0260.ps>[PS]</a> <a href=N0260.pdf>[PDF]</a><BR>
-	<B>In-Class Initialisers for Class Members and Bases</B><BR>
-	<I>John Max Skaller</I>
-<LI>X3J16/93-0055 WG21/N0262 <a href=N0262.ps>[PS]</a> <a href=N0262.pdf>[PDF]</a><BR>
-	<B>Name Space Management in C++ (revised)</B><BR>
-	<I>Bjarne Stroustrup</I>
-<LI>X3J16/93-0065 WG21/N0272 <a href=N0272.asc>[ASCII]</a><BR>
-	<B>Replacing Context Dependent Keywords by type-name</B><BR>
-	<I>Eric J. Krohn</I>
-<LI>X3J16/93-0066 WG21/N0273 <a href=N0273.asc>[ASCII]</a><BR>
-	<B>Combining Qualifiers in the Draft Syntax for C++</B><BR>
-	<I>Eric J. Krohn</I>
-<LI>X3J16/93-0070 WG21/N0277 <a href=N0277.asc>[ASCII]</a><BR>
-	<B>C++ Implementation Limits (Third Proposal)</B><BR>
-	<I>Paul Stone</I>
-<LI>X3J16/93-0071 WG21/N0278 <a href=N0278.ps>[PS]</a> <a href=N0278.pdf>[PDF]</a><BR>
-	<B>Implementing Streams in a multi-threaded environment</B><BR>
-	<I>Mukesh Kapoor</I>
-<LI>X3J16/93-0073 WG21/N0280 <a href=N0280.ps>[PS]</a> <a href=N0280.pdf>[PDF]</a><BR>
-	<B>Proposal for a Numerical Array Library (Revised)</B><BR>
-	<I>Kent G. Budge</I>
-<LI>X3J16/93-0074 WG21/N0281 <a href=N0281.ps>[PS]</a> <a href=N0281.pdf>[PDF]</a><BR>
-	<B>Template Issues and Proposed Resolutions (Revision 2)</B><BR>
-	<I>John H. Spicer</I>
-<LI>X3J16/93-0081 WG21/N0288 <a href=N0288.ps>[PS]</a> <a href=N0288.pdf>[PDF]</a><BR>
-	<B>Major Template Issues (Note for discussion)</B><BR>
-	<I>Bjarne Stroustrup</I>
-<LI>X3J16/93-0088 WG21/N0295 <a href=N0295.ps>[PS]</a> <a href=N0295.pdf>[PDF]</a><BR>
-	<B>A proposal for Nested Functions</B><BR>
-	<I>John Max Skaller & Fergus Henderson</I>
-<LI>X3J16/93-0098 WG21/N0305 <a href=N0305.ps>[PS]</a> <a href=N0305.pdf>[PDF]</a><BR>
-	<B>Proposal for Lifetime of Temporaries</B><BR>
-	<I>Dag Br&uuml;ck</I>
-<LI>X3J16/93-0101 WG21/N0308 <a href=N0308.asc>[ASCII]</a><BR>
-	<B>A Proposal for Standard C++ Array Classes</B><BR>
-	<I>Al Vermeulen</I>
-<LI>X3J16/93-0107 WG21/N0314 <a href=N0314.asc>[ASCII]</a><BR>
-	<B>New Grammar for Namespaces</B><BR>
-	<I>Eric J. Krohn & Erwin Unruh</I>
-<LI>X3J16/93-0109 WG21/N0316 <a href=N0316.asc>[ASCII]</a><BR>
-	<B>Proposed Small Corrections to Library Draft</B><BR>
-	<I>P.J. Plauger</I>
-<LI>X3J16/93-0110 WG21/N0317 <a href=N0317.asc>[ASCII]</a><BR>
-	<B>Proposed Structure for Library Exceptions</B><BR>
-	<I>P.J. Plauger</I>
-<LI>X3J16/93-0111 WG21/N0318 <a href=N0318.asc>[ASCII]</a><BR>
-	<B>Proposed Approach for Locale Control in Streams</B><BR>
-	<I>P.J. Plauger</I>
-<LI>X3J16/93-0112 WG21/N0319 <a href=N0319.asc>[ASCII]</a><BR>
-	<B>Proposed Approach to Wide-Character Streams</B><BR>
-	<I>P.J. Plauger</I>
-<LI>X3J16/93-0114 WG21/N0321 <a href=N0321.asc>[ASCII]</a><BR>
-	<B>Clarification of Volatile Semantics</B><BR>
-	<I>John Max Skaller</I>
-<LI>X3J16/93-0122 WG21/N0329 <a href=N0329.asc>[ASCII]</a><BR>
-	<B>Some changes to the string, wstring and dynarray classes</B><BR>
-	<I>Uwe Steinmueller</I>
-<LI>X3J16/93-0129 WG21/N0336 <a href=N0336.asc>[ASCII]</a><BR>
-	<B>Grammar Rules for Conversion Functions</B><BR>
-	<I>Eric J. Krohn</I>
-<LI>X3J16/93-0130 WG21/N0337 <a href=N0337.asc>[ASCII]</a><BR>
-	<B>Combining Qualifiers in the Draft Syntax for C++ (Revision 1)</B><BR>
-	<I>Eric J. Krohn</I>
-<LI>X3J16/93-0131 WG21/N0338 <a href=N0338.ps>[PS]</a> <a href=N0338.pdf>[PDF]</a><BR>
-	<B>Instantiation of Templates</B><BR>
-	<I>Erwin Unruh</I>
-<LI>X3J16/93-0134 WG21/N0341 <a href=N0341.asc>[ASCII]</a><BR>
-	<B>Suggested Changes to Section 3.7, Lvalues</B><BR>
-	<I>Samuel C. Kendall</I>
-<LI>X3J16/93-0135 WG21/N0342 <a href=N0342.ps>[PS]</a> <a href=N0342.pdf>[PDF]</a><BR>
-	<B>Type Combinations</B><BR>
-	<I>Samuel C. Kendall</I>
-<LI>X3J16/93-0137 WG21/N0344 <a href=N0344.ps>[PS]</a> <a href=N0344.pdf>[PDF]</a><BR>
-	<B>Expressions of Class Type</B><BR>
-	<I>John Bruns</I>
-<LI>X3J16/93-0138 WG21/N0345 <a href=N0345.ps>[PS]</a> <a href=N0345.pdf>[PDF]</a><BR>
-	<B>Lifetime of temporaries bound to references</B><BR>
-	<I>John Bruns</I>
-<LI>X3J16/93-0140 WG21/N0347  <a href=N0347.pdf>[PDF]</a><BR>
-	<B>Local Disambiguation of Dynamic Cross-Casts</B><BR>
-	<I>Bill Gibbons</I>
-<LI>X3J16/93-0142 WG21/N0349 <a href=N0349a.ps>[PS]</a> <a href=N0349a.pdf>[PDF]</a><BR>
-	<B>New Casts Revisited</B><BR>
-	<I>Bjarne Stroustrup</I>
-<LI>X3J16/93-0143 WG21/N0350 <a href=N0350.ps>[PS]</a> <a href=N0350.pdf>[PDF]</a><BR>
-	<B>Extension proposal: Boolean data type</B><BR>
-	<I>Dag Br&uuml;ck & Andrew Koenig</I>
-<LI>X3J16/93-0145 WG21/N0352 <a href=N0352.asc>[ASCII]</a><BR>
-	<B>Proposal for Standardization of Random Number Generators in C++</B><BR>
-	<I>Mats Henricson</I>
-<LI>X3J16/93-0150 WG21/N0357 <a href=N0357.asc>[ASCII]</a><BR>
-	<B>Subscripting operators for string classes</B><BR>
-	<I>John Max Skaller</I>
-<LI>X3J16/93-0151 WG21/N0358 <a href=N0358.asc>[ASCII]</a><BR>
-	<B>Getting Rid of Default Int</B><BR>
-	<I>John Max Skaller</I>
-<LI>X3J16/93-0152 WG21/N0359 <a href=N0359.asc>[ASCII]</a><BR>
-	<B>Proposed charset class for the Standard Library</B><BR>
-	<I>John Max Skaller</I>
-<LI>X3J16/93-0156 WG21/N0363 <a href=N0363.asc>[ASCII]</a><BR>
-	<B>C++ Memory model: Discussion paper</B><BR>
-	<I>John Max Skaller</I>
-<LI>X3J16/93-0157 WG21/N0364 <a href=N0364.ps>[PS]</a> <a href=N0364.pdf>[PDF]</a><BR>
-	<B>Defined Value for T()</B><BR>
-	<I>Bjarne Stroustrup</I>
-<LI>X3J16/93-0158 WG21/N0365 <a href=N0365.asc>[ASCII]</a><BR>
-	<B>Expression Attributes</B><BR>
-	<I>Sam Kendall</I>
-<LI>X3J16/93-0161 WG21/N0368 <a href=N0368.asc>[ASCII]</a><BR>
-	<B>Linkage of inline functions</B><BR>
-	<I>Jos&eacute;e Lajoie</I>
-<LI>X3J16/93-0162 WG21/N0369 <a href=N0369.asc>[ASCII]</a><BR>
-	<B>The One Definition Rule</B><BR>
-	<I>John Max Skaller</I>
-<LI>X3J16/93-0167 WG21/N0374 <a href=N0374.asc>[ASCII]</a><BR>
-	<B>A Proposal for International Locale Support in the Standard C++ Library</B><BR>
-	<I>Nathan Myers</I>
-<LI>X3J16/93-0167R1 WG21/N0374R1 <a href=N0374R1.asc>[ASCII]</a><BR>
-	<B>International Locale Support in the Standard C++ Library (Revision 1)</B><BR>
-	<I>Nathan Myers</I>
-<LI>X3J16/93-0168R1WG21/N0375R1 <a href=N0375R1.ps>[PS]</a> <a href=N0375R1.pdf>[PDF]</a><BR>
-	<B>Unifying Built-in Operators and User Defined Functions (Revision 1)</B><BR>
-	<I>Samuel C. Kendall</I>
-<LI>X3J16/93-0182 WG21/N0389 <a href=N0389.asc>[ASCII]</a><BR>
-	<B>Making String Literals 'const'</B><BR>
-	<I>Sean A. Corfield</I>
-<LI>X3J16/93-0183 WG21/N0390 <a href=N0390.ps>[PS]</a> <a href=N0390.pdf>[PDF]</a><BR>
-	<B>Template Issues and Proposed Resolutions (Revision 4)</B><BR>
-	<I>John H. Spicer</I>
-<LI>X3J16/93-0184 WG21/N0391 <a href=N0391.asc>[ASCII]</a><BR>
-	<B>Scope of declarations in for-init-statement</B><BR>
-	<I>Steve Rumsby</I>
-</UL>
-</BODY>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>C++ Standards Committee Papers, 1993</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body>
+<h1>C++ Standards Committee Papers, 1993</h1>
+<table border="1" summary="C++ Standards Committee Papers, 1993">
+    <tr>
+        <th>WG21 Number</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Document Date</th>
+        <th>Mailing Date</th>
+        <th>Previous Version</th>
+        <th>Subgroup</th>
+        <th>Disposition</th>
+    </tr>
+    <tr>
+        <td>X3J16/93-0012R2 WG21/N0220R2</td>
+        <td><a href="N0220R2.asc">A Proposal for Two Bitset Classes</a></td>
+        <td>Chuck Allison</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0014 WG21/N0222</td>
+        <td><a href="N0222.ps">Case-study: Casting in C++</a></td>
+        <td>Dag Brück</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0015 WG21/N0223</td>
+        <td><a href="N0223.asc">Resolved Issues of Name Lookup</a></td>
+        <td>Prescott K. Turner, Jr.</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0032 WG21/N0239</td>
+        <td><a href="N0239.asc">Core issues 159 thru 250</a></td>
+        <td>Thomas Plum</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0046 WG21/N0253</td>
+        <td><a href="N0253.ps">Conformance of Freestanding Implementations</a></td>
+        <td>Neal M Gafter</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0047 WG21/N0254</td>
+        <td><a href="N0254.ps">Form-Feed and Vertical-Tab in // Comments</a></td>
+        <td>Neal M Gafter</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0051 WG21/N0258</td>
+        <td><a href="N0258.asc">Array of unknown bound</a></td>
+        <td>Thomas Plum</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0052 WG21/N0259</td>
+        <td><a href="N0259.ps">A Proposal to allow Binary Literals, and some other small changes to Chapter 2: Lexical Conventions</a></td>
+        <td>John Max Skaller</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0053 WG21/N0260</td>
+        <td><a href="N0260.ps">In-Class Initialisers for Class Members and Bases</a></td>
+        <td>John Max Skaller</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0055 WG21/N0262</td>
+        <td><a href="N0262.ps">Name Space Management in C++ (revised)</a></td>
+        <td>Bjarne Stroustrup</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0065 WG21/N0272</td>
+        <td><a href="N0272.asc">Replacing Context Dependent Keywords by type-name</a></td>
+        <td>Eric J. Krohn</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0066 WG21/N0273</td>
+        <td><a href="N0273.asc">Combining Qualifiers in the Draft Syntax for C++</a></td>
+        <td>Eric J. Krohn</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0070 WG21/N0277</td>
+        <td><a href="N0277.asc">C++ Implementation Limits (Third Proposal)</a></td>
+        <td>Paul Stone</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0071 WG21/N0278</td>
+        <td><a href="N0278.ps">Implementing Streams in a multi-threaded environment</a></td>
+        <td>Mukesh Kapoor</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0073 WG21/N0280</td>
+        <td><a href="N0280.ps">Proposal for a Numerical Array Library (Revised)</a></td>
+        <td>Kent G. Budge</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0074 WG21/N0281</td>
+        <td><a href="N0281.ps">Template Issues and Proposed Resolutions (Revision 2)</a></td>
+        <td>John H. Spicer</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0081 WG21/N0288</td>
+        <td><a href="N0288.ps">Major Template Issues (Note for discussion)</a></td>
+        <td>Bjarne Stroustrup</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0088 WG21/N0295</td>
+        <td><a href="N0295.ps">A proposal for Nested Functions</a></td>
+        <td>John Max Skaller & Fergus Henderson</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0098 WG21/N0305</td>
+        <td><a href="N0305.ps">Proposal for Lifetime of Temporaries</a></td>
+        <td>Dag Brück</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0101 WG21/N0308</td>
+        <td><a href="N0308.asc">A Proposal for Standard C++ Array Classes</a></td>
+        <td>Al Vermeulen</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0107 WG21/N0314</td>
+        <td><a href="N0314.asc">New Grammar for Namespaces</a></td>
+        <td>Eric J. Krohn & Erwin Unruh</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0109 WG21/N0316</td>
+        <td><a href="N0316.asc">Proposed Small Corrections to Library Draft</a></td>
+        <td>P.J. Plauger</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0110 WG21/N0317</td>
+        <td><a href="N0317.asc">Proposed Structure for Library Exceptions</a></td>
+        <td>P.J. Plauger</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0111 WG21/N0318</td>
+        <td><a href="N0318.asc">Proposed Approach for Locale Control in Streams</a></td>
+        <td>P.J. Plauger</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0112 WG21/N0319</td>
+        <td><a href="N0319.asc">Proposed Approach to Wide-Character Streams</a></td>
+        <td>P.J. Plauger</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0114 WG21/N0321</td>
+        <td><a href="N0321.asc">Clarification of Volatile Semantics</a></td>
+        <td>John Max Skaller</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0122 WG21/N0329</td>
+        <td><a href="N0329.asc">Some changes to the string, wstring and dynarray classes</a></td>
+        <td>Uwe Steinmueller</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0129 WG21/N0336</td>
+        <td><a href="N0336.asc">Grammar Rules for Conversion Functions</a></td>
+        <td>Eric J. Krohn</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0130 WG21/N0337</td>
+        <td><a href="N0337.asc">Combining Qualifiers in the Draft Syntax for C++ (Revision 1)</a></td>
+        <td>Eric J. Krohn</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0131 WG21/N0338</td>
+        <td><a href="N0338.ps">Instantiation of Templates</a></td>
+        <td>Erwin Unruh</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0134 WG21/N0341</td>
+        <td><a href="N0341.asc">Suggested Changes to Section 3.7, Lvalues</a></td>
+        <td>Samuel C. Kendall</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0135 WG21/N0342</td>
+        <td><a href="N0342.ps">Type Combinations</a></td>
+        <td>Samuel C. Kendall</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0137 WG21/N0344</td>
+        <td><a href="N0344.ps">Expressions of Class Type</a></td>
+        <td>John Bruns</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0138 WG21/N0345</td>
+        <td><a href="N0345.ps">Lifetime of temporaries bound to references</a></td>
+        <td>John Bruns</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0140 WG21/N0347</td>
+        <td><a href="N0347.pdf">Local Disambiguation of Dynamic Cross-Casts</a></td>
+        <td>Bill Gibbons</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0142 WG21/N0349</td>
+        <td><a href="N0349a.ps">New Casts Revisited</a></td>
+        <td>Bjarne Stroustrup</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0143 WG21/N0350</td>
+        <td><a href="N0350.ps">Extension proposal: Boolean data type</a></td>
+        <td>Dag Brück & Andrew Koenig</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0145 WG21/N0352</td>
+        <td><a href="N0352.asc">Proposal for Standardization of Random Number Generators in C++</a></td>
+        <td>Mats Henricson</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0150 WG21/N0357</td>
+        <td><a href="N0357.asc">Subscripting operators for string classes</a></td>
+        <td>John Max Skaller</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0151 WG21/N0358</td>
+        <td><a href="N0358.asc">Getting Rid of Default Int</a></td>
+        <td>John Max Skaller</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0152 WG21/N0359</td>
+        <td><a href="N0359.asc">Proposed charset class for the Standard Library</a></td>
+        <td>John Max Skaller</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0156 WG21/N0363</td>
+        <td><a href="N0363.asc">C++ Memory model: Discussion paper</a></td>
+        <td>John Max Skaller</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0157 WG21/N0364</td>
+        <td><a href="N0364.ps">Defined Value for T()</a></td>
+        <td>Bjarne Stroustrup</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0158 WG21/N0365</td>
+        <td><a href="N0365.asc">Expression Attributes</a></td>
+        <td>Sam Kendall</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0161 WG21/N0368</td>
+        <td><a href="N0368.asc">Linkage of inline functions</a></td>
+        <td>Josée Lajoie</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0162 WG21/N0369</td>
+        <td><a href="N0369.asc">The One Definition Rule</a></td>
+        <td>John Max Skaller</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0167 WG21/N0374</td>
+        <td><a href="N0374.asc">A Proposal for International Locale Support in the Standard C++ Library</a></td>
+        <td>Nathan Myers</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0167R1 WG21/N0374R1</td>
+        <td><a href="N0374R1.asc">International Locale Support in the Standard C++ Library (Revision 1)</a></td>
+        <td>Nathan Myers</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0168R1WG21/N0375R1</td>
+        <td><a href="N0375R1.ps">Unifying Built-in Operators and User Defined Functions (Revision 1)</a></td>
+        <td>Samuel C. Kendall</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0182 WG21/N0389</td>
+        <td><a href="N0389.asc">Making String Literals 'const'</a></td>
+        <td>Sean A. Corfield</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0183 WG21/N0390</td>
+        <td><a href="N0390.ps">Template Issues and Proposed Resolutions (Revision 4)</a></td>
+        <td>John H. Spicer</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>X3J16/93-0184 WG21/N0391</td>
+        <td><a href="N0391.asc">Scope of declarations in for-init-statement</a></td>
+        <td>Steve Rumsby</td>
+        <td>1993</td>
+        <td>1993</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+</body>
+</html>
