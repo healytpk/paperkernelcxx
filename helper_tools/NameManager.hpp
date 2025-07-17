@@ -297,6 +297,7 @@ private:
         { "Jonathan Mueller"                                       , "Jonathan M\\u00FCller"                        },
         { "Loic Joly"                                              , "Lo\\u00efc Joly"                              },
         { "K. Kloepper"                                            , "Kyle Kl\\u00F6pper"                           },
+        { "Klemans Morgenstern"                                    , "Klemens Morgenstern"                          },
         { "Kyle Kloepper"                                          , "Kyle Kl\\u00F6pper"                           },
         { "Lo\\uF8E0Joly"                                          , "Loic Joly"                                    },
         { "Lois Goldwaithe"                                        , "Lois Goldthwaite"                             },
