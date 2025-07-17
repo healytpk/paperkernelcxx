@@ -295,6 +295,7 @@ private:
         { "J. Jarvi"                                               , "Jaakko J\\u00e4rvi"                           },
         { "Johel Guerrero"                                         , "Johel Ernesto Guerrero Pe\\u00F1a"            },
         { "Jonathan Mueller"                                       , "Jonathan M\\u00FCller"                        },
+        { "Levi de koning"                                         , "Levi de Koning"                               },
         { "Loic Joly"                                              , "Lo\\u00efc Joly"                              },
         { "K. Kloepper"                                            , "Kyle Kl\\u00F6pper"                           },
         { "Klemans Morgenstern"                                    , "Klemens Morgenstern"                          },
