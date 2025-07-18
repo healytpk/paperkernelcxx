@@ -242,7 +242,7 @@ void CheckForNameClashes( wxString &retval, std::function<void(void)> const &cal
 
     if ( clashes.empty() ) retval += wxS(" -- no hash collisions detected --\n");
 
-    retval += wxS("Operation completed.");
+    retval += wxS("Operation completed.\n");
 }
 
 static std::string extra_name_to_hash("the null string");
@@ -312,6 +312,45 @@ void Dialog_Main::panelDebug_panelHash_btnCheckForCollisions_OnButtonClick(wxCom
 
     CheckForNameClashes( s, Refresh, 800u, extra_name_to_hash );
 
+    Refresh();
+
+    unsigned counter = 0u;
+    s += wxS("Checking for alternatives present in primaries:\n");
+    Refresh();
+    bool alarm = false;
+    for ( auto const &e : g_alternative_names )
+    {
+        if ( 0u == (++counter % 800u) ) Refresh();
+        auto const hash_alternative = std::get<0u>(e);
+
+        auto const it = std::ranges::lower_bound( g_primary_names, hash_alternative, {}, [](auto const &arg) { return std::get<0u>(arg); } );
+        if ( (it != std::cend(g_primary_names)) && (hash_alternative == std::get<0u>(*it)) )
+        {
+            alarm = true;
+            s << wxS("!!! Alternative hash found in primaries array: ") << std::get<1u>(e) << wxS(" --- ") << std::get<1u>(*it) << wxS("\n");
+        }
+    }
+    if ( false == alarm ) s += wxS(" -- no alternative hashes detected in primaries array --\n");
+
+    s += wxS("Making sure all alternatives' primaries are in the primary array:\n");
+    Refresh();
+    alarm = false;
+    for ( auto const &e : g_alternative_names )
+    {
+        if ( 0u == (++counter % 800u) ) Refresh();
+      //auto const hash_alternative = std::get<0u>(e);
+        auto const hash_primary     = std::get<2u>(e);
+
+        auto const it = std::ranges::lower_bound( g_primary_names, hash_primary, {}, [](auto const &arg) { return std::get<0u>(arg); } );
+        if ( (it == std::cend(g_primary_names)) || (hash_primary != std::get<0u>(*it)) )
+        {
+            alarm = true;
+            s << wxS("!!! Alternative's primary hash not found in primaries array: ") << std::get<1u>(e) << wxS("\n");
+        }
+    }
+    if ( false == alarm ) s += wxS(" -- all alternatives' primaries found in the primary array --\n");
+
+    s += wxS("+++ FIN +++\n");
     Refresh();
 }
 
