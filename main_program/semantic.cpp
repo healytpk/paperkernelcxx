@@ -16,6 +16,8 @@
 #    include <unistd.h>             // readlink
 #endif
 
+#include "_Max.hpp"
+
 namespace fs = std::filesystem;
 
 using std::string, std::string_view;

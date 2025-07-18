@@ -29,6 +29,7 @@ set(HEADERS
 	hash.hpp
 	incbin.h
 	local_http_server.hpp
+	_Max.hpp
 	MySortableListCtrl.hpp
 	paper.hpp
 	paperman.hpp

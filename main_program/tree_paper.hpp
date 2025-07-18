@@ -3,6 +3,7 @@
 #include <cstdint>                          // uint_fast64_t, uintptr_t
 #include "../main_program/paper.hpp"        // Paper
 #include "stringcraft.hpp"                  // wxStringCharType, Hash
+#include "_Max.hpp"
 
 struct PaperRevInfo_t;
 
@@ -12,7 +13,7 @@ struct PaperInfo {
 };
 
 struct PaperRevInfo_t {
-    static constexpr std::uint_fast64_t terminator = (std::uint_fast64_t)-1;
+    static constexpr std::uint_fast64_t terminator = _Max;
     std::uint_fast64_t rev;
     std::uint_fast64_t const *hashes_authors;   // points to null-terminated array
     wxStringCharType const *title;

@@ -378,7 +378,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // =================================================================
 
     // ====================== wxListCtrl for authors ===================
-    size_t i = -1;
+    size_t i = _Max;
     for ( std::pair< std::uint_fast64_t, Paper const * > const &e : g_map_authors )
     {
         ++i;

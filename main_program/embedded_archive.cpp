@@ -11,6 +11,7 @@
 #endif
 #include "incbin.h"                            // INCBIN
 #include "Auto.h"                              // The 'Auto' macro
+#include "_Max.hpp"
 
 #include <iostream>          // ----------- remove THIS -----------------------------------------------------------
 
@@ -92,7 +93,7 @@ string ArchiveGetFile(std::string_view const arg_filename, std::string &extensio
                 // If prefix_only is true, we only check the beginning of the filename
                 if ( false == archive_filename.starts_with(arg_filename) ) continue;
                 size_t const dot_pos = archive_filename.find('.');
-                if ( ((size_t)-1 != dot_pos) && ( (dot_pos + 1u) < archive_filename.size() ) )
+                if ( (_Max != dot_pos) && ( (dot_pos + 1u) < archive_filename.size() ) )
                 {
                     extension = std::string( archive_filename.substr(dot_pos + 1u) );
                 }
