@@ -1,14 +1,13 @@
 #pragma once
-#include <cstdint>            // uint_fast64_t
 #include <algorithm>          // ranges::lower_bound, ranges::equal_range
 #include <array>              // array
 #include <tuple>              // tuple
 #include <utility>            // pair
 #include <vector>             // vector
 #include <wx/string.h>        // wxS, wxStringCharType
-#include "hash.hpp"           // Hash
+#include "hash.hpp"           // Hash, Hash_t
 
-inline constexpr std::pair< std::uint_fast64_t, wxStringCharType const * > g_primary_names_unsorted[] = {
+inline constexpr std::pair< Hash_t, wxStringCharType const * > g_primary_names_unsorted[] = {
     { Hash("A. Berkan"                          ), wxS("A. Berkan"                          ) },
     { Hash("A. Bustamante"                      ), wxS("A. Bustamante"                      ) },
     { Hash("A. Hommel"                          ), wxS("A. Hommel"                          ) },
@@ -974,7 +973,7 @@ inline constexpr std::pair< std::uint_fast64_t, wxStringCharType const * > g_pri
     { Hash("\\u0141. Mendakiewicz"              ), wxS("\u0141. Mendakiewicz"               ) }
 };
 
-inline constexpr std::tuple<std::uint_fast64_t,wxStringCharType const *,std::uint_fast64_t> g_alternative_names_unsorted[] = {
+inline constexpr std::tuple< Hash_t, wxStringCharType const*, Hash_t > g_alternative_names_unsorted[] = {
     { Hash("Adam David Alan Martin"             ), wxS("Adam David Alan Martin"             ), Hash("ADAM David Alan Martin"             ) },
     { Hash("A. Martin"                          ), wxS("A. Martin"                          ), Hash("ADAM David Alan Martin"             ) },
     { Hash("A. Berg\\u00E9"                     ), wxS("A. Berg\u00E9"                      ), Hash("Agust\\u00EDn Berg\\u00E9"          ) },
@@ -1355,9 +1354,9 @@ consteval auto container_sorted_by_first(T const (&arg)[N]) -> std::array<T, N>
 inline constexpr auto g_primary_names     = container_sorted_by_first(g_primary_names_unsorted    );
 inline constexpr auto g_alternative_names = container_sorted_by_first(g_alternative_names_unsorted);
 
-inline constexpr std::uint_fast64_t PrimaryHash(wxStringCharType const *const name)
+inline constexpr Hash_t PrimaryHash(wxStringCharType const *const name)
 {
-    std::uint_fast64_t const h = Hash(name);
+    Hash_t const h = Hash(name);
     auto const it = std::ranges::lower_bound(
         g_alternative_names, h, {}, [](auto const &e) { return std::get<0u>(e); }
     );
@@ -1366,7 +1365,7 @@ inline constexpr std::uint_fast64_t PrimaryHash(wxStringCharType const *const na
     return h;
 }
 
-inline constexpr wxStringCharType const *HashToDirectString(std::uint_fast64_t const h)
+inline constexpr wxStringCharType const *HashToDirectString(Hash_t const h)
 {
     auto const it = std::ranges::lower_bound(
         g_primary_names, h, {}, [](auto const &e) { return std::get<0u>(e); }
@@ -1382,7 +1381,7 @@ inline constexpr wxStringCharType const *HashToDirectString(std::uint_fast64_t c
 
 inline constexpr wxStringCharType const *Primary(wxStringCharType const *const name)
 {
-    std::uint_fast64_t const h = PrimaryHash(name);
+    Hash_t const h = PrimaryHash(name);
     auto const it = std::ranges::lower_bound(
         g_primary_names, h, {}, [](auto const &e) { return std::get<0u>(e); }
     );
@@ -1391,7 +1390,7 @@ inline constexpr wxStringCharType const *Primary(wxStringCharType const *const n
     return nullptr;
 }
 
-inline std::vector<wxStringCharType const*> GetAllAlternatives(std::uint_fast64_t const primary_hash)
+inline std::vector<wxStringCharType const*> GetAllAlternatives(Hash_t const primary_hash)
 {
     std::vector<wxStringCharType const*> result;
     auto const myrange = std::ranges::equal_range(

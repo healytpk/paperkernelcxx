@@ -4,9 +4,11 @@
 #include <string_view>                   // string_view, wstring_view
 #include "cctype_constexpr.hpp"          // tolower
 
-inline constexpr std::uint_fast64_t Hash(std::string_view const input) noexcept
+typedef std::uint_fast64_t Hash_t;
+
+inline constexpr Hash_t Hash(std::string_view const input) noexcept
 {
-    std::uint_fast64_t h = 0xcbf29ce484222325;
+    Hash_t h = 0xcbf29ce484222325;
 
     //constexpr char letters[] = "abcdefghijklmnopqrstuvwxyz\\0123456789 . -";
 
@@ -28,16 +30,16 @@ inline constexpr std::uint_fast64_t Hash(std::string_view const input) noexcept
         if ( false == is_letter ) continue;
         */
 
-        h ^= static_cast<std::uint_fast64_t>(cX);
+        h ^= static_cast<Hash_t>(cX);
         h *= 0x100000001B3;
     }
 
     return h;
 }
 
-inline constexpr std::uint_fast64_t Hash(std::wstring_view const input) noexcept
+inline constexpr Hash_t Hash(std::wstring_view const input) noexcept
 {
-    std::uint_fast64_t h = 0xcbf29ce484222325;
+    Hash_t h = 0xcbf29ce484222325;
 
     //constexpr wchar_t letters[] = L"abcdefghijklmnopqrstuvwxyz\\0123456789";
 
@@ -59,7 +61,7 @@ inline constexpr std::uint_fast64_t Hash(std::wstring_view const input) noexcept
         if ( false == is_letter ) continue;
         */
 
-        h ^= static_cast<std::uint_fast64_t>(cX);
+        h ^= static_cast<Hash_t>(cX);
         h *= 0x100000001B3;
     }
 

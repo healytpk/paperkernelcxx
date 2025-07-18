@@ -10,7 +10,6 @@ allocation required).
 #define PAPERKERNEL_DONT_USE_STRING_PRETENDER
 
 #include <cstddef>         // ptrdiff_t, size_t
-#include <cstdint>         // uint_fast64_t
 #include <algorithm>       // max
 #include <string>          // basic_string     , string     , wstring
 #include <string_view>     // basic_string_view, string_view, wstring_view

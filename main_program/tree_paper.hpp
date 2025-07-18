@@ -1,8 +1,9 @@
 #pragma once
 
-#include <cstdint>                          // uint_fast64_t, uintptr_t
-#include "../main_program/paper.hpp"        // Paper
-#include "stringcraft.hpp"                  // wxStringCharType, Hash
+#include <cstdint>                          // uint_fast64_t
+#include "hash.hpp"                         // Hash, Hash_t
+#include "paper.hpp"                        // Paper
+#include "stringcraft.hpp"                  // wxStringCharType
 #include "_Max.hpp"
 
 struct PaperRevInfo_t;
@@ -15,22 +16,22 @@ struct PaperInfo {
 struct PaperRevInfo_t {
     static constexpr std::uint_fast64_t terminator = _Max;
     std::uint_fast64_t rev;
-    std::uint_fast64_t const *hashes_authors;   // points to null-terminated array
+    Hash_t const *hashes_authors;   // points to null-terminated array
     wxStringCharType const *title;
 };
 
-template<std::uint_fast64_t... Elems>
-struct Arr64_detail {
-    static constexpr std::uint_fast64_t value[sizeof...(Elems) + 1u] = { Elems... , 0u };
+template<Hash_t... Elems>
+struct ArrHash_detail {
+    static constexpr Hash_t value[sizeof...(Elems) + 1u] = { Elems... , 0u };
 };
 
-template<std::uint_fast64_t... Elems>
-consteval std::uint_fast64_t const *Arr64(void)
+template<Hash_t... Elems>
+consteval Hash_t const *ArrHash(void)
 {
-    return Arr64_detail<Elems...>::value;
+    return ArrHash_detail<Elems...>::value;
 }
 
-template<std::uint_fast64_t RevNum, std::uint_fast64_t const *Authors, StringLiteral Title>
+template<std::uint_fast64_t RevNum, Hash_t const *Authors, StringLiteral Title>
 struct Rev {
     static constexpr PaperRevInfo_t value = {
         RevNum,

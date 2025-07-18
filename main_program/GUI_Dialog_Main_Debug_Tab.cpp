@@ -124,6 +124,7 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
     PRINT_TYPE(uint_fast32_t);
     PRINT_TYPE(uint_least64_t);
     PRINT_TYPE(uint_fast64_t);
+    PRINT_TYPE(Hash_t);
 
     wxGetApp().SafeYield(nullptr, false);
     this->labelDebug_Info->SetLabel(s);
@@ -190,10 +191,10 @@ void Dialog_Main::panelDebug_panelNames_listPrimary_OnListBox(wxCommandEvent &ev
 
     auto const &mypair = g_primary_names_unsorted[n];
 
-    std::uint_fast64_t const hp = std::get<0u>(mypair);     // hash of primary
+    Hash_t const hp = std::get<0u>(mypair);     // hash of primary
     for ( auto const &e : g_alternative_names_unsorted )
     {
-        std::uint_fast64_t const hap = std::get<2u>(e);     // hash of alternative's primary
+        Hash_t const hap = std::get<2u>(e);     // hash of alternative's primary
         if ( hp != hap ) continue;
         this->panelDebug_panelNames_listAlternative->Append( std::get<1u>(e) );
     }
@@ -201,12 +202,12 @@ void Dialog_Main::panelDebug_panelNames_listPrimary_OnListBox(wxCommandEvent &ev
 
 void CheckForNameClashes( wxString &retval, std::function<void(void)> const &callback, long unsigned const interval, std::string_view const extra_name )
 {
-    std::map< std::uint_fast64_t, std::pair<wxString, wxString> > clashes;
+    std::map< Hash_t, std::pair<wxString, wxString> > clashes;
 
     std::size_t const count_primary     = std::cend(g_primary_names_unsorted    ) - std::cbegin(g_primary_names_unsorted    );
     std::size_t const count_alternative = std::cend(g_alternative_names_unsorted) - std::cbegin(g_alternative_names_unsorted);
 
-    auto Item = [extra_name](std::size_t i) -> std::pair< std::uint_fast64_t, wxString >
+    auto Item = [extra_name](std::size_t i) -> std::pair< Hash_t, wxString >
         {
             if ( i < count_primary     ) return { std::get<0u>(g_primary_names_unsorted    [i]), std::get<1u>(g_primary_names_unsorted    [i]) };
             i -= count_primary;
@@ -278,7 +279,7 @@ void Dialog_Main::panelDebug_panelHash_txtInputHash_OnText(wxCommandEvent&)
         return;
     }
 
-    std::uint_fast64_t const h = Hash(x);
+    Hash_t const h = Hash(x);
     this->panelDebug_panelHash_txtOutputHash->SetValue( wxString::Format("%016llx", (long long unsigned)h ) );
 }
 

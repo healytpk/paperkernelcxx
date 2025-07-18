@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cstdint>                          // uint_fast64_t
 #include <utility>                          // pair
 #include <vector>                           // vector
+#include "hash.hpp"                         // Hash_t
 #include "paper.hpp"                        // Paper
 #include "stringcraft.hpp"                  // Pretender_wxString
 
@@ -20,6 +20,6 @@ consteval Paper const *PaperList(void)
     return PaperList_detail<RevHolders...>::value;
 }
 
-inline constexpr std::pair< std::uint_fast64_t, Paper const * > g_map_authors[] =
+inline constexpr std::pair< Hash_t, Paper const * > g_map_authors[] =
 #    include "AUTO_GENERATED_tree_contents_author.hpp"
 ;
