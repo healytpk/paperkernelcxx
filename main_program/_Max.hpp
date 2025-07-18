@@ -8,12 +8,18 @@ struct _Max_t {
     template<typename T> requires std::is_integral_v<T> && std::is_unsigned_v<T>
     constexpr operator T(void) const
     {
-        return std::numeric_limits<T>::max();
+        // Some compilers define 'max' as a preprocessor macro
+        // function, so we use a function pointer here.
+        constexpr auto FuncPtr = &std::numeric_limits<T>::max;
+        return FuncPtr();
     }
     template<typename T> requires std::is_integral_v<T> && std::is_unsigned_v<T>
     constexpr bool operator==(T const n) const
     {
-        return n == std::numeric_limits<T>::max();
+        // Some compilers define 'max' as a preprocessor macro
+        // function, so we use a function pointer here.
+        constexpr auto FuncPtr = &std::numeric_limits<T>::max;
+        return n == FuncPtr();
     }
 };
 
