@@ -9,7 +9,8 @@
 struct PaperRevInfo_t;
 
 struct PaperInfo {
-    Paper paper;                  // Revision will be set to 0
+    Paper paper;            // e.g. "n1234" or "p3288r0" (r is always 0)
+    unsigned latest_rev;
     PaperRevInfo_t const *prevs;  // points to minus-one-terminated array
 };
 
@@ -57,3 +58,17 @@ consteval PaperRevInfo_t const *RevList(void)
 inline constexpr PaperInfo g_map_papers[] =
 #    include "AUTO_GENERATED_tree_contents_paper.hpp"
 ;
+
+inline Paper GetPaperLatestRev(Paper ppr)
+{
+    // REVISIT - FIX - Rewrite this to use std::lower_bound for binary search
+    for ( auto it = std::cbegin(g_map_papers); std::cend(g_map_papers) != it; ++it )
+    {
+        if ( false == it->paper.IsRelatedTo(ppr) ) continue;
+        ppr.rev = it->latest_rev;
+        return ppr;
+    }
+
+    std::fputs("GetPaperLatestRev returned r0 because it couldn't find the latest\n", stderr);
+    return ppr;   // REVISIT -- FIX --- maybe std::abort
+}

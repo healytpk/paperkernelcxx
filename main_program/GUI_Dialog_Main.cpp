@@ -55,6 +55,11 @@ wxDataViewItem EncodeStringAsTreeItem(wxstring_view const wsv) noexcept
         wxDataViewItem dvi{nullptr};  // all bits zero
         char *const q = static_cast<char*>(static_cast<void*>(std::addressof(dvi)));
         for ( unsigned i = 0u; i < wsv.size(); ++i ) q[i] = (char)wsv[i];
+        if ( ('p' == q[0]) && ('\0' == q[5]) )
+        {
+            q[5] = 'r';
+            q[6] = 'X';    // e.g. p3288rX -- X means the latest revision
+        }
         return dvi;
     }
     else if constexpr ( 4u == sizeof(void*) )
@@ -191,7 +196,7 @@ void Dialog_Main::PresentPaperInViewPortal(Paper const paper)
     ::ViewPortal_Set( this->view_portal, paper.GetPaper() );
 }
 
-Paper DecodeTreeItem(wxDataViewItem const arg) noexcept
+Paper DecodeTreeItem(wxDataViewItem arg) noexcept
 {
     static_assert(  sizeof(wxDataViewItem) ==  sizeof(void*) );
     static_assert( alignof(wxDataViewItem) == alignof(void*) );
@@ -200,10 +205,17 @@ Paper DecodeTreeItem(wxDataViewItem const arg) noexcept
     {
         char const *const p = static_cast<char const*>(static_cast<void const*>(std::addressof(arg)));
         string_view sv(p, p + sizeof(void*));
-        if ( 'n' == sv[0] ) return Paper(sv);
-        if ( 'r' == sv[5] ) return Paper(sv);
         while ( sv.ends_with('\0') ) sv.remove_suffix(1u);
-        return Paper( string(sv) + "r0" );
+        if ( 'n' == sv[0] ) return Paper(sv);
+        if ( ('p' == sv[0]) && ('r' == sv[5]) && ('X' != sv[6]) ) return Paper(sv);
+        if ( ('p' == sv[0]) && ('r' == sv[5]) && ('X' == sv[6]) )
+        {
+            char *const p6 = const_cast<char*>(  &sv.back()  );
+            assert( 'X' == *p6 );
+            *p6 = '0';
+            return GetPaperLatestRev( Paper(sv) );
+        }
+        std::abort();
     }
     else if constexpr ( 4u == sizeof(void*) )
     {
@@ -313,16 +325,23 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
         {
             assert( nullptr != e.prevs );  // we need at least one revision
             assert( PaperRevInfo_t::terminator != e.prevs->rev );
-            PaperRevInfo_t const *last_rev = e.prevs;
-            while ( PaperRevInfo_t::terminator != last_rev[1].rev ) ++last_rev;
-             title_of_last_revision = last_rev->title;
-            author_of_last_revision = wxString() << last_rev->hashes_authors[0];
+            unsigned const latest_revision = e.latest_rev;
+            for ( PaperRevInfo_t const *prev = e.prevs; PaperRevInfo_t::terminator != prev->rev; ++prev )
+            {
+                if ( latest_revision != prev->rev ) continue;
+                title_of_last_revision  = prev->title;
+                for ( Hash_t const *ph = prev->hashes_authors; 0u != *ph; ++ph ) author_of_last_revision << *ph << " ";
+            }
         }
         else
         {
-             title_of_last_revision = e.paper.GetTitle ();
-            author_of_last_revision = e.paper.GetAuthor();
+            Paper ppr(e.paper);
+             title_of_last_revision = ppr.GetTitle ();
+            author_of_last_revision = ppr.GetAuthor();
         }
+
+        if (  title_of_last_revision.empty() ) std::abort();    // REVISIT --- FIX --- revisit --- fix
+        if ( author_of_last_revision.empty() ) std::abort();    // REVISIT --- FIX --- revisit --- fix
 
         wxString str = e.paper.PaperNameWithoutRevisionWx();
 

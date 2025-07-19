@@ -3,7 +3,6 @@
 
 #include <cctype>                   // isalnum, tolower
 #include <cstddef>                  // size_t
-#include <cstdint>                  // uint_fast64_t
 #include <algorithm>                // find, ranges::sort, ranges::lower_bound, ranges::equal_range
 #include <concepts>                 // input_iterator
 #include <fstream>                  // ofstream
@@ -15,11 +14,11 @@
 #include <unordered_map>            // unordered_map
 #include <utility>                  // move
 #include <vector>                   // vector
+#include "../main_program/hash.hpp" // Hash_t
 
 class NameManager {
 public:
     using size_t = std::size_t;
-    using uint_fast64_t = std::uint_fast64_t;
     using string = std::string;
     using string_view = std::string_view;
     template<typename... Ts> using map = std::map<Ts...>;
@@ -661,8 +660,7 @@ public:
         return result;
     }
 
-    template<std::input_iterator Iterator>
-    void WriteHeaders(Iterator const itBegin, Iterator const itEnd, char const *const output_file) const
+    void WriteHeaders(char const *const output_file) const
     {
         constexpr auto escape_for_hash = [](string_view const s) -> string
           {
@@ -681,10 +679,7 @@ public:
             return (s < width) ? string(width - s, ' ') : string();
           };
 
-        NameManager nm;
-        nm.AddNames(itBegin, itEnd);
-
-        auto const groups = nm.GetPrimaryToAlternativesMap();
+        auto const groups = this->GetPrimaryToAlternativesMap();
 
         // --- Minimal fix: Build set of all alternatives (including exceptions) ---
         set<string> all_alternatives;
@@ -699,10 +694,11 @@ public:
         for ( auto const & [primary, alts] : groups )
             if (all_alternatives.find(string(primary)) == all_alternatives.end())
                 all_primaries.insert( string(primary) );
-        for ( Iterator it = itBegin; it != itEnd; ++it )
+
+        for ( auto it = m_names.cbegin(); it != m_names.cend(); ++it )
         {
             auto const &name = *it;
-            auto const p = nm.GetPrimaryName(name);
+            auto const p = this->GetPrimaryName(name);
             if ( (p == name) && (groups.find(p) == groups.end()) && (all_alternatives.find(string(p)) == all_alternatives.end()) )
                 all_primaries.insert( string(p) );
         }
@@ -712,8 +708,9 @@ public:
 
         struct PrimaryEntry {
             string name;
-            uint_fast64_t hash;
+            Hash_t hash;
         };
+
         vector<PrimaryEntry> primary_entries;
         for ( auto const &pname : all_primaries )
         {
@@ -724,9 +721,10 @@ public:
         struct AltEntry {
             string alt_name;
             string primary_name;
-            uint_fast64_t alt_hash;
-            uint_fast64_t primary_hash;
+            Hash_t alt_hash;
+            Hash_t primary_hash;
         };
+
         vector<AltEntry> alt_entries;
         for ( auto const & [primary, alts] : groups)
         {
@@ -740,17 +738,16 @@ public:
  
         std::ofstream out(output_file);
         out << "#pragma once\n";
-        out << "#include <cstdint>            // uint_fast64_t\n";
         out << "#include <algorithm>          // ranges::lower_bound, ranges::equal_range\n";
         out << "#include <array>              // array\n";
         out << "#include <tuple>              // tuple\n";
         out << "#include <utility>            // pair\n";
         out << "#include <vector>             // vector\n";
         out << "#include <wx/string.h>        // wxS, wxStringCharType\n";
-        out << "#include \"hash.hpp\"           // Hash\n\n";
+        out << "#include \"hash.hpp\"           // Hash, Hash_t\n\n";
 
         // Primary names sorted alphabetically (not by hash)
-        out << "inline constexpr std::pair< std::uint_fast64_t, wxStringCharType const * > g_primary_names_unsorted[] = {\n";
+        out << "inline constexpr std::pair< Hash_t, wxStringCharType const * > g_primary_names_unsorted[] = {\n";
         for ( size_t i = 0u; i < primary_entries.size(); ++i )
         {
             auto const &e = primary_entries[i];
@@ -763,7 +760,7 @@ public:
         out << "};\n\n";
 
         // Alternative names sorted alphabetically (not by hash)
-        out << "inline constexpr std::tuple<std::uint_fast64_t,wxStringCharType const *,std::uint_fast64_t> g_alternative_names_unsorted[] = {\n";
+        out << "inline constexpr std::tuple< Hash_t, wxStringCharType const*, Hash_t > g_alternative_names_unsorted[] = {\n";
         for ( size_t i = 0u; i < alt_entries.size(); ++i )
         {
             auto const &e = alt_entries[i];
@@ -802,9 +799,9 @@ public:
         out << "inline constexpr auto g_alternative_names = container_sorted_by_first(g_alternative_names_unsorted);\n\n";
 
         // Four helper functions
-        out << "inline constexpr std::uint_fast64_t PrimaryHash(wxStringCharType const *const name)\n";
+        out << "inline constexpr Hash_t PrimaryHash(wxStringCharType const *const name)\n";
         out << "{\n";
-        out << "    std::uint_fast64_t const h = Hash(name);\n";
+        out << "    Hash_t const h = Hash(name);\n";
         out << "    auto const it = std::ranges::lower_bound(\n";
         out << "        g_alternative_names, h, {}, [](auto const &e) { return std::get<0u>(e); }\n";
         out << "    );\n";
@@ -812,7 +809,7 @@ public:
         out << "        return std::get<2u>(*it);\n";
         out << "    return h;\n";
         out << "}\n\n";
-        out << "inline constexpr wxStringCharType const *HashToDirectString(std::uint_fast64_t const h)\n";
+        out << "inline constexpr wxStringCharType const *HashToDirectString(Hash_t const h)\n";
         out << "{\n";
         out << "    auto const it = std::ranges::lower_bound(\n";
         out << "        g_primary_names, h, {}, [](auto const &e) { return std::get<0u>(e); }\n";
@@ -827,7 +824,7 @@ public:
         out << "}\n\n";
         out << "inline constexpr wxStringCharType const *Primary(wxStringCharType const *const name)\n";
         out << "{\n";
-        out << "    std::uint_fast64_t const h = PrimaryHash(name);\n";
+        out << "    Hash_t const h = PrimaryHash(name);\n";
         out << "    auto const it = std::ranges::lower_bound(\n";
         out << "        g_primary_names, h, {}, [](auto const &e) { return std::get<0u>(e); }\n";
         out << "    );\n";
@@ -835,7 +832,7 @@ public:
         out << "        return std::get<1u>(*it);\n";
         out << "    return nullptr;\n";
         out << "}\n\n";
-        out << "inline std::vector<wxStringCharType const*> GetAllAlternatives(std::uint_fast64_t const primary_hash)\n";
+        out << "inline std::vector<wxStringCharType const*> GetAllAlternatives(Hash_t const primary_hash)\n";
         out << "{\n";
         out << "    std::vector<wxStringCharType const*> result;\n";
         out << "    auto const myrange = std::ranges::equal_range(\n";

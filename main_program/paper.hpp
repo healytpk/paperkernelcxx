@@ -2,6 +2,7 @@
 
 #include <cassert>                                // assert
 #include <cstddef>                                // size_t
+#include <ostream>                                // ostream
 #include <stdexcept>                              // runtime_error
 #include <string>                                 // string     , wstring     , char_traits<T>::length
 #include <string_view>                            // string_view, wstring_view
@@ -150,6 +151,11 @@ public:
     constexpr Paper(std:: string const &s) : Paper( PaperConstructor_t(), s.c_str(), s.size() ) {}
     constexpr Paper(std::wstring const &s) : Paper( PaperConstructor_t(), s.c_str(), s.size() ) {}
 
+    constexpr bool operator!=(Paper const other) const noexcept
+    {
+        return (letter != other.letter) || (num != other.num) || (rev != other.rev);
+    }
+
     constexpr bool operator<(Paper const other) const noexcept
     {
         // The terminator has letter == 'z', which will come after 'n' and 'p'
@@ -185,3 +191,8 @@ public:
     wxString        GetPaper (void) const noexcept;
 #endif
 };
+
+inline std::ostream &operator<<(std::ostream &os, Paper const arg)
+{
+    return os << arg.c_str();
+}

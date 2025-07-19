@@ -8,22 +8,33 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include <regex>
 #include <set>
 #include <utility>
-#include <curl/curl.h>
+#include <nlohmann/json.hpp>
 #include "common.hpp"
 #include "../main_program/hash.hpp"
 #include "../main_program/paper.hpp"
 #include "NameManager.hpp"
 
 using std::size_t, std::string, std::string_view, std::cout, std::cerr, std::endl;
+using json = nlohmann::json;
 
 std::ofstream logfile;
 
 std::map< string, std::vector<string> > names;
 
-std::map< string, std::map<string, std::pair<string, string> > > papers;
+std::map< string, std::map<Paper, std::pair<string /* author */, string /* title */> > > papers;
+
+unsigned GetPaperLatestRev( std::map< Paper, std::pair<string /* author */, string /* title */> >  const &arg)
+{
+    unsigned retval = 0u;
+    for ( size_t i = 0u; i < arg.size(); ++i )
+    {
+        std::pair< Paper, std::pair<string /* author */, string /* title */> > const &mypair = *std::next(std::cbegin(arg), i);
+        retval = std::max(retval, mypair.first.rev);
+    }
+    return retval;
+}
 
 void escape_for_hash(std::string &s)
 {
@@ -48,6 +59,7 @@ bool IsNotName(string_view const s) noexcept
         "Woven By Toyota",
         "Bloomberg",
         "others",
+        "C.S.",
     };
 
     for ( char const *const p : not_names )
@@ -67,105 +79,6 @@ bool ContainsNonASCII(string_view const s) noexcept
     return false;
 }
 
-size_t WriteCallback(void *const contents, size_t const size, size_t const nmemb, void *const userp)
-{
-    string *const data = static_cast<string*>(userp);
-    if ( nullptr == data ) return 0u;
-    size_t totalSize = size * nmemb;
-    if ( 0u == totalSize ) return 0u;
-    data->append( static_cast<char*>(contents), totalSize );
-    return totalSize;
-}
-
-bool DownloadPage(char const *const arg_url, string &outContent)
-{
-    std::string_view url(arg_url);
-
-    // Generate a filename from the URL
-    string filename = "downloaded/";
-
-    // Extract the last non-empty path segment (e.g., "2024/")
-    std::regex regex_filename_from_url(R"(/(\d{4})/?)");
-    std::match_results< std::string_view::const_iterator > match;
-    if ( std::regex_search( url.cbegin(), url.cend(), match, regex_filename_from_url ) )
-    {
-        filename += match[1].str() + ".html";
-    }
-    else
-    {
-        filename += "index.html";
-    }
-
-    // Try reading from local cache if filename is known
-    std::ifstream cached( filename );
-    if ( cached.is_open() )
-    {
-        std::cerr << "Reading cached file: " << filename << "\n";
-        outContent.assign(std::istreambuf_iterator<char>(cached),
-                          std::istreambuf_iterator<char>());
-        return true;
-    }
-    else
-    {
-        std::cerr << "Cached file not found for " << filename << ", must download from internet.\n";
-    }
-
-    // No cache or cache file not found — proceed with download
-    CURL *const curl = curl_easy_init();
-    if ( nullptr == curl )
-    {
-        std::cerr << "curl_easy_init failed\n";
-        return false;
-    }
-
-    curl_easy_setopt(curl, CURLOPT_URL, arg_url);
-    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outContent);
-
-    CURLcode res = curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
-
-    if ( res != CURLE_OK )
-    {
-        std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << "\n";
-        return false;
-    }
-
-    std::ofstream out(filename);
-    if ( out.is_open() ) out << outContent;
-
-    return true;
-}
-
-void ExtractYearLinks(std::string_view const html, std::set<unsigned> &years)
-{
-    std::regex year_link(R"((\d{4})/)");
-    std::match_results<std::string_view::const_iterator> match;
-
-    auto begin = html.cbegin();
-    auto end = html.cend();
-
-    while ( std::regex_search(begin, end, match, year_link) )
-    {
-        // match[1] contains the year as a std::sub_match, which is a string_view
-        auto year = match[1];  // This is a std::sub_match
-
-        unsigned result = 0u;
-
-        // Use the iterators of the sub_match
-        auto [ptr, ec] = std::from_chars(&*year.first, &*year.second, result);
-
-        if ( ec == std::errc() )
-        {
-            years.insert(result);
-        }
-
-        // Move `begin` to the suffix after the matched year
-        begin = match.suffix().first;
-    }
-}
-
 void ProcessAuthorSquareFromTable(string author, string_view const doc)
 {
     ReplaceHtmlNumericEscapesInPlace(author);
@@ -175,6 +88,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
     ReplaceInPlace(author, "Pablo Halpern Ville Voutilainen"                        , "Pablo Halpern\nVille Voutilainen"                       );
     ReplaceInPlace(author, "Alicia KlinvexLi-Ta Lo"                                 , "Alicia Klinvex\nLi-Ta Lo"                               );
     ReplaceInPlace(author, "Jared Hoberock Lee Howes"                               , "Jared Hoberock\nLee Howes"                              );
+    ReplaceInPlace(author, "D. GregorG. PowellJ. J\u00E4rvi"                        , "D. Gregor\nG. Powell\nJ. J\\u00E4rvi"                   );
 // ===================================================
 
     ReplaceInPlace(author,  "\u00A0", " ");  // Non-breaking space (just one backslash)
@@ -214,24 +128,24 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
         ReplaceInPlace(s, "o\\u0301", "\\u00F3");  // ó
         ReplaceInPlace(s, "u\\u0301", "\\u00FA");  // ú
         ReplaceInPlace(s, "y\\u0301", "\\u00FD");  // ý
-        ReplaceInPlace(s, "n\\u0301", "\\u0144");  // ń
-        ReplaceInPlace(s, "c\\u0301", "\\u0107");  // ć
-        ReplaceInPlace(s, "l\\u0301", "\\u013A");  // ĺ
-        ReplaceInPlace(s, "r\\u0301", "\\u0155");  // ŕ
-        ReplaceInPlace(s, "s\\u0301", "\\u015B");  // ś
-        ReplaceInPlace(s, "z\\u0301", "\\u017A");  // ź
+        ReplaceInPlace(s, "n\\u0301", "\\u0144");  // n
+        ReplaceInPlace(s, "c\\u0301", "\\u0107");  // c
+        ReplaceInPlace(s, "l\\u0301", "\\u013A");  // l
+        ReplaceInPlace(s, "r\\u0301", "\\u0155");  // r
+        ReplaceInPlace(s, "s\\u0301", "\\u015B");  // s
+        ReplaceInPlace(s, "z\\u0301", "\\u017A");  // z
         ReplaceInPlace(s, "A\\u0301", "\\u00C1");  // Á
         ReplaceInPlace(s, "E\\u0301", "\\u00C9");  // É
         ReplaceInPlace(s, "I\\u0301", "\\u00CD");  // Í
         ReplaceInPlace(s, "O\\u0301", "\\u00D3");  // Ó
         ReplaceInPlace(s, "U\\u0301", "\\u00DA");  // Ú
         ReplaceInPlace(s, "Y\\u0301", "\\u00DD");  // Ý
-        ReplaceInPlace(s, "N\\u0301", "\\u0143");  // Ń
-        ReplaceInPlace(s, "C\\u0301", "\\u0106");  // Ć
-        ReplaceInPlace(s, "L\\u0301", "\\u0139");  // Ĺ
-        ReplaceInPlace(s, "R\\u0301", "\\u0154");  // Ŕ
-        ReplaceInPlace(s, "S\\u0301", "\\u015A");  // Ś
-        ReplaceInPlace(s, "Z\\u0301", "\\u0179");  // Ź
+        ReplaceInPlace(s, "N\\u0301", "\\u0143");  // N
+        ReplaceInPlace(s, "C\\u0301", "\\u0106");  // C
+        ReplaceInPlace(s, "L\\u0301", "\\u0139");  // L
+        ReplaceInPlace(s, "R\\u0301", "\\u0154");  // R
+        ReplaceInPlace(s, "S\\u0301", "\\u015A");  // S
+        ReplaceInPlace(s, "Z\\u0301", "\\u0179");  // Z
         ReplaceInPlace(s, "Joaqu\\uDBA0M\\u00AA L\\U000F097A Mu\\u00F1oz", "Joaqu\\u00EDn M\\u00AA L\\u00F3pez Mu\\u00F1oz");
         ReplaceInPlace(s, "Mat\\u00FA\\u0161 Chochl\\u0131\\u0301k", "Mat\\u00FA\\u0161 Chochl\\u00EDk");
         ReplaceInPlace(s, "Mat\\u00FAs\\u030C Chochl\\u00EDk"      , "Mat\\u00FA\\u0161 Chochl\\u00EDk");
@@ -259,54 +173,6 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
         }
         if ( s.empty() ) continue;
         names[s].emplace_back(doc);
-    }
-}
-
-void ParseYearTable(string_view const html, unsigned const year, unsigned const scan)
-{
-    std::regex row_regex(R"(<tr[^>]*>\s*<td[^>]*>\s*<a[^>]*>([^<]+)</a>\s*</td>\s*<td[^>]*>(.*?)</td>\s*<td[^>]*>(.*?)</td>\s*<td[^>]*>(.*?)</td>)", std::regex::icase);
-
-    auto begin = html.cbegin();
-    auto end   = html.cend();
-    std::match_results< std::string_view::const_iterator > match;
-
-    while ( std::regex_search(begin, end, match, row_regex) )
-    {
-        string wg21_number;
-        string some_number;
-        string title;
-        string author;
-        if ( year >= 2013u )
-        {
-            wg21_number  = match[1];
-            title        = match[2];
-            author       = match[3];
-        }
-        else
-        {
-            wg21_number  = match[1];
-            some_number  = match[2];            
-            title        = match[3];
-            author       = match[4];
-        }
-
-        try
-        {
-            Paper paper{wg21_number};  // just to see if it throws because of invalid paper (e.g. SD-1)
-            switch ( scan )
-            {
-            case 1u:
-                ProcessAuthorSquareFromTable(author, wg21_number);
-                break;
-            case 2u:
-                auto &mymap = papers[ paper.PaperNameWithoutRevision() ];
-                mymap[ paper.c_str() ] = { author, title };
-                break;
-            }
-        }
-        catch(...){}
-
-        begin = match.suffix().first;
     }
 }
 
@@ -373,54 +239,57 @@ int main(void)
     }
     logfile << "First line in log file\n";
 
-    string index_html;
-
-    constexpr char index_url[] = "https://www.open-std.org/jtc1/sc22/wg21/docs/papers/";
-
-    if ( false == DownloadPage(index_url, index_html) )
+    // Read and parse index.json
+    std::ifstream json_file("index.json");
+    if ( !json_file.is_open() )
     {
-        std::cerr << "DownloadPage failed.\n";
+        std::cerr << "Failed to open index.json\n";
         return EXIT_FAILURE;
     }
+    json j;
+    json_file >> j;
 
-    std::set<unsigned> years;
-    ExtractYearLinks(index_html, years);
-
-    for ( auto const &year : years )
+    // Populate names and papers from JSON using ProcessAuthorSquareFromTable
+    for ( auto it = j.begin(); it != j.end(); ++it )
     {
-        string year_html;
-
-        std::cerr << "Fetching year: " << year << "\n";
-
-        if ( false == DownloadPage( (index_url + std::to_string(year) + "/").c_str(), year_html ) )
+        auto const &entry = *it;
+        string paper_id = it.key();
+        if ( paper_id.empty() ) continue;
+        string type = entry.value("type", "");
+        if ( "paper" != type ) continue;
+        switch ( std::tolower(paper_id[0]) )
         {
-            std::cerr << "Failed to fetch year page: " << year << "\n";
+        case 'd':
             continue;
+        case 'n':
+        case 'p':
+            break;
+        case 's':
+            if ( paper_id == "standard" ) continue;
+        default:
+            std::cout << paper_id << std::endl;
+            std::abort();
         }
-
-        ParseYearTable(year_html, year, 1u);
+        if ( "P04116R0" == paper_id ) continue;
+        if ( "P1343" == paper_id ) paper_id += "r0";
+        if ( "P3141" == paper_id ) paper_id += "r0";
+        std::string author = entry.value("author", "");
+        std::string title = entry.value("title", "");
+        if ( author.empty() || title.empty() ) continue;
+        // Use the same logic as the HTML path: process author string for names
+        ProcessAuthorSquareFromTable(author, paper_id);
+        Paper ppr(paper_id);
+        papers[ppr.PaperNameWithoutRevision()][ppr] = {author, title};
     }
 
     std::vector<string> names2;
     for ( auto const &mypair : names ) names2.emplace_back( mypair.first );
-    NameManager().WriteHeaders( names2.cbegin(), names2.cend(), "../main_program/AUTO_GENERATED_names.hpp" );
+
+    NameManager nm;
+    nm.AddNames( names2.cbegin(), names2.cend() );
+    nm.WriteHeaders( "../main_program/AUTO_GENERATED_names.hpp" );
 
     MergeAlternativeNames(names);
-
-    for ( auto const &year : years )
-    {
-        string year_html;
-
-        std::cerr << "Fetching year: " << year << "\n";
-
-        if ( false == DownloadPage( (index_url + std::to_string(year) + "/").c_str(), year_html ) )
-        {
-            std::cerr << "Failed to fetch year page: " << year << "\n";
-            continue;
-        }
-
-        ParseYearTable(year_html, year, 2u);
-    }
 
     std::cerr << "==================== " << names.size() << " unique names ==================\n";
 
@@ -453,18 +322,19 @@ int main(void)
         for ( std::size_t i = 0u; i < papers.size(); ++i )
         {
             auto const &e = *std::next(std::cbegin(papers), i);
-            fpapers << "    { \"" << e.first;
-            if ( 'p' == e.first[0] ) fpapers << "r0";
-            fpapers << "\", RevList< ";
-
             auto const &mymap = e.second;
+            unsigned const latest_revision = GetPaperLatestRev(mymap);
+            fpapers << "    { \"" << e.first;
+            if ( !e.first.empty() && 'p' == e.first[0] ) fpapers << "r0";
+            fpapers << "\", " << GetPaperLatestRev(mymap) << "u, RevList< ";
+
             bool already_got_one = false;
             for ( std::size_t j = 0u; j < mymap.size(); ++j )
             {
                 auto const &mypair = *std::next(std::cbegin(mymap), j);
                 if ( already_got_one ) fpapers << ", ";
                 already_got_one = true;
-                fpapers << "Rev< " << Paper(mypair.first).rev << "u, Arr64< Hash(\"";
+                fpapers << "Rev< " << mypair.first.rev << "u, ArrHash< Hash(\"";
                 string author = mypair.second.first;
                 MonkeyString(author);
                 fpapers << author;

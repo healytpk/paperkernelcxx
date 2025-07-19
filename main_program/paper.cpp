@@ -78,11 +78,17 @@ namespace Paper_detail {
 
 wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned const n)
 {
+    static wxString const str_unknown(wxS(" <unknown> "));
+
+    Paper ppr(*pthis);
+    ppr.rev = 0u;
+
     auto const it = std::lower_bound( std::cbegin(g_map_papers), std::cend(g_map_papers),
-                                      *pthis,
+                                      ppr,
                                       [](auto &&arg1, auto &&arg2) { return arg1.paper < arg2; } );
 
-    assert( std::cend(g_map_papers) != it );
+    if ( std::cend(g_map_papers) == it ) return str_unknown;
+    if ( it->paper != ppr ) return str_unknown;
 
     for ( PaperRevInfo_t const *p = it->prevs; PaperRevInfo_t::terminator != p->rev; ++p )
     {
@@ -93,12 +99,12 @@ wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned c
         case 2u: return *new wxString() << p->hashes_authors[0];      // REVISIT - FIX - This is horrible
         }
     }
+
 #ifndef NDEBUG
     std::cout << "pthis == " << pthis->c_str() << std::endl;
 #endif
-    assert( nullptr == "invalid paper not listed in tree" );
-    std::abort();    // if NDEBUG
-    return *new wxString;  // suppress compiler warning
+
+    return str_unknown;
 }
 
 }  // close namespace Paper_detail
