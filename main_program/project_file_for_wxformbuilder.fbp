@@ -31,7 +31,7 @@
     <property name="relative_path">1</property>
     <property name="use_microsoft_bom">0</property>
     <property name="use_native_eol">0</property>
-    <object class="Frame" expanded="false">
+    <object class="Frame" expanded="true">
       <property name="aui_managed">0</property>
       <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
       <property name="bg"></property>
@@ -61,7 +61,7 @@
       <property name="window_style"></property>
       <property name="xrc_skip_sizer">1</property>
       <event name="OnClose">OnClose</event>
-      <object class="wxBoxSizer" expanded="false">
+      <object class="wxBoxSizer" expanded="true">
         <property name="minimum_size"></property>
         <property name="name">bSizer1</property>
         <property name="orient">wxVERTICAL</property>
@@ -77,11 +77,11 @@
             <property name="permission">none</property>
           </object>
         </object>
-        <object class="sizeritem" expanded="false">
+        <object class="sizeritem" expanded="true">
           <property name="border">5</property>
           <property name="flag">wxEXPAND | wxALL</property>
           <property name="proportion">1</property>
-          <object class="wxNotebook" expanded="false">
+          <object class="wxNotebook" expanded="true">
             <property name="BottomDockable">1</property>
             <property name="LeftDockable">1</property>
             <property name="RightDockable">1</property>
@@ -136,11 +136,11 @@
             <property name="window_name"></property>
             <property name="window_style"></property>
             <event name="OnNotebookPageChanged">m_notebook1_OnNotebookPageChanged</event>
-            <object class="notebookpage" expanded="false">
+            <object class="notebookpage" expanded="true">
               <property name="bitmap"></property>
               <property name="label">Browse All Papers</property>
               <property name="select">1</property>
-              <object class="wxPanel" expanded="false">
+              <object class="wxPanel" expanded="true">
                 <property name="BottomDockable">1</property>
                 <property name="LeftDockable">1</property>
                 <property name="RightDockable">1</property>
@@ -192,16 +192,16 @@
                 <property name="window_extra_style"></property>
                 <property name="window_name"></property>
                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                <object class="wxBoxSizer" expanded="false">
+                <object class="wxBoxSizer" expanded="true">
                   <property name="minimum_size"></property>
                   <property name="name">bSizer8</property>
                   <property name="orient">wxVERTICAL</property>
                   <property name="permission">none</property>
-                  <object class="sizeritem" expanded="false">
+                  <object class="sizeritem" expanded="true">
                     <property name="border">5</property>
                     <property name="flag">wxEXPAND</property>
                     <property name="proportion">0</property>
-                    <object class="wxToolBar" expanded="false">
+                    <object class="wxToolBar" expanded="true">
                       <property name="BottomDockable">1</property>
                       <property name="LeftDockable">1</property>
                       <property name="RightDockable">1</property>
@@ -281,6 +281,18 @@
                         <property name="statusbar"></property>
                         <property name="tooltip">Show Paper</property>
                         <event name="OnToolClicked">OnTool_ShowViewPortal</event>
+                      </object>
+                      <object class="tool" expanded="true">
+                        <property name="bitmap">Load From Embedded File; ../pictures/download.ico</property>
+                        <property name="context_menu">0</property>
+                        <property name="id">wxID_ANY</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">tool</property>
+                        <property name="name">toolDownloadIndividualPaper</property>
+                        <property name="permission">protected</property>
+                        <property name="statusbar"></property>
+                        <property name="tooltip"></property>
+                        <event name="OnToolClicked">OnTool_DownloadIndividualPaper</event>
                       </object>
                     </object>
                   </object>

@@ -48,6 +48,7 @@ class Dialog_Main__Auto_Base_Class : public wxFrame
 		wxToolBar* m_toolBar1;
 		wxToolBarToolBase* toolShowPaperTree;
 		wxToolBarToolBase* toolShowViewPortal;
+		wxToolBarToolBase* toolDownloadIndividualPaper;
 		wxBoxSizer* bSizerForPanelBrowse;
 		wxPanel* panelAuthors;
 		wxSplitterWindow* m_splitter2;
@@ -106,6 +107,7 @@ class Dialog_Main__Auto_Base_Class : public wxFrame
 		virtual void m_notebook1_OnNotebookPageChanged( wxNotebookEvent& event ) { event.Skip(); }
 		virtual void OnTool_ShowPaperTree( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTool_ShowViewPortal( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTool_DownloadIndividualPaper( wxCommandEvent& event ) { event.Skip(); }
 		virtual void listAuthors_OnListItemRightClick( wxListEvent& event ) { event.Skip(); }
 		virtual void listAuthors_OnListItemSelected( wxListEvent& event ) { event.Skip(); }
 		virtual void treeAuthorPapers_OnDataViewCtrlItemActivated( wxDataViewEvent& event ) { event.Skip(); }

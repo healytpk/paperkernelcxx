@@ -4,6 +4,7 @@
 #include "AUTO_GENERATED_wxformbuilder.h"
 #include "MySortableListCtrl.hpp"
 #include "local_http_server.hpp"
+#include "view_portal.hpp"
 
 class wxDataViewCtrl;
 class wxDataViewEvent;
@@ -21,6 +22,7 @@ protected:
     wxDataViewCtrl *treeAllPapers = nullptr;
     wxDataViewTreeStoreWithColumns<3u> *treeStore = nullptr;
     wxDataViewTreeStoreWithColumns<2u> *authorPaperStore = nullptr;
+    ViewPortal view_portal_manager;
     wxWindow *view_portal = nullptr;
     void OnClose(wxCloseEvent&) override;
     void AI_btnLoadModel_OnButtonClick(wxCommandEvent&) override;
@@ -46,6 +48,7 @@ protected:
     void OnTool_Common(int this_tool, int other_tool, wxWindow *this_window);
     void OnTool_ShowPaperTree(wxCommandEvent&) override;
     void OnTool_ShowViewPortal(wxCommandEvent&) override;
+    void OnTool_DownloadIndividualPaper(wxCommandEvent&) override;
     void OnViewPortalLoaded(wxEvent&) noexcept;
     void PresentPaperInViewPortal(Paper);
     Paper GetPaperFromDataViewEvent(wxDataViewEvent&);

@@ -1,22 +1,23 @@
 #include "view_portal.hpp"
 #include <cstdio>                    // fprintf, stderr
-#include "local_http_server.hpp"
-
 #ifdef __WXGTK__
 #   include <stdlib.h>               // setenv
 #endif
+#include <wx/window.h>               // wxWindow
+#include "local_http_server.hpp"     // LocalHttpServer
+#include "_Max.hpp"
 
 using std::uint16_t;
 
-static LocalHttpServer *g_p_local_http_server = nullptr;
-
-wxWindow *ViewPortal_Create(wxWindow *const parent, LocalHttpServer &server) noexcept
+wxWindow *ViewPortal::Create(wxWindow *const parent, LocalHttpServer &server) noexcept
 {
+    assert( nullptr == this->w );
+
 #ifdef __WXGTK__
     setenv("WEBKIT_DISABLE_COMPOSITING_MODE", "1", 1);
 #endif
 
-    g_p_local_http_server = &server;
+    this->phttp = &server;
 
 try
 {
@@ -24,36 +25,52 @@ try
 #   if wxUSE_WEBVIEW_EDGE
       if ( wxWebView::IsBackendAvailable(wxWebViewBackendEdge) )
       {
-        return wxWebView::New(parent, wxID_ANY, wxWebViewDefaultURLStr, wxDefaultPosition, wxDefaultSize, wxWebViewBackendEdge);
+        this->w = wxWebView::New(parent, wxID_ANY, wxWebViewDefaultURLStr, wxDefaultPosition, wxDefaultSize, wxWebViewBackendEdge);
       }
 #   endif
 #endif
-
-    return wxWebView::New(parent, wxID_ANY);
-} catch(...){}
-
-    return nullptr;
+}
+catch(...)
+{
+    this->w = nullptr;
 }
 
-void ViewPortal_Set(wxWindow *const arg, wxString const &paper_name) noexcept
+try
 {
+    if ( nullptr == this->w ) this->w = wxWebView::New(parent, wxID_ANY);
+}
+catch(...)
+{
+    this->w = nullptr;
+}
+
+    return this->w;
+}
+
+void ViewPortal::Set(wxString const &paper_name) noexcept
+{
+    this->str_current_paper = paper_name;
+
     try
     {
-        assert( nullptr != g_p_local_http_server );
-        if ( false == g_p_local_http_server->IsListening() )
+        assert( nullptr != this->phttp );
+        if ( false == this->phttp->IsListening() )
         {
-            std::fprintf(stderr, "Local HTTP server is not listening\n");
+            std::fputs("Local HTTP server is not listening\n", stderr);
             return;
         }
-        uint16_t const port = g_p_local_http_server->StartAccepting();
-        assert( (0u != port) && (0xFFFF != port) );
+        uint16_t const port = this->phttp->StartAccepting();
+        if ( (0u == port) || (_Max == port) )
+        {
+            std::fputs("Local HTTP server is not listening on invalid TCP port number\n", stderr);
+            return;
+        }
         wxString url;
-        if ( g_p_local_http_server->IsUsingIPv6() ) url = wxS("http://[::1]:");
-        /************************************/ else url = wxS("http://127.0.0.1:");
+        if ( this->phttp->IsUsingIPv6() ) url = wxS("http://[::1]:");
+        /**************************/ else url = wxS("http://127.0.0.1:");
         url << port << wxS("/") << paper_name;
-        wxWebView *const pwv = dynamic_cast<wxWebView*>(arg);
-        assert( nullptr != pwv );
-        pwv->LoadURL(url);
+        assert( nullptr != this->w );
+        this->w->LoadURL(url);
     }
     catch (std::exception const &e)
     {

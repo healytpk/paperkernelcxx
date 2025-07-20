@@ -7,6 +7,7 @@
 #include <string_view>               // string_view
 #include <boost/beast.hpp>           // flat_buffer, http::request, http::response, http::read, http::write
 #include "embedded_archive.hpp"      // ArchiveGetFile
+#include "_Max.hpp"
 
 static constexpr std::pair<char const*, char const*> g_content_types[] = {
     { "html", "text/html"       },
@@ -48,7 +49,7 @@ LocalHttpServer::LocalHttpServer(void) noexcept
         }
         acceptor.listen();
         this->port = acceptor.local_endpoint().port();   // Get the port actually assigned
-        if ( 0xFFFF == this->port ) this->port = 0u;
+        if ( _Max == this->port ) this->port = 0u;
         if ( 0u == this->port ) throw std::runtime_error("invalid TCP listening port number");
         this->is_listening = true;
     }
@@ -152,7 +153,7 @@ LocalHttpServer::~LocalHttpServer(void) noexcept
 {
     std::puts("First line in destructor of LocalHttpServer");
     this->death_warrant = true;
-    if ( (false == this->is_listening) || (0u == this->port) || (0xFFFF == this->port) || (false == this->server_thread.joinable()) ) return;
+    if ( (false == this->is_listening) || (0u == this->port) || (_Max == this->port) || (false == this->server_thread.joinable()) ) return;
     try
     {
         // Connect to the listening socket to unblock the 'accept()' invocation
@@ -163,6 +164,7 @@ LocalHttpServer::~LocalHttpServer(void) noexcept
         sock.connect(ep);
     }
     catch(...){}
+    // Now we give the HTTP server thread 1 second to process its death warrant
     for ( unsigned i = 0u; i < 10u; ++i )
     {
         if ( this->death_warrant ) std::this_thread::sleep_for(std::chrono::milliseconds(100u));

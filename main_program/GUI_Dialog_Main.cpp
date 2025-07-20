@@ -16,9 +16,11 @@
 #include <utility>                                   // move
 #include <wx/accel.h>                                // wxAcceleratorEntry, wxAcceleratorTable
 #include <wx/event.h>                                // wxEVT_MENU and event binding
+#include <wx/filedlg.h>                              // wxFileDialog
 #include <wx/msgdlg.h>                               // wxMessageBox
 #include <wx/dataview.h>                             // wxDataViewCtrl
 #include <wx/splitter.h>                             // wxSplitterWindow
+#include <wx/wfstream.h>                             // wxFFileOutputStream (not wxFileOutputStream)
 #include "wxApp.hpp"
 #include "GUI_Dialog_About.hpp"
 #include "GUI_Dialog_Waiting.hpp"
@@ -193,7 +195,7 @@ void Dialog_Main::PresentPaperInViewPortal(Paper const paper)
     this->view_portal->Refresh();
     this->view_portal->Update();
     wxGetApp().SafeYield(nullptr, false);
-    ::ViewPortal_Set( this->view_portal, paper.GetPaper() );
+    this->view_portal_manager.Set( paper.GetPaper() );
 }
 
 Paper DecodeTreeItem(wxDataViewItem arg) noexcept
@@ -391,9 +393,9 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // =================================================================
 
     // ====================== View Portal ==============================
-    this->view_portal = ::ViewPortal_Create(this->splitter, this->local_http_server);
+    this->view_portal = this->view_portal_manager.Create(this->splitter, this->local_http_server);
     assert( nullptr != this->view_portal );
-    ::ViewPortal_BindFinishedLoading( this->view_portal, &Dialog_Main::OnViewPortalLoaded, this );
+    this->view_portal_manager.BindFinishedLoading( &Dialog_Main::OnViewPortalLoaded, this );
     // =================================================================
 
     // ====================== wxListCtrl for authors ===================
@@ -708,4 +710,43 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
     assert( 2u == this->authorPaperStore->GetRefCount() );
     this->authorPaperStore->DecRef();
     assert( 1u == this->authorPaperStore->GetRefCount() );
+}
+
+void Dialog_Main::OnTool_DownloadIndividualPaper(wxCommandEvent&)
+{
+    try
+    {
+        wxString const wXs = this->view_portal_manager.GetCurrentPaper();
+        wxstring const &wxs = wxString_inner(wXs);
+        if ( wxs.empty() ) throw std::runtime_error("String for current paper is empty");
+        std::string s( wxs.cbegin(), wxs.cend() );  // just in case wxStringCharType is wchar_t
+        s += '.';
+        string extension;
+        string const file_binary_contents = ArchiveGetFile(s, extension, true);
+        if ( extension.empty() || file_binary_contents.empty() ) throw std::runtime_error("Failed to retrieve contents of paper file");
+
+        wxString filename = wxString(s) + extension;
+
+        wxFileDialog saveFileDialog(
+            this,
+            wxS("Save paper file ") + filename,
+            wxEmptyString,
+            filename,
+            wxString(extension) + wxS(" files (*.") + extension + wxS(")|*.") + extension,
+            wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+
+        if ( wxID_CANCEL == saveFileDialog.ShowModal() ) return;  // the user changed their mind
+
+        // save the current contents in the file;
+        // this can be done with e.g. wxWidgets output streams:
+        wxFFileOutputStream out(  saveFileDialog.GetPath(), wxS("wb")  );   // binary mode
+        if ( false == out.IsOk() || false == out.WriteAll( file_binary_contents.data(), file_binary_contents.size() ) )
+        {
+            throw std::runtime_error("Failed to save file");
+        }
+    }
+    catch(std::exception const &e)
+    {
+        wxMessageBox( wxString(e.what()), wxS("Error"), wxOK|wxCENTRE|wxICON_ERROR, this );
+    }
 }

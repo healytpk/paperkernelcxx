@@ -7,6 +7,7 @@
 
 #include "AUTO_GENERATED_wxformbuilder.h"
 
+#include "../pictures/download.ico.h"
 #include "../pictures/left_pane.ico.h"
 #include "../pictures/mugshot.jpg.h"
 #include "../pictures/right_pane.ico.h"
@@ -37,6 +38,8 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	toolShowPaperTree = m_toolBar1->AddTool( wxID_ANY, wxT("Show List of Papers"), left_pane_ico_to_wx_bitmap(), wxNullBitmap, wxITEM_CHECK, wxT("Show List of Papers"), wxEmptyString, NULL );
 
 	toolShowViewPortal = m_toolBar1->AddTool( wxID_ANY, wxT("Show Paper"), right_pane_ico_to_wx_bitmap(), wxNullBitmap, wxITEM_CHECK, wxT("Show Paper"), wxEmptyString, NULL );
+
+	toolDownloadIndividualPaper = m_toolBar1->AddTool( wxID_ANY, wxT("tool"), download_ico_to_wx_bitmap(), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL );
 
 	m_toolBar1->Realize();
 
@@ -345,6 +348,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	m_notebook1->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler( Dialog_Main__Auto_Base_Class::m_notebook1_OnNotebookPageChanged ), NULL, this );
 	this->Connect( toolShowPaperTree->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowPaperTree ) );
 	this->Connect( toolShowViewPortal->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_ShowViewPortal ) );
+	this->Connect( toolDownloadIndividualPaper->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( Dialog_Main__Auto_Base_Class::OnTool_DownloadIndividualPaper ) );
 	listAuthors->Connect( wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, wxListEventHandler( Dialog_Main__Auto_Base_Class::listAuthors_OnListItemRightClick ), NULL, this );
 	listAuthors->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( Dialog_Main__Auto_Base_Class::listAuthors_OnListItemSelected ), NULL, this );
 	treeAuthorPapers->Connect( wxEVT_COMMAND_DATAVIEW_ITEM_ACTIVATED, wxDataViewEventHandler( Dialog_Main__Auto_Base_Class::treeAuthorPapers_OnDataViewCtrlItemActivated ), NULL, this );

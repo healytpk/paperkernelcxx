@@ -67,6 +67,12 @@ inline wxstring const &wxString_inner(wxString const &s)
              static_cast<void const*>(&s) ) + offset ));
 }
 
+inline wxstring_view wxString_view(wxString const &s)
+{
+    wxstring const &wxs = wxString_inner(s);
+    return wxstring_view( &wxs.front(), wxs.size() );
+}
+
 // The next POD struct mimics the layout of std::basic_string so that
 // it can be configured to refer to any string without copying the string
 struct Pretender_wxstring {
