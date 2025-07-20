@@ -351,6 +351,28 @@ void Dialog_Main::panelDebug_panelHash_btnCheckForCollisions_OnButtonClick(wxCom
     }
     if ( false == alarm ) s += wxS(" -- all alternatives' primaries found in the primary array --\n");
 
+    s += wxS("Making sure primary array is sorted by hashes without duplicates:\n");
+    Refresh();
+    alarm = false;
+    for ( std::size_t i = 0u; i < (g_primary_names.size() - 1u); ++i )
+    {
+        if ( 0u == (++counter % 800u) ) Refresh();
+        if ( g_primary_names[i].first < g_primary_names[i+1u].first ) continue;
+        s << wxS("!!! Unsorted or duplicate in primary's array: '") << g_primary_names[i].second << wxS("' and '") << g_primary_names[i+1u].second << wxS("'\n");
+    }
+    if ( false == alarm ) s += wxS(" -- the primary array is sorted by hash without duplicates --\n");
+
+    s += wxS("Making sure alternative array is sorted by hashes without duplicates:\n");
+    Refresh();
+    alarm = false;
+    for ( std::size_t i = 0u; i < (g_alternative_names.size() - 1u); ++i )
+    {
+        if ( 0u == (++counter % 800u) ) Refresh();
+        if ( std::get<0u>(g_alternative_names[i]) < std::get<0u>(g_alternative_names[i+1u]) ) continue;
+        s << wxS("!!! Unsorted or duplicate in alternative's array: '") << std::get<1u>(g_alternative_names[i]) << wxS("' and '") << std::get<1u>(g_alternative_names[i+1u]) << wxS("'\n");
+    }
+    if ( false == alarm ) s += wxS(" -- the alternative array is sorted by hash without duplicates --\n");
+
     s += wxS("+++ FIN +++\n");
     Refresh();
 }
