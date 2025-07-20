@@ -84,11 +84,29 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
     ReplaceHtmlNumericEscapesInPlace(author);
 
 // ============================ Bugs on ISO webpages
-    ReplaceInPlace(author, "Berg&eacute "                                           , "Berg&eacute;"                                           );
-    ReplaceInPlace(author, "Pablo Halpern Ville Voutilainen"                        , "Pablo Halpern\nVille Voutilainen"                       );
     ReplaceInPlace(author, "Alicia KlinvexLi-Ta Lo"                                 , "Alicia Klinvex\nLi-Ta Lo"                               );
-    ReplaceInPlace(author, "Jared Hoberock Lee Howes"                               , "Jared Hoberock\nLee Howes"                              );
+    ReplaceInPlace(author, "Berg&eacute "                                           , "Berg&eacute;"                                           );
+    ReplaceInPlace(author, "D. AbrahamsJ. SiekT. Witt"                              , "D. Abrahams\nJ. Siek\nT. Witt"                          );
     ReplaceInPlace(author, "D. GregorG. PowellJ. J\u00E4rvi"                        , "D. Gregor\nG. Powell\nJ. J\\u00E4rvi"                   );
+    ReplaceInPlace(author, "D. GregorP. Dimov"                                      , "D. Gregor\nP. Dimov"                                    );
+    ReplaceInPlace(author, "G. Dos ReisM. Marcus"                                   , "G. Dos Reis\nM. Marcus"                                 );
+    ReplaceInPlace(author, "H. Hinnant P. Dimov D. Abrahams"                        , "H. Hinnant\nP. Dimov\nD. Abrahams"                      );
+    ReplaceInPlace(author, "H. Sutter T. Plum"                                      , "H. Sutter\nT. Plum"                                     );
+    ReplaceInPlace(author, "J. J\\u00E4rviB. StroustrupD. GregorJ. Siek"            , "J. J\\u00E4rvi\nB. Stroustrup\nD. Gregor\nJ. Siek"      );
+    ReplaceInPlace(author, "J. J\u00E4rviB. StroustrupD. GregorJ. Siek"             , "J. J\\u00E4rvi\nB. Stroustrup\nD. Gregor\nJ. Siek"      );
+    ReplaceInPlace(author, "J. Spicer J. Wiegley"                                   , "J. Spicer\nJ. Wiegley"                                  );
+    ReplaceInPlace(author, "Jared Hoberock Lee Howes"                               , "Jared Hoberock\nLee Howes"                              );
+    ReplaceInPlace(author, "M. MarcusG. Dos Reis"                                   , "M. Marcus\nG. Dos Reis"                                 );
+    ReplaceInPlace(author, "P. DimovB. DawesG. Colvin"                              , "P. Dimov\nB. Dawes\nG. Colvin"                          );
+    ReplaceInPlace(author, "P. DimovD. GregorJ. J\\u00E4rviG. Powell"               , "P. Dimov\nD. Gregor\nJ. J\\u00E4rvi\nG. Powell"         );
+    ReplaceInPlace(author, "P. DimovD. GregorJ. J\u00E4rviG. Powell"                , "P. Dimov\nD. Gregor\nJ. J\\u00E4rvi\nG. Powell"         );
+    ReplaceInPlace(author, "P. Dimov D. Gregor J. J\\u00E4rvi G. Powell"            , "P. Dimov\nD. Gregor\nJ. J\\u00E4rvi\nG. Powell"         );
+    ReplaceInPlace(author, "P. Dimov D. Gregor J. J\u00E4rvi G. Powell"             , "P. Dimov\nD. Gregor\nJ. J\\u00E4rvi\nG. Powell"         );
+    ReplaceInPlace(author, "P. Dimov B. Dawes G. Colvin"                            , "P. Dimov\nB. Dawes\nG. Colvin"                          );
+    ReplaceInPlace(author, "Pablo Halpern Ville Voutilainen"                        , "Pablo Halpern\nVille Voutilainen"                       );
+    ReplaceInPlace(author, "R. Klarer J. Maddock"                                   , "R. Klarer\nJ. Maddock"                                  );
+    ReplaceInPlace(author, "R.W. Grosse-Kunstleve & D. Abrahams"                    , "Ralf W. Grosse-Kunstleve\nD. Abrahams"                  );
+    ReplaceInPlace(author, "Walter Brown & Marc Paterno"                            , "Walter Brown\nMarc Paterno"                             );
 // ===================================================
 
     ReplaceInPlace(author,  "\u00A0", " ");  // Non-breaking space (just one backslash)
