@@ -234,9 +234,8 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	wxBoxSizer* bSizer161;
 	bSizer161 = new wxBoxSizer( wxVERTICAL );
 
-	labelDebug_Info = new wxStaticText( panelDebug_panelInfo, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	labelDebug_Info->Wrap( -1 );
-	bSizer161->Add( labelDebug_Info, 1, wxALL|wxEXPAND, 5 );
+	txtDebug_Info = new wxTextCtrl( panelDebug_panelInfo, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxTE_DONTWRAP|wxTE_MULTILINE|wxTE_READONLY );
+	bSizer161->Add( txtDebug_Info, 1, wxALL|wxEXPAND, 5 );
 
 	btnDebug_Refresh = new wxButton( panelDebug_panelInfo, wxID_ANY, wxT("Refresh"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer161->Add( btnDebug_Refresh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );

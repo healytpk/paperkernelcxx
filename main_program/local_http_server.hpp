@@ -19,6 +19,8 @@ protected:
 public:
     bool IsListening(void) const noexcept { return this->is_listening; }
     bool IsUsingIPv6(void) const noexcept { return this->use_ipv6; }
+    bool GetDeathWarrant(void) const noexcept { return this->death_warrant; }
+    bool IsAcceptorThreadJoinable(void) const noexcept { return this->server_thread.joinable(); }
     std::uint16_t StartAccepting(void) noexcept;
     std::uint16_t GetListeningPort(void) const noexcept { return this->port; }
     LocalHttpServer(void) noexcept;

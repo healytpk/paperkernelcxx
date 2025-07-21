@@ -47,7 +47,7 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
     if ( false == already_done )
     {
         already_done = true;
-        this->labelDebug_Info->SetFont(  wxFont(12, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL)  );
+        this->txtDebug_Info->SetFont(  wxFont(12, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL)  );
     }
 
     wxString s;
@@ -66,7 +66,15 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
 
     s << wxS("Total resident memory in use by this process: ") << GetResidentMemory() / 1024u / 1024u << wxS(" MiB") << endl;
     s << wxS("This process has ") << GetThreadCount() << wxS(" threads") << endl;
-    s << wxS("This process has ") << GetChildProcessCount() << wxS(" child processes") << endl;
+    s << wxS("This process has ") << GetChildProcessCount() << wxS(" child processes") << endl << endl;
+
+    s << wxS("Local HTTP server:") << endl
+      << wxS("    IsListening: ") << this->local_http_server.IsListening() << endl
+      << wxS("    IsUsingIPv6: ") << this->local_http_server.IsUsingIPv6() << endl
+      << wxS("    Listening on TCP Port ") << this->local_http_server.GetListeningPort() << endl
+      << wxS("    Death warrant: ") << this->local_http_server.GetDeathWarrant() << endl
+      << wxS("    IsAcceptorThreadJoinable: ") << this->local_http_server.IsAcceptorThreadJoinable() << endl << endl;
+
     s << wxS("Compression for embedded archive: ");
 #ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
     s << wxS("Individual files compressed in an\n")
@@ -127,11 +135,11 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
     PRINT_TYPE(Hash_t);
 
     wxGetApp().SafeYield(nullptr, false);
-    this->labelDebug_Info->SetLabel(s);
+    this->txtDebug_Info->SetValue(s);
     wxGetApp().SafeYield(nullptr, false);
-    this->labelDebug_Info->Refresh();
+    this->txtDebug_Info->Refresh();
     wxGetApp().SafeYield(nullptr, false);
-    this->labelDebug_Info->Update();
+    this->txtDebug_Info->Update();
     wxGetApp().SafeYield(nullptr, false);
 }
 

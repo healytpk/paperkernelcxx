@@ -84,7 +84,7 @@ class Dialog_Main__Auto_Base_Class : public wxFrame
 		wxPanel* panelDebug;
 		wxNotebook* panelDebug_Notebook;
 		wxPanel* panelDebug_panelInfo;
-		wxStaticText* labelDebug_Info;
+		wxTextCtrl* txtDebug_Info;
 		wxButton* btnDebug_Refresh;
 		wxPanel* panelDebug_panelNames;
 		wxStaticText* m_staticText7;
