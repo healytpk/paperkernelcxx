@@ -33,7 +33,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	bSizer8 = new wxBoxSizer( wxVERTICAL );
 
 	m_toolBar1 = new wxToolBar( panelBrowse, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_DEFAULT_STYLE|wxTB_NO_TOOLTIPS );
-	m_toolBar1->SetToolBitmapSize( wxSize( 18,18 ) );
+	m_toolBar1->SetToolBitmapSize( wxSize( 32,32 ) );
 	m_toolBar1->SetMargins( wxSize( 36,36 ) );
 	toolShowPaperTree = m_toolBar1->AddTool( wxID_ANY, wxT("Show List of Papers"), left_pane_ico_to_wx_bitmap(), wxNullBitmap, wxITEM_CHECK, wxT("Show List of Papers"), wxEmptyString, NULL );
 
