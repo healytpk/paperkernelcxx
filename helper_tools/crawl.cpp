@@ -21,7 +21,7 @@ using json = nlohmann::json;
 
 std::ofstream logfile;
 
-std::map< string, std::vector<string> > names;
+std::map< string, std::vector<string> > g_names;
 
 std::map< string, std::map<Paper, std::pair<string /* author */, string /* title */> > > papers;
 
@@ -190,7 +190,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
             std::abort();
         }
         if ( s.empty() ) continue;
-        names[s].emplace_back(doc);
+        g_names[s].emplace_back(doc);
     }
 }
 
@@ -206,18 +206,18 @@ void MonkeyString(string &s)
     s = std::move(retval);
 }
 
-void MergeAlternativeNames(std::map< std::string, std::vector<std::string> >&names)
+void MergeAlternativeNames(std::map< std::string, std::vector<std::string> > &arg_names)
 {
     NameManager nm;
 
     // 1. Add all names to NameManager
     std::vector<std::string> all_names;
-    for ( const auto& [name, _] : names ) all_names.push_back(name);
+    for ( const auto& [name, _] : arg_names ) all_names.push_back(name);
     nm.AddNames( all_names.begin(), all_names.end() );
 
     // 2. Collect alternative names and their primaries
     std::vector< std::pair<std::string, std::string> > to_merge; // {alt, primary}
-    for ( const auto& [name, _] : names )
+    for ( const auto& [name, _] : arg_names )
     {
         auto primary = std::string(nm.GetPrimaryName(name));
         if (primary != name) to_merge.emplace_back(name, primary);
@@ -226,14 +226,14 @@ void MergeAlternativeNames(std::map< std::string, std::vector<std::string> >&nam
     // 3. Merge and erase
     for ( const auto& [alt, primary] : to_merge )
     {
-        auto alt_it = names.find(alt);
-        if (alt_it == names.end()) continue;
+        auto alt_it = arg_names.find(alt);
+        if (alt_it == arg_names.end()) continue;
 
         auto& alt_vec = alt_it->second;
-        auto prim_it = names.find(primary);
-        if ( prim_it == names.end() )
+        auto prim_it = arg_names.find(primary);
+        if ( prim_it == arg_names.end() )
         {
-            names[primary] = std::move(alt_vec);
+            arg_names[primary] = std::move(alt_vec);
         }
         else
         {
@@ -242,7 +242,7 @@ void MergeAlternativeNames(std::map< std::string, std::vector<std::string> >&nam
                             std::make_move_iterator(alt_vec.begin()),
                             std::make_move_iterator(alt_vec.end()));
         }
-        names.erase(alt_it);
+        arg_names.erase(alt_it);
     }
 }
 
@@ -301,23 +301,23 @@ int main(void)
     }
 
     std::vector<string> names2;
-    for ( auto const &mypair : names ) names2.emplace_back( mypair.first );
+    for ( auto const &mypair : g_names ) names2.emplace_back( mypair.first );
 
     NameManager nm;
     nm.AddNames( names2.cbegin(), names2.cend() );
     nm.WriteHeaders( "../main_program/AUTO_GENERATED_names.hpp" );
 
-    MergeAlternativeNames(names);
+    MergeAlternativeNames(g_names);
 
-    std::cerr << "==================== " << names.size() << " unique names ==================\n";
+    std::cerr << "==================== " << g_names.size() << " unique names ==================\n";
 
     std::ofstream fnames_papers("../main_program/AUTO_GENERATED_tree_contents_author.hpp");
     if ( fnames_papers.is_open() )
     {
         fnames_papers << "{\n";
-        for ( std::size_t i = 0u; i < names.size(); ++i )
+        for ( std::size_t i = 0u; i < g_names.size(); ++i )
         {
-            auto const &e = *std::next(std::cbegin(names), i);
+            auto const &e = *std::next(std::cbegin(g_names), i);
             string escaped = e.first;
             escape_for_hash(escaped);
             fnames_papers << "    { Hash(\"" << escaped << "\"), PaperList< ";

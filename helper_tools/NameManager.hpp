@@ -695,6 +695,7 @@ public:
         for (const auto& [primary, alts] : groups)
             for (const auto& alt : alts)
                 all_alternatives.insert(string(alt));
+
         for (const auto& [alt, primary] : hardcoded_alternatives)
             all_alternatives.insert(string(alt));
         // ------------------------------------------------------------------------
