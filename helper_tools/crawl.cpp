@@ -21,7 +21,22 @@ using json = nlohmann::json;
 
 std::ofstream logfile;
 
-std::map< string, std::vector<string> > g_names;
+std::map< string, std::vector<Paper> > g_names;
+
+std::map< Paper, std::set<string> > ReverseAuthorPaperMap( std::map< string, std::vector<Paper> > const &arg )
+{
+    std::map< Paper, std::set<string> > retval;
+
+    for ( auto const &[author, vec_papers] : arg )
+    {
+        for ( Paper const ppr : vec_papers )
+        {
+            retval[ppr].insert(author);
+        }
+    }
+
+    return retval;
+}
 
 std::map< string, std::map<Paper, std::pair<string /* author */, string /* title */> > > papers;
 
@@ -190,7 +205,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
             std::abort();
         }
         if ( s.empty() ) continue;
-        g_names[s].emplace_back(doc);
+        g_names[s].emplace_back( Paper{doc} );
     }
 }
 
@@ -206,7 +221,7 @@ void MonkeyString(string &s)
     s = std::move(retval);
 }
 
-void MergeAlternativeNames(std::map< std::string, std::vector<std::string> > &arg_names)
+void MergeAlternativeNames(std::map< std::string, std::vector<Paper> > &arg_names)
 {
     NameManager nm;
 
@@ -326,12 +341,14 @@ int main(void)
             {
                 if ( already_got_one ) fnames_papers << ", ";
                 already_got_one = true;
-                fnames_papers << "\"" << Paper(e2).c_str() << "\"";
+                fnames_papers << "\"" << e2 << "\"";
             }
             fnames_papers << " >() },\n";
         }
     }
     fnames_papers << "};\n";
+
+    std::map< Paper, std::set<string> > paper_authors = ReverseAuthorPaperMap(g_names);
 
     std::ofstream fpapers("../main_program/AUTO_GENERATED_tree_contents_paper.hpp");
     if ( fpapers.is_open() )
@@ -339,8 +356,8 @@ int main(void)
         fpapers << "{\n";
         for ( std::size_t i = 0u; i < papers.size(); ++i )
         {
-            auto const &e = *std::next(std::cbegin(papers), i);
-            auto const &mymap = e.second;
+            std::pair< string, std::map<Paper, std::pair<string /* author */, string /* title */> > > const &e = *std::next(std::cbegin(papers), i);
+            std::map<Paper, std::pair<string /* author */, string /* title */> > const &mymap = e.second;
             unsigned const latest_revision = GetPaperLatestRev(mymap);
             fpapers << "    { \"" << e.first;
             if ( !e.first.empty() && 'p' == e.first[0] ) fpapers << "r0";
@@ -349,14 +366,20 @@ int main(void)
             bool already_got_one = false;
             for ( std::size_t j = 0u; j < mymap.size(); ++j )
             {
-                auto const &mypair = *std::next(std::cbegin(mymap), j);
+                std::pair<Paper, std::pair<string /* author */, string /* title */> > const &mypair = *std::next(std::cbegin(mymap), j);
                 if ( already_got_one ) fpapers << ", ";
                 already_got_one = true;
-                fpapers << "Rev< " << mypair.first.rev << "u, ArrHash< Hash(\"";
-                string author = mypair.second.first;
-                MonkeyString(author);
-                fpapers << author;
-                fpapers << "\") >(), wxS(\"";
+                fpapers << "Rev< " << mypair.first.rev << "u, ArrHash<";
+
+                std::set<string> const &set_names = paper_authors.at(mypair.first);
+                for ( std::size_t k = 0u; k < set_names.size(); ++k )
+                {
+                    string const &x = *std::next(std::cbegin(set_names), k);
+                    fpapers << " Hash(\"" << x << "\")";
+                    if ( k != (set_names.size()-1u) ) fpapers << ",";
+                }
+
+                fpapers << " >(), wxS(\"";
                 string title = mypair.second.second;
                 MonkeyString(title);
                 fpapers << title << "\") >";
