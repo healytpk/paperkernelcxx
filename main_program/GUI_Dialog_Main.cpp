@@ -264,6 +264,13 @@ void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
     this->PresentPaperInViewPortal(paper);
 }
 
+inline constexpr wxStringCharType const *PrimaryNameFromHash(Hash_t const h)
+{
+    auto const it = std::ranges::lower_bound( g_primary_names, h, {}, [](auto const &e) { return std::get<0u>(e); } );
+    if ( (it != std::end(g_primary_names)) && (std::get<0u>(*it) == h) ) return std::get<1u>(*it);
+    return nullptr;
+}
+
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)
 {
     std::cout << "HTTP Server listening port == " << (unsigned)this->local_http_server.GetListeningPort() << std::endl;
@@ -332,7 +339,18 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
             {
                 if ( latest_revision != prev->rev ) continue;
                 title_of_last_revision  = prev->title;
-                for ( Hash_t const *ph = prev->hashes_authors; 0u != *ph; ++ph ) author_of_last_revision << *ph << " ";
+                for ( Hash_t const *ph = prev->hashes_authors; 0u != *ph; ++ph )
+                {
+                    wxStringCharType const *str = PrimaryNameFromHash(*ph);
+                    if ( nullptr == str )
+                    {
+                        std::cerr << "Failed to get primary name for hash: 0x" << std::setfill('0') << std::setw(16u) << std::hex << *ph << std::endl;
+                        std::cerr << std::dec;
+                        str = wxS("<unknown>");
+                    }
+                    author_of_last_revision << str;
+                    if ( 0u != ph[1] ) author_of_last_revision << wxS(", ");
+                }
             }
         }
         else
