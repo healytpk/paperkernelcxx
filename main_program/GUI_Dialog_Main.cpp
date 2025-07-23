@@ -26,14 +26,13 @@
 #include "GUI_Dialog_Waiting.hpp"
 #include "ai.hpp"
 #include "embedded_archive.hpp"
+#include "names.hpp"
 #include "paperman.hpp"
 #include "semantic.hpp"
 #include "tree_author.hpp"
 #include "tree_paper.hpp"
 #include "view_portal.hpp"
 #include "Auto.h"
-
-#include "AUTO_GENERATED_names.hpp"
 
 using std::string, std::string_view;
 
@@ -262,13 +261,6 @@ void Dialog_Main::listXapianResults_OnListItemActivated(wxListEvent &event)
     this->m_notebook1->SetSelection(0u);
     wxGetApp().SafeYield(nullptr, false);
     this->PresentPaperInViewPortal(paper);
-}
-
-inline constexpr wxStringCharType const *PrimaryNameFromHash(Hash_t const h)
-{
-    auto const it = std::ranges::lower_bound( g_primary_names, h, {}, [](auto const &e) { return std::get<0u>(e); } );
-    if ( (it != std::end(g_primary_names)) && (std::get<0u>(*it) == h) ) return std::get<1u>(*it);
-    return nullptr;
 }
 
 Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(parent)

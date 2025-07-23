@@ -66,19 +66,19 @@ wchar_t const *Paper::PaperNameWithoutRevisionL(void) const noexcept
 
 #include <cstdlib>                      // abort
 #include <algorithm>                    // lower_bound
+#include <iomanip>                      // hex, setfill, setw
+#include <iostream>                     // cerr, cout, endl
 #include <iterator>                     // cbegin, cend
 #include <type_traits>                  // is_same
 #include "tree_paper.hpp"               // g_map_papers
-
-#ifndef NDEBUG
-#    include <iostream>                 // cout, endl
-#endif
+#include "names.hpp"                    // PrimaryNameFromHash
 
 namespace Paper_detail {
 
 wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned const n)
 {
-    static wxString const str_unknown(wxS(" <unknown> "));
+    static thread_local wxString retval;
+    retval = wxS("<unknown>");
 
     Paper ppr(*pthis);
     ppr.rev = 0u;
@@ -87,24 +87,38 @@ wxString const &Paper_GetDatumFromPaperTree(Paper const *const pthis, unsigned c
                                       ppr,
                                       [](auto &&arg1, auto &&arg2) { return arg1.paper < arg2; } );
 
-    if ( std::cend(g_map_papers) == it ) return str_unknown;
-    if ( it->paper != ppr ) return str_unknown;
+    if ( std::cend(g_map_papers) == it ) return retval;
+    if ( it->paper != ppr ) return retval;
 
     for ( PaperRevInfo_t const *p = it->prevs; PaperRevInfo_t::terminator != p->rev; ++p )
     {
         if ( pthis->rev != p->rev ) continue;
         switch ( n )
         {
-        case 1u: return *new wxString(p->title);                      // REVISIT - FIX - This is horrible
-        case 2u: return *new wxString() << p->hashes_authors[0];      // REVISIT - FIX - This is horrible
+        case 1u:
+            retval = p->title;
+            break;
+        case 2u:
+            for ( Hash_t const *ph = p->hashes_authors; 0u != *ph; ++ph )
+            {
+                wxStringCharType const *str = PrimaryNameFromHash(*ph);
+                if ( nullptr == str )
+                {
+                    std::cerr << "Failed to get primary name for hash: 0x" << std::setfill('0') << std::setw(16u) << std::hex << *ph << std::endl;
+                    std::cerr << std::dec;
+                    str = wxS("<unknown>");
+                }
+                retval << str;
+                if ( 0u != ph[1] ) retval << wxS(", ");
+            }
+            break;
         }
+
+        return retval;
     }
 
-#ifndef NDEBUG
-    std::cout << "pthis == " << pthis->c_str() << std::endl;
-#endif
-
-    return str_unknown;
+    std::cerr << "Paper datum not found, paper == " << *pthis << std::endl;
+    return retval;
 }
 
 }  // close namespace Paper_detail

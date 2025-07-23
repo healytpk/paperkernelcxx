@@ -748,11 +748,10 @@ public:
  
         std::ofstream out(output_file);
         out << "#pragma once\n";
-        out << "#include <algorithm>          // ranges::lower_bound, ranges::equal_range\n";
-        out << "#include <array>              // array\n";
+        out << "#include <cstddef>            // size_t\n";
+        out << "#include <iterator>           // cbegin, cend\n";
         out << "#include <tuple>              // tuple\n";
         out << "#include <utility>            // pair\n";
-        out << "#include <vector>             // vector\n";
         out << "#include <wx/string.h>        // wxS, wxStringCharType\n";
         out << "#include \"hash.hpp\"           // Hash, Hash_t\n\n";
 
@@ -785,73 +784,9 @@ public:
         }
         out << "};\n\n";
 
-        out << "template<typename T, std::size_t N>\n";
-        out << "consteval auto container_sorted_by_first(T const (&arg)[N]) -> std::array<T, N>\n";
-        out << "{\n";
-        out << "    std::array<T, N> retval{};\n";
-        out << "    for ( std::size_t i = 0u; i < N; ++i ) retval[i] = arg[i];    // copy_n gives error on g++ Debug\n";
-        out << "    for ( std::size_t i = 1; i < N; ++i )\n";
-        out << "    {\n";
-        out << "        T key = retval[i];\n";
-        out << "        std::size_t j = i;\n";
-        out << "        while ( (0u != j) && (std::get<0u>(key) < std::get<0u>(retval[j-1u]) ) )\n";
-        out << "        {\n";
-        out << "            retval[j] = retval[j - 1];\n";
-        out << "            --j;\n";
-        out << "        }\n";
-        out << "        retval[j] = key;\n";
-        out << "    }\n";
-        out << "    return retval;\n";
-        out << "}\n\n";
-
-        // Arrays sorted by hash
-        out << "inline constexpr auto g_primary_names     = container_sorted_by_first(g_primary_names_unsorted    );\n";
-        out << "inline constexpr auto g_alternative_names = container_sorted_by_first(g_alternative_names_unsorted);\n\n";
-
-        // Four helper functions
-        out << "inline constexpr Hash_t PrimaryHash(wxStringCharType const *const name)\n";
-        out << "{\n";
-        out << "    Hash_t const h = Hash(name);\n";
-        out << "    auto const it = std::ranges::lower_bound(\n";
-        out << "        g_alternative_names, h, {}, [](auto const &e) { return std::get<0u>(e); }\n";
-        out << "    );\n";
-        out << "    if ((it != std::end(g_alternative_names)) && (std::get<0u>(*it) == h))\n";
-        out << "        return std::get<2u>(*it);\n";
-        out << "    return h;\n";
-        out << "}\n\n";
-        out << "inline constexpr wxStringCharType const *HashToDirectString(Hash_t const h)\n";
-        out << "{\n";
-        out << "    auto const it = std::ranges::lower_bound(\n";
-        out << "        g_primary_names, h, {}, [](auto const &e) { return std::get<0u>(e); }\n";
-        out << "    );\n";
-        out << "    if ( (it != std::end(g_primary_names)) && (std::get<0u>(*it) == h) ) return std::get<1u>(*it);\n";
-        out << "\n";
-        out << "    auto const it2 = std::ranges::lower_bound(\n";
-        out << "        g_alternative_names, h, {}, [](auto const &e) { return std::get<0u>(e); }\n";
-        out << "    );\n";
-        out << "    if ( (it2 != std::end(g_alternative_names)) && (std::get<0u>(*it2) == h) ) return std::get<1u>(*it2);\n";
-        out << "    return nullptr;\n";
-        out << "}\n\n";
-        out << "inline constexpr wxStringCharType const *Primary(wxStringCharType const *const name)\n";
-        out << "{\n";
-        out << "    Hash_t const h = PrimaryHash(name);\n";
-        out << "    auto const it = std::ranges::lower_bound(\n";
-        out << "        g_primary_names, h, {}, [](auto const &e) { return std::get<0u>(e); }\n";
-        out << "    );\n";
-        out << "    if ((it != std::end(g_primary_names)) && (std::get<0u>(*it) == h))\n";
-        out << "        return std::get<1u>(*it);\n";
-        out << "    return nullptr;\n";
-        out << "}\n\n";
-        out << "inline std::vector<wxStringCharType const*> GetAllAlternatives(Hash_t const primary_hash)\n";
-        out << "{\n";
-        out << "    std::vector<wxStringCharType const*> result;\n";
-        out << "    auto const myrange = std::ranges::equal_range(\n";
-        out << "        g_alternative_names, primary_hash, {}, [](auto const &e) { return std::get<2u>(e); }\n";
-        out << "    );\n";
-        out << "    for (auto it = myrange.begin(); it != myrange.end(); ++it)\n";
-        out << "        result.emplace_back(std::get<1u>(*it));\n";
-        out << "    return result;\n";
-        out << "}\n";
+        out << "inline constexpr std::size_t g_primary_names_unsortedSize     = std::cend(g_primary_names_unsorted    ) - std::cbegin(g_primary_names_unsorted    );\n";
+        out << "inline constexpr std::size_t g_alternative_names_unsortedSize = std::cend(g_alternative_names_unsorted) - std::cbegin(g_alternative_names_unsorted);\n";
+        out << std::endl;
     }
 };
 

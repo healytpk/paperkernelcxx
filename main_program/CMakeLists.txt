@@ -31,6 +31,7 @@ set(HEADERS
 	local_http_server.hpp
 	_Max.hpp
 	MySortableListCtrl.hpp
+	names.hpp
 	paper.hpp
 	paperman.hpp
 	../pictures/left_pane.ico.h

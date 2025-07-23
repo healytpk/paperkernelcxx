@@ -10,7 +10,7 @@
 #    include <wx/webview_chromium.h>                           // wxWebViewChromium
 #endif
 #include "wxApp.hpp"                                           // wxApp
-#include "AUTO_GENERATED_names.hpp"                            // g_primary_names_unsorted, g_alternative_names_unsorted
+#include "names.hpp"                                           // g_primary_names_unsorted, g_alternative_names_unsorted
 #include "debug.hpp"                                           // GetResidentMemory, GetThreadCount, GetChildProcessCount
 #include "GUI_Dialog_Main.hpp"                                 // Dialog_Main
 #include "stringcraft.hpp"                                     // wxstring_view
