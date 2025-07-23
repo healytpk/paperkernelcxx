@@ -669,20 +669,20 @@ public:
         return result;
     }
 
+    static constexpr string escape_for_hash(string_view const s)
+    {
+        string out;
+        out.reserve( s.size() );
+        for ( char const c : s )
+        {
+            out += c;
+            if ( '\\' == c ) out += c;
+        }
+        return out;
+    }
+
     void WriteHeaders(char const *const output_file) const
     {
-        constexpr auto escape_for_hash = [](string_view const s) -> string
-          {
-            string out;
-            out.reserve( s.size() );
-            for ( char const c : s )
-            {
-                out += c;
-                if ( '\\' == c ) out += c;
-            }
-            return out;
-          };
-
         constexpr auto pad_spaces = [](size_t const s, size_t const width = pad_len) -> string
           {
             return (s < width) ? string(width - s, ' ') : string();

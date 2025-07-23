@@ -375,7 +375,7 @@ int main(void)
                 for ( std::size_t k = 0u; k < set_names.size(); ++k )
                 {
                     string const &x = *std::next(std::cbegin(set_names), k);
-                    fpapers << " Hash(\"" << x << "\")";
+                    fpapers << " Hash(\"" << NameManager::escape_for_hash(x) << "\")";
                     if ( k != (set_names.size()-1u) ) fpapers << ",";
                 }
 
