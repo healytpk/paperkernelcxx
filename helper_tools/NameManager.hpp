@@ -294,6 +294,7 @@ private:
         { "Herv\\00e9 Br\\u00f6nnimann" /* 'u' is missing */       , "Herv\\u00e9 Br\\u00f6nnimann"                 },
         { "Herv\\uFFFD Br\\uFFFDnnimann"                           , "Herv\\u00e9 Br\\u00f6nnimann"                 },
         { "Ion Gazta\\U000619E1"                                   , "Ion Gazta\\u00f1aga"                          },
+        { "Ion Gazta\\uFFFDaga"                                    , "Ion Gazta\\u00f1aga"                          },
         { "J. J\\u00E4rvi"                                         , "Jaakko J\\u00e4rvi"                           },
         { "J. J\\u4CB6i"                                           , "Jaakko J\\u00e4rvi"                           },
         { "J. Jaarvi"                                              , "Jaakko J\\u00e4rvi"                           },
