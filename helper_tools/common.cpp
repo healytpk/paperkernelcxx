@@ -566,3 +566,33 @@ void Erase(std::string &str, std::string_view const sv)
         // Don't increment pos — content shifted left, might be repeated
     }
 }
+
+void MakeUnicodeEscapeSequencesLowercase(std::string &s)
+{
+    for ( std::size_t i = 0; i + 5 < s.size(); ++i )
+    {
+        if ( s[i] == '\\' && s[i + 1] == 'u' )
+        {
+            bool is_hex = true;
+            for ( int j = 2; j < 6; ++j )
+            {
+                char c = s[i + j];
+                if ( !std::isxdigit(static_cast<unsigned char>(c)) )
+                {
+                    is_hex = false;
+                    break;
+                }
+            }
+
+            if ( is_hex )
+            {
+                for ( int j = 2; j < 6; ++j )
+                {
+                    s[i + j] = static_cast<char>(
+                        std::tolower(static_cast<unsigned char>(s[i + j])));
+                }
+                i += 5; // Skip past the processed escape sequence
+            }
+        }
+    }
+}

@@ -205,6 +205,7 @@ void ProcessAuthorSquareFromTable(string author, string_view const doc)
             std::abort();
         }
         if ( s.empty() ) continue;
+        MakeUnicodeEscapeSequencesLowercase(s);
         g_names[s].emplace_back( Paper{doc} );
     }
 }

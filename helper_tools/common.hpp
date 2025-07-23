@@ -44,3 +44,5 @@ extern std::vector<std::string_view> SplitByNewLines(std::string_view const sv);
 extern void EscapeNonAscii(std::string &str, bool escape_wide = false);
 
 extern void Erase(std::string &str, std::string_view const sv);
+
+extern void MakeUnicodeEscapeSequencesLowercase(std::string&);
