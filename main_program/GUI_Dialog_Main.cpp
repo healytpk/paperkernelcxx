@@ -285,6 +285,8 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // =====================================================================================
 
     this->m_notebook1->RemovePage(4u);    // Remove the Debug tab
+    ShowSizer(this->bSizerForPanelAI, false);
+    this->panelAI->Layout();
 
     this->listAuthors->InsertColumn(0, wxS("Name"));
     this->listAuthors->InsertColumn(1, wxS("Authored"));

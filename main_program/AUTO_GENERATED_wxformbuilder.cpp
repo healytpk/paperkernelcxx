@@ -144,8 +144,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	bSizer61->Fit( panelXapian );
 	m_notebook1->AddPage( panelXapian, wxT("Semantic Search"), false );
 	panelAI = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer3;
-	bSizer3 = new wxBoxSizer( wxVERTICAL );
+	bSizerForPanelAI = new wxBoxSizer( wxVERTICAL );
 
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxHORIZONTAL );
@@ -159,10 +158,10 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	bSizer6->Add( AI_btnUnloadModel, 0, wxALL, 5 );
 
 
-	bSizer3->Add( bSizer6, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizerForPanelAI->Add( bSizer6, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 
 	m_staticline1 = new wxStaticLine( panelAI, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer3->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
+	bSizerForPanelAI->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
 
 	wxBoxSizer* bSizer4;
 	bSizer4 = new wxBoxSizer( wxHORIZONTAL );
@@ -176,37 +175,37 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	bSizer4->Add( AI_btnUnloadPapers, 0, wxALL, 5 );
 
 
-	bSizer3->Add( bSizer4, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizerForPanelAI->Add( bSizer4, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 
 	m_staticline2 = new wxStaticLine( panelAI, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer3->Add( m_staticline2, 0, wxEXPAND | wxALL, 5 );
+	bSizerForPanelAI->Add( m_staticline2, 0, wxEXPAND | wxALL, 5 );
 
 	m_staticText1 = new wxStaticText( panelAI, wxID_ANY, wxT("Question to whittle down list of papers (must be a Yes/No question):"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1->Wrap( -1 );
-	bSizer3->Add( m_staticText1, 0, wxALL, 5 );
+	bSizerForPanelAI->Add( m_staticText1, 0, wxALL, 5 );
 
 	AI_txtBooleanQuestion = new wxTextCtrl( panelAI, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
-	bSizer3->Add( AI_txtBooleanQuestion, 0, wxALL|wxEXPAND, 5 );
+	bSizerForPanelAI->Add( AI_txtBooleanQuestion, 0, wxALL|wxEXPAND, 5 );
 
 	AI_btnWhittleDownPapers = new wxButton( panelAI, wxID_ANY, wxT("Next"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer3->Add( AI_btnWhittleDownPapers, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizerForPanelAI->Add( AI_btnWhittleDownPapers, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
 	AI_lcPapers = new wxListCtrl( panelAI, wxID_ANY, wxDefaultPosition, wxSize( -1,200 ), wxLC_REPORT );
-	bSizer3->Add( AI_lcPapers, 0, wxALL|wxEXPAND, 5 );
+	bSizerForPanelAI->Add( AI_lcPapers, 0, wxALL|wxEXPAND, 5 );
 
 	m_staticText2 = new wxStaticText( panelAI, wxID_ANY, wxT("More detailed question to ask for each of the above papers:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
-	bSizer3->Add( m_staticText2, 0, wxALL, 5 );
+	bSizerForPanelAI->Add( m_staticText2, 0, wxALL, 5 );
 
 	AI_txtDetailedQuestion = new wxTextCtrl( panelAI, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,80 ), wxTE_MULTILINE );
-	bSizer3->Add( AI_txtDetailedQuestion, 0, wxALL|wxEXPAND, 5 );
+	bSizerForPanelAI->Add( AI_txtDetailedQuestion, 0, wxALL|wxEXPAND, 5 );
 
 	AI_btnAnalysePapers = new wxButton( panelAI, wxID_ANY, wxT("Ask"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer3->Add( AI_btnAnalysePapers, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizerForPanelAI->Add( AI_btnAnalysePapers, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
 	m_staticText3 = new wxStaticText( panelAI, wxID_ANY, wxT("Responses:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText3->Wrap( -1 );
-	bSizer3->Add( m_staticText3, 0, wxALL, 5 );
+	bSizerForPanelAI->Add( m_staticText3, 0, wxALL, 5 );
 
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxHORIZONTAL );
@@ -218,12 +217,12 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	bSizer2->Add( AI_txtDetailedAnswer, 1, wxALL|wxEXPAND, 5 );
 
 
-	bSizer3->Add( bSizer2, 1, wxEXPAND, 5 );
+	bSizerForPanelAI->Add( bSizer2, 1, wxEXPAND, 5 );
 
 
-	panelAI->SetSizer( bSizer3 );
+	panelAI->SetSizer( bSizerForPanelAI );
 	panelAI->Layout();
-	bSizer3->Fit( panelAI );
+	bSizerForPanelAI->Fit( panelAI );
 	m_notebook1->AddPage( panelAI, wxT("Artificial Intelligence"), false );
 	panelDebug = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer151;

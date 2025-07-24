@@ -65,6 +65,7 @@ class Dialog_Main__Auto_Base_Class : public wxFrame
 		wxStaticText* m_staticText5;
 		wxListCtrl* listXapianResults;
 		wxPanel* panelAI;
+		wxBoxSizer* bSizerForPanelAI;
 		wxButton* AI_btnLoadModel;
 		wxButton* AI_btnUnloadModel;
 		wxStaticLine* m_staticline1;

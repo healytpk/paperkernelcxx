@@ -5,6 +5,7 @@
 #include <map>                                                 // map
 #include <type_traits>                                         // is_signed
 #include <utility>                                             // pair
+#include <wx/msgdlg.h>                                         // wxMessageBox
 #include <wx/webview.h>                                        // wxWebView
 #ifdef wxUSE_WEBVIEW_CHROMIUM
 #    include <wx/webview_chromium.h>                           // wxWebViewChromium
@@ -33,10 +34,33 @@ void Dialog_Main::m_notebook1_OnNotebookPageChanged(wxNotebookEvent &event)
 {
     switch ( event.GetSelection() )
     {
+    case 3u:
+    {
+        if ( this->bSizerForPanelAI->GetChildren()[0]->IsShown() ) break;
+
+        int const code = wxMessageBox(
+            wxS("I haven't coded this yet, but would you like\n")
+            wxS("a sneak preview of what it might look like?"),
+            wxS("Paper Kernel C++"),
+            wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION|wxCENTRE,
+            this );
+
+        if ( wxYES != code )
+        {
+            this->m_notebook1->SetSelection( event.GetOldSelection() );
+            break;
+        }
+
+        ShowSizer(this->bSizerForPanelAI);
+        this->panelAI->Layout();
+	}
+	break;
     case 4u:
+    {
         wxCommandEvent dummy;
         this->btnDebug_Refresh_OnButtonClick(dummy);
-        break;
+    }
+    break;
     }
 }
 
@@ -384,4 +408,3 @@ void Dialog_Main::panelDebug_panelHash_btnCheckForCollisions_OnButtonClick(wxCom
     s += wxS("+++ FIN +++\n");
     Refresh();
 }
-

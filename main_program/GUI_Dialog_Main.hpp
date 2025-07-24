@@ -68,4 +68,16 @@ public:
 
 extern Dialog_Main *g_p_dlgmain;
 
+inline void ShowSizer(wxSizer *const sizer, bool const show = true)
+{
+    if ( nullptr == sizer ) return;
+    auto &children = sizer->GetChildren();
+    for ( auto *const item : children )
+    {
+        if ( nullptr == item ) continue;
+        if ( item->IsWindow() && item->GetWindow() ) item->GetWindow()->Show(show);
+        if ( item->IsSizer()  && item->GetSizer()  ) ShowSizer(item->GetSizer(), show);
+    }
+}
+
 #endif
