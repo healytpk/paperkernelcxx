@@ -95,7 +95,7 @@ public:
     {
         for ( auto const &e : this->m_data )
         {
-            if ( s == e.second.column_values[0] ) return e.first;
+            if ( s == e.second.column_values[0] ) return e.first;  // cppcheck-suppress useStlAlgorithm
         }
         return wxDataViewItem{};
     }
@@ -333,14 +333,14 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
                 title_of_last_revision  = prev->title;
                 for ( Hash_t const *ph = prev->hashes_authors; 0u != *ph; ++ph )
                 {
-                    wxStringCharType const *str = PrimaryNameFromHash(*ph);
-                    if ( nullptr == str )
+                    wxStringCharType const *pstr = PrimaryNameFromHash(*ph);
+                    if ( nullptr == pstr )
                     {
                         std::cerr << "Failed to get primary name for hash: 0x" << std::setfill('0') << std::setw(16u) << std::hex << *ph << std::endl;
                         std::cerr << std::dec;
-                        str = wxS("<unknown>");
+                        pstr = wxS("<unknown>");
                     }
-                    author_of_last_revision << str;
+                    author_of_last_revision << pstr;
                     if ( 0u != ph[1] ) author_of_last_revision << wxS(", ");
                 }
             }
@@ -391,7 +391,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     // ================ Create the wxDataViewCtrl widget ===============
     this->treeAllPapers = new std::remove_reference_t<decltype(*this->treeAllPapers)>(this->splitter, wxID_ANY);
     assert( nullptr != this->treeAllPapers );
-    wxDataViewColumn *const pcol = this->treeAllPapers->AppendTextColumn(wxS("Paper") , 0);
+    wxDataViewColumn *const pcol = this->treeAllPapers->AppendTextColumn(wxS("Paper") , 0);  // cppcheck-suppress constVariablePointer
     this->treeAllPapers->AppendTextColumn(wxS("Title") , 1, wxDATAVIEW_CELL_INERT, 200);
     this->treeAllPapers->AppendTextColumn(wxS("Author") , 2);
     this->treeAllPapers->SetExpanderColumn(pcol);
@@ -432,7 +432,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     this->panelBrowse->Layout();
 
     this->authorPaperStore = new std::remove_reference_t<decltype(*this->authorPaperStore)>;
-    wxDataViewColumn *const pcolAuthor = this->treeAuthorPapers->AppendTextColumn(wxS("Paper") , 0);
+    wxDataViewColumn *const pcolAuthor = this->treeAuthorPapers->AppendTextColumn(wxS("Paper") , 0);  // cppcheck-suppress constVariablePointer
     this->treeAuthorPapers->AppendTextColumn(wxS("Title") , 1, wxDATAVIEW_CELL_INERT, 200);
     this->treeAuthorPapers->SetExpanderColumn(pcolAuthor);
 
@@ -588,11 +588,11 @@ wxString Dialog_Main::GetPaperTreeItemLastChildText(wxDataViewCtrl *const pdv, w
 {
     wxDataViewModel *const pdvm = pdv->GetModel();
     wxDataViewItem child{};
-    auto *const pdvm2 = dynamic_cast<  wxDataViewTreeStoreWithColumns<2u> *  >(pdvm);
+    auto const *const pdvm2 = dynamic_cast<  wxDataViewTreeStoreWithColumns<2u> *  >(pdvm);
     if ( pdvm2 ) child = pdvm2->GetLastChild(selected_item);
     else
     {
-        auto *const pdvm3 = dynamic_cast<  wxDataViewTreeStoreWithColumns<3u> *  >(pdvm);
+        auto const *const pdvm3 = dynamic_cast<  wxDataViewTreeStoreWithColumns<3u> *  >(pdvm);
         if ( pdvm3 ) child = pdvm3->GetLastChild(selected_item);
     }
     if ( wxDataViewItem{} == child ) return {};
@@ -675,7 +675,7 @@ void Dialog_Main::listAuthors_OnListItemSelected(wxListEvent &event)
     assert( 1u == this->authorPaperStore->GetRefCount() );
     this->authorPaperStore->IncRef();
     assert( 2u == this->authorPaperStore->GetRefCount() );
-    this->treeAuthorPapers->AssociateModel(nullptr);
+    this->treeAuthorPapers->AssociateModel(nullptr);  // cppcheck-suppress nullPointer
     // Next line is required if model was never associated
     if ( 2u == this->authorPaperStore->GetRefCount() ) this->authorPaperStore->DecRef();
     assert( 1u == this->authorPaperStore->GetRefCount() );

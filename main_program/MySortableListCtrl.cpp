@@ -12,9 +12,11 @@ MySortableListCtrl::MySortableListCtrl(wxListCtrl *const arg) : sm_tmpinfo(), pl
     assert( nullptr != arg );
 
     {
-        auto ctrls = g_ctrls.Reserve();
-        assert( nullptr == (*ctrls)[arg] );
-        (*ctrls)[arg] = this;
+        auto mylock = g_ctrls.Reserve();
+        std::map<wxListCtrl*, MySortableListCtrl*> &ctrls = *mylock;
+        MySortableListCtrl *&p = ctrls[arg];
+        assert( nullptr == p );
+        p = this;
     }
 
     plist->Bind( wxEVT_LIST_COL_CLICK, MySortableListCtrl::OnColClick );
@@ -60,7 +62,7 @@ int wxCALLBACK MySortableListCtrl::Compare_MSLC(wxIntPtr item1, wxIntPtr item2, 
         if ( false == string2.ToLong(&num2) ) return -1;
         if ( num1 == num2 ) return 0;
         if ( num1  < num2 ) return multiplier * -1;
-        if ( num1  > num2 ) return multiplier * +1;
+    /*  if ( num1  > num2 ) */ return multiplier * +1;
     }
 
     int const result_of_comparison = string1.Cmp(string2);

@@ -85,7 +85,7 @@ void LocalHttpServer::ThreadEntryPoint_NotEternal(void) noexcept(false)
         {
             std::string s = string( req.target() ) + '.';
             std::string_view sv = s;
-            if ( sv.empty() ) throw invalid_url_t();
+            if ( "." == sv ) throw invalid_url_t();
             if ( false == sv.starts_with('/') ) throw invalid_url_t();
             sv.remove_prefix(1u);  // remove leading forward slash
             if ( sv.empty() ) throw invalid_url_t();
@@ -99,7 +99,7 @@ void LocalHttpServer::ThreadEntryPoint_NotEternal(void) noexcept(false)
             {
                 if ( ct.first == extension )
                 {
-                    content_type = ct.second;
+                    content_type = ct.second;  // cppcheck-suppress useStlAlgorithm
                     break;
                 }
             }

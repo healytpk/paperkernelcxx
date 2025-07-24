@@ -35,13 +35,9 @@ private:
     template<typename T>
     requires(    std::is_convertible_v<decltype(std::declval<T&&>()[0]),  char  >
               || std::is_convertible_v<decltype(std::declval<T&&>()[0]), wchar_t> )
-    constexpr Paper(PaperConstructor_t, T const p, std::size_t const len)
+    constexpr Paper(PaperConstructor_t, T const p, std::size_t const len)  // cppcheck-suppress uninitMemberVarPrivate
     {
         using namespace cctype_constexpr;  // isdigit, tolower
-
-        auto &letter = this->letter;
-        auto &num    = this->num   ;
-        auto &rev    = this->rev   ;
 
         while ( len >= 5u )  // fake loop only iterates once (so we can 'break')
         {
@@ -176,15 +172,21 @@ public:
     wchar_t const *PaperNameWithoutRevisionL(void) const noexcept;
 
 #ifndef PAPERKERNELCXX_MINIMAL_PAPER
+private:
+    static wxStringCharType const *Cast(void const *const p)
+    {
+        return static_cast<wxStringCharType const*>(p);
+    }
+public:
     wxStringCharType const *wx_str(void) const noexcept
     {
-        if constexpr ( std::is_same_v<wxStringCharType, char> ) { return (wxStringCharType const*)this-> c_str(); }
-        /************************************************/ else { return (wxStringCharType const*)this->wc_str(); }
+        if constexpr ( std::is_same_v<wxStringCharType, char> ) { return Cast(this-> c_str()); }
+        /************************************************/ else { return Cast(this->wc_str()); }
     }
     wxStringCharType const *PaperNameWithoutRevisionWx(void) const noexcept
     {
-        if constexpr ( std::is_same_v<wxStringCharType, char> ) { return (wxStringCharType const*)this->PaperNameWithoutRevision (); }
-        /************************************************/ else { return (wxStringCharType const*)this->PaperNameWithoutRevisionL(); }
+        if constexpr ( std::is_same_v<wxStringCharType, char> ) { return Cast(this->PaperNameWithoutRevision ()); }
+        /************************************************/ else { return Cast(this->PaperNameWithoutRevisionL()); }
     }
     wxString const &GetTitle (void) const noexcept;
     wxString const &GetAuthor(void) const noexcept;
