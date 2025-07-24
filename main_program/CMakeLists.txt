@@ -47,6 +47,7 @@ set(HEADERS
 
 if(WIN32)
 add_compile_options(/constexpr:steps99999999)
+set(SRCS ${SRCS} ../3rdParty/wxWidgets/mswin_msvc_x86_64/include/wx/msw/wx_dpi_aware_pmv2.manifest)
 endif(WIN32)
 if(APPLE)
 add_compile_options(-fconstexpr-steps=99999999)

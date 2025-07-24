@@ -1,4 +1,4 @@
-#include "wx/msw/wx.rc"
+#include <wx/msw/wx.rc>
 #include "resource.h"
 
 #ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
