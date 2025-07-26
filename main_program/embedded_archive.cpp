@@ -62,8 +62,9 @@ using std::runtime_error, std::string, std::string_view;
 
 string ArchiveGetFile(std::string_view const arg_filename, std::string &extension, bool const prefix_only) noexcept
 {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#if defined(_WIN32) || defined(_WIN64)
     static int const n = ( LoadEmbeddedArchiveFromExecutableResources(), 666 );
+    (void)n;
     assert(      0u != g_archiveSize );
     assert( nullptr != g_archiveData );
     if ( 0u == g_archiveSize ) std::abort();    // if NDEBUG
@@ -86,7 +87,7 @@ static void LoadArchiveFileIntoMemory(void)
     std::ifstream f( PAPERKERNEL_ARCHIVE_FILENAME, std::ios::binary );
     if ( ! f )
     {
-        std::cerr << "Failed to open archive file: " << g_archive_filename << std::endl;
+        std::cerr << "Failed to open archive file: " << PAPERKERNEL_ARCHIVE_FILENAME << std::endl;
         return;
     }
 
@@ -99,12 +100,11 @@ static void LoadArchiveFileIntoMemory(void)
 
 string ArchiveGetFile(std::string_view const arg_filename, std::string &extension, bool const prefix_only) noexcept
 {
-#if defined(_WIN32) || defined(_WIN64)
     static int const n = ( LoadArchiveFileIntoMemory(), 666 );
+    (void)n;
     assert(      0u != g_archiveSize );
     assert( nullptr != g_archiveData );
     if ( 0u == g_archiveSize ) std::abort();    // if NDEBUG
-#endif
 
     return ArchiveGetFile_Common(arg_filename, extension, prefix_only);
 }
