@@ -48,6 +48,7 @@ jobs:
         cp --preserve=links /usr/lib/x86_64-linux-gnu/libwx*.so* build/bin/Release/
         cp --preserve=links /usr/lib/x86_64-linux-gnu/libarchive.so* build/bin/Release/
         cp --preserve=links /usr/lib/x86_64-linux-gnu/libxapian.so* build/bin/Release/
+        cp all_cxx_papers_individual_zst.tar build/bin/Release/
         cp database_xapian_for_all_cxx_papers build/bin/Release/
         mv build/bin/Release/main_program build/bin/Release/paperkernelcxx.bin
         cp licenses/* build/bin/Release/

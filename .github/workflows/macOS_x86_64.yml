@@ -81,6 +81,7 @@ jobs:
         make VERBOSE=1 -j$(getconf _NPROCESSORS_ONLN)
         cd ../..
         cp wxWidgets-3.2.8.1/buildOSX/lib/*.dylib build/bin/main_program.app/Contents/MacOS
+        cp all_cxx_papers_individual_zst.tar build/bin/main_program.app/Contents/MacOS
         cp database_xapian_for_all_cxx_papers build/bin/main_program.app/Contents/MacOS
         mv build/bin/main_program.app/Contents/MacOS/main_program build/bin/main_program.app/Contents/MacOS/paperkernelcxx.bin
         cp licenses/* build/bin/main_program.app/Contents/MacOS/
