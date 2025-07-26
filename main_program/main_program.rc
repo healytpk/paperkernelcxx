@@ -1,8 +1,11 @@
 #include <wx/msw/wx.rc>
 #include "resource.h"
 
-#ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
-IDR_PAPERKERNELCXX_EMBEDDED_ARCHIVE RCDATA "..\\all_cxx_papers_individual_zst.tar");
-#else
-IDR_PAPERKERNELCXX_EMBEDDED_ARCHIVE RCDATA "..\\all_cxx_papers.tar.zst"
+#ifdef PAPERKERNEL_EMBED_ARCHIVE
+#    ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
+         IDR_PAPERKERNELCXX_EMBEDDED_ARCHIVE RCDATA "..\\all_cxx_papers_individual_zst.tar");
+#    else
+         IDR_PAPERKERNELCXX_EMBEDDED_ARCHIVE RCDATA "..\\all_cxx_papers.tar.zst"
+#    endif
 #endif
+

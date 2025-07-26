@@ -6,16 +6,30 @@
 #include <string>                              // string
 #include <archive.h>                           // struct archive
 #include <archive_entry.h>                     // struct archive_entry
-#ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
-#    include <zstd.h>                          // ZSTD_decompress, ZSTD_getFrameContentSize
-#endif
-#include "incbin.h"                            // INCBIN
 #include "Auto.h"                              // The 'Auto' macro
 #include "_Max.hpp"
+#ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
+#    include <zstd.h>                          // ZSTD_decompress, ZSTD_getFrameContentSize
+#    define PAPERKERNEL_ARCHIVE_FILENAME "all_cxx_papers_individual_zst.tar"
+#else
+#    define PAPERKERNEL_ARCHIVE_FILENAME "all_cxx_papers.tar.zst"
+#endif
+#ifdef PAPERKERNEL_EMBED_ARCHIVE
+#    include "incbin.h"                        // INCBIN
+#else
+#    include <fstream>                         // ifstream
+#    include <sstream>                         // stringstream
+#endif
 
 #include <iostream>          // ----------- remove THIS -----------------------------------------------------------
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+using std::runtime_error, std::string, std::string_view;
+
+static string ArchiveGetFile_Common(std::string_view const arg_filename, std::string& extension, bool const prefix_only) noexcept;
+
+#ifdef PAPERKERNEL_EMBED_ARCHIVE
+
+#if defined(_WIN32) || defined(_WIN64)
 
 #include <cstddef>          // size_t
 #include <Windows.h>        // GetModuleHandle, FindResource
@@ -39,31 +53,67 @@ static void LoadEmbeddedArchiveFromExecutableResources(void) noexcept
 }
 
 #elif __APPLE__
-#   ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
-       INCBIN(_archive, "../../all_cxx_papers_individual_zst.tar");
-#   else
-       INCBIN(_archive, "../../all_cxx_papers.tar.zst");
-#   endif
+    INCBIN(_archive, "../../" PAPERKERNEL_ARCHIVE_FILENAME);
 #else
-#   ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
-       INCBIN(_archive, "../../../all_cxx_papers_individual_zst.tar");
-#   else
-       INCBIN(_archive, "../../../all_cxx_papers.tar.zst");
-#   endif
+    INCBIN(_archive, "../../../" PAPERKERNEL_ARCHIVE_FILENAME);
 #endif
 
 using std::runtime_error, std::string, std::string_view;
 
 string ArchiveGetFile(std::string_view const arg_filename, std::string &extension, bool const prefix_only) noexcept
 {
-    extension.clear();
-
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     static int const n = ( LoadEmbeddedArchiveFromExecutableResources(), 666 );
     assert(      0u != g_archiveSize );
     assert( nullptr != g_archiveData );
     if ( 0u == g_archiveSize ) std::abort();    // if NDEBUG
 #endif
+
+    return ArchiveGetFile_Common(arg_filename, extension, prefix_only);
+}
+
+#else // if PAPERKERNEL_EMBED_ARCHIVE not defined
+
+char unsigned const *g_archiveData = nullptr;
+std::size_t g_archiveSize = 0u;
+
+using std::runtime_error, std::string, std::string_view;
+
+static void LoadArchiveFileIntoMemory(void)
+{
+    static std::string g_archive_in_memory;
+
+    std::ifstream f( PAPERKERNEL_ARCHIVE_FILENAME, std::ios::binary );
+    if ( ! f )
+    {
+        std::cerr << "Failed to open archive file: " << g_archive_filename << std::endl;
+        return;
+    }
+
+    std::stringstream ss;
+    ss << std::move(f).rdbuf();
+    g_archive_in_memory = std::move(ss).str();
+    g_archiveSize = g_archive_in_memory.size();
+    g_archiveData = static_cast<char unsigned*>(static_cast<void*>(g_archive_in_memory.data()));
+}
+
+string ArchiveGetFile(std::string_view const arg_filename, std::string &extension, bool const prefix_only) noexcept
+{
+#if defined(_WIN32) || defined(_WIN64)
+    static int const n = ( LoadArchiveFileIntoMemory(), 666 );
+    assert(      0u != g_archiveSize );
+    assert( nullptr != g_archiveData );
+    if ( 0u == g_archiveSize ) std::abort();    // if NDEBUG
+#endif
+
+    return ArchiveGetFile_Common(arg_filename, extension, prefix_only);
+}
+
+#endif // ifdef PAPERKERNEL_EMBED_ARCHIVE
+
+static string ArchiveGetFile_Common(std::string_view const arg_filename, std::string &extension, bool const prefix_only = false) noexcept
+{
+    extension.clear();
 
     assert( false == arg_filename.empty() );
 
