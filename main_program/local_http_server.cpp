@@ -15,6 +15,8 @@ static constexpr std::pair<char const*, char const*> g_content_types[] = {
     { "txt" , "text/plain"      },
     { "pdf" , "application/pdf" },
     { "md"  , "text/markdown"   },
+
+    // REVISIT FIX - also needed a few more -- one beginning with 'p' can't remember
 };
 
 using std::string, std::string_view;

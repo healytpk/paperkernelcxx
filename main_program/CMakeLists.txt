@@ -27,6 +27,7 @@ set(HEADERS
 	GUI_Dialog_Main_Debug_Tab.hpp
 	GUI_Dialog_Waiting.hpp
 	hash.hpp
+	html_pages_hardcoded.hpp
 	incbin.h
 	local_http_server.hpp
 	_Max.hpp

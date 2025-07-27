@@ -3,10 +3,12 @@
 #include <cstdlib>                             // abort
 #include <cstring>                             // strcmp
 #include <filesystem>                          // filesystem::path
+#include <new>                                 // nothrow
 #include <stdexcept>                           // runtime_error
 #include <string>                              // string
 #include <archive.h>                           // struct archive
 #include <archive_entry.h>                     // struct archive_entry
+#include "html_pages_hardcoded.hpp"            // html_failed_load_archive_file, html_failed_load_archive_resource
 #include "Auto.h"                              // The 'Auto' macro
 #include "_Max.hpp"
 #ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION
@@ -68,18 +70,19 @@ std::filesystem::path GetExecutableDirectory(void)  // ----------------------- D
 char unsigned const *g_archiveData = nullptr;
 std::size_t g_archiveSize = 0u;
 
-static void LoadEmbeddedArchiveFromExecutableResources(void) noexcept
+static bool LoadEmbeddedArchiveFromExecutableResources(void) noexcept
 {
     HMODULE const hModule = GetModuleHandle(nullptr);
 
     HRSRC const hResInfo = FindResource(hModule, MAKEINTRESOURCE(IDR_PAPERKERNELCXX_EMBEDDED_ARCHIVE), RT_RCDATA);
-    if ( !hResInfo ) return;
+    if ( !hResInfo ) return false;
 
     HGLOBAL const hResData = LoadResource(hModule, hResInfo);
-    if ( !hResData ) return;
+    if ( !hResData ) return false;
 
     g_archiveSize = SizeofResource(hModule, hResInfo);
     g_archiveData = static_cast<char unsigned const*>( LockResource(hResData) );
+    return true;
 }
 
 #elif __APPLE__
@@ -93,8 +96,14 @@ using std::runtime_error, std::string, std::string_view;
 string ArchiveGetFile(std::string_view const arg_filename, std::string &extension, bool const prefix_only) noexcept
 {
 #if defined(_WIN32) || defined(_WIN64)
-    static int const n = ( LoadEmbeddedArchiveFromExecutableResources(), 666 );
-    (void)n;
+    static bool const b = LoadEmbeddedArchiveFromExecutableResources();
+
+    if ( false == b )
+    {
+        extension = "html";
+        return html_failed_load_archive_resource;
+    }
+
     assert(      0u != g_archiveSize );
     assert( nullptr != g_archiveData );
     if ( 0u == g_archiveSize ) std::abort();    // if NDEBUG
@@ -110,37 +119,44 @@ std::size_t g_archiveSize = 0u;
 
 using std::runtime_error, std::string, std::string_view;
 
-static void LoadArchiveFileIntoMemory(void)
+static bool LoadArchiveFileIntoMemory(void)
 {
-    static std::string g_archive_in_memory;
-
-    std::ifstream f( GetExecutableDirectory() / PAPERKERNEL_ARCHIVE_FILENAME, std::ios::binary);
+    std::ifstream f( GetExecutableDirectory() / PAPERKERNEL_ARCHIVE_FILENAME, std::ios::binary );
     if ( ! f )
     {
         std::cerr << "Failed to open archive file: " << PAPERKERNEL_ARCHIVE_FILENAME << std::endl;
-        return;
+        return false;
     }
 
 #if 1
     f.seekg(0, std::ios_base::end);
-    std::streamsize const size = f.tellg();
-    g_archive_in_memory.resize(size, '\0');
+    std::streamsize const len = f.tellg();
+    g_archiveData = new(std::nothrow) char unsigned[len];
+    if ( nullptr == g_archiveData ) return false;
+    g_archiveSize = len;
     f.seekg(0);
-    f.read( g_archive_in_memory.data(), size );
+    f.read(static_cast<char*>(const_cast<void*>(static_cast<void const*>(g_archiveData))), g_archiveSize);
 #else
     std::stringstream ss;
     ss << std::move(f).rdbuf();
-    g_archive_in_memory = std::move(ss).str();
-#endif
-
+    static std::string str = std::move(ss).str();
     g_archiveSize = g_archive_in_memory.size();
     g_archiveData = static_cast<char unsigned*>(static_cast<void*>(g_archive_in_memory.data()));
+#endif
+
+    return true;
 }
 
 string ArchiveGetFile(std::string_view const arg_filename, std::string &extension, bool const prefix_only) noexcept
 {
-    static int const n = ( LoadArchiveFileIntoMemory(), 666 );
-    (void)n;
+    static bool b = LoadArchiveFileIntoMemory();
+
+    if ( false == b )
+    {
+        extension = "html";
+        return html_failed_load_archive_file;
+    }
+
     assert(      0u != g_archiveSize );
     assert( nullptr != g_archiveData );
     if ( 0u == g_archiveSize ) std::abort();    // if NDEBUG
@@ -152,7 +168,7 @@ string ArchiveGetFile(std::string_view const arg_filename, std::string &extensio
 
 static string ArchiveGetFile_Common(std::string_view const arg_filename, std::string &extension, bool const prefix_only = false) noexcept
 {
-    extension.clear();
+    extension = "html";  // Default extension if not found  --  needed for error web page prompts
 
     assert( false == arg_filename.empty() );
 
@@ -160,7 +176,7 @@ static string ArchiveGetFile_Common(std::string_view const arg_filename, std::st
     {
         std::cout << "----------    g_archiveSize = " << g_archiveSize << std::endl;
         struct archive *const a = archive_read_new();
-        if ( nullptr == a ) return {};
+        if ( nullptr == a ) return html_paper_not_found_in_archive;    // REVISIT FIX - Should show a different error message
         Auto( archive_read_free(a) );
 
 #ifndef PAPERKERNEL_INDIVIDUAL_COMPRESSION
@@ -170,7 +186,7 @@ static string ArchiveGetFile_Common(std::string_view const arg_filename, std::st
 #endif
 
         archive_read_support_format_tar(a);   // Enable TAR format
-        if ( ARCHIVE_OK != archive_read_open_memory(a, g_archiveData, g_archiveSize) ) return {};
+        if ( ARCHIVE_OK != archive_read_open_memory(a, g_archiveData, g_archiveSize) ) return html_paper_not_found_in_archive;  // REVISIT FIX - Should show a different error message
 
         struct archive_entry *entry = nullptr;
         for ( ; ARCHIVE_OK == archive_read_next_header(a, &entry); archive_read_data_skip(a) )
@@ -194,23 +210,23 @@ static string ArchiveGetFile_Common(std::string_view const arg_filename, std::st
             }
             auto const entry_size = archive_entry_size(entry);
             std::cout << "Archive entry size: " << entry_size << std::endl;
-            if ( entry_size <= 0 ) return {};
+            if ( entry_size <= 0 ) return html_paper_not_found_in_archive;
             string buffer(entry_size, '\0');
-            if ( archive_read_data(a, buffer.data(), entry_size) < 0 ) return {};
+            if ( archive_read_data(a, buffer.data(), entry_size) < 0 ) return html_paper_not_found_in_archive;  // REVISIT FIX - Should show a different error message
 #ifndef PAPERKERNEL_INDIVIDUAL_COMPRESSION
             return buffer;
 #else
             // Decompress using zstd
             auto const decompressed_size = ZSTD_getFrameContentSize( buffer.data(), buffer.size() );
-            if ( (decompressed_size==ZSTD_CONTENTSIZE_ERROR) || (decompressed_size==ZSTD_CONTENTSIZE_UNKNOWN) ) return {};
+            if ( (decompressed_size==ZSTD_CONTENTSIZE_ERROR) || (decompressed_size==ZSTD_CONTENTSIZE_UNKNOWN) ) return html_paper_not_found_in_archive;  // REVISIT FIX - Should show a different error message
             string decompressed(decompressed_size, '\0');
             auto const res = ZSTD_decompress(decompressed.data(), decompressed.size(), buffer.data(), buffer.size());
-            if ( ZSTD_isError(res) ) return {};
+            if ( ZSTD_isError(res) ) return html_paper_not_found_in_archive;  // REVISIT FIX - Should show a different error message
             return decompressed;
 #endif
         }
     }
     catch(...){}
 
-    return {};
+    return html_paper_not_found_in_archive;
 }
