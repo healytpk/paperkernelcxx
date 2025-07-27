@@ -21,6 +21,13 @@
 #    include <fstream>                         // ifstream
 #    include <sstream>                         // stringstream
 #endif
+#if defined(_WIN32) || defined(_WIN64)
+     // nothing needed here
+#elifdef __APPLE__
+#    include <mach-o/dyld.h>                   // _NSGetExecutablePath
+#else
+#    include <unistd.h>                        // readlink
+#endif
 
 #include <iostream>          // ----------- remove THIS -----------------------------------------------------------
 

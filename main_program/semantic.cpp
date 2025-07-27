@@ -9,11 +9,6 @@
 #ifdef _WIN32
 #    include <Windows.h>            // CreateFileA
 #    include <io.h>                 // _open_osfhandle
-#elif __APPLE__
-#    include <mach-o/dyld.h>        // _NSGetExecutablePath
-#else
-
-#    include <unistd.h>             // readlink
 #endif
 
 #include "_Max.hpp"
