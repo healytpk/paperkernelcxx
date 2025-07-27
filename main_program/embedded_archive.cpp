@@ -2,6 +2,7 @@
 #include <cassert>                             // assert
 #include <cstdlib>                             // abort
 #include <cstring>                             // strcmp
+#include <filesystem>                          // filesystem::path
 #include <stdexcept>                           // runtime_error
 #include <string>                              // string
 #include <archive.h>                           // struct archive
@@ -26,6 +27,28 @@
 using std::runtime_error, std::string, std::string_view;
 
 static string ArchiveGetFile_Common(std::string_view const arg_filename, std::string& extension, bool const prefix_only) noexcept;
+
+std::filesystem::path GetExecutableDirectory(void)  // ----------------------- DOUBLE AND TRIPLE CHECK THIS FUNCTION! revisit - fix
+{
+    static char path[1024u];
+    path[0] = '\0';
+
+#if defined(_WIN32) || defined(_WIN64)
+    DWORD const len = ::GetModuleFileNameA(nullptr, path, sizeof(path));
+    if ( (0u == len) || (len >= sizeof(path)) ) path[0] = '\0';
+#elif defined(__APPLE__)
+    std::uint32_t size = sizeof(path);
+    if ( 0 != ::_NSGetExecutablePath(path, &size) ) path[0] = '\0';
+#else
+    ssize_t const len = ::readlink("/proc/self/exe", path, sizeof(path) - 1u); // does not null-terminate
+    if ( len <= 0 ) path[  0] = '\0';
+    /********/ else path[len] = '\0'; // need to add a terminator
+#endif
+
+    if ( '\0' == path[0] ) return {};
+
+    return std::filesystem::path(path).parent_path(); // Extract directory
+}
 
 #ifdef PAPERKERNEL_EMBED_ARCHIVE
 
@@ -84,16 +107,25 @@ static void LoadArchiveFileIntoMemory(void)
 {
     static std::string g_archive_in_memory;
 
-    std::ifstream f( PAPERKERNEL_ARCHIVE_FILENAME, std::ios::binary );
+    std::ifstream f( GetExecutableDirectory() / PAPERKERNEL_ARCHIVE_FILENAME, std::ios::binary);
     if ( ! f )
     {
         std::cerr << "Failed to open archive file: " << PAPERKERNEL_ARCHIVE_FILENAME << std::endl;
         return;
     }
 
+#if 1
+    f.seekg(0, std::ios_base::end);
+    std::streamsize const size = f.tellg();
+    g_archive_in_memory.resize(size, '\0');
+    f.seekg(0);
+    f.read( g_archive_in_memory.data(), size );
+#else
     std::stringstream ss;
     ss << std::move(f).rdbuf();
     g_archive_in_memory = std::move(ss).str();
+#endif
+
     g_archiveSize = g_archive_in_memory.size();
     g_archiveData = static_cast<char unsigned*>(static_cast<void*>(g_archive_in_memory.data()));
 }

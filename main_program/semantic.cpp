@@ -22,27 +22,7 @@ namespace fs = std::filesystem;
 
 using std::string, std::string_view;
 
-static std::filesystem::path GetExecutableDirectory(void)  // ----------------------- DOUBLE AND TRIPLE CHECK THIS FUNCTION! revisit - fix
-{
-    static char path[1024u];
-    path[0] = '\0';
-
-#if defined(_WIN32) || defined(_WIN64)
-    DWORD const len = ::GetModuleFileNameA(nullptr, path, sizeof(path));
-    if ( (0u == len) || (len >= sizeof(path)) ) path[0] = '\0';
-#elif defined(__APPLE__)
-    std::uint32_t size = sizeof(path);
-    if ( 0 != ::_NSGetExecutablePath(path, &size) ) path[0] = '\0';
-#else
-    ssize_t const len = ::readlink("/proc/self/exe", path, sizeof(path) - 1u); // does not null-terminate
-    if ( len <= 0 ) path[  0] = '\0';
-    /********/ else path[len] = '\0'; // need to add a terminator
-#endif
-
-    if ( '\0' == path[0] ) return {};
-
-    return std::filesystem::path(path).parent_path(); // Extract directory
-}
+extern std::filesystem::path GetExecutableDirectory(void);    // defined in embedded_archive.cpp
 
 void SemanticSearcher::Init( std::function<void(unsigned,unsigned)> SetProgress ) noexcept(false)
 {
