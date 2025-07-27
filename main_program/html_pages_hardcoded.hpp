@@ -156,10 +156,10 @@ extern std::string const html_paper_not_found_in_archive = R"html(
     <div class="container">
         <h1>Paper Retrieval Failure</h1>
         <p>
-            An attempt was made to retrieve the paper from the archive, but it was not found
+            An attempt was made to retrieve the paper from the archive, but the paper was not found.
         </p>
         <div class="note">
-            Please email Thomas on 't@virjacode.com' as there should not be any papers missing from the archive.
+            Please email Thomas on ' <b>t@virjacode.com</b> ' as there should not be any papers missing from the archive.
         </div>
     </div>
 </body>
