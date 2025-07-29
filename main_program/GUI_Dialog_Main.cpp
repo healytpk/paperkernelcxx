@@ -95,7 +95,7 @@ wxDataViewItem EncodeStringAsTreeItem(wxstring_view const wsv) noexcept
         std::uint16_t *const q = static_cast<std::uint16_t*>(static_cast<void*>(std::addressof(dvi)));
         q[0] = ppr.num;  // paper number
         q[1] = ppr.rev;  // paper revision number
-        if ( 'n' == ppr.letter ) q[1] = _Max;  // _Max is a sentinel value for the latest revision
+        if ( 'n' == ppr.letter ) q[1] = _Max;
         if ( is_latest_revision ) { q[1] = _Max; --( q[1] ); }
         return dvi;
     }
