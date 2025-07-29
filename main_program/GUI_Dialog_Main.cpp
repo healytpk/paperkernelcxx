@@ -2,7 +2,7 @@
 #include <cassert>                                   // assert
 #include <climits>                                   // CHAR_BIT
 #include <cstddef>                                   // size_t
-#include <cstdint>                                   // uintptr_t
+#include <cstdint>                                   // uint16_t, uintptr_t
 #include <cstring>                                   // strcmp, strstr
 #include <array>                                     // array
 #include <map>                                       // map
@@ -33,6 +33,7 @@
 #include "tree_paper.hpp"
 #include "view_portal.hpp"
 #include "Auto.h"
+#include "_Max.hpp"
 
 using std::string, std::string_view;
 
@@ -46,6 +47,8 @@ IMPLEMENT_APP(App_CxxPapers);  // This creates the "main" function
 
 wxDataViewItem EncodeStringAsTreeItem(wxstring_view const wsv) noexcept
 {
+    // This can also encode p1234rX -- where 'X' is the latest revision
+
     static_assert(  sizeof(wxDataViewItem) ==  sizeof(void*) );
     static_assert( alignof(wxDataViewItem) == alignof(void*) );
 
@@ -65,7 +68,36 @@ wxDataViewItem EncodeStringAsTreeItem(wxstring_view const wsv) noexcept
     }
     else if constexpr ( 4u == sizeof(void*) )
     {
-        return {};
+        bool is_latest_revision = false;
+        assert( wsv.size() <= 8u );
+        char tmp[8u + 1u];
+        for ( unsigned i = 0u; i <= wsv.size(); ++i ) tmp[i] = (char)wsv[i];
+        tmp[8u] = '\0';  // null terminate
+        if ( 'p' == tmp[0] )
+        {
+            if ( '\0' == tmp[5] )
+            {
+                is_latest_revision = true;
+                tmp[5] = 'r';
+                tmp[6] = '0';
+			    tmp[7] = '\0';  // e.g. p1234 becomes p1234r0
+            }
+            else if ( ('r' == tmp[5]) && ('X' == tmp[6]) && ('\0' == tmp[7]) )
+            {
+                is_latest_revision = true;
+                tmp[6] = '0';  // e.g. p1234rX becomes p1234r0
+            }
+        }
+        Paper ppr(tmp);
+        wxDataViewItem dvi{nullptr};  // all bits zero
+        static_assert( sizeof (wxDataViewItem) >= sizeof (std::uint16_t) );
+        static_assert( alignof(wxDataViewItem) >= alignof(std::uint16_t) );
+        std::uint16_t *const q = static_cast<std::uint16_t*>(static_cast<void*>(std::addressof(dvi)));
+        q[0] = ppr.num;  // paper number
+        q[1] = ppr.rev;  // paper revision number
+        if ( 'n' == ppr.letter ) q[1] = _Max;  // _Max is a sentinel value for the latest revision
+        if ( is_latest_revision ) { q[1] = _Max; --( q[1] ); }
+        return dvi;
     }
     else
     {
@@ -220,7 +252,12 @@ Paper DecodeTreeItem(wxDataViewItem arg) noexcept
     }
     else if constexpr ( 4u == sizeof(void*) )
     {
-        return {};
+        static_assert( sizeof (wxDataViewItem) >= sizeof (std::uint16_t) );
+        static_assert( alignof(wxDataViewItem) >= alignof(std::uint16_t) );
+        std::uint16_t *const q = static_cast<std::uint16_t*>(static_cast<void*>(std::addressof(arg)));
+        if ( _Max ==     q[1]   ) return Paper('n', q[0], 0u);
+        if ( _Max == ++( q[1] ) ) return GetPaperLatestRev( Paper('p', q[0], 0u) );
+        return Paper( 'p', q[0], --( q[1] ) );  // decrement because we incremented one line above
     }
     else
     {
