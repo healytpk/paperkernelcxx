@@ -1,9 +1,11 @@
 #include "view_portal.hpp"
 #include <cstdio>                    // fprintf, stderr
+#include <chrono>                    // steady_clock, seconds
 #ifdef __WXGTK__
 #   include <stdlib.h>               // setenv
 #endif
 #include <wx/window.h>               // wxWindow
+#include "wxApp.hpp"                 // wxGetApp
 #include "local_http_server.hpp"     // LocalHttpServer
 #include "_Max.hpp"
 
@@ -59,18 +61,27 @@ void ViewPortal::Set(wxString const &paper_name) noexcept
             std::fputs("Local HTTP server is not listening\n", stderr);
             return;
         }
-        uint16_t const port = this->phttp->StartAccepting();
+        uint16_t const port = this->phttp->GetListeningPort();
         if ( (0u == port) || (_Max == port) )
         {
-            std::fputs("Local HTTP server is not listening on invalid TCP port number\n", stderr);
+            std::fputs("Local HTTP server is listening on an invalid TCP port number\n", stderr);
             return;
         }
         wxString url;
         if ( this->phttp->IsUsingIPv6() ) url = wxS("http://[::1]:");
         /**************************/ else url = wxS("http://127.0.0.1:");
         url << port << wxS("/") << paper_name;
+        this->phttp->DiscardAllPendingConnections();
         assert( nullptr != this->w );
         this->w->LoadURL(url);
+
+        auto const timestamp = std::chrono::steady_clock::now();
+        for (; /* ever */ ;)
+        {
+            wxGetApp().SafeYield(nullptr, false);
+            if ( (std::chrono::steady_clock::now() - timestamp) > std::chrono::seconds(10u) ) break;
+            if ( this->phttp->TryServeWebpage() ) break;
+        }
     }
     catch (std::exception const &e)
     {

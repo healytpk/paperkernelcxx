@@ -96,8 +96,7 @@ void Dialog_Main::btnDebug_Refresh_OnButtonClick(wxCommandEvent&)
       << wxS("    IsListening: ") << this->local_http_server.IsListening() << endl
       << wxS("    IsUsingIPv6: ") << this->local_http_server.IsUsingIPv6() << endl
       << wxS("    Listening on TCP Port ") << this->local_http_server.GetListeningPort() << endl
-      << wxS("    Death warrant: ") << this->local_http_server.GetDeathWarrant() << endl
-      << wxS("    IsAcceptorThreadJoinable: ") << this->local_http_server.IsAcceptorThreadJoinable() << endl << endl;
+      << endl;
 
     s << wxS("Compression for embedded archive: ");
 #ifdef PAPERKERNEL_INDIVIDUAL_COMPRESSION

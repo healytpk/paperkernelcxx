@@ -65,21 +65,24 @@ LocalHttpServer::LocalHttpServer(void) noexcept
     }
 }
 
-void LocalHttpServer::ThreadEntryPoint_NotEternal(void) noexcept(false)
+bool LocalHttpServer::TryServeWebpage(void) noexcept
 {
     struct invalid_url_t {};
 
-    assert( this->is_listening             );
-    assert( this->opt_ioc.has_value()      );
-    assert( this->opt_acceptor.has_value() );
-    auto &ioc      = this->opt_ioc.value();
-    auto &acceptor = this->opt_acceptor.value();
-
-    while ( false == this->death_warrant )
+    try
     {
+        assert( this->is_listening             );
+        assert( this->opt_ioc.has_value()      );
+        assert( this->opt_acceptor.has_value() );
+        auto &ioc      = this->opt_ioc.value();
+        auto &acceptor = this->opt_acceptor.value();
+
         tcp::socket socket{ ioc };
-        acceptor.accept(socket);
-        if ( this->death_warrant ) return;
+        boost::system::error_code ec;
+        acceptor.non_blocking(true);
+        acceptor.accept(socket, ec);
+        if ( boost::asio::error::would_block == ec ) return false;
+
         beast::flat_buffer buffer;
         http::request<http::string_body> req;
         http::read(socket, buffer, req);
@@ -120,61 +123,31 @@ void LocalHttpServer::ThreadEntryPoint_NotEternal(void) noexcept(false)
             http::write(socket, res);
         }
     }
+    catch(...) { return false; }
+
+    return true;
 }
 
-void LocalHttpServer::ThreadEntryPoint(void) noexcept
+void LocalHttpServer::DiscardAllPendingConnections(void) noexcept
 {
-    while ( false == this->death_warrant )
-    {
-        try
-        {
-            this->ThreadEntryPoint_NotEternal();
-        }
-        catch (std::exception const &e)
-        {
-            std::fprintf( stderr, "LocalHttpServer caught exception: %s\n", e.what() );
-        }
-        catch(...)
-        {
-            std::fprintf( stderr, "LocalHttpServer caught unknown exception\n" );
-        }
-    }
-
-    this->death_warrant = false;
-}
-
-std::uint16_t LocalHttpServer::StartAccepting(void) noexcept
-{
-    if ( (false==this->is_listening) || death_warrant ) return 0u;
-    if ( this->server_thread.joinable() ) return this->port;
-    this->server_thread = std::jthread( [this]{ this->ThreadEntryPoint(); } );
-    return this->port;
-}
-
-LocalHttpServer::~LocalHttpServer(void) noexcept
-{
-    std::puts("First line in destructor of LocalHttpServer");
-    this->death_warrant = true;
-    if ( (false == this->is_listening) || (0u == this->port) || (_Max == this->port) || (false == this->server_thread.joinable()) ) return;
     try
     {
-        // Connect to the listening socket to unblock the 'accept()' invocation
-        using namespace boost::asio;
-        io_context ioc;
-        ip::tcp::endpoint ep(this->use_ipv6 ? ip::tcp::v6() : ip::tcp::v4(), this->port);
-        ip::tcp::socket sock(ioc);
-        sock.connect(ep);
+        assert( this->is_listening );
+        assert( this->opt_acceptor.has_value() );
+        assert( this->opt_ioc     .has_value() );
+        auto &acceptor = this->opt_acceptor.value();
+        auto &ioc = this->opt_ioc.value();
+        boost::system::error_code ec;
+        for (; /* ever */ ;)
+        {
+            tcp::socket socket(ioc);
+            acceptor.non_blocking(true);
+            acceptor.accept(socket, ec);
+            if ( boost::asio::error::would_block == ec ) break;
+        }
     }
-    catch(...){}
-    // Now we give the HTTP server thread 1 second to process its death warrant
-    for ( unsigned i = 0u; i < 10u; ++i )
+    catch(...)
     {
-        if ( this->death_warrant ) std::this_thread::sleep_for(std::chrono::milliseconds(100u));
+        std::fprintf(stderr, "LocalHttpServer::DiscardAllPendingConnections threw and caught an exception\n");
     }
-    if ( this->death_warrant )
-    {
-        std::puts("LocalHttpServer thread didn't end within a second -- killing the process now");
-        std::_Exit(EXIT_FAILURE);
-    }
-    std::puts("Last line in destructor of LocalHttpServer");
 }
