@@ -6,7 +6,7 @@
 class wxWindow;
 class LocalHttpServer;
 
-class ViewPortal {
+class ViewPortalManager {
 protected:
     wxString str_current_paper;
     LocalHttpServer *phttp = nullptr;
@@ -15,6 +15,7 @@ public:
     wxString GetCurrentPaper(void) const noexcept { return this->str_current_paper; }
     wxWindow *Create(wxWindow *parent, LocalHttpServer &server) noexcept;
     void Set(wxString const &paper_name) noexcept;
+    void SetHtml(wxString const &html, wxString const &baseUrl) noexcept;
 
     template<class T>
     void BindFinishedLoading( void (T::*const mfp)(wxEvent&), T *const parent ) noexcept(false)

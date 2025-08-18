@@ -11,7 +11,7 @@
 
 using std::uint16_t;
 
-wxWindow *ViewPortal::Create(wxWindow *const parent, LocalHttpServer &server) noexcept
+wxWindow *ViewPortalManager::Create(wxWindow *const parent, LocalHttpServer &server) noexcept
 {
     assert( nullptr == this->w );
 
@@ -49,7 +49,7 @@ catch(...)
     return this->w;
 }
 
-void ViewPortal::Set(wxString const &paper_name) noexcept
+void ViewPortalManager::Set(wxString const &paper_name) noexcept
 {
     this->str_current_paper = paper_name;
 
@@ -87,4 +87,13 @@ void ViewPortal::Set(wxString const &paper_name) noexcept
     {
         std::fprintf( stderr, "ViewPortal_Set exception thrown: %s\n", e.what() );
     }
+}
+
+void ViewPortalManager::SetHtml(wxString const &html, wxString const &baseUrl) noexcept
+{
+    try
+    {
+        this->w->SetPage(html,baseUrl);
+    }
+    catch(...){}
 }

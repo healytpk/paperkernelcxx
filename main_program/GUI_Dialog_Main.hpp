@@ -22,7 +22,7 @@ protected:
     wxDataViewCtrl *treeAllPapers = nullptr;
     wxDataViewTreeStoreWithColumns<3u> *treeStore = nullptr;
     wxDataViewTreeStoreWithColumns<2u> *authorPaperStore = nullptr;
-    ViewPortal view_portal_manager;
+    ViewPortalManager view_portal_manager;
     wxWindow *view_portal = nullptr;
     void OnClose(wxCloseEvent&) override;
     void AI_btnLoadModel_OnButtonClick(wxCommandEvent&) override;
