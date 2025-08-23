@@ -85,7 +85,13 @@ bool LocalHttpServer::TryServeWebpage(void) noexcept
         boost::system::error_code ec;
         acceptor.non_blocking(true);
         acceptor.accept(socket, ec);
-        if ( boost::asio::error::would_block == ec ) return false;
+        if ( boost::asio::error::would_block == ec )
+        {
+            std::fprintf(stderr, "  Inside LocalHttpServer::TryServeWebpage - No pending connections.\n");
+            return false;
+        }
+
+        std::fprintf(stderr, "  Inside LocalHttpServer::TryServeWebpage - Connection Made.\n");
 
         beast::flat_buffer buffer;
         http::request<http::string_body> req;
@@ -101,7 +107,12 @@ bool LocalHttpServer::TryServeWebpage(void) noexcept
             if ( sv.empty() ) throw invalid_url_t();
             string extension;
             string file_binary_contents;
-            if ( "loading_all." == sv )
+            if ( "html." == sv )
+            {
+                file_binary_contents = this->html_str;
+                extension = "html";
+            }
+            else if ( "loading_all." == sv )
             {
                 extern std::string const html_loading_all_papers;  /* defined in html_pages_hardcoded.hpp */
                 file_binary_contents = html_loading_all_papers;

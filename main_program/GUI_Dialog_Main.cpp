@@ -218,14 +218,9 @@ void Dialog_Main::OnViewPortalLoaded(wxEvent&) noexcept
 
 void Dialog_Main::PresentPaperInViewPortal(Paper const paper)
 {
+    std::cout << "Entered Dialog_Main::PresentPaperInViewPortal --------------------\n";
     assert( nullptr != this->view_portal );
     this->is_viewportal_loaded = false;
-    //::ViewPortal_Set(this->view_portal, "<html><body><h1>Loading. . .</h1></body></html>");
-    //do wxGetApp().SafeYield(nullptr, false); while ( false == this->is_viewportal_loaded );   -- This locks up and freezes
-    this->is_viewportal_loaded = false;
-    this->view_portal->Refresh();
-    this->view_portal->Update();
-    wxGetApp().SafeYield(nullptr, false);
     this->view_portal_manager.Set( paper.GetPaper() );
 }
 
@@ -446,7 +441,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     assert( nullptr != this->view_portal );
     this->view_portal_manager.BindFinishedLoading( &Dialog_Main::OnViewPortalLoaded, this );
     extern std::string const html_welcome_splash_screen;  /* defined in html_pages_hardcoded.hpp */
-    this->view_portal_manager.SetHtml( wxString(html_welcome_splash_screen) /* convert from std::string */, wxS("index.html") );
+    this->view_portal_manager.SetHtml( html_welcome_splash_screen, true );
     // =================================================================
 
     // ====================== wxListCtrl for authors ===================

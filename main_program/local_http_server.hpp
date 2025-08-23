@@ -2,7 +2,7 @@
 #include <cstdint>                   // uint16_t
 #include <atomic>                    // atomic
 #include <optional>                  // optional
-#include <thread>                    // jthread
+#include <string>                    // string
 #include <boost/asio.hpp>            // io_context, ip::tcp::acceptor
 
 class LocalHttpServer {
@@ -19,4 +19,5 @@ public:
     LocalHttpServer(void) noexcept;
     bool TryServeWebpage(void) noexcept;
     void DiscardAllPendingConnections(void) noexcept;
+    std::string html_str;
 };
