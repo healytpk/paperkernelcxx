@@ -8,6 +8,7 @@
 #include <boost/beast.hpp>           // flat_buffer, http::request, http::response, http::read, http::write
 #include "embedded_archive.hpp"      // ArchiveGetFile
 #include "_Max.hpp"
+#include "Auto.h"
 
 static constexpr std::pair<char const*, char const*> g_content_types[] = {
     { "html", "text/html"       },
@@ -67,6 +68,9 @@ LocalHttpServer::LocalHttpServer(void) noexcept
 
 bool LocalHttpServer::TryServeWebpage(void) noexcept
 {
+    std::fprintf(stderr, "Entered LocalHttpServer::TryServeWebpage\n");
+    Auto( std::fprintf(stderr, "Left LocalHttpServer::TryServeWebpage\n") );
+
     struct invalid_url_t {};
 
     try
@@ -89,13 +93,24 @@ bool LocalHttpServer::TryServeWebpage(void) noexcept
         try
         {
             std::string s = string( req.target() ) + '.';
+            std::fprintf( stderr, "Inside LocalHttpServer::TryServeWebpage, URL is '%s'\n", s.c_str() );
             std::string_view sv = s;
             if ( "." == sv ) throw invalid_url_t();
             if ( false == sv.starts_with('/') ) throw invalid_url_t();
             sv.remove_prefix(1u);  // remove leading forward slash
             if ( sv.empty() ) throw invalid_url_t();
             string extension;
-            string const file_binary_contents = ArchiveGetFile(sv, extension, true);
+            string file_binary_contents;
+            if ( "loading_all." == sv )
+            {
+                extern std::string const html_loading_all_papers;  /* defined in html_pages_hardcoded.hpp */
+                file_binary_contents = html_loading_all_papers;
+                extension = "html";
+            }
+            else
+            {
+                file_binary_contents = ArchiveGetFile(sv, extension, true);
+            }
             if ( extension.empty() || file_binary_contents.empty() ) throw invalid_url_t();
             http::response< http::string_body > res{ http::status::ok, req.version() };
             res.set(http::field::server, "PaperKernelCxx.Boost.Beast");
