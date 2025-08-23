@@ -6,7 +6,7 @@ extern std::string const html_welcome_splash_screen = R"html(
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Paper Retrieval Failure</title>
+    <title>Welcome to Paper Kernel C++ version 1.0.0</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,11 +48,63 @@ extern std::string const html_welcome_splash_screen = R"html(
         <div class="note">
             Welcome to Version 1.0.0 of the Paper Kernel C++.<br>
             <br>
-            This version does is entirely offline and does not connect to the internet for any reason.<br>
+            This version is entirely offline and does not connect to the internet for any reason.<br>
             <br>
             This version does not utilise a large language model.<br>
             <br>
             Click on a paper in the tree to the left to show it here.
+        </div>
+    </div>
+</body>
+</html>
+)html";
+
+extern std::string const html_loading_all_papers = R"html(
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loading All Papers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 32px 24px;
+        }
+        h1 {
+            color: #27ae60;
+            font-size: 1.5em;
+            margin-bottom: 16px;
+        }
+        p {
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+        }
+        .note {
+            color: #555;
+            font-size: 0.98em;
+            background: #e6f9e6;
+            border-left: 4px solid #27ae60;
+            padding: 10px 16px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Loading all papers . . .</h1>
+        <div class="note">
+            Loading all papers from disk into memory, please wait.
         </div>
     </div>
 </body>
