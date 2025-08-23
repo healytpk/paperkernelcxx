@@ -55,6 +55,26 @@ LocalHttpServer::LocalHttpServer(void) noexcept
         if ( _Max == this->port ) this->port = 0u;
         if ( 0u == this->port ) throw std::runtime_error("invalid TCP listening port number");
         this->is_listening = true;
+
+        t = std::jthread([this]()
+          {
+                for (; /* ever */ ;)
+                {
+                    this->flag = 0u;
+                    this->flag.wait(0u);
+                    if ( 666u == this->flag ) return;
+                    auto const timestamp = std::chrono::steady_clock::now();
+                    for (; /* ever */ ;)
+                    {
+                        if ( (std::chrono::steady_clock::now() - timestamp) > std::chrono::seconds(10u) )
+                        {
+                            std::fputs("Timeout when waiting for incoming HTTP connection.\n", stderr);
+                            break;
+                        }
+                        if ( this->TryServeWebpage() ) break;
+                    }
+                }
+          });
     }
     catch(std::exception const &e)
     {
@@ -109,8 +129,9 @@ bool LocalHttpServer::TryServeWebpage(void) noexcept
             string file_binary_contents;
             if ( "html." == sv )
             {
-                file_binary_contents = this->html_str;
                 extension = "html";
+                std::lock_guard mylock( this->m );
+                file_binary_contents = this->html_str;
             }
             else if ( "loading_all." == sv )
             {
@@ -176,4 +197,10 @@ void LocalHttpServer::DiscardAllPendingConnections(void) noexcept
     {
         std::fprintf(stderr, "LocalHttpServer::DiscardAllPendingConnections threw and caught an exception\n");
     }
+}
+
+void LocalHttpServer::SetHtmlCode(std::string_view const sv) noexcept
+{
+    std::lock_guard mylock( this->m );
+    this->html_str = sv;
 }

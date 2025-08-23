@@ -441,7 +441,7 @@ Dialog_Main::Dialog_Main(wxWindow *const parent) : Dialog_Main__Auto_Base_Class(
     assert( nullptr != this->view_portal );
     this->view_portal_manager.BindFinishedLoading( &Dialog_Main::OnViewPortalLoaded, this );
     extern std::string const html_welcome_splash_screen;  /* defined in html_pages_hardcoded.hpp */
-    this->view_portal_manager.SetHtml( html_welcome_splash_screen, true );
+    this->view_portal_manager.SetHtml( html_welcome_splash_screen );
     // =================================================================
 
     // ====================== wxListCtrl for authors ===================

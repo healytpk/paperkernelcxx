@@ -12,13 +12,13 @@ protected:
     LocalHttpServer *phttp = nullptr;
     wxWebView *w = nullptr;
 protected:
-    void Load(wxString const &, bool spawn_new_thread = true) noexcept(false);
+    void Load(wxString const&) noexcept(false);
     void Set_Common(void) noexcept(false);
 public:
     wxString GetCurrentPaper(void) const noexcept { return this->str_current_paper; }
     wxWindow *Create(wxWindow *parent, LocalHttpServer &server) noexcept;
     void Set(wxString const &paper_name) noexcept;
-    void SetHtml(std::string const &html, bool spawn_new_thread = true) noexcept;
+    void SetHtml(std::string const &html) noexcept;
 
     template<class T>
     void BindFinishedLoading( void (T::*const mfp)(wxEvent&), T *const parent ) noexcept(false)

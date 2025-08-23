@@ -52,49 +52,14 @@ catch(...)
     return this->w;
 }
 
-void ViewPortalManager::Load(wxString const &arg, bool const spawn_new_thread) noexcept(false)
+void ViewPortalManager::Load(wxString const &arg) noexcept(false)
 {
     wxString url;
     if ( this->phttp->IsUsingIPv6() ) url = wxS("http://[::1]:");
     /**************************/ else url = wxS("http://127.0.0.1:");
     url << this->phttp->GetListeningPort() << wxS("/");
-
+    this->phttp->SetFlagToFetchPage();
     this->w->LoadURL( url << arg );
-
-    void (*yield)(void) = nullptr;
-
-    if ( spawn_new_thread )
-    {
-        yield = +[](){ std::this_thread::sleep_for( std::chrono::milliseconds(20u) ); };
-    }
-    else
-    {
-        yield = +[](){ wxGetApp().SafeYield(nullptr, false); };
-    }
-
-    auto const Do = [this,yield]()
-    {
-        auto const timestamp = std::chrono::steady_clock::now();
-        for (; /* ever */ ;)
-        {
-            yield();
-            if ( (std::chrono::steady_clock::now() - timestamp) > std::chrono::seconds(10u) )
-            {
-                std::fputs("Timeout when waiting for incoming HTTP connection.\n", stderr);
-                break;
-            }
-            if ( this->phttp->TryServeWebpage() ) break;
-        }
-    };
-
-    if ( spawn_new_thread )
-    {
-        std::thread(Do).detach();
-    }
-    else
-    {
-        Do();
-    }
 }
 
 void ViewPortalManager::Set_Common(void) noexcept(false)
@@ -146,16 +111,16 @@ void ViewPortalManager::Set(wxString const &paper_name) noexcept
 }
 
 #if 1
-void ViewPortalManager::SetHtml(std::string const &html, bool const spawn_new_thread) noexcept
+void ViewPortalManager::SetHtml(std::string const &html) noexcept
 {
     std::fprintf(stderr, "Entered ViewPortalManager::SetHtml\n");
     Auto( std::fprintf(stderr, "Left ViewPortalManager::SetHtml\n") );
 
     try
     {
-        this->phttp->html_str = html;
+        this->phttp->SetHtmlCode(html);
         this->Set_Common();
-        this->Load("html", spawn_new_thread);
+        this->Load("html");
     }
     catch (std::exception const &e)
     {
@@ -163,7 +128,7 @@ void ViewPortalManager::SetHtml(std::string const &html, bool const spawn_new_th
     }
 }
 #else
-void ViewPortalManager::SetHtml(std::string const &html, bool const spawn_new_thread) noexcept
+void ViewPortalManager::SetHtml(std::string const &html) noexcept
 {
     std::fprintf(stderr, "Entered ViewPortalManager::SetHtml\n");
     Auto( std::fprintf(stderr, "Left ViewPortalManager::SetHtml\n") );
