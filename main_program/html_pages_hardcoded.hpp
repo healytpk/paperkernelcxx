@@ -1,7 +1,9 @@
-#pragma once
+#ifndef HEADER_INCLUSION_GUARD_3168765995623466232326968475986468465
+#define HEADER_INCLUSION_GUARD_3168765995623466232326968475986468465
+
 #include <string>
 
-extern std::string const html_welcome_splash_screen = R"html(
+inline extern std::string const html_welcome_splash_screen = R"html(
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +61,7 @@ extern std::string const html_welcome_splash_screen = R"html(
 </html>
 )html";
 
-extern std::string const html_loading_all_papers = R"html(
+inline extern std::string const html_loading_all_papers = R"html(
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,7 +113,7 @@ extern std::string const html_loading_all_papers = R"html(
 </html>
 )html";
 
-extern std::string const html_failed_load_archive_file = R"html(
+inline extern std::string const html_failed_load_archive_file = R"html(
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -166,7 +168,7 @@ extern std::string const html_failed_load_archive_file = R"html(
 </html>
 )html";
 
-extern std::string const html_failed_load_archive_resource = R"html(
+inline extern std::string const html_failed_load_archive_resource = R"html(
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -221,7 +223,7 @@ extern std::string const html_failed_load_archive_resource = R"html(
 </html>
 )html";
 
-extern std::string const html_paper_not_found_in_archive = R"html(
+inline extern std::string const html_paper_not_found_in_archive = R"html(
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -275,3 +277,5 @@ extern std::string const html_paper_not_found_in_archive = R"html(
 </body>
 </html>
 )html";
+
+#endif
