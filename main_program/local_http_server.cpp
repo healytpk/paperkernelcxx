@@ -117,7 +117,7 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
         struct sockaddr_in addr4{};
         addr4.sin_family = AF_INET;
         addr4.sin_addr.s_addr = INADDR_ANY;
-        addr4.sin_port = ::htons(port_wanted);
+        addr4.sin_port = htons(port_wanted);
 
         if ( ::bind(fd, reinterpret_cast<struct sockaddr*>(&addr4), sizeof(addr4)) < 0 )
         {
@@ -141,7 +141,7 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
         struct sockaddr_in6 addr6{};
         addr6.sin6_family = AF_INET6;
         addr6.sin6_addr = in6addr_any;
-        addr6.sin6_port = ::htons(port_wanted);
+        addr6.sin6_port = htons(port_wanted);
 
         ::setsockopt(fd, IPPROTO_IPV6, IPV6_V6ONLY, &opt, sizeof(opt));  // Allow dual-stack if possible
 
@@ -166,7 +166,7 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
             sockClose(fd);
             return false;
         }
-        this->port = ::ntohs(addr6.sin6_port);
+        this->port = ntohs(addr6.sin6_port);
     }
     else
     {
@@ -178,7 +178,7 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
             sockClose(fd);
             return false;
         }
-        this->port = ::ntohs(addr4.sin_port);
+        this->port = ntohs(addr4.sin_port);
     }
 
     if ( ::listen(fd, 16) < 0 )
