@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.5.0
+      uses: MarkusJx/install-boost@main
       id: install-boost
       with:
       # REQUIRED: Specify the required boost version
