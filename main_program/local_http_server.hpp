@@ -4,7 +4,7 @@
 
 #include <cstdint>          // uint16_t
 #include <atomic>           // atomic<bool>
-#include <mutex>            // mutex
+#include <mutex>            // mutex, once_flag
 #include <string>           // string
 #include <string_view>      // string_view
 #include <thread>           // jthread
@@ -19,6 +19,11 @@ protected:
     std::string html_str;
     std::jthread t;
     std::atomic<bool> stop_flag{ false };
+
+#if defined(_WIN32) || defined(_WIN64)
+    inline static std::once_flag once_flag_winsock;
+    inline static bool did_winsock_succeed = false;
+#endif
 
     bool Start(std::uint16_t port_wanted = 0u) noexcept;
     void Stop(void) noexcept;

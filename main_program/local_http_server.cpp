@@ -1,5 +1,6 @@
 #include "local_http_server.hpp"
 #include <cstddef>                    // ptrdiff_t, size_t
+#include <exception>                  // exception
 #include <utility>                    // pair
 #include "Auto.h"                     // Auto
 
@@ -103,6 +104,14 @@ void LocalHttpServer::Stop(void) noexcept
 
     this->stop_flag = false;
     this->use_ipv6 = false;
+
+#if defined(_WIN32) || defined(_WIN64)
+    if ( false == this->did_winsock_succeed ) return;
+    this->did_winsock_succeed = false;
+    this->once_flag_winsock.~std::once_flag();
+    ::new( &this->once_flag_winsock ) std::once_flag{};   // REVISIT - FIX - What if another thread is using it???
+    WSACleanup();
+#endif
 }
 
 LocalHttpServer::~LocalHttpServer(void) noexcept
@@ -112,6 +121,23 @@ LocalHttpServer::~LocalHttpServer(void) noexcept
 
 bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
 {
+#if defined(_WIN32) || defined(_WIN64)
+    std::call_once( this->once_flag_winsock,
+        +[](LocalHttpServer *const pthis) -> bool
+        {
+            WSADATA wsaData;
+            if ( 0 != WSAStartup(MAKEWORD(2, 2), &wsaData) )
+            {
+                std::fprintf(stderr, "WSAStartup failed - WinSock failed to initialise to use TCP sockets.\n");
+                return;
+            }
+            pthis->did_winsock_succeed = true;
+        },
+        this);
+
+    if ( false == this->did_winsock_succeed ) return false;
+#endif
+
     this->Stop();
 
     bool should_leave_open = false;
@@ -190,7 +216,14 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
         should_leave_open = true;
         return true;
     }
-    catch(...){} // might throw std::system_error if thread failed to start
+    catch(std::exception const &e)
+    {
+        std::fprintf(stderr, "Failed to spawn thread to accept TCP connections: what() = '%s'\n", e.what());
+    }
+    catch(...)
+    {
+        std::fprintf(stderr, "Failed to spawn thread to accept TCP connections.\n");
+    }
 
     return false;
 }
