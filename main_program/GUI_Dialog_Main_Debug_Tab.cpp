@@ -20,10 +20,12 @@ void Dialog_Main::ShowDebugTab(void)
 {
     assert( wxIsMainThread() );
     if ( this->already_showing_debug_tab ) return;
+    this->m_notebook1->AddPage( this->panelAI, wxS("Large Language Model") );
     this->m_notebook1->AddPage( this->panelDebug, wxS("Debug") );
     this->already_showing_debug_tab = true;
     this->m_notebook1->SetSelection(4u);  // Select the Debug tab
 }
+
 void Dialog_Main::listAuthors_OnListItemRightClick(wxListEvent &event)
 {
     if ( wxS("Edward Catmur (1982 \u002D 2024)") != event.GetText() ) return;

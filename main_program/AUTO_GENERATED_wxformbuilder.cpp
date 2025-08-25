@@ -223,7 +223,7 @@ Dialog_Main__Auto_Base_Class::Dialog_Main__Auto_Base_Class( wxWindow* parent, wx
 	panelAI->SetSizer( bSizerForPanelAI );
 	panelAI->Layout();
 	bSizerForPanelAI->Fit( panelAI );
-	m_notebook1->AddPage( panelAI, wxT("Artificial Intelligence"), false );
+	m_notebook1->AddPage( panelAI, wxT("Large Language Model"), false );
 	panelDebug = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer151;
 	bSizer151 = new wxBoxSizer( wxVERTICAL );

@@ -62,7 +62,11 @@ public:
     Dialog_Main(wxWindow *parent);
     ~Dialog_Main(void) noexcept
     {
-        if ( false == this->already_showing_debug_tab ) this->panelDebug->Destroy();
+        if ( false == this->already_showing_debug_tab )
+        {
+            this->panelAI   ->Destroy();
+            this->panelDebug->Destroy();
+        }
     }
 };
 
