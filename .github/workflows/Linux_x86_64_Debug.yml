@@ -2,9 +2,9 @@ name: Linux_x86_64_Debug
 
 on:
   push:
-    branches: '*'
+    branches: 'main'
   pull_request:
-    branches: '*'
+    branches: 'main'
   workflow_dispatch:
     branches: '*'
 

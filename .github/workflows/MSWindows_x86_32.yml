@@ -7,9 +7,9 @@ name:  MSWindows_x86_32_MSBuild
 
 on:
   push:
-    branches: '*'
+    branches: 'main'
   pull_request:
-    branches: '*'
+    branches: 'main'
   workflow_dispatch:
     branches: '*'
 
