@@ -49,7 +49,7 @@ static void sockClose(int const fd) noexcept
 static void sockShutdown(int const fd) noexcept
 {
 #if defined(_WIN32) || defined(_WIN64)
-    ::shutdown(fd SD_BOTH);
+    ::shutdown(fd, SD_BOTH);
 #else
     ::shutdown(fd, SHUT_RDWR);
 #endif
