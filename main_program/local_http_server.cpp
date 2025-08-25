@@ -162,7 +162,6 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
         socklen_t len = sizeof(addr6);
         if ( ::getsockname(fd, reinterpret_cast<struct sockaddr*>(&addr6), &len) < 0 )
         {
-            std::perror("getsockname");
             sockClose(fd);
             return false;
         }
@@ -174,7 +173,6 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
         socklen_t len = sizeof(addr4);
         if ( ::getsockname(fd, reinterpret_cast<struct sockaddr*>(&addr4), &len) < 0 )
         {
-            std::perror("getsockname");
             sockClose(fd);
             return false;
         }
@@ -183,7 +181,6 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
 
     if ( ::listen(fd, 16) < 0 )
     {
-        std::perror("listen");
         sockClose(fd);
         return false;
     }
@@ -262,16 +259,7 @@ void LocalHttpServer::SetHtmlCode(std::string_view const sv) noexcept
 
         std::fprintf(stderr, "accept has returned.\n");
 
-        if ( client_fd < 0 )
-        {
-#if defined(_WIN32) || defined(_WIN64)
-            if ( WSAEINTR == WSAGetLastError() ) continue;
-#else
-            if ( EINTR == errno ) continue;
-#endif
-            std::perror("accept");
-            break;
-        }
+        if ( client_fd < 0 ) continue;
 
         Auto( sockClose(client_fd) );
 
