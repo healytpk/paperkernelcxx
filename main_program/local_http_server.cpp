@@ -129,11 +129,7 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
     if ( fd < 0 )  // If IPv4 failed, try IPv6
     {
         fd = ::socket(AF_INET6, SOCK_STREAM, 0);
-        if ( fd < 0 )
-        {
-            std::perror("socket");
-            return false;
-        }
+        if ( fd < 0 ) return false;
 
         int opt = 1;
         ::setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
@@ -148,7 +144,6 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
         if ( ::bind(fd, reinterpret_cast<struct sockaddr*>(&addr6), sizeof(addr6)) < 0 )
         {
             sockClose(fd);
-            std::perror("bind");
             return false;
         }
 
