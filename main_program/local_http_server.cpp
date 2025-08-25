@@ -25,13 +25,13 @@ static constexpr std::pair<char const*, char const*> g_content_types[] = {
   #include <winsock2.h>
   #include <ws2tcpip.h>
   typedef std::ptrdiff_t ssize_t;
-  typedef int socklen_t;
+  typedef int socklen_t;  // This is unsigned on Linux but we want signed for MS-Win
 #else
+  #include <cerrno>
   #include <arpa/inet.h>
   #include <netinet/in.h>
   #include <sys/socket.h>
   #include <unistd.h>
-  #include <cerrno>
 #endif
 
 #include "embedded_archive.hpp"
@@ -187,14 +187,12 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
     try
     {
         this->t = std::jthread( ThreadEntryPoint, this );  // Spawn background thread
+        should_leave_open = true;
+        return true;
     }
-    catch(...)  // might throw std::system_error if thread failed to start
-    {
-        return false;  // This will close 'fd'
-    }
+    catch(...){} // might throw std::system_error if thread failed to start
 
-    should_leave_open = true;
-    return true;
+    return false;
 }
 
 LocalHttpServer::LocalHttpServer(void) noexcept
