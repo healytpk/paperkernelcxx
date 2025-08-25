@@ -1,6 +1,7 @@
 #include "local_http_server.hpp"
-#include <utility>
-#include "Auto.h"
+#include <cstddef>                    // ptrdiff_t, size_t
+#include <utility>                    // pair
+#include "Auto.h"                     // Auto
 
 static constexpr std::pair<char const*, char const*> g_content_types[] = {
     { "html", "text/html"       },
@@ -23,6 +24,7 @@ static constexpr std::pair<char const*, char const*> g_content_types[] = {
 #if defined(_WIN32) || defined(_WIN64)
   #include <winsock2.h>
   #include <ws2tcpip.h>
+  typedef std::ptrdiff_t ssize_t;
   typedef int socklen_t;
 #else
   #include <arpa/inet.h>
@@ -35,7 +37,7 @@ static constexpr std::pair<char const*, char const*> g_content_types[] = {
 #include "embedded_archive.hpp"
 #include "html_pages_hardcoded.hpp"
 
-using std::string, std::string_view;
+using std::size_t, std::string, std::string_view;
 
 static void sockClose(int const fd) noexcept
 {
@@ -55,20 +57,20 @@ static void sockShutdown(int const fd) noexcept
 #endif
 }
 
-static ssize_t sockRead(int fd, void *buf, size_t len) noexcept
+static ssize_t sockRead(int const fd, void *const buf, size_t const len) noexcept
 {
 #if defined(_WIN32) || defined(_WIN64)
-    int const r = ::recv(fd, (char*)buf, static_cast<int>(len), 0);
+    int const r = ::recv(fd, static_cast<char*>(buf), static_cast<int>(len), 0);
     return (r < 0) ? 0 : r;
 #else
     return ::read(fd, buf, len);
 #endif
 }
 
-ssize_t sockWrite(int fd, const void *buf, size_t len) noexcept
+static ssize_t sockWrite(int const fd, void const *const buf, size_t const len) noexcept
 {
 #if defined(_WIN32) || defined(_WIN64)
-    int const r = ::send(fd, (const char*)buf, static_cast<int>(len), 0);
+    int const r = ::send(fd, static_cast<char const*>(buf), static_cast<int>(len), 0);
     return (r < 0) ? 0 : r;
 #else
     return ::write(fd, buf, len);
@@ -92,11 +94,15 @@ void LocalHttpServer::Stop(void) noexcept
     this->is_listening = false;
     this->port = 0u;
 
-    std::fprintf(stderr, "About to join. . .\n");
-    if ( this->t.joinable() ) t.join();
-    std::fprintf(stderr, "Joined.\n");
+    if ( this->t.joinable() )
+    {
+        std::fprintf(stderr, "About to join TCP acceptor thread. . .\n");
+        this->t.join();
+        std::fprintf(stderr, "Joined.\n");
+    }
 
     this->stop_flag = false;
+    this->use_ipv6 = false;
 }
 
 LocalHttpServer::~LocalHttpServer(void) noexcept
@@ -108,7 +114,17 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
 {
     this->Stop();
 
-    int fd = ::socket(AF_INET, SOCK_STREAM, 0);
+    bool should_leave_open = false;
+    int fd = -1;
+
+    Auto(
+      {
+          if ( should_leave_open ) return;
+          if ( fd >= 0 ) sockClose(fd);
+          this->Stop();  // reset all the member variables
+      });
+
+    fd = ::socket(AF_INET, SOCK_STREAM, 0);
     if ( fd >= 0 )
     {
         int opt = 1;
@@ -141,11 +157,7 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
 
         ::setsockopt(fd, IPPROTO_IPV6, IPV6_V6ONLY, &opt, sizeof(opt));  // Allow dual-stack if possible
 
-        if ( ::bind(fd, reinterpret_cast<struct sockaddr*>(&addr6), sizeof(addr6)) < 0 )
-        {
-            sockClose(fd);
-            return false;
-        }
+        if ( ::bind(fd, reinterpret_cast<struct sockaddr*>(&addr6), sizeof(addr6)) < 0 ) return false;
 
         this->use_ipv6 = true;
     }
@@ -155,38 +167,33 @@ bool LocalHttpServer::Start(std::uint16_t const port_wanted) noexcept
     {
         struct sockaddr_in6 addr6{};
         socklen_t len = sizeof(addr6);
-        if ( ::getsockname(fd, reinterpret_cast<struct sockaddr*>(&addr6), &len) < 0 )
-        {
-            sockClose(fd);
-            return false;
-        }
+        if ( ::getsockname(fd, reinterpret_cast<struct sockaddr*>(&addr6), &len) < 0 ) return false;
         this->port = ntohs(addr6.sin6_port);
     }
     else
     {
         struct sockaddr_in addr4{};
         socklen_t len = sizeof(addr4);
-        if ( ::getsockname(fd, reinterpret_cast<struct sockaddr*>(&addr4), &len) < 0 )
-        {
-            sockClose(fd);
-            return false;
-        }
+        if ( ::getsockname(fd, reinterpret_cast<struct sockaddr*>(&addr4), &len) < 0 ) return false;
         this->port = ntohs(addr4.sin_port);
     }
 
-    if ( ::listen(fd, 16) < 0 )
-    {
-        sockClose(fd);
-        return false;
-    }
+    if ( ::listen(fd, 8) < 0 ) return false;
 
     this->server_fd = fd;
     this->is_listening = true;
     this->stop_flag = false;
 
-    // Spawn background thread
-    this->t = std::jthread( ThreadEntryPoint, this );
+    try
+    {
+        this->t = std::jthread( ThreadEntryPoint, this );  // Spawn background thread
+    }
+    catch(...)  // might throw std::system_error if thread failed to start
+    {
+        return false;  // This will close 'fd'
+    }
 
+    should_leave_open = true;
     return true;
 }
 
