@@ -15,13 +15,13 @@ jobs:
 
     steps:
     - name: Install boost
-      uses: MarkusJx/install-boost@v2.4.5
+      uses: MarkusJx/install-boost@v2.5.0
       id: install-boost
       with:
       # REQUIRED: Specify the required boost version
       # A list of supported versions can be found here:
       # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
-          boost_version: 1.87.0
+          boost_version: 1.88.0
           boost_install_dir: /tmp/paperkernelcxx/boost/
 
     - uses: actions/checkout@v4
