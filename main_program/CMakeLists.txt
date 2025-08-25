@@ -24,7 +24,6 @@ set(HEADERS
 	embedded_archive.hpp
 	GUI_Dialog_About.hpp
 	GUI_Dialog_Main.hpp
-	GUI_Dialog_Main_Debug_Tab.hpp
 	GUI_Dialog_Waiting.hpp
 	hash.hpp
 	html_pages_hardcoded.hpp
